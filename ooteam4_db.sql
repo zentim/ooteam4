@@ -2,20 +2,20 @@ DROP DATABASE IF EXISTS ooteam4;
 CREATE DATABASE ooteam4 DEFAULT CHARACTER SET utf8;
 USE ooteam4;
 
-CREATE TABLE user (
+CREATE TABLE User (
   id int(11) NOT NULL AUTO_INCREMENT,
   name varchar(255) DEFAULT NULL,
   password varchar(255) DEFAULT NULL,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE category (
+CREATE TABLE Category (
   id int(11) NOT NULL AUTO_INCREMENT,
   name varchar(255) DEFAULT NULL,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
-CREATE TABLE property (
+CREATE TABLE Property (
   id int(11) NOT NULL AUTO_INCREMENT,
   cid int(11) DEFAULT NULL,
   name varchar(255) DEFAULT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE property (
   CONSTRAINT fk_property_category FOREIGN KEY (cid) REFERENCES category (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE product (
+CREATE TABLE Product (
   id int(11) NOT NULL AUTO_INCREMENT,
   name varchar(255) DEFAULT NULL,
   orignalPrice float DEFAULT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE product (
   CONSTRAINT fk_product_category FOREIGN KEY (cid) REFERENCES category (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
-CREATE TABLE propertyvalue (
+CREATE TABLE PropertyValue (
   id int(11) NOT NULL AUTO_INCREMENT,
   pid int(11) DEFAULT NULL,
   ptid int(11) DEFAULT NULL,
@@ -45,7 +45,7 @@ CREATE TABLE propertyvalue (
   CONSTRAINT fk_propertyvalue_product FOREIGN KEY (pid) REFERENCES product (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
-CREATE TABLE productimage (
+CREATE TABLE ProductImage (
   id int(11) NOT NULL AUTO_INCREMENT,
   pid int(11) DEFAULT NULL,
   type varchar(255) DEFAULT NULL,
@@ -53,7 +53,7 @@ CREATE TABLE productimage (
   CONSTRAINT fk_productimage_product FOREIGN KEY (pid) REFERENCES product (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE order_ (
+CREATE TABLE Order_ (
   id int(11) NOT NULL AUTO_INCREMENT,
   orderCode varchar(255) DEFAULT NULL,
   address varchar(255) DEFAULT NULL,
@@ -67,7 +67,7 @@ CREATE TABLE order_ (
   CONSTRAINT fk_order_user FOREIGN KEY (uid) REFERENCES user (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
-CREATE TABLE orderitem (
+CREATE TABLE OrderItem (
   id int(11) NOT NULL AUTO_INCREMENT,
   pid int(11) DEFAULT NULL,
   oid int(11) DEFAULT NULL,
