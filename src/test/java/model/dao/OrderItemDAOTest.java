@@ -43,7 +43,7 @@ public class OrderItemDAOTest {
 		categorydao.add(category);
 		
 		product.setName("The OO Design Pattern");
-		product.setOrignalPrice(1000);
+		product.setOriginalPrice(1000);
 		product.setPromotePrice(800);
 		product.setStock(5);
 		product.setCategory(category);

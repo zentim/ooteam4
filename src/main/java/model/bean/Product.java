@@ -26,13 +26,14 @@ public class Product {
     public void setName(String name) {
         this.name = name;
     }
-    public float getOrignalPrice() {
-        return originalPrice;
-    }
-    public void setOrignalPrice(float originalPrice) {
-        this.originalPrice = originalPrice;
-    }
-    public float getPromotePrice() {
+    
+    public float getOriginalPrice() {
+		return originalPrice;
+	}
+	public void setOriginalPrice(float originalPrice) {
+		this.originalPrice = originalPrice;
+	}
+	public float getPromotePrice() {
         return promotePrice;
     }
     public void setPromotePrice(float promotePrice) {

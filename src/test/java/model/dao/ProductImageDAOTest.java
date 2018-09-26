@@ -31,7 +31,7 @@ public class ProductImageDAOTest {
 		
 		// add product
 		product.setName("Harry Potter");
-		product.setOrignalPrice(1000);
+		product.setOriginalPrice(1000);
 		product.setPromotePrice(800);
 		product.setStock(5);
 		product.setCategory(category);

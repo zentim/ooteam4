@@ -27,7 +27,7 @@ public class ProductDAOTest {
 		
 		System.out.println("Test Start...");
 		product.setName("Harry Potter");
-		product.setOrignalPrice(1000);
+		product.setOriginalPrice(1000);
 		product.setPromotePrice(800);
 		product.setStock(5);
 		product.setCategory(category);
