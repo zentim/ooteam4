@@ -34,8 +34,10 @@ public class CategoryServlet extends BaseBackServlet {
 
 	@Override
 	public String edit(HttpServletRequest request, HttpServletResponse response, Page page) {
-		// TODO Auto-generated method stub
-		return null;
+		int id = Integer.parseInt(request.getParameter("id"));
+		Category c = categoryDAO.get(id);
+		request.setAttribute("c", c);
+		return "admin/editCategory.jsp";
 	}
 
 	@Override

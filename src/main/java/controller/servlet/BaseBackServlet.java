@@ -51,7 +51,7 @@ public abstract class BaseBackServlet extends HttpServlet {
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
 		try {
-			// Àò¨ú¤À­¶«H®§
+			// ç²å–åˆ†é ä¿¡æ¯
 			int start = 0;
 			int count = 5;
 			
@@ -68,14 +68,14 @@ public abstract class BaseBackServlet extends HttpServlet {
 			
 			Page page = new Page(start, count);
 			
-			// ­É§U¤Ï®g½Õ¥Î¹ïÀ³ªº¤èªk
+			// å€ŸåŠ©åå°„èª¿ç”¨å°æ‡‰çš„æ–¹æ³•
 			String method = (String) req.getAttribute("method");
 			
 			Method m = this.getClass().getMethod(method, javax.servlet.http.HttpServletRequest.class, 
 					javax.servlet.http.HttpServletResponse.class, Page.class);
 			String redirect = m.invoke(this, req, resp, page).toString();
 			
-			// ®Ú¾Ú¤èªkªºªğ¦^­È¡A¶i¦æ¬ÛÀ³ªº«È¤áºİ¸õÂà¡BªA°Èºİ¸õÂà¡A©ÎªÌ¶È¶È¬O¿é¥X¦r²Å¦ê
+			// æ ¹æ“šæ–¹æ³•çš„è¿”å›å€¼ï¼Œé€²è¡Œç›¸æ‡‰çš„å®¢æˆ¶ç«¯è·³è½‰ã€æœå‹™ç«¯è·³è½‰ï¼Œæˆ–è€…åƒ…åƒ…æ˜¯è¼¸å‡ºå­—ç¬¦ä¸²
 			if (redirect.startsWith("@")) {
 				resp.sendRedirect(redirect.substring(1));
 			} else if (redirect.startsWith("%")) {
@@ -96,7 +96,7 @@ public abstract class BaseBackServlet extends HttpServlet {
 		try {
 			DiskFileItemFactory factory = new DiskFileItemFactory();
 			ServletFileUpload upload = new ServletFileUpload(factory);
-			// ³]¸m¤W¶Ç¤å¥óªº¤j¤p­­¨î¬° 10M
+			// è¨­ç½®ä¸Šå‚³æ–‡ä»¶çš„å¤§å°é™åˆ¶ç‚º 10M
 			factory.setSizeThreshold(1024 * 1024);
 			
 			List items = upload.parseRequest(request);
@@ -104,7 +104,7 @@ public abstract class BaseBackServlet extends HttpServlet {
 			while (iter.hasNext()) {
 				FileItem item = (FileItem) iter.next();
 				if (!item.isFormField()) {
-					// item.getInputStream() Àò¨ú¤W¶Ç¤å¥óªº¿é¤J¬y
+					// item.getInputStream() ç²å–ä¸Šå‚³æ–‡ä»¶çš„è¼¸å…¥æµ
 					is = item.getInputStream();
 				} else {
 					String paramName = item.getFieldName();

@@ -44,7 +44,7 @@ public class OrderItemDAO {
   
             ps.setInt(1, bean.getProduct().getId());
              
-            //霈Ｗ�★���遣����瘝⊥��恥��縑����
+            // 訂單項在創建的時候，是沒有訂單信息的
             if(null==bean.getOrder())
                 ps.setInt(2, -1);
             else

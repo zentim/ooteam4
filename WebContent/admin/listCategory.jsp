@@ -40,7 +40,7 @@
           </a>
         </td>
         <td>
-          <a href="admin_category_list?id=${ c.id }">
+          <a href="admin_category_edit?id=${ c.id }">
             <button type="button" class="btn btn-primary btn-sm">
               <span data-feather="edit"></span>
             </button>
