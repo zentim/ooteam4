@@ -42,8 +42,14 @@ public class CategoryServlet extends BaseBackServlet {
 
 	@Override
 	public String update(HttpServletRequest request, HttpServletResponse response, Page page) {
-		// TODO Auto-generated method stub
-		return null;
+		int id = Integer.parseInt(request.getParameter("id"));
+		String name = request.getParameter("name");
+		Category c = new Category();
+		c.setId(id);
+		c.setName(name);
+		categoryDAO.update(c);
+		
+		return "@admin_category_list";
 	}
 
 	@Override
