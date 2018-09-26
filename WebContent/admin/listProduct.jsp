@@ -105,11 +105,11 @@
   			</tr>
   			<tr>
   				<td>優惠價 : </td>
-  				<td><input id="stock" name="stock" type="text"></td>
+  				<td><input id="promotePrice" name="promotePrice" type="text"></td>
   			</tr>
   			<tr>
   				<td>庫存 : </td>
-  				<td><input id="promotePrice" name="promotePrice" type="text"></td>
+  				<td><input id="stock" name="stock" type="text"></td>
   			</tr>
   			<tr>
   				<td colspan="2" align="center">
