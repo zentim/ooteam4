@@ -5,12 +5,13 @@
 <%@include file="../component/admin/adminHeader.jsp"%>
 <%@include file="../component/admin/adminNavigator.jsp"%>	
 
-
-<ol class="breadcrumb">
-  <li><a href="admin_category_list">所有分類</a></li>
-  <li><a href="admin_property_list?cid=${c.id}">${c.name}</a></li>
-  <li class="active">屬性管理</li>
-</ol>
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="admin_category_list">所有分類</a></li>
+    <li class="breadcrumb-item"><a href="admin_property_list?cid=${c.id}">${c.name}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">屬性管理</li>
+  </ol>
+</nav>
 	
 <div class="table-responsive">
   <table class="table table-striped table-sm">
@@ -37,7 +38,7 @@
         </td>
         <td>
           <a deleteLink="true" href="admin_property_delete?id=${ p.id }">
-            <button type="button" class="btn btn-primary btn-sm">
+            <button type="button" class="btn btn-danger btn-sm">
               <span data-feather="trash-2"></span>
             </button>
           </a>
@@ -62,16 +63,17 @@
 
 <div class="card" style="width: 23rem;">
   <div class="card-body">
-    <h4>Add New Category</h4>
+    <h4>Add New Property</h4>
 
-    <form method="post" id="addForm" action="admin_category_add">
-  		<table class="addTable">
+    <form method="post" id="addForm" action="admin_property_add">
+  		<table>
   			<tr>
-  				<td>分類名稱 : </td>
-  				<td><input  id="name" name="name" type="text" class="form-control"></td>
+  				<td>屬性名稱 : </td>
+  				<td><input  id="name" name="name" type="text"></td>
   			</tr>
   			<tr>
   				<td colspan="2" align="center">
+  					<input type="hidden" name="cid" value="${ c.id }">
   					<button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
   				</td>
   			</tr>

@@ -48,7 +48,7 @@
         </td>
         <td>
           <a deleteLink="true" href="admin_category_delete?id=${c.id}">
-            <button type="button" class="btn btn-primary btn-sm">
+            <button type="button" class="btn btn-danger btn-sm">
               <span data-feather="trash-2"></span>
             </button>
           </a>
@@ -76,10 +76,10 @@
     <h4>Add New Category</h4>
 
     <form method="post" id="addForm" action="admin_category_add">
-  		<table class="addTable">
+  		<table>
   			<tr>
   				<td>分類名稱 : </td>
-  				<td><input  id="name" name="name" type="text" class="form-control"></td>
+  				<td><input  id="name" name="name" type="text"></td>
   			</tr>
   			<tr>
   				<td colspan="2" align="center">

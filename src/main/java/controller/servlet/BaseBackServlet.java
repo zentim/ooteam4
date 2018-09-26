@@ -77,11 +77,13 @@ public abstract class BaseBackServlet extends HttpServlet {
 			
 			// 根據方法的返回值，進行相應的客戶端跳轉、服務端跳轉，或者僅僅是輸出字符串
 			if (redirect.startsWith("@")) {
+				// 客戶端跳轉
 				resp.sendRedirect(redirect.substring(1));
 			} else if (redirect.startsWith("%")) {
+				// 服務端跳轉
 				resp.getWriter().print(redirect.substring(1));
 			} else {
-				req.getRequestDispatcher(redirect).forward(req, resp);
+				req.getRequestDispatcher(redirect).forward(req, resp); 
 			}
 			
 		} catch (Exception e) {

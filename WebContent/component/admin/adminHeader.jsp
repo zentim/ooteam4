@@ -131,4 +131,4 @@ body {
       	<%@include file="adminNavigator.jsp" %>
         
 		<!-- Main Content -->
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 my-4">
