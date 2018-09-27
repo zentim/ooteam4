@@ -106,7 +106,7 @@ public class ProductServlet extends BaseBackServlet {
 		
 		request.setAttribute("pvs", pvs);
 		
-		return "admin/editProductValue.jsp";
+		return "admin/editPropertyValue.jsp";
 	}
 	
 	public String updatePropertyValue(HttpServletRequest request, HttpServletResponse response, Page page) {
