@@ -87,11 +87,11 @@
 <script>
 $(function(){
 
-  $("#addForm").submit(function(){
-    if(!checkEmpty("name", "屬性名稱"))
-      return false;
-    return true;
-  });
+	$("#addForm").submit(function() {
+        if (checkEmpty("name", "屬性名稱"))
+            return true;
+        return false;
+    });
   
 });
 </script>

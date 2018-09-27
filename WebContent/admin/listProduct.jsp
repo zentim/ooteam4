@@ -44,7 +44,7 @@
         <td>${ p.promotePrice }</td>
         <td>${ p.stock }</td>
         <td>
-          <a href="admin_productImage_list?id=${ p.id }">
+          <a href="admin_productImage_list?pid=${ p.id }">
             <button type="button" class="btn btn-primary btn-sm">
               <span data-feather="image"></span>
             </button>

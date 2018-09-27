@@ -98,7 +98,7 @@ public class ProductImageDAO {
     }
   
     public List<ProductImage> list(Product p, String type) {
-        return list(p, type,0, Short.MAX_VALUE);
+        return list(p, type, 0, Short.MAX_VALUE);
     }
   
     public List<ProductImage> list(Product p, String type, int start, int count) {

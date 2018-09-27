@@ -8,8 +8,9 @@
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="admin_category_list">所有分類</a></li>
-    <li class="breadcrumb-item"><a href="admin_property_list?cid=${p.category.id}">${p.category.name}</a></li>
-    <li class="breadcrumb-item active" aria-current="page">編輯產品
+    <li class="breadcrumb-item"><a href="admin_product_list?cid=${p.category.id}">${p.category.name}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">${ p.name }</li>
+    <li class="breadcrumb-item active" aria-current="page">編輯產品</li>
     </li>
   </ol>
 </nav>
