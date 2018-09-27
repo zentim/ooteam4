@@ -14,7 +14,7 @@
 </nav>
 	
 <div class="table-responsive">
-  <table class="table table-striped table-sm">
+  <table class="table table-striped table-sm table-bordered table-sm">
     <thead>
       <tr>
         <th>#</th>

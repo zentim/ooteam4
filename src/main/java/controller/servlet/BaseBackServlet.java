@@ -56,12 +56,12 @@ public abstract class BaseBackServlet extends HttpServlet {
 			int count = 5;
 			
 			try {
-				Integer.parseInt(req.getParameter("page.start"));
+				start = Integer.parseInt(req.getParameter("page.start"));
 			} catch (Exception e) {
 				// TODO: handle exception
 			}
 			try {
-				Integer.parseInt(req.getParameter("page.count"));
+				count = Integer.parseInt(req.getParameter("page.count"));
 			} catch (Exception e) {
 				// TODO: handle exception
 			}

@@ -7,7 +7,7 @@
 
 <h2>User</h2>
 <div class="table-responsive">
-  <table class="table table-striped table-sm">
+  <table class="table table-striped table-bordered table-sm">
     <thead>
       <tr>
         <th>#</th>

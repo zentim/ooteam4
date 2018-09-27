@@ -13,7 +13,7 @@
   </ol>
 </nav>
 	
-<div class="table-responsive">
+<div class="table-responsive table-bordered table-sm">
   <table class="table table-striped table-sm">
     <thead>
       <tr>

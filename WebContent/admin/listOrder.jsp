@@ -38,36 +38,36 @@
             <button oid=${o.id} class="orderPageCheckOrderItems btn btn-primary btn-sm">查看詳情</button>
         </td>
       </tr>
-      <tr class="orderPageOrderItemTR"  oid=${o.id}>
-      <td colspan="10" align="center">
-	              
-          <div  class="orderPageOrderItem">
-              <table width="800px" align="center" class="orderPageOrderItemTable">
-                  <c:forEach items="${o.orderItems}" var="oi">
-                      <tr>
-                          <td align="left">
-                              <img width="40px" height="40px" src="img/productSingle/${oi.product.firstProductImage.id}.jpg">
-                          </td> 
-                              
-                          <td>
-                              <a href="foreproduct?pid=${oi.product.id}">
-                                  <span>${oi.product.name}</span>
-                              </a>                                          
-                          </td>
-                          <td align="right">
-                              <span class="text-muted">${oi.number}个</span>                                               
-                          </td>
-                          <td align="right">
-                              <span class="text-muted">單價 : $${oi.product.promotePrice}</span>                                              
-                          </td>
-	
-                      </tr>
-                  </c:forEach>
-	                  
-              </table>
-           </div>
-	          
-      </td>
+      <tr class="orderPageOrderItemTR"  oid=${o.id} style="display: none">
+	      <td colspan="10" align="center">
+		              
+	          <div  class="orderPageOrderItem">
+	              <table width="800px" align="center" class="orderPageOrderItemTable">
+	                  <c:forEach items="${o.orderItems}" var="oi">
+	                      <tr>
+	                          <td align="left">
+	                              <img width="40px" height="40px" src="img/productSingle/${oi.product.firstProductImage.id}.jpg">
+	                          </td> 
+	                              
+	                          <td>
+	                              <a href="foreproduct?pid=${oi.product.id}">
+	                                  <span>${oi.product.name}</span>
+	                              </a>                                          
+	                          </td>
+	                          <td align="right">
+	                              <span class="text-muted">${oi.number}个</span>                                               
+	                          </td>
+	                          <td align="right">
+	                              <span class="text-muted">單價 : $${oi.product.promotePrice}</span>                                              
+	                          </td>
+		
+	                      </tr>
+	                  </c:forEach>
+		                  
+	              </table>
+	           </div>
+		          
+	      </td>
 	  </tr>
       </c:forEach>
     </tbody>
