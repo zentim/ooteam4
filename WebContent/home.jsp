@@ -1,12 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-	<h1>home page</h1>
-</body>
-</html>
+	pageEncoding="UTF-8" isELIgnored="false"%>
+<%@include file="./include/header.jsp" %>
+
+<!-- Left Side Navigator -->
+<%@include file="./include/nav.jsp" %>
+
+<!-- Middle Content Area -->
+<%@include file="./include/home/homePage.jsp" %>
+
+<!-- Right SideNav -->
+<div class="col-sm-2 sidenav"></div>
+
+<%@include file="./include/footer.jsp" %>  
