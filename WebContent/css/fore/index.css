@@ -57,12 +57,9 @@ a:link {
 	
 }
 
-a:hover {
-
-	
+.sidenav a:hover {
 	color:white;
 	background-color:black;
-	
 }
 
 .btn{
