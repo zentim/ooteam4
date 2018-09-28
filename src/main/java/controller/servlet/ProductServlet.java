@@ -2,6 +2,7 @@ package main.java.controller.servlet;
 
 import java.util.List;
 
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -10,6 +11,7 @@ import main.java.model.bean.Product;
 import main.java.model.bean.PropertyValue;
 import main.java.model.util.Page;
 
+@WebServlet("/productServlet")
 public class ProductServlet extends BaseBackServlet {
 
 	@Override

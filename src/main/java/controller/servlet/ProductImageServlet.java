@@ -13,6 +13,7 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -23,7 +24,7 @@ import main.java.model.util.ImageUtil;
 
 import main.java.model.util.Page;
 
-
+@WebServlet("/productImageServlet")
 public class ProductImageServlet extends BaseBackServlet {
 
 	@Override

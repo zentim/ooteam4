@@ -2,8 +2,8 @@
     pageEncoding="UTF-8" import="java.util.*"%>
  
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@include file="../component/admin/adminHeader.jsp"%>
-<%@include file="../component/admin/adminNavigator.jsp"%>
+<%@include file="../include/admin/adminHeader.jsp"%>
+<%@include file="../include/admin/adminNavigator.jsp"%>
 
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
@@ -55,4 +55,4 @@ $(function() {
 });
 </script>
 
-<%@include file="../component/admin/adminFooter.jsp"%>
+<%@include file="../include/admin/adminFooter.jsp"%>

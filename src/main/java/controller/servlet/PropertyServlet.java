@@ -2,6 +2,7 @@ package main.java.controller.servlet;
 
 import java.util.List;
 
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -9,6 +10,7 @@ import main.java.model.bean.Category;
 import main.java.model.bean.Property;
 import main.java.model.util.Page;
 
+@WebServlet("/propertyServlet")
 public class PropertyServlet extends BaseBackServlet {
 
 	@Override
