@@ -2,7 +2,7 @@ DROP DATABASE IF EXISTS ooteam4;
 CREATE DATABASE ooteam4 DEFAULT CHARACTER SET utf8;
 USE ooteam4;
 
-CREATE TABLE User (
+CREATE TABLE User_ (
   id int(11) NOT NULL AUTO_INCREMENT,
   name varchar(255) DEFAULT NULL,
   password varchar(255) DEFAULT NULL,
@@ -64,7 +64,7 @@ CREATE TABLE Order_ (
   uid int(11) DEFAULT NULL,
   status varchar(255) DEFAULT NULL,
   PRIMARY KEY (id),
-  CONSTRAINT fk_order_user FOREIGN KEY (uid) REFERENCES user (id)
+  CONSTRAINT fk_order_user FOREIGN KEY (uid) REFERENCES user_ (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 CREATE TABLE OrderItem (
@@ -74,6 +74,6 @@ CREATE TABLE OrderItem (
   uid int(11) DEFAULT NULL,
   number int(11) DEFAULT NULL,
   PRIMARY KEY (id),
-  CONSTRAINT fk_orderitem_user FOREIGN KEY (uid) REFERENCES user (id),
+  CONSTRAINT fk_orderitem_user FOREIGN KEY (uid) REFERENCES user_ (id),
   CONSTRAINT fk_orderitem_product FOREIGN KEY (pid) REFERENCES product (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
