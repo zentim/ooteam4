@@ -252,7 +252,7 @@ public class ForeServlet extends BaseForeServlet {
         orderItemDAO.update(oi);
         return "%success";
     }
-    /*
+    
     public String deleteOrderItem(HttpServletRequest request, HttpServletResponse response, Page page){
         User user =(User) request.getSession().getAttribute("user");
         if(null==user)
@@ -261,7 +261,7 @@ public class ForeServlet extends BaseForeServlet {
         orderItemDAO.delete(oiid);
         return "%success";
     }
-	*/
+	
     public String createOrder(HttpServletRequest request, HttpServletResponse response, Page page){
         User user =(User) request.getSession().getAttribute("user");
          
