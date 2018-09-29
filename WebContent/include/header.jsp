@@ -19,14 +19,64 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="./css/fore/index.css">
+    <script>
+	function formatMoney(num){
+	    num = num.toString().replace(/\$|\,/g,'');  
+	    if(isNaN(num))  
+	        num = "0";  
+	    sign = (num == (num = Math.abs(num)));  
+	    num = Math.floor(num*100+0.50000000001);  
+	    cents = num%100;  
+	    num = Math.floor(num/100).toString();  
+	    if(cents<10)  
+	    cents = "0" + cents;  
+	    for (var i = 0; i < Math.floor((num.length-(1+i))/3); i++)  
+	    num = num.substring(0,num.length-(4*i+3))+','+  
+	    num.substring(num.length-(4*i+3));  
+	    return (((sign)?'':'-') + num + '.' + cents);  
+	}
+	function checkEmpty(id, name){
+	    var value = $("#"+id).val();
+	    if(value.length==0){
+	         
+	        $("#"+id)[0].focus();
+	        return false;
+	    }
+	    return true;
+	}
+	 
+	$(function(){
+	 
+	    $("a.productDetailTopReviewLink").click(function(){
+	        $("div.productReviewDiv").show();
+	        $("div.productDetailDiv").hide();
+	    });
+	    $("a.productReviewTopPartSelectedLink").click(function(){
+	        $("div.productReviewDiv").hide();
+	        $("div.productDetailDiv").show();       
+	    });
+	     
+	    $("span.leaveMessageTextareaSpan").hide();
+	    $("img.leaveMessageImg").click(function(){
+	         
+	        $(this).hide();
+	        $("span.leaveMessageTextareaSpan").show();
+	        $("div.orderItemSumDiv").css("height","100px");
+	    });
+	     
+	    $("a.wangwanglink").click(function(){
+	        alert("display only");
+	    });
+	    $("a.notImplementLink").click(function(){
+	        alert("這功能沒做!!!");
+	    });
+	     
+	});
+	 
+	</script> 
 </head>
 
 <body>
-    <!-- 右邊三個按鈕 -->
-    <a class="fa fa-heart round" style="top: 60%;color:white;font-size:24px;text-decoration:none;" href="subscribe.jsp"></a>
-    <a class="fa fa-shopping-cart round" style="top: 70%;color:white;font-size:24px;text-decoration:none;" href="shopCart.jsp"></a>
-    <!--<a class="fa fa-cart-plus round" style="top: 70%;color:white;font-size:24px;text-decoration:none;" href="#"></a>!-->
-    <a class="fa fa-chevron-circle-up round" style="top: 80%;color:white;font-size:24px;text-decoration:none;" href="#top_anchor"></a>
     
     <nav class="navbar navbar-inverse">
 	    <a name="top_anchor"></a>

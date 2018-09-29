@@ -179,7 +179,7 @@ public class ForeServlet extends BaseForeServlet {
         return "@forebuy?oiid=" + oiid;
 
     }
-
+*/
     public String buy(HttpServletRequest request, HttpServletResponse response, Page page) {
         String[] oiids = request.getParameterValues("oiid");
         List<OrderItem> ois = new ArrayList<OrderItem>();
@@ -195,7 +195,7 @@ public class ForeServlet extends BaseForeServlet {
         return "buy.jsp";
     }
 
-	*/
+	
 
     public String addCart(HttpServletRequest request, HttpServletResponse response, Page page) {
         int pid = Integer.parseInt(request.getParameter("pid"));
@@ -234,12 +234,12 @@ public class ForeServlet extends BaseForeServlet {
         return "cart.jsp";
     }
 
-    /*
+    
     public String changeOrderItem(HttpServletRequest request, HttpServletResponse response, Page page) {
         User user = (User) request.getSession().getAttribute("user");
-        if (user == null)
+        if (user == null) {
             return "%fail";
-        
+        }
         int num = Integer.parseInt(request.getParameter("num"));
         int oiid = Integer.parseInt(request.getParameter("oiid"));
         OrderItem oi = orderItemDAO.get(oiid);
@@ -247,7 +247,7 @@ public class ForeServlet extends BaseForeServlet {
         orderItemDAO.update(oi);
         return "%success";
     }
-    
+    /*
     public String deleteOrderItem(HttpServletRequest request, HttpServletResponse response, Page page){
         User user =(User) request.getSession().getAttribute("user");
         if(null==user)
@@ -342,42 +342,8 @@ public class ForeServlet extends BaseForeServlet {
         orderDAO.update(o);
         return "%success";      
     }
-    
-    public String review(HttpServletRequest request, HttpServletResponse response, Page page) {
-        int oid = Integer.parseInt(request.getParameter("oid"));
-        Order o = orderDAO.get(oid);
-        orderItemDAO.fill(o);
-        Product p = o.getOrderItems().get(0).getProduct();
-        List<Review> reviews = reviewDAO.list(p.getId());
-        productDAO.setSaleAndReviewNumber(p);
-        request.setAttribute("p", p);
-        request.setAttribute("o", o);
-        request.setAttribute("reviews", reviews);
-        return "review.jsp";        
-    }
-    
-    public String doreview(HttpServletRequest request, HttpServletResponse response, Page page) {
-        int oid = Integer.parseInt(request.getParameter("oid"));
-        Order o = orderDAO.get(oid);
-        o.setStatus(OrderDAO.finish);
-        orderDAO.update(o);
-        int pid = Integer.parseInt(request.getParameter("pid"));
-        Product p = productDAO.get(pid);
-         
-        String content = request.getParameter("content");
-         
-        content = HtmlUtils.htmlEscape(content);
-     
-        User user =(User) request.getSession().getAttribute("user");
-        Review review = new Review();
-        review.setContent(content);
-        review.setProduct(p);
-        review.setCreateDate(new Date());
-        review.setUser(user);
-        reviewDAO.add(review);
-         
-        return "@forereview?oid="+oid+"&showonly=true";     
-    }
+   
+
      
     */
 
