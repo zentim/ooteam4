@@ -10,6 +10,8 @@
     <footer class="container-fluid text-center">
         <p>Footer Text</p>
     </footer>
+    
+    <%@include file="modal.jsp" %>
 </body>
 
 </html>
