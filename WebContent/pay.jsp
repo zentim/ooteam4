@@ -2,10 +2,11 @@
 	pageEncoding="UTF-8" isELIgnored="false"%>
 <%@include file="./include/header.jsp" %>
 
-<!-- Left Side Navigator -->
-<%@include file="./include/nav.jsp" %>
+
 
 <!-- Middle Content Area -->
-<%@include file="./include/home/homePage.jsp" %>
+<%@include file="./include/cart/payPage.jsp" %>
+
+
 
 <%@include file="./include/footer.jsp" %>  

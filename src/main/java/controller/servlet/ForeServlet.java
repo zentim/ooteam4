@@ -1,21 +1,26 @@
 package main.java.controller.servlet;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.RandomUtils;
 import org.springframework.web.util.HtmlUtils;
 
 import main.java.model.bean.Category;
+import main.java.model.bean.Order;
 import main.java.model.bean.OrderItem;
 import main.java.model.bean.Product;
 import main.java.model.bean.ProductImage;
 import main.java.model.bean.PropertyValue;
 import main.java.model.bean.User;
 import main.java.model.dao.CategoryDAO;
+import main.java.model.dao.OrderDAO;
 import main.java.model.dao.ProductDAO;
 import main.java.model.dao.ProductImageDAO;
 import main.java.model.util.Page;
@@ -256,7 +261,7 @@ public class ForeServlet extends BaseForeServlet {
         orderItemDAO.delete(oiid);
         return "%success";
     }
-
+	*/
     public String createOrder(HttpServletRequest request, HttpServletResponse response, Page page){
         User user =(User) request.getSession().getAttribute("user");
          
@@ -266,20 +271,19 @@ public class ForeServlet extends BaseForeServlet {
             return "@login.jsp";
      
         String address = request.getParameter("address");
-        String post = request.getParameter("post");
         String receiver = request.getParameter("receiver");
-        String mobile = request.getParameter("mobile");
-        String userMessage = request.getParameter("userMessage");
+        String phone = request.getParameter("phone");
+        
          
         Order order = new Order();
-        String orderCode = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date()) +RandomUtils.nextInt(10000);
+        String orderCode = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date()) + RandomUtils.nextInt(1, 10000);
      
         order.setOrderCode(orderCode);
         order.setAddress(address);
-        order.setPost(post);
+        
         order.setReceiver(receiver);
-        order.setMobile(mobile);
-        order.setUserMessage(userMessage);
+        order.setPhone(phone);
+        
         order.setCreateDate(new Date());
         order.setUser(user);
         order.setStatus(OrderDAO.waitPay);
@@ -289,16 +293,17 @@ public class ForeServlet extends BaseForeServlet {
         for (OrderItem oi: ois) {
             oi.setOrder(order);
             orderItemDAO.update(oi);
-            total+=oi.getProduct().getPromotePrice()*oi.getNumber();
+            total+=oi.getProduct().getPromotePrice() * oi.getNumber();
         }
          
-        return "@forealipay?oid="+order.getId() +"&total="+total;
+        return "@forepay?oid=" + order.getId() + "&total=" + total;
     }
     
     
-    public String alipay(HttpServletRequest request, HttpServletResponse response, Page page){
-        return "alipay.jsp";    
+    public String pay(HttpServletRequest request, HttpServletResponse response, Page page){
+        return "pay.jsp";    
     }
+    
     
     public String paied(HttpServletRequest request, HttpServletResponse response, Page page){
           int oid = Integer.parseInt(request.getParameter("oid"));
@@ -310,6 +315,7 @@ public class ForeServlet extends BaseForeServlet {
           return "paied.jsp";
     }
     
+    
     public String bought(HttpServletRequest request, HttpServletResponse response, Page page){
         User user = (User) request.getSession().getAttribute("user");
         List<Order> os = orderDAO.list(user.getId(), orderDAO.delete);
@@ -318,6 +324,7 @@ public class ForeServlet extends BaseForeServlet {
         return "bought.jsp";
     }
     
+    /*
     public String confirmPay(HttpServletRequest request, HttpServletResponse response, Page page){
         int oid = Integer.parseInt(request.getParameter("oid"));
         Order order = orderDAO.get(oid);
