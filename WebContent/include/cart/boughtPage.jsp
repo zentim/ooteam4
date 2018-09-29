@@ -82,12 +82,18 @@
                             	$<fmt:formatNumber type="number" value="${oi.product.promotePrice}" minFractionDigits="2"/>
                             </div>
                         </td>
-                        <c:if test="${st.count==1}">
+                        <c:if test="${st.count == 1}">
                           
-                            <td valign="top" rowspan="${fn:length(o.orderItems)}" width="100px">
+                            <td 
+                            	valign="top" 
+                            	rowspan="${fn:length(o.orderItems)}" 
+                            	width="100px">
                                 <span class="orderListItemNumber">${o.totalNumber}</span>
                             </td>
-                            <td valign="top" rowspan="${fn:length(o.orderItems)}" width="120px">
+                            <td 
+                            	valign="top" 
+                            	rowspan="${fn:length(o.orderItems)}" 
+                            	width="120px">
                                 <div class="orderListItemProductRealPrice">
                                 	$<fmt:formatNumber  minFractionDigits="2"  maxFractionDigits="2" type="number" value="${o.total}"/>
                                 </div>
@@ -95,9 +101,12 @@
                                 	(含運費 : $0.00)
                                 </div>
                             </td>
-                            <td valign="top" rowspan="${fn:length(o.orderItems)}" width="100px">
-                                <c:if test="${o.status=='waitPay' }">
-                                    <a href="alipay.jsp?oid=${ o.id }&total=${ o.total }">
+                            <td 
+                            	valign="top" 
+                            	rowspan="${fn:length(o.orderItems)}" 
+                            	width="100px">
+                                <c:if test="${o.status == 'waitPay' }">
+                                    <a href="pay.jsp?oid=${ o.id }&total=${ o.total }">
                                         <button class="orderListItemConfirm">付款</button>
                                     </a>                              
                                 </c:if>
@@ -146,7 +155,7 @@ $(function(){
      
     $('#deleteConfirmModal').on('hidden.bs.modal', function (e) {
         if(deleteOrder){
-            var page="foredeleteOrder";
+            var page = "foredeleteOrder";
             $.post(
                     page,
                     {"oid":deleteOrderid},
@@ -162,19 +171,6 @@ $(function(){
              
         }
     })      
-     
-    $(".ask2delivery").click(function(){
-        var link = $(this).attr("link");
-        $(this).hide();
-        page = link;
-        $.ajax({
-               url: page,
-               success: function(result){
-                alert("卖家已秒发，刷新当前页面，即可进行确认收货")
-               }
-            });
-         
-    });
 });
  
 </script>
