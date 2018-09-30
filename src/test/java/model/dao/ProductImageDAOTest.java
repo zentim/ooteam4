@@ -15,34 +15,39 @@ import main.java.model.dao.CategoryDAO;
 import main.java.model.dao.ProductDAO;
 
 public class ProductImageDAOTest {
+	public static CategoryDAO categorydao = new CategoryDAO();
+	public static Category category = new Category();
+	public static int cid;
+	
+	public static ProductDAO productdao = new ProductDAO();
+	public static Product product = new Product();
+	public static int pid;
+	
 	public static ProductImageDAO productimagedao = new ProductImageDAO();
 	public static ProductImage productimage = new ProductImage();
-	public static CategoryDAO categorydao = new CategoryDAO();
-	public static Category category = new Category(); 
-	public static ProductDAO productdao = new ProductDAO();
-	public static Product product = new Product(); 
+	public static int piid;
 	
 	@BeforeClass
 	public static void testAdd() {
-		// add category
-		category.setName("hello");
+		// create category
 		category.setName("Book");
-		categorydao.add(category);
+		cid = categorydao.add(category);
 		
-		// add product
+		// create product
 		product.setName("Harry Potter");
 		product.setOriginalPrice(1000);
 		product.setPromotePrice(800);
 		product.setStock(5);
-		product.setCategory(category);
+		product.setCategory(categorydao.get(cid));
 		product.setCreateDate(new Date());
-		productdao.add(product);
+		pid = productdao.add(product);
 		
 		System.out.println("Test Start...");
-		productimage.setProduct(product);
-		productimage.setType(ProductImageDAO.type_single);
 		
-		productimagedao.add(productimage);
+		// create productimage
+		productimage.setProduct(productdao.get(pid));
+		productimage.setType(ProductImageDAO.type_single);
+		piid = productimagedao.add(productimage);
 	}
 	
 	@Test
@@ -54,19 +59,16 @@ public class ProductImageDAOTest {
 	
 	@AfterClass
 	public static void testDelete() {
-		List<ProductImage> ProductImageBeans = productimagedao.list(product, ProductImageDAO.type_single);
-		for (ProductImage bean : ProductImageBeans) {
-			productimagedao.delete(bean.getId());
-		}
+		// delete productimage
+		productimagedao.delete(piid);
 		
 		System.out.println("Test End...");
 		
-		// remove
-		List<Product> ProductBeans = productdao.list();
-		for (Product bean : ProductBeans) {
-			productdao.delete(bean.getId());
-		}
-		categorydao.delete(categorydao.get("Book").getId());
+		// delete product
+		productdao.delete(pid);
+		
+		// delete category
+		categorydao.delete(cid);
 	}
 
 }

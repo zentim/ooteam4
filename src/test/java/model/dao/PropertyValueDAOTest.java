@@ -17,41 +17,49 @@ import main.java.model.dao.ProductDAO;
 import main.java.model.dao.PropertyDAO;
 
 public class PropertyValueDAOTest {
-	public static PropertyValueDAO propertyvaluedao = new PropertyValueDAO();
-	public static PropertyValue propertyvalue = new PropertyValue();
 	public static CategoryDAO categorydao = new CategoryDAO();
-	public static Category category = new Category(); 
-	public static ProductDAO productdao = new ProductDAO();
-	public static Product product = new Product(); 
+	public static Category category = new Category();
+	public static int cid;
+	
 	public static PropertyDAO propertydao = new PropertyDAO();
 	public static Property property = new Property();
+	public static int ppid;
+	
+	public static ProductDAO productdao = new ProductDAO();
+	public static Product product = new Product();
+	public static int pid;
+	
+	public static PropertyValueDAO propertyvaluedao = new PropertyValueDAO();
+	public static PropertyValue propertyvalue = new PropertyValue();
+	public static int ppvid;
 	
 	@BeforeClass
 	public static void testAdd() {
-		// add category
+		// create category
 		category.setName("Book");
-		categorydao.add(category);
+		cid = categorydao.add(category);
 		
-		// add product
+		// create property
+		property.setCategory(categorydao.get(cid));
+		property.setName("author");
+		ppid = propertydao.add(property);
+		
+		// create product
 		product.setName("Harry Potter");
 		product.setOriginalPrice(1000);
 		product.setPromotePrice(800);
 		product.setStock(5);
-		product.setCategory(category);
+		product.setCategory(categorydao.get(cid));
 		product.setCreateDate(new Date());
-		productdao.add(product);
-		
-		// add property
-		property.setCategory(category);
-		property.setName("author");
-		propertydao.add(property);
+		pid = productdao.add(product);
 		
 		System.out.println("Test Start...");
-		propertyvalue.setProperty(property);
-		propertyvalue.setProduct(product);
-		propertyvalue.setValue("J. K. Rowling");
 		
-		propertyvaluedao.add(propertyvalue);
+		// create propertyvalue
+		propertyvalue.setProperty(propertydao.get(ppid));
+		propertyvalue.setProduct(productdao.get(pid));
+		propertyvalue.setValue("J. K. Rowling");
+		ppvid = propertyvaluedao.add(propertyvalue);
 	}
 	
 	@Test
@@ -63,27 +71,19 @@ public class PropertyValueDAOTest {
 	
 	@AfterClass
 	public static void testDelete() {
-		List<Product> PBeans = productdao.list();
-		for (Product pbean : PBeans) {
-			List<PropertyValue> PropertyValueBeans = propertyvaluedao.list(pbean.getId());
-			for (PropertyValue pvbean : PropertyValueBeans) {
-				propertyvaluedao.delete(pvbean.getId());
-			}
-		}
-		
+		// delete propertyvalue
+		propertyvaluedao.delete(ppvid);
 		
 		System.out.println("Test End...");
 		
-		// remove
-		List<Property> PropertyBeans = propertydao.list(categorydao.get("Book").getId());
-		for (Property bean : PropertyBeans) {
-			propertydao.delete(bean.getId());
-		}
-		List<Product> ProductBeans = productdao.list();
-		for (Product bean : ProductBeans) {
-			productdao.delete(bean.getId());
-		}
-		categorydao.delete(categorydao.get("Book").getId());
+		// delete product
+		productdao.delete(pid);
+		
+		// delete property
+		propertydao.delete(ppid);
+		
+		// delete category
+		categorydao.delete(cid);
 	}
 
 }

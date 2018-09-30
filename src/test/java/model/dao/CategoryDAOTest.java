@@ -10,12 +10,15 @@ import main.java.model.dao.CategoryDAO;
 public class CategoryDAOTest {
 	public static CategoryDAO categorydao = new CategoryDAO();
 	public static Category category = new Category();
+	public static int cid;
 	
 	@BeforeClass
 	public static void testAdd() {
 		System.out.println("Test Start...");
+		
+		// create category
 		category.setName("Book");
-		categorydao.add(category);
+		cid = categorydao.add(category);
 	}
 	
 	@Test
@@ -24,15 +27,11 @@ public class CategoryDAOTest {
 		assertNotNull("should not be null", result);
 	}
 	
-	@Test
-	public void testGetByName() {
-		Category result = categorydao.get("Book");
-		assertNotNull("should not be null", result);
-	}
-	
 	@AfterClass
 	public static void testDelete() {
-		categorydao.delete(categorydao.get("Book").getId());
+		// delete category
+		categorydao.delete(cid);
+		
 		System.out.println("Test End...");
 	}
 

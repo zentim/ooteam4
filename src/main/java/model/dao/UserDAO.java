@@ -33,10 +33,13 @@ public class UserDAO {
         return total;
     }
 
-    public void add(User bean) {
+    public int add(User bean) {
 
-        String sql = "insert into User_ values(null ,? ,?)";
-        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+        String sql = "insert into User_ values(DEFAULT ,? ,?)";
+        try (
+        		Connection c = DBUtil.getConnection(); 
+        		PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        ) {
 
             ps.setString(1, bean.getName());
             ps.setString(2, bean.getPassword());
@@ -47,11 +50,14 @@ public class UserDAO {
             if (rs.next()) {
                 int id = rs.getInt(1);
                 bean.setId(id);
+                
+                return id;
             }
         } catch (SQLException e) {
-
             e.printStackTrace();
         }
+        
+        return 0;
     }
 
     public void update(User bean) {
@@ -119,11 +125,22 @@ public class UserDAO {
         List<User> beans = new ArrayList<User>();
 
         String sql = "select * from User_ order by id desc limit ?,? ";
+        
+        // for postgresql
+		if (DBUtil.DBMS.equals("postgresql")) {
+			sql = "select * from User_ order by id desc LIMIT ? OFFSET ? ";
+		}
 
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
 
             ps.setInt(1, start);
             ps.setInt(2, count);
+            
+            // for postgresql
+ 			if (DBUtil.DBMS.equals("postgresql")) {
+ 				ps.setInt(2, start);
+ 				ps.setInt(1, count);
+ 			}
 
             ResultSet rs = ps.executeQuery();
 

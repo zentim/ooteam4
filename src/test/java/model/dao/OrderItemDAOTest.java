@@ -19,55 +19,65 @@ import main.java.model.dao.CategoryDAO;
 import main.java.model.dao.OrderDAO;
 
 public class OrderItemDAOTest {
-	public static OrderItemDAO orderitemdao = new OrderItemDAO();
-	public static OrderItem orderitem = new OrderItem();
 	public static UserDAO userdao = new UserDAO();
 	public static User user = new User(); 
+	public static int uid;
+	
+	public static CategoryDAO categorydao = new CategoryDAO();
+	public static Category category = new Category();
+	public static int cid;
+	
 	public static ProductDAO productdao = new ProductDAO();
 	public static Product product = new Product();
-	public static CategoryDAO categorydao = new CategoryDAO();
-	public static Category category = new Category(); 
+	public static int pid;
+	
 	public static OrderDAO orderdao = new OrderDAO();
-	public static Order order = new Order(); 
+	public static Order order = new Order();
+	public static int oid;
+	
+	public static OrderItemDAO orderitemdao = new OrderItemDAO();
+	public static OrderItem orderitem = new OrderItem();
+	public static int oiid;
 	
 	@BeforeClass
 	public static void testAdd() {
-		// add user
+		// create user
 		user.setName("hello");
 		user.setPassword("world");
-		userdao.add(user);
+		uid = userdao.add(user);
 		
-		// add category
-		category.setName("hello");
+		// create category
 		category.setName("Book");
-		categorydao.add(category);
+		cid = categorydao.add(category);
 		
-		product.setName("The OO Design Pattern");
+		// create product
+		product.setName("Harry Potter");
 		product.setOriginalPrice(1000);
 		product.setPromotePrice(800);
 		product.setStock(5);
-		product.setCategory(category);
+		product.setCategory(categorydao.get(cid));
 		product.setCreateDate(new Date());
+		pid = productdao.add(product);
 		
-		productdao.add(product);
-		
-		// add order
+		// create order
 		order.setOrderCode("1234");
 		order.setAddress("Taiwan");
 		order.setReceiver("Someone");
 		order.setPhone("0912345678");
 		order.setCreateDate(new Date());
 		order.setPayDate(new Date());
-		order.setUser(user);
+		order.setUser(userdao.get(uid));
 		order.setStatus(OrderDAO.waitPay);
-		orderdao.add(order);
+		oid = orderdao.add(order);
 		
 		System.out.println("Test Start...");
-		orderitem.setProduct(product);
-		orderitem.setOrder(order);
-		orderitem.setUser(user);
+		
+		// create orderitem
+		orderitem.setProduct(productdao.get(pid));
+		orderitem.setOrder(orderdao.get(oid));
+		orderitem.setUser(userdao.get(uid));
 		orderitem.setNumber(1);
-		orderitemdao.add(orderitem);
+		oiid = orderitemdao.add(orderitem);
 	}
 	
 	@Test
@@ -79,23 +89,21 @@ public class OrderItemDAOTest {
 	
 	@AfterClass
 	public static void testDelete() {
-			
+		// delete orderitem
+		orderitemdao.delete(oiid);
+		
 		System.out.println("Test End...");
 		
-		// remove
-		List<Order> OrderBeans = orderdao.list();
-		for (Order orderbean : OrderBeans) {
-			List<OrderItem> OrderItemBeans = orderitemdao.listByOrder(orderbean.getId());
-			for (OrderItem bean : OrderItemBeans) {
-				orderitemdao.delete(bean.getId());
-			}
-			orderdao.delete(orderbean.getId());
-		}
-		List<Product> productBeans = productdao.list();
-		for (Product bean : productBeans) {
-			productdao.delete(bean.getId());
-		}
-		categorydao.delete(categorydao.get("Book").getId());
+		// delete order
+		orderdao.delete(oid);
+		
+		// delete product
+		productdao.delete(pid);
+		
+		// delete category
+		categorydao.delete(cid);
+		
+		// delete user
 		userdao.delete(userdao.get("hello").getId());
 	}
 

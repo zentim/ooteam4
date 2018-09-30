@@ -13,29 +13,33 @@ import main.java.model.dao.OrderDAO;
 import main.java.model.dao.UserDAO;
 
 public class OrderDAOTest {
-	public static OrderDAO orderdao = new OrderDAO();
-	public static Order order = new Order();
 	public static UserDAO userdao = new UserDAO();
 	public static User user = new User(); 
+	public static int uid;
+	
+	public static OrderDAO orderdao = new OrderDAO();
+	public static Order order = new Order();
+	public static int oid;
 	
 	@BeforeClass
 	public static void testAdd() {
-		// add user
+		// create user
 		user.setName("hello");
 		user.setPassword("world");
-		userdao.add(user);
+		uid = userdao.add(user);
 		
 		System.out.println("Test Start...");
+		
+		// create order
 		order.setOrderCode("1234");
 		order.setAddress("Taiwan");
 		order.setReceiver("Someone");
 		order.setPhone("0912345678");
 		order.setCreateDate(new Date());
 		order.setPayDate(new Date());
-		order.setUser(user);
+		order.setUser(userdao.get(uid));
 		order.setStatus(OrderDAO.waitPay);
-		
-		orderdao.add(order);
+		oid = orderdao.add(order);
 	}
 	
 	@Test
@@ -47,14 +51,12 @@ public class OrderDAOTest {
 	
 	@AfterClass
 	public static void testDelete() {
-		List<Order> beans = orderdao.list();
-		for (Order bean : beans) {
-			orderdao.delete(bean.getId());
-		}
+		// delete order
+		orderdao.delete(oid);
 		
 		System.out.println("Test End...");
 		
-		// remove user
+		// delete user
 		userdao.delete(userdao.get("hello").getId());
 	}
 

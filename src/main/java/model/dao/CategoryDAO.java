@@ -31,23 +31,35 @@ public class CategoryDAO {
 		return total;
 	}
 
-	public void add(Category bean) {
-
-		String sql = "insert into Category values(null,?)";
-		try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
-
+	public int add(Category bean) {
+		String sql = "insert into Category values(DEFAULT,?)";
+		try (
+				Connection c = DBUtil.getConnection(); 
+				PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+		) {
 			ps.setString(1, bean.getName());
 
-			ps.execute();
-			ResultSet rs = ps.getGeneratedKeys();
-			if (rs.next()) {
-				int id = rs.getInt(1);
-				bean.setId(id);
+			int affectedRows = ps.executeUpdate();
+			
+			if (affectedRows == 0) {
+				throw new SQLException("Creating failed, no rows affected.");
+			}
+			
+			try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+				if (generatedKeys.next()) {
+					int id = generatedKeys.getInt(1);
+					bean.setId(id);
+					
+					return id;
+				} else {
+					throw new SQLException("Createing failed, no ID obtained.");
+				}
 			}
 		} catch (SQLException e) {
-
 			e.printStackTrace();
 		}
+		
+		return 0;
 	}
 
 	public void update(Category bean) {
@@ -103,28 +115,6 @@ public class CategoryDAO {
 		}
 		return bean;
 	}
-	
-    public Category get(String name) {
-    	Category bean = null;
-          
-        String sql = "select * from Category where name = ?";
-        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
-            ps.setString(1, name);
-            ResultSet rs =ps.executeQuery();
-  
-            if (rs.next()) {
-                bean = new Category();
-                int id = rs.getInt("id");
-                bean.setName(name);
-                bean.setId(id);
-            }
-  
-        } catch (SQLException e) {
-  
-            e.printStackTrace();
-        }
-        return bean;
-    }
 
 	public List<Category> list() {
 		return list(0, Short.MAX_VALUE);
@@ -134,12 +124,23 @@ public class CategoryDAO {
 		List<Category> beans = new ArrayList<Category>();
 
 		String sql = "select * from Category order by id desc limit ?,? ";
-
+		
+		// for postgresql
+		if (DBUtil.DBMS.equals("postgresql")) {
+			sql = "select * from Category order by id desc LIMIT ? OFFSET ? ";
+		}
+		
 		try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
 
 			ps.setInt(1, start);
 			ps.setInt(2, count);
-
+			
+			// for postgresql
+			if (DBUtil.DBMS.equals("postgresql")) {
+				ps.setInt(2, start);
+				ps.setInt(1, count);
+			}
+			
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {

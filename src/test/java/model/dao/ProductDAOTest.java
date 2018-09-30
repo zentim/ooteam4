@@ -13,47 +13,48 @@ import main.java.model.dao.ProductDAO;
 import main.java.model.dao.CategoryDAO;
 
 public class ProductDAOTest {
+	public static CategoryDAO categorydao = new CategoryDAO();
+	public static Category category = new Category();
+	public static int cid;
+	
 	public static ProductDAO productdao = new ProductDAO();
 	public static Product product = new Product();
-	public static CategoryDAO categorydao = new CategoryDAO();
-	public static Category category = new Category(); 
+	public static int pid;
 	
 	@BeforeClass
 	public static void testAdd() {
-		// add category
-		category.setName("hello");
+		// create category
 		category.setName("Book");
-		categorydao.add(category);
+		cid = categorydao.add(category);
 		
 		System.out.println("Test Start...");
+		
+		// create product
 		product.setName("Harry Potter");
 		product.setOriginalPrice(1000);
 		product.setPromotePrice(800);
 		product.setStock(5);
-		product.setCategory(category);
+		product.setCategory(categorydao.get(cid));
 		product.setCreateDate(new Date());
-		
-		productdao.add(product);
+		pid = productdao.add(product);
 	}
 	
 	@Test
 	public void testTotal() {
-		int result = productdao.getTotal(category.getId());
+		int result = productdao.getTotal(cid);
 		assertNotNull("should not be null", result);
 	}
 	
 	
 	@AfterClass
 	public static void testDelete() {
-		List<Product> ProductBeans = productdao.list();
-		for (Product bean : ProductBeans) {
-			productdao.delete(bean.getId());
-		}
+		// delete product
+		productdao.delete(pid);
 		
 		System.out.println("Test End...");
 		
-		// remove category
-		categorydao.delete(categorydao.get("Book").getId());
+		// delete category
+		categorydao.delete(cid);
 	}
 
 }

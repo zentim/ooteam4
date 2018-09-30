@@ -15,102 +15,109 @@ import main.java.model.bean.OrderItem;
 import main.java.model.bean.Product;
 import main.java.model.bean.User;
 import main.java.model.util.DBUtil;
- 
 
-  
+
+
 public class OrderItemDAO {
-  
+
     public int getTotal() {
         int total = 0;
         try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
-  
+
             String sql = "select count(*) from OrderItem";
-  
+
             ResultSet rs = s.executeQuery(sql);
             while (rs.next()) {
                 total = rs.getInt(1);
             }
         } catch (SQLException e) {
-  
+
             e.printStackTrace();
         }
         return total;
     }
-  
-    public void add(OrderItem bean) {
- 
-        String sql = "insert into OrderItem values(null,?,?,?,?)";
-        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
-  
+
+    public int add(OrderItem bean) {
+
+        String sql = "insert into OrderItem values(DEFAULT,?,?,?,?)";
+        try (
+        		Connection c = DBUtil.getConnection(); 
+        		PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        ) {
+
             ps.setInt(1, bean.getProduct().getId());
-             
+
             // 訂單項在創建的時候，是沒有訂單信息的
             if(null==bean.getOrder())
                 ps.setInt(2, -1);
             else
-                ps.setInt(2, bean.getOrder().getId());  
-             
+                ps.setInt(2, bean.getOrder().getId());
+
             ps.setInt(3, bean.getUser().getId());
             ps.setInt(4, bean.getNumber());
             ps.execute();
-  
+
             ResultSet rs = ps.getGeneratedKeys();
             if (rs.next()) {
                 int id = rs.getInt(1);
                 bean.setId(id);
+                
+                return id;
             }
         } catch (SQLException e) {
-  
+
             e.printStackTrace();
         }
+        
+        return 0;
     }
-  
+
     public void update(OrderItem bean) {
- 
+
         String sql = "update OrderItem set pid= ?, oid=?, uid=?,number=?  where id = ?";
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
- 
+
             ps.setInt(1, bean.getProduct().getId());
             if(null==bean.getOrder())
                 ps.setInt(2, -1);
             else
-                ps.setInt(2, bean.getOrder().getId());              
+                ps.setInt(2, bean.getOrder().getId());
             ps.setInt(3, bean.getUser().getId());
             ps.setInt(4, bean.getNumber());
-             
+
             ps.setInt(5, bean.getId());
             ps.execute();
-  
+
         } catch (SQLException e) {
-  
+
             e.printStackTrace();
         }
-  
+
     }
-  
+
     public void delete(int id) {
-  
+
         try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
-  
+
             String sql = "delete from OrderItem where id = " + id;
-  
+
             s.execute(sql);
-  
+
         } catch (SQLException e) {
-  
+
             e.printStackTrace();
         }
     }
-  
+
     public OrderItem get(int id) {
         OrderItem bean = new OrderItem();
-  
+
         try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
-  
+
             String sql = "select * from OrderItem where id = " + id;
-  
+
             ResultSet rs = s.executeQuery(sql);
-  
+
             if (rs.next()) {
                 int pid = rs.getInt("pid");
                 int oid = rs.getInt("oid");
@@ -121,63 +128,74 @@ public class OrderItemDAO {
                 bean.setProduct(product);
                 bean.setUser(user);
                 bean.setNumber(number);
-                 
+
                 if(-1!=oid){
                     Order order= new OrderDAO().get(oid);
-                    bean.setOrder(order);                   
+                    bean.setOrder(order);
                 }
-                 
+
                 bean.setId(id);
             }
-  
+
         } catch (SQLException e) {
-  
+
             e.printStackTrace();
         }
         return bean;
     }
-  
+
     public List<OrderItem> listByUser(int uid) {
         return listByUser(uid, 0, Short.MAX_VALUE);
     }
-  
+
     public List<OrderItem> listByUser(int uid, int start, int count) {
         List<OrderItem> beans = new ArrayList<OrderItem>();
-  
+
         String sql = "select * from OrderItem where uid = ? and oid=-1 order by id desc limit ?,? ";
-  
+        
+        // for postgresql
+ 		if (DBUtil.DBMS.equals("postgresql")) {
+ 			sql = "select * from OrderItem where uid = ? and oid=-1 order by id desc LIMIT ? OFFSET ? ";
+ 		}
+
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
-  
+
             ps.setInt(1, uid);
             ps.setInt(2, start);
             ps.setInt(3, count);
-  
+            
+            // for postgresql
+ 			if (DBUtil.DBMS.equals("postgresql")) {
+ 				ps.setInt(3, start);
+ 				ps.setInt(2, count);
+ 			}
+
             ResultSet rs = ps.executeQuery();
-  
+
             while (rs.next()) {
                 OrderItem bean = new OrderItem();
                 int id = rs.getInt(1);
- 
+
                 int pid = rs.getInt("pid");
                 int oid = rs.getInt("oid");
                 int number = rs.getInt("number");
-                 
+
                 Product product = new ProductDAO().get(pid);
                 if(-1!=oid){
                     Order order= new OrderDAO().get(oid);
-                    bean.setOrder(order);                   
+                    bean.setOrder(order);
                 }
- 
+
                 User user = new UserDAO().get(uid);
                 bean.setProduct(product);
- 
+
                 bean.setUser(user);
                 bean.setNumber(number);
-                bean.setId(id);                
+                bean.setId(id);
                 beans.add(bean);
             }
         } catch (SQLException e) {
-  
+
             e.printStackTrace();
         }
         return beans;
@@ -185,49 +203,60 @@ public class OrderItemDAO {
     public List<OrderItem> listByOrder(int oid) {
         return listByOrder(oid, 0, Short.MAX_VALUE);
     }
-     
+
     public List<OrderItem> listByOrder(int oid, int start, int count) {
         List<OrderItem> beans = new ArrayList<OrderItem>();
-         
+
         String sql = "select * from OrderItem where oid = ? order by id desc limit ?,? ";
-         
+        
+        // for postgresql
+ 		if (DBUtil.DBMS.equals("postgresql")) {
+ 			sql = "select * from OrderItem where oid = ? order by id desc LIMIT ? OFFSET ? ";
+ 		}
+
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
-             
+
             ps.setInt(1, oid);
             ps.setInt(2, start);
             ps.setInt(3, count);
-             
+            
+            // for postgresql
+ 			if (DBUtil.DBMS.equals("postgresql")) {
+ 				ps.setInt(3, start);
+ 				ps.setInt(2, count);
+ 			}
+
             ResultSet rs = ps.executeQuery();
-             
+
             while (rs.next()) {
                 OrderItem bean = new OrderItem();
                 int id = rs.getInt(1);
-                 
+
                 int pid = rs.getInt("pid");
                 int uid = rs.getInt("uid");
                 int number = rs.getInt("number");
-                 
+
                 Product product = new ProductDAO().get(pid);
                 if(-1!=oid){
                     Order order= new OrderDAO().get(oid);
-                    bean.setOrder(order);                   
+                    bean.setOrder(order);
                 }
-                 
+
                 User user = new UserDAO().get(uid);
                 bean.setProduct(product);
-                 
+
                 bean.setUser(user);
                 bean.setNumber(number);
-                bean.setId(id);                
+                bean.setId(id);
                 beans.add(bean);
             }
         } catch (SQLException e) {
-             
+
             e.printStackTrace();
         }
         return beans;
     }
- 
+
     public void fill(List<Order> os) {
         for (Order o : os) {
             List<OrderItem> ois=listByOrder(o.getId());
@@ -241,9 +270,9 @@ public class OrderItemDAO {
             o.setOrderItems(ois);
             o.setTotalNumber(totalNumber);
         }
-         
+
     }
- 
+
     public void fill(Order o) {
         List<OrderItem> ois=listByOrder(o.getId());
         float total = 0;
@@ -253,68 +282,68 @@ public class OrderItemDAO {
         o.setTotal(total);
         o.setOrderItems(ois);
     }
- 
+
     public List<OrderItem> listByProduct(int pid) {
         return listByProduct(pid, 0, Short.MAX_VALUE);
     }
-  
+
     public List<OrderItem> listByProduct(int pid, int start, int count) {
         List<OrderItem> beans = new ArrayList<OrderItem>();
-  
+
         String sql = "select * from OrderItem where pid = ? order by id desc limit ?,? ";
-  
+
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
-  
+
             ps.setInt(1, pid);
             ps.setInt(2, start);
             ps.setInt(3, count);
-  
+
             ResultSet rs = ps.executeQuery();
-  
+
             while (rs.next()) {
                 OrderItem bean = new OrderItem();
                 int id = rs.getInt(1);
- 
+
                 int uid = rs.getInt("uid");
                 int oid = rs.getInt("oid");
                 int number = rs.getInt("number");
-                 
+
                 Product product = new ProductDAO().get(pid);
                 if(-1!=oid){
                     Order order= new OrderDAO().get(oid);
-                    bean.setOrder(order);                   
+                    bean.setOrder(order);
                 }
- 
+
                 User user = new UserDAO().get(uid);
                 bean.setProduct(product);
- 
+
                 bean.setUser(user);
                 bean.setNumber(number);
-                bean.setId(id);                
+                bean.setId(id);
                 beans.add(bean);
             }
         } catch (SQLException e) {
-  
+
             e.printStackTrace();
         }
         return beans;
     }
- 
+
     public int getSaleCount(int pid) {
          int total = 0;
             try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
-      
+
                 String sql = "select sum(number) from OrderItem where pid = " + pid;
-      
+
                 ResultSet rs = s.executeQuery(sql);
                 while (rs.next()) {
                     total = rs.getInt(1);
                 }
             } catch (SQLException e) {
-      
+
                 e.printStackTrace();
             }
             return total;
     }
-     
+
 }

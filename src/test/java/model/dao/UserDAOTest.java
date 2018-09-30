@@ -10,13 +10,16 @@ import main.java.model.dao.UserDAO;
 public class UserDAOTest {
 	public static UserDAO userdao = new UserDAO();
 	public static User user = new User(); 
+	public static int uid;
 	
 	@BeforeClass
 	public static void testAdd() {
-		System.out.println("UserDAOTest Start...");
+		System.out.println("Test Start...");
+		
+		// create user
 		user.setName("hello");
 		user.setPassword("world");
-		userdao.add(user);
+		uid = userdao.add(user);
 	}
 	
 	@Test
@@ -41,13 +44,15 @@ public class UserDAOTest {
 	public void testUpdate() {
 		user.setPassword("worldtest");
 		userdao.update(user);
-		assertEquals("failure - strings are not equal", "worldtest", userdao.get("hello").getPassword());
+		assertEquals("failure - strings are not equal", "worldtest", userdao.get(uid).getPassword());
 	}
 	
 	@AfterClass
 	public static void testDelete() {
+		// delete user
 		userdao.delete(userdao.get("hello").getId());
-		System.out.println("UserDAOTest End...");
+		
+		System.out.println("Test End...");
 	}
 
 }

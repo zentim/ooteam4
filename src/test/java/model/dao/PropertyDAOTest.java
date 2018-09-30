@@ -12,42 +12,44 @@ import main.java.model.dao.PropertyDAO;
 import main.java.model.dao.CategoryDAO;
 
 public class PropertyDAOTest {
+	public static CategoryDAO categorydao = new CategoryDAO();
+	public static Category category = new Category();
+	public static int cid;
+	
 	public static PropertyDAO propertydao = new PropertyDAO();
 	public static Property property = new Property();
-	public static CategoryDAO categorydao = new CategoryDAO();
-	public static Category category = new Category(); 
+	public static int ppid;
 	
 	@BeforeClass
 	public static void testAdd() {
-		// add category
+		// create category
 		category.setName("Book");
-		categorydao.add(category);
+		cid = categorydao.add(category);
 		
 		System.out.println("Test Start...");
-		property.setCategory(category);
-		property.setName("author");
 		
-		propertydao.add(property);
+		// create property
+		property.setCategory(categorydao.get(cid));
+		property.setName("author");
+		ppid = propertydao.add(property);
 	}
 	
 	@Test
 	public void testTotal() {
-		int result = propertydao.getTotal(categorydao.get("Book").getId());
+		int result = propertydao.getTotal(cid);
 		assertNotNull("should not be null", result);
 	}
 	
 	
 	@AfterClass
 	public static void testDelete() {
-		List<Property> PropertyBeans = propertydao.list(categorydao.get("Book").getId());
-		for (Property bean : PropertyBeans) {
-			propertydao.delete(bean.getId());
-		}
+		// delete property
+		propertydao.delete(ppid);
 		
 		System.out.println("Test End...");
 		
-		// remove
-		categorydao.delete(categorydao.get("Book").getId());
+		// delete category
+		categorydao.delete(cid);
 	}
 
 }
