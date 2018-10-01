@@ -56,7 +56,6 @@
             <button data-dismiss="modal" class="btn btn-default" type="button">close</button>
             <button class="btn btn-primary deleteConfirmButton" id="submit" type="button">confirm</button>
           </div>
-        </div>
       </div>
     </div>
 </div>
