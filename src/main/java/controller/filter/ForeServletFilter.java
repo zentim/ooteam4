@@ -1,7 +1,6 @@
 package main.java.controller.filter;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.Filter;
@@ -17,10 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 
 
-import main.java.model.bean.Category;
 import main.java.model.bean.OrderItem;
 import main.java.model.bean.User;
-import main.java.model.dao.CategoryDAO;
 import main.java.model.dao.OrderItemDAO;
 
 @WebFilter("/*")

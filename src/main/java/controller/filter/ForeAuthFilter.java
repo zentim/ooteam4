@@ -2,7 +2,6 @@ package main.java.controller.filter;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Date;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;

@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import main.java.model.bean.Category;
-import main.java.model.bean.User;
 import main.java.model.util.DBUtil;
 
 public class CategoryDAO {
