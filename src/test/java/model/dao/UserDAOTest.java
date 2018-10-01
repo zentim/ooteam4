@@ -50,7 +50,7 @@ public class UserDAOTest {
 	@AfterClass
 	public static void testDelete() {
 		// delete user
-		userdao.delete(userdao.get("hello").getId());
+		userdao.delete(uid);
 		
 		System.out.println("Test End...");
 	}

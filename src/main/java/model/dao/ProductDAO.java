@@ -41,7 +41,7 @@ public class ProductDAO {
 
         String sql = "insert into Product values(DEFAULT,?,?,?,?,?,?)";
         try (
-        		Connection c = DBUtil.getConnection(); 
+        		Connection c = DBUtil.getConnection();
         		PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         ) {
 
@@ -57,14 +57,14 @@ public class ProductDAO {
             if (rs.next()) {
                 int id = rs.getInt(1);
                 bean.setId(id);
-                
+
                 return id;
             }
         } catch (SQLException e) {
 
             e.printStackTrace();
         }
-        
+
         System.out.println("Add Fail!");
         return 0;
     }
@@ -144,11 +144,13 @@ public class ProductDAO {
         return list(cid,0, Short.MAX_VALUE);
     }
 
+    // slow
     public List<Product> list(int cid, int start, int count) {
         List<Product> beans = new ArrayList<Product>();
         Category category = new CategoryDAO().get(cid);
+
         String sql = "select * from Product where cid = ? order by id desc limit ?,? ";
-        
+
         // for postgresql
  		if (DBUtil.DBMS.equals("postgresql")) {
  			sql = "select * from Product where cid = ? order by id desc LIMIT ? OFFSET ? ";
@@ -158,7 +160,7 @@ public class ProductDAO {
             ps.setInt(1, cid);
             ps.setInt(2, start);
             ps.setInt(3, count);
-            
+
             // for postgresql
  			if (DBUtil.DBMS.equals("postgresql")) {
  				ps.setInt(3, start);
@@ -170,6 +172,7 @@ public class ProductDAO {
             while (rs.next()) {
                 Product bean = new Product();
                 int id = rs.getInt(1);
+
                 String name = rs.getString("name");
                 float originalPrice = rs.getFloat("originalPrice");
                 float promotePrice = rs.getFloat("promotePrice");
@@ -184,22 +187,26 @@ public class ProductDAO {
                 bean.setId(id);
                 bean.setCategory(category);
                 setFirstProductImage(bean);
+
                 beans.add(bean);
             }
         } catch (SQLException e) {
 
             e.printStackTrace();
         }
+
         return beans;
     }
+
     public List<Product> list() {
         return list(0,Short.MAX_VALUE);
     }
+
     public List<Product> list(int start, int count) {
         List<Product> beans = new ArrayList<Product>();
 
         String sql = "select * from Product limit ?,? ";
-        
+
         // for postgresql
   		if (DBUtil.DBMS.equals("postgresql")) {
   			sql = "select * from Product limit LIMIT ? OFFSET ? ";
@@ -209,7 +216,7 @@ public class ProductDAO {
 
             ps.setInt(1, start);
             ps.setInt(2, count);
-            
+
             // for postgresql
  			if (DBUtil.DBMS.equals("postgresql")) {
  				ps.setInt(2, start);
@@ -246,13 +253,16 @@ public class ProductDAO {
         return beans;
     }
 
+
     public void fill(List<Category> cs) {
-        for (Category c : cs)
+        for (Category c : cs) {
             fill(c);
+        }
     }
+
     public void fill(Category c) {
-            List<Product> ps = this.list(c.getId());
-            c.setProducts(ps);
+        List<Product> ps = this.list(c.getId());
+        c.setProducts(ps);
     }
 
     public void fillByRow(List<Category> cs) {

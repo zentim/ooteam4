@@ -42,9 +42,10 @@ public class OrderItemDAOTest {
 	@BeforeClass
 	public static void testAdd() {
 		// create user
-		user.setName("hello");
-		user.setPassword("world");
-		uid = userdao.add(user);
+		user.setName("hello111");
+		user.setPassword("world111");
+		userdao.add(user);
+		uid = userdao.get("hello111", "world111").getId();
 		
 		// create category
 		category.setName("Book");
@@ -104,7 +105,7 @@ public class OrderItemDAOTest {
 		categorydao.delete(cid);
 		
 		// delete user
-		userdao.delete(userdao.get("hello").getId());
+		userdao.delete(uid);
 	}
 
 }

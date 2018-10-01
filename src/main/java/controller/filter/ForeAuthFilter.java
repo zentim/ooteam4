@@ -2,6 +2,7 @@ package main.java.controller.filter;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Date;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -41,7 +42,6 @@ public class ForeAuthFilter implements Filter {
 		HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
         String contextPath=request.getServletContext().getContextPath();
- 
         String[] noNeedAuthPage = new String[]{
                 "home",
                 "checkLogin",
@@ -64,7 +64,7 @@ public class ForeAuthFilter implements Filter {
                 }
             }
         }
-
+        
 		// pass the request along the filter chain
 		chain.doFilter(request, response);
 	}

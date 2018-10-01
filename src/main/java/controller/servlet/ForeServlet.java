@@ -27,16 +27,17 @@ import main.java.model.util.Page;
 
 @WebServlet("/foreServlet")
 public class ForeServlet extends BaseForeServlet {
-	
+
 	public String home(HttpServletRequest request, HttpServletResponse response, Page page) {
 		List<Category> cs = new CategoryDAO().list();
+
 		new ProductDAO().fill(cs);
 		new ProductDAO().fillByRow(cs);
 		request.setAttribute("cs", cs);
 		
 		return "home.jsp";
 	}
-	
+
 	public String register(HttpServletRequest request, HttpServletResponse response, Page page) {
         String name = request.getParameter("name");
         String password = request.getParameter("password");
@@ -55,7 +56,7 @@ public class ForeServlet extends BaseForeServlet {
 
         return "@registerSuccess.jsp";
     }
-	
+
 	public String login(HttpServletRequest request, HttpServletResponse response, Page page) {
         String name = request.getParameter("name");
         name = HtmlUtils.htmlEscape(name);
@@ -75,7 +76,7 @@ public class ForeServlet extends BaseForeServlet {
         request.getSession().removeAttribute("user");
         return "@forehome";
     }
-    
+
     public String product(HttpServletRequest request, HttpServletResponse response, Page page) {
         int id = Integer.parseInt(request.getParameter("pid"));
         Product p = productDAO.get(id);
@@ -90,7 +91,7 @@ public class ForeServlet extends BaseForeServlet {
         request.setAttribute("pvs", pvs);
         return "product.jsp";
     }
-    
+
     public String checkLogin(HttpServletRequest request, HttpServletResponse response, Page page) {
         User user = (User) request.getSession().getAttribute("user");
         if (user != null)
@@ -98,7 +99,7 @@ public class ForeServlet extends BaseForeServlet {
         else
             return "%fail";
     }
-    
+
     public String loginAjax(HttpServletRequest request, HttpServletResponse response, Page page) {
         String name = request.getParameter("name");
         String password = request.getParameter("password");
@@ -200,7 +201,7 @@ public class ForeServlet extends BaseForeServlet {
         return "buy.jsp";
     }
 
-	
+
 
     public String addCart(HttpServletRequest request, HttpServletResponse response, Page page) {
         int pid = Integer.parseInt(request.getParameter("pid"));
@@ -229,8 +230,8 @@ public class ForeServlet extends BaseForeServlet {
         return "%success";
     }
 
-    
-    
+
+
     public String cart(HttpServletRequest request, HttpServletResponse response, Page page) {
         User user = (User) request.getSession().getAttribute("user");
         List<OrderItem> ois = new ArrayList<>();
@@ -239,7 +240,7 @@ public class ForeServlet extends BaseForeServlet {
         return "cart.jsp";
     }
 
-    
+
     public String changeOrderItem(HttpServletRequest request, HttpServletResponse response, Page page) {
         User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
@@ -252,7 +253,7 @@ public class ForeServlet extends BaseForeServlet {
         orderItemDAO.update(oi);
         return "%success";
     }
-    
+
     public String deleteOrderItem(HttpServletRequest request, HttpServletResponse response, Page page){
         User user =(User) request.getSession().getAttribute("user");
         if(null==user)
@@ -261,33 +262,33 @@ public class ForeServlet extends BaseForeServlet {
         orderItemDAO.delete(oiid);
         return "%success";
     }
-	
+
     public String createOrder(HttpServletRequest request, HttpServletResponse response, Page page){
         User user =(User) request.getSession().getAttribute("user");
-         
-        
+
+
         List<OrderItem> ois= (List<OrderItem>) request.getSession().getAttribute("ois");
         if(ois.isEmpty())
             return "@login.jsp";
-     
+
         String address = request.getParameter("address");
         String receiver = request.getParameter("receiver");
         String phone = request.getParameter("phone");
-        
-         
+
+
         Order order = new Order();
         String orderCode = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date()) + RandomUtils.nextInt(1, 10000);
-     
+
         order.setOrderCode(orderCode);
         order.setAddress(address);
-        
+
         order.setReceiver(receiver);
         order.setPhone(phone);
-        
+
         order.setCreateDate(new Date());
         order.setUser(user);
         order.setStatus(OrderDAO.waitPay);
-     
+
         orderDAO.add(order);
         float total =0;
         for (OrderItem oi: ois) {
@@ -295,16 +296,16 @@ public class ForeServlet extends BaseForeServlet {
             orderItemDAO.update(oi);
             total+=oi.getProduct().getPromotePrice() * oi.getNumber();
         }
-         
+
         return "@forepay?oid=" + order.getId() + "&total=" + total;
     }
-    
-    
+
+
     public String pay(HttpServletRequest request, HttpServletResponse response, Page page){
-        return "pay.jsp";    
+        return "pay.jsp";
     }
-    
-    
+
+
     public String paied(HttpServletRequest request, HttpServletResponse response, Page page){
           int oid = Integer.parseInt(request.getParameter("oid"));
           Order order = orderDAO.get(oid);
@@ -314,8 +315,8 @@ public class ForeServlet extends BaseForeServlet {
           request.setAttribute("o", order);
           return "paied.jsp";
     }
-    
-    
+
+
     public String bought(HttpServletRequest request, HttpServletResponse response, Page page){
         User user = (User) request.getSession().getAttribute("user");
         List<Order> os = orderDAO.list(user.getId(), orderDAO.delete);
@@ -323,15 +324,15 @@ public class ForeServlet extends BaseForeServlet {
         request.setAttribute("os", os);
         return "bought.jsp";
     }
-    
-    
+
+
     public String deleteOrder(HttpServletRequest request, HttpServletResponse response, Page page){
         int oid = Integer.parseInt(request.getParameter("oid"));
         Order o = orderDAO.get(oid);
         o.setStatus(OrderDAO.delete);
         orderDAO.update(o);
-        return "%success";      
+        return "%success";
     }
-   
+
 
 }

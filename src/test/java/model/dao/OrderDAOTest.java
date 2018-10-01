@@ -57,7 +57,7 @@ public class OrderDAOTest {
 		System.out.println("Test End...");
 		
 		// delete user
-		userdao.delete(userdao.get("hello").getId());
+		userdao.delete(uid);
 	}
 
 }

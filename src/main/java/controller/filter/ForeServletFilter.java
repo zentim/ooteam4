@@ -1,6 +1,7 @@
 package main.java.controller.filter;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.Filter;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 
+
 import main.java.model.bean.Category;
 import main.java.model.bean.OrderItem;
 import main.java.model.bean.User;
@@ -23,7 +25,6 @@ import main.java.model.dao.OrderItemDAO;
 
 @WebFilter("/*")
 public class ForeServletFilter implements Filter {
-
     /**
      * Default constructor. 
      */
@@ -46,7 +47,7 @@ public class ForeServletFilter implements Filter {
 	    HttpServletResponse response = (HttpServletResponse) res;
 	    String contextPath = request.getServletContext().getContextPath();
 	    request.getServletContext().setAttribute("contextPath", contextPath);
-
+	    
 	    // 當用戶登入之後，從 session 中獲取用戶對象，並根據這個用戶對象獲取購物車中的物品總數
 	    User user = (User) request.getSession().getAttribute("user");
 	    int cartTotalItemNumber = 0;
@@ -57,23 +58,17 @@ public class ForeServletFilter implements Filter {
 	      }
 	    }
 	    request.setAttribute("cartTotalItemNumber", cartTotalItemNumber);
-
-	    // 是用於在 simpleSearch.jsp 簡單搜索攔下顯示分類鏈結用的
-	    List<Category> cs = (List<Category>) request.getAttribute("cs");
-	    if (null == cs) {
-	      cs = new CategoryDAO().list();
-	      request.setAttribute("cs", cs);
-	    }
-
+	    
 	    String uri = request.getRequestURI();
 	    uri = StringUtils.remove(uri, contextPath);
 	    if (uri.startsWith("/fore") && !uri.startsWith("/foreServlet")) {
 	      String method = StringUtils.substringAfterLast(uri, "/fore");
+
 	      request.setAttribute("method", method);
 	      req.getRequestDispatcher("/foreServlet").forward(request, response);
 	      return;
 	    }
-
+	    
 		// pass the request along the filter chain
 		chain.doFilter(request, response);
 	}

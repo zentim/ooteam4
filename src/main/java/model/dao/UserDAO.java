@@ -37,8 +37,8 @@ public class UserDAO {
 
         String sql = "insert into User_ values(DEFAULT ,? ,?)";
         try (
-        		Connection c = DBUtil.getConnection(); 
-        		PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            Connection c = DBUtil.getConnection(); 
+            PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         ) {
 
             ps.setString(1, bean.getName());
@@ -127,9 +127,9 @@ public class UserDAO {
         String sql = "select * from User_ order by id desc limit ?,? ";
         
         // for postgresql
-		if (DBUtil.DBMS.equals("postgresql")) {
-			sql = "select * from User_ order by id desc LIMIT ? OFFSET ? ";
-		}
+    if (DBUtil.DBMS.equals("postgresql")) {
+      sql = "select * from User_ order by id desc LIMIT ? OFFSET ? ";
+    }
 
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
 
@@ -137,10 +137,10 @@ public class UserDAO {
             ps.setInt(2, count);
             
             // for postgresql
- 			if (DBUtil.DBMS.equals("postgresql")) {
- 				ps.setInt(2, start);
- 				ps.setInt(1, count);
- 			}
+      if (DBUtil.DBMS.equals("postgresql")) {
+        ps.setInt(2, start);
+        ps.setInt(1, count);
+      }
 
             ResultSet rs = ps.executeQuery();
 
