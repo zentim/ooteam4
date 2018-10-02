@@ -31,7 +31,7 @@ public class UserDAOTest {
 	@Test 
 	public void testIsExist() {
 		boolean result = userdao.isExist("hello");
-		assertFalse("failure - should be false", !result);
+		assertTrue("success - should be true", result);
 	}
 	
 	@Test
