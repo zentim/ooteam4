@@ -100,13 +100,26 @@
 	                <li><a href="#">Contact</a></li>
 	            </ul>
 	            <ul class="nav navbar-nav navbar-right">
-	            	<li><a href="forebought">My Orders</a></li>
-	            	<li>
-			            <a href="forecart">
-			            	<span style="margin:0px" class=" glyphicon glyphicon-shopping-cart"></span>
-			            	Shopping Cart <strong>(${cartTotalItemNumber})</strong>
-			            </a>
-			        </li>    
+	            	<c:if test="${!empty user}">
+			            <li><a href="forebought">My Orders</a></li>
+		            	<li>
+				            <a href="forecart">
+				            	<span style="margin:0px" class=" glyphicon glyphicon-shopping-cart"></span>
+				            	Shopping Cart <strong>(${cartTotalItemNumber})</strong>
+				            </a>
+				        </li>  
+			        </c:if>
+			        
+			        <c:if test="${empty user}">
+			            <li><a href="#nowhere" class="userLoginLink">My Orders</a></li>
+		            	<li>
+				            <a href="#nowhere" class="userLoginLink">
+				            	<span style="margin:0px" class=" glyphicon glyphicon-shopping-cart"></span>
+				            	Shopping Cart <strong>(${cartTotalItemNumber})</strong>
+				            </a>
+				        </li>  
+			        </c:if>
+	              
 	            	<c:if test="${!empty user}">
 			            <li><a href="forepersonalDetail">${user.name}</a></li>
 			            <li><a href="forelogout">Logout</a></li>
