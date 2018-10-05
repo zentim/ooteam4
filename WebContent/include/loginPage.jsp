@@ -29,7 +29,7 @@
 		       
 		       <button type="submit" class="btn btn-primary btn-lg" style="width: 100px;">Login</button>
 		       <p></p>
-			   <a href="./signUp.jsp">SignUp</a>
+			   <a href="./register.jsp">SignUp</a>
 			   <p></p>
 		    </form>
 	    </div>
@@ -46,7 +46,7 @@ $(function(){
      
     $("form.loginForm").submit(function(){
         if(0 == $("#name").val().length || 0 == $("#password").val().length){
-            $("span.errorMessage").html("請輸入帳號密碼");
+            $("span.errorMessage").html("Please input your account and password");
             $("div.loginErrorMessageDiv").show();           
             return false;
         }

@@ -68,12 +68,13 @@
 	        alert("display only");
 	    });
 	    $("a.notImplementLink").click(function(){
-	        alert("這功能沒做!!!");
+	        alert("Not Implement Function!!!");
 	    });
 	     
 	});
 	 
 	</script> 
+	
 </head>
 
 <body>
@@ -112,7 +113,9 @@
 			        </c:if>
 			         
 			        <c:if test="${empty user}">
-			        	<li><a href="login.jsp">Login</a></li>
+			        	<li>
+			        		<a href="#nowhere" class="userLoginLink">Login</a>
+			        	</li>
 			            <li><a href="register.jsp">Register</a></li>     
 			        </c:if>
 	                
@@ -120,7 +123,6 @@
 	        </div>
 	    </div>
 	</nav>
-    
     
     <div class="container-fluid text-center"> 
     	<div>
