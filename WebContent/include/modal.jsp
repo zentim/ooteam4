@@ -33,7 +33,7 @@
 						       
 						       <button class="btn btn-primary btn-lg loginSubmitButton" style="width: 100px;">Login</button>
 						       <p></p>
-							   <a href="./signUp.jsp">SignUp</a>
+							   <a href="./register.jsp">SignUp</a>
 							   <p></p>
 						    </div>
 					    </div>
