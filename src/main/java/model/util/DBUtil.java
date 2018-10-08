@@ -11,7 +11,7 @@ public class DBUtil {
     public static String DBMS = "mysql";
     static String ip = "127.0.0.1";
     static int port = 3306;
-    static String database = "ooteam4";
+    static String database = "mysql_shoppingcart";
     static String encoding = "UTF-8";
     static String loginName = "root";
     static String password = "";
