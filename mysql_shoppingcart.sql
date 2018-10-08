@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `account` (
   `account` varchar(20) NOT NULL,
   `password` varchar(20) NOT NULL,
   `type` tinyint(4) DEFAULT '2',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`accountId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 取消選取資料匯出。
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `order` (
   `total` float unsigned NOT NULL,
   `deliverMethod` tinyint(3) unsigned NOT NULL,
   `address` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`orderId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- 取消選取資料匯出。
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS `order_item` (
   `state` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `originalPrice` float unsigned NOT NULL,
   `promotionalPrice` float unsigned NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`orderItemId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 取消選取資料匯出。
@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `product` (
   `price` float unsigned NOT NULL,
   `dateAdded` date NOT NULL,
   `categoryId` int(11) unsigned NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`productId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 取消選取資料匯出。
@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `product_detail` (
   `productId` int(10) unsigned NOT NULL,
   `field` varchar(20) NOT NULL,
   `content` text,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`productDetailId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 取消選取資料匯出。
@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS `subscription` (
   `subscriptionId` int(11) NOT NULL AUTO_INCREMENT,
   `userId` int(11) NOT NULL,
   `productId` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`subscriptionId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 取消選取資料匯出。
@@ -95,7 +95,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `email` varchar(50) NOT NULL,
   `address` varchar(100) NOT NULL,
   `gender` tinyint(3) unsigned NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`userId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 取消選取資料匯出。
@@ -106,13 +106,13 @@ CREATE TABLE IF NOT EXISTS `user` (
 CREATE TABLE IF NOT EXISTS `category` (
   `categoryId` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(10) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`categoryId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `discount_type` (
   `discountTypeId` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(10) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`discountTypeId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `promotion` (
@@ -121,7 +121,7 @@ CREATE TABLE IF NOT EXISTS `promotion` (
   `dateFrom` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `dateTo` datetime DEFAULT NULL,
   `state` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`promotionId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `promotion_item` (
@@ -130,12 +130,12 @@ CREATE TABLE IF NOT EXISTS `promotion_item` (
   `productId` int(11) unsigned NOT NULL,
   `minQuantity` int(11) unsigned NOT NULL,
   `discountOf` int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`promotionItemId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `product_image` (
   `productImageId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `productId` int(10) unsigned NOT NULL,
   `type` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`productImageId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
