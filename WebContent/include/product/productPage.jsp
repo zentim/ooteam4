@@ -101,34 +101,6 @@ $(function(){
         return false;
     });
      
-    $("button.loginSubmitButton").click(function(){
-        var name = $("#name").val();
-        var password = $("#password").val();
-         
-        if(0==name.length||0==password.length){
-            $("span.errorMessage").html("請輸入帳號密碼");
-            $("div.loginErrorMessageDiv").show();           
-            return false;
-        }
-         
-        var page = "foreloginAjax";
-        $.get(
-                page,
-                {"name":name,"password":password},
-                function(result){
-                    if("success"==result){
-                        location.reload();
-                    }
-                    else{
-                        $("span.errorMessage").html("帳號密碼錯誤");
-                        $("div.loginErrorMessageDiv").show();                       
-                    }
-                }
-        );          
-         
-        return true;
-    });
-     
 });
  
 </script>

@@ -71,9 +71,31 @@ public class ForeServlet extends BaseForeServlet {
             return "login.jsp";
         }
         request.getSession().setAttribute("user", user);
-        System.out.println("login success");
         return "%forehome";
     }
+	
+	public String loginAjax(HttpServletRequest request, HttpServletResponse response, Page page) {
+        String email = request.getParameter("email");
+        email = HtmlUtils.htmlEscape(email);
+        String password = request.getParameter("password");
+        User user = userDAO.get(email, password);
+
+        if (null == user) {
+            return "%fail";
+        }
+        request.getSession().setAttribute("user", user);
+        return "%success";
+    }
+	
+	 public String checkLogin(HttpServletRequest request, HttpServletResponse response, Page page) {
+        User user = (User) request.getSession().getAttribute("user");
+        if (user != null)
+            return "%success";
+        else
+            return "%fail";
+    }
+
+    
 
     public String logout(HttpServletRequest request, HttpServletResponse response, Page page) {
         request.getSession().removeAttribute("user");
@@ -92,25 +114,7 @@ public class ForeServlet extends BaseForeServlet {
         return "product.jsp";
     }
 
-    public String checkLogin(HttpServletRequest request, HttpServletResponse response, Page page) {
-        User user = (User) request.getSession().getAttribute("user");
-        if (user != null)
-            return "%success";
-        else
-            return "%fail";
-    }
-
-    public String loginAjax(HttpServletRequest request, HttpServletResponse response, Page page) {
-        String name = request.getParameter("name");
-        String password = request.getParameter("password");
-        User user = userDAO.get(name, password);
-
-        if (null == user) {
-            return "%fail";
-        }
-        request.getSession().setAttribute("user", user);
-        return "%success";
-    }
+   
 
     /*
     public String category(HttpServletRequest request, HttpServletResponse response, Page page) {

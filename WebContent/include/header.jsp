@@ -19,6 +19,9 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="./css/fore/index.css">
+    <link rel="stylesheet" href="./css/fore/lightBox.css">
+    <link rel="stylesheet" href="./css/fore/login.css">
+    
     <script>
 	function formatMoney(num){
 	    num = num.toString().replace(/\$|\,/g,'');  
@@ -78,7 +81,12 @@
 </head>
 
 <body>
-    
+ <!-- left Button !-->   
+ <a class="fa fa-heart round" style="top: 60%;color:white;font-size:24px;text-decoration:none;" href="subscribe.jsp"></a>
+	 <a class="fa fa-shopping-cart round" style="top: 70%;color:white;font-size:24px;text-decoration:none;" href="shopCart.jsp"></a>
+	<!--<a class="fa fa-cart-plus round" style="top: 70%;color:white;font-size:24px;text-decoration:none;" href="#"></a>!-->
+	 <a class="fa fa-chevron-circle-up round" style="top: 80%;color:white;font-size:24px;text-decoration:none;" href="#top_anchor" ></a>
+  <!-- left Button !-->   
     <nav class="navbar navbar-inverse">
 	    <a name="top_anchor"></a>
 	    <div class="container-fluid">
@@ -111,9 +119,9 @@
 			        </c:if>
 			        
 			        <c:if test="${empty user}">
-			            <li><a href="#nowhere" class="userLoginLink">My Orders</a></li>
+			            <li><a onclick="openModal()" class="userLoginLink">My Orders</a></li>
 		            	<li>
-				            <a href="#nowhere" class="userLoginLink">
+				            <a onclick="openModal()"  class="userLoginLink">
 				            	<span style="margin:0px" class=" glyphicon glyphicon-shopping-cart"></span>
 				            	Shopping Cart <strong>(${cartTotalItemNumber})</strong>
 				            </a>
@@ -127,9 +135,9 @@
 			         
 			        <c:if test="${empty user}">
 			        	<li>
-			        		<a href="#nowhere" class="userLoginLink">Login</a>
+			        		<a onclick="openModal()" >Login</a>
 			        	</li>
-			            <li><a href="register.jsp">Register</a></li>     
+			            <li><a onclick="registerShow()">Register</a></li>     
 			        </c:if>
 	                
 	            </ul>
@@ -138,5 +146,6 @@
 	</nav>
     
     <div class="container-fluid text-center"> 
-    	<div>
+    	
+		
     	
