@@ -20,10 +20,6 @@ public class ProductImageDAOTest {
 	public static Category category = new Category();
 	public static int categoryId;
 	
-	public static UserDAO userdao = new UserDAO();
-	public static User user = new User(); 
-	public static int userId;
-	
 	public static ProductDAO productdao = new ProductDAO();
 	public static Product product = new Product();
 	public static int productId;
@@ -38,18 +34,12 @@ public class ProductImageDAOTest {
 		category.setName("Book");
 		categoryId = categorydao.add(category);
 		
-		// create user
-		user.setEmail("abc@abc.com");
-		user.setPassword("1234");
-		userId = userdao.add(user);
-		
 		// create product
 		product.setName("Harry Potter");
 		product.setInventory(5);
 		product.setPrice(1000);
 		product.setDateAdded(new Date());
 		product.setCategory(categorydao.get(categoryId));
-		product.setSeller(userdao.get(userId));
 		productId = productdao.add(product);
 		
 		System.out.println("Test Start...");
@@ -76,9 +66,6 @@ public class ProductImageDAOTest {
 		
 		// delete product
 		productdao.delete(productId);
-		
-		// delete user
-		userdao.delete(userId);
 		
 		// delete category
 		categorydao.delete(categoryId);

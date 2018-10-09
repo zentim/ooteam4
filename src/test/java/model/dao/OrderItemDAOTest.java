@@ -55,7 +55,6 @@ public class OrderItemDAOTest {
 		product.setPrice(1000);
 		product.setDateAdded(new Date());
 		product.setCategory(categorydao.get(categoryId));
-		product.setSeller(userdao.get(userId));
 		productId = productdao.add(product);
 		
 		// create order

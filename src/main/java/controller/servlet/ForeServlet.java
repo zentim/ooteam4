@@ -45,15 +45,17 @@ public class ForeServlet extends BaseForeServlet {
 
         if (exist) {
             request.setAttribute("msg", "Email has been used!!!");
-            return "register.jsp";
+            return "%fail";
         }
 
         User user = new User();
         user.setEmail(email);
         user.setPassword(password);
         userDAO.add(user);
+        User newUser = userDAO.get(email, password);
+        request.getSession().setAttribute("user", newUser);
 
-        return "@registerSuccess.jsp";
+        return "%success";
     }
 
 	public String login(HttpServletRequest request, HttpServletResponse response, Page page) {
@@ -196,9 +198,13 @@ public class ForeServlet extends BaseForeServlet {
         double total = 0;
         for (String oiidString : oiids) {
             int oiid = Integer.parseInt(oiidString);
+            System.out.println("199: " + oiid);
             OrderItem ot = orderItemDAO.get(oiid);
+            System.out.println("201: ");
             ois.add(ot);
+            System.out.println("203: ");
             total += (ot.getProduct().getPrice() * ot.getQuantity());
+            System.out.println("205: " + total);
         }
         request.getSession().setAttribute("ois", ois);
         request.setAttribute("total", total);
@@ -278,7 +284,6 @@ public class ForeServlet extends BaseForeServlet {
         String address = request.getParameter("address");
 
         Order order = new Order();
-        String orderCode = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date()) + RandomUtils.nextInt(1, 10000);
 
         order.setUser(user);
         order.setDateOrdered(new Date());

@@ -167,7 +167,8 @@ $(document).ready(function(){
 	                  async: false,
 	                  data:{email:email,password:password},
 	                  error: function (jqXHR, exception) {
-	                      var msg = '';
+	                      console.log("register error!!!")
+	                	  var msg = '';
 	                      if (jqXHR.status === 0) {
 	                          msg = 'Not connect.\n Verify Network.';
 	                      } else if (jqXHR.status == 404) {
@@ -185,7 +186,7 @@ $(document).ready(function(){
 	                      }
 	                      $('#post').html(msg);
 	                  },
-	                  success:function(res){
+	                  success:function(result){
 	                     /* if(res == 'General customer'||res == 'VIP customer'){
 	                      	alert("register successful!");
 	                      	location.reload();
@@ -193,11 +194,10 @@ $(document).ready(function(){
 	                      	location.href = './BackEndIndex.jsp';
 	                      
 	                      */
-	                   
+	                   	console.log("register success: " + result)
 	                      if("success" == result){
 	                              
-	                    	  $('.login-main').show();
-	                    	  $('.register-main').show();
+	                    	  location.reload();
 	                       
 	                      }else{
 	                    		$('#register_notice').html(result);

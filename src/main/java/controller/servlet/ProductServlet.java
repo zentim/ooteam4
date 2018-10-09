@@ -28,7 +28,7 @@ public class ProductServlet extends BaseBackServlet {
 		p.setName(name);
 		p.setPrice(price);
 		p.setInventory(inventory);
-		
+		System.out.println(p.toString());
 		productDAO.add(p);
 		
 		return "@admin_product_list?cid=" + cid;
@@ -77,6 +77,7 @@ public class ProductServlet extends BaseBackServlet {
 
 	@Override
 	public String list(HttpServletRequest request, HttpServletResponse response, Page page) {
+		System.out.println("80: product list");
 		int cid = Integer.parseInt(request.getParameter("cid"));
 		Category c = categoryDAO.get(cid);
 		

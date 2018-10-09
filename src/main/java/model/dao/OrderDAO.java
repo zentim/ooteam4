@@ -49,13 +49,19 @@ public class OrderDAO {
         		Connection c = DBUtil.getConnection();
         		PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         ) {
-
+        	System.out.println("52: ");
         	ps.setInt(1, bean.getUser().getId());
+        	System.out.println("54: ");
         	ps.setTimestamp(2, DateUtil.d2t(bean.getDateOrdered()));
+        	System.out.println("56: ");
         	ps.setTimestamp(3, DateUtil.d2t(bean.getDatePaid()));
+        	System.out.println("58: ");
         	ps.setString(4, bean.getState());
+        	System.out.println("60: ");
         	ps.setFloat(5, bean.getTotal());
+        	System.out.println("62: ");
         	ps.setInt(6, bean.getDeliverMethod());
+        	System.out.println("64: ");
         	ps.setString(7, bean.getAddress());
 
             ps.execute();
@@ -157,7 +163,7 @@ public class OrderDAO {
     public List<Order> list(int start, int count) {
         List<Order> beans = new ArrayList<Order>();
 
-        String sql = "select * from order_ by orderId desc limit ?,? ";
+        String sql = "select * from order_ order by orderId desc limit ?,? ";
 
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
 
@@ -206,7 +212,7 @@ public class OrderDAO {
     public List<Order> list(int userId, String excludedStatus, int start, int count) {
         List<Order> beans = new ArrayList<Order>();
 
-        String sql = "select * from order_ where userId = ? and status != ? order by orderId desc limit ?,? ";
+        String sql = "select * from order_ where userId = ? and state != ? order by orderId desc limit ?,? ";
 
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
 

@@ -66,14 +66,10 @@
             </td>
 
             <td align="right">
-              <span 
-                class="cartProductItemOringalPrice" 
-                style="text-decoration: line-through; color: #9C9C9C; display: block;">$${oi.product.originalPrice}
-              </span>
               <span  
                 class="cartProductItemPromotionPrice" 
                 style="color:#c40000">
-                $${oi.product.promotePrice}
+                $${oi.product.price}
               </span>
             </td>
 
@@ -84,12 +80,12 @@
                   <span 
                     class="hidden orderItemStock " 
                     pid="${ oi.product.id }">
-                    ${ oi.product.stock }
+                    ${ oi.product.inventory }
                   </span>
                   <span 
                     class="hidden orderItemPromotePrice" 
                     pid="${oi.product.id}">
-                    ${ oi.product.promotePrice }
+                    ${ oi.product.price }
                   </span>
                   <a  
                     pid="${ oi.product.id }" 
@@ -102,10 +98,10 @@
                     oiid="${ oi.id }" 
                     class="orderItemNumberSetting" 
                     autocomplete="off" 
-                    value="${ oi.number }" 
+                    value="${ oi.quantity }" 
                     style="border: solid 1px #AAAAAA; width: 42px; display: inline-block;">
                   <a  
-                    stock="${ oi.product.stock }" 
+                    inventory="${ oi.product.inventory }" 
                     pid="${ oi.product.id }" 
                     oiid="${ oi.id }" 
                     class="numberPlus" 
@@ -120,7 +116,7 @@
                 oiid="${ oi.id }" 
                 pid="${ oi.product.id }">
                 $<fmt:formatNumber type="number" 
-                  value="${ oi.product.promotePrice * oi.number}" 
+                  value="${ oi.product.price * oi.quantity}" 
                   minFractionDigits="2"/>
               </span>
             </td>
@@ -234,7 +230,7 @@ $(function(){
     $(".orderItemNumberSetting").keyup(function(){
         var pid = $(this).attr("pid");
         var oiid = $(this).attr("oiid");
-        var stock = $("span.orderItemStock[pid="+pid+"]").text();
+        var inventory = $("span.orderItemStock[pid="+pid+"]").text();
         var price = $("span.orderItemPromotePrice[pid="+pid+"]").text();
 
         var num = $(".orderItemNumberSetting[pid=" + pid + "]").val();
@@ -244,8 +240,8 @@ $(function(){
             num = 1;
         if(num <= 0)
             num = 1;
-        if(num > stock)
-            num = stock;
+        if(num > inventory)
+            num = inventory;
     
         syncPrice(pid, num, price, oiid);
     });
@@ -253,18 +249,18 @@ $(function(){
     $(".numberPlus").click(function(){
         var pid=$(this).attr("pid");
         var oiid=$(this).attr("oiid");
-        var stock= $("span.orderItemStock[pid="+pid+"]").text();
+        var inventory= $("span.orderItemStock[pid="+pid+"]").text();
         var price= $("span.orderItemPromotePrice[pid="+pid+"]").text();
         var num= $(".orderItemNumberSetting[pid="+pid+"]").val();
         
         num++;
-        if(num>stock)
-            num = stock;
+        if(num>inventory)
+            num = inventory;
         syncPrice(pid, num, price, oiid);
     });
     $(".numberMinus").click(function(){
         var pid=$(this).attr("pid");
-        var stock= $("span.orderItemStock[pid="+pid+"]").text();
+        var inventory= $("span.orderItemStock[pid="+pid+"]").text();
         var price= $("span.orderItemPromotePrice[pid="+pid+"]").text();
         var oiid=$(this).attr("oiid");
         var num= $(".orderItemNumberSetting[pid="+pid+"]").val();

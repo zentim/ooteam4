@@ -16,10 +16,6 @@
 				        <div class="form-group">
 				            <input type="text" name="address" class="form-control" placeholder="Address">
 				        </div>
-				
-				        <div class="form-group">
-				            <input type="text"  name="receiver" class="form-control" placeholder="Receiver">
-				        </div>
 				        
 				        <div class="form-group">
 				            <input type="text"  name="phone" class="form-control" placeholder="Phone">
@@ -48,7 +44,7 @@
 					    </thead>
 					
 					    <tbody>
-					      <c:forEach items="${ois }" var="oi">
+					      <c:forEach items="${ ois }" var="oi">
 					        <tr oiid="${oi.id}" class="cartProductItemTR">
 					
 					
@@ -73,20 +69,20 @@
 					              <span class="orderItemProductPrice">
 					              	$ <fmt:formatNumber 
 					              		type="number" 
-					              		value="${oi.product.promotePrice}" 
+					              		value="${oi.product.price}" 
 					              		minFractionDigits="2"/>
 					              </span>
 					            </td>
 					
 					            <td align="center">
-					            	${oi.number}
+					            	${oi.quantity}
 					            </td>
 					
 								<td>
 									<span class="orderItemUnitSum">
 		                        		$ <fmt:formatNumber 
 		                        			type="number" 
-		                        			value="${oi.number * oi.product.promotePrice}" 
+		                        			value="${oi.quantity * oi.product.price}" 
 		                        			minFractionDigits="2"/>
 		                        	</span>
 								</td>

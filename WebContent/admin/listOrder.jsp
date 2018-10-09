@@ -14,7 +14,6 @@
         <th>#</th>
         <th>狀態</th>
         <th>金額</th>
-        <th>商品數量</th>
         <th>買家名稱</th>
         <th>創建時間</th>
         <th>支付時間</th>
@@ -28,11 +27,10 @@
         <td>${ o.id }</td>
         <td>${ o.statusDesc}</td>
         <td align="right">$<fmt:formatNumber type="number" value="${o.total}" minFractionDigits="2"/></td>
-        <td align="right">${o.totalNumber}</td>
-		<td align="center">${o.user.name}</td>
+		<td align="center">${o.user.email}</td>
 		
-		<td align="center"><fmt:formatDate value="${o.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-        <td align="center"><fmt:formatDate value="${o.payDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+		<td align="center"><fmt:formatDate value="${o.dateOrdered}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+        <td align="center"><fmt:formatDate value="${o.datePaid}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 
         <td class="text-center">
             <button oid=${o.id} class="orderPageCheckOrderItems btn btn-primary btn-sm">查看詳情</button>
@@ -55,10 +53,10 @@
 	                              </a>                                          
 	                          </td>
 	                          <td align="right">
-	                              <span class="text-muted">${oi.number}个</span>                                               
+	                              <span class="text-muted">${oi.quantity}個</span>                                               
 	                          </td>
 	                          <td align="right">
-	                              <span class="text-muted">單價 : $${oi.product.promotePrice}</span>                                              
+	                              <span class="text-muted">單價 : $${oi.product.price}</span>                                              
 	                          </td>
 		
 	                      </tr>

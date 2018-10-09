@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,7 +13,6 @@ import java.util.List;
 import main.java.model.bean.Category;
 import main.java.model.bean.Product;
 import main.java.model.bean.ProductImage;
-import main.java.model.bean.User;
 import main.java.model.util.DBUtil;
 import main.java.model.util.DateUtil;
 
@@ -57,20 +55,16 @@ public class ProductDAO {
     }
 
     public int add(Product bean) {
-
-        String sql = "insert into product values(DEFAULT,?,?,?,?,?,?)";
+        String sql = "insert into product values(DEFAULT,?,?,?,?,?)";
         try (
         		Connection c = DBUtil.getConnection();
         		PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         ) {
-
             ps.setString(1, bean.getName());
             ps.setInt(2, bean.getInventory());
             ps.setFloat(3, bean.getPrice());
             ps.setTimestamp(4, DateUtil.d2t(bean.getDateAdded()));
             ps.setInt(5, bean.getCategory().getId());
-            ps.setInt(6, bean.getSeller().getId());
-            
             ps.execute();
 
             ResultSet rs = ps.getGeneratedKeys();
@@ -91,7 +85,7 @@ public class ProductDAO {
 
     public void update(Product bean) {
 
-        String sql = "update product set name= ?, inventory=?, price=?, dateAdded=?, categoryId = ?, sellerId=? where productId = ?";
+        String sql = "update product set name= ?, inventory=?, price=?, dateAdded=?, categoryId = ? where productId = ?";
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
 
             ps.setString(1, bean.getName());
@@ -99,9 +93,8 @@ public class ProductDAO {
             ps.setFloat(3, bean.getPrice());
             ps.setTimestamp(4, DateUtil.d2t(bean.getDateAdded()));
             ps.setInt(5, bean.getCategory().getId());
-            ps.setInt(6, bean.getSeller().getId());
             
-            ps.setInt(7, bean.getId());
+            ps.setInt(6, bean.getId());
             ps.execute();
 
         } catch (SQLException e) {
@@ -141,17 +134,14 @@ public class ProductDAO {
                 float price = rs.getFloat("price");
                 Date dateAdded = DateUtil.t2d(rs.getTimestamp("dateAdded"));
                 int categoryId = rs.getInt("categoryId");
-                int sellerId = rs.getInt("sellerId");
                 
                 Category category = new CategoryDAO().get(categoryId);
-                User seller = new UserDAO().get(sellerId);
 
                 bean.setName(name);
                 bean.setInventory(inventory);
                 bean.setPrice(price);
                 bean.setDateAdded(dateAdded);
                 bean.setCategory(category);
-                bean.setSeller(seller);
                 
                 bean.setId(id);
                 setFirstProductImage(bean);
@@ -171,7 +161,7 @@ public class ProductDAO {
     public List<Product> list(int categoryId, int start, int count) {
         List<Product> beans = new ArrayList<Product>();
         
-        String sql = "select * from Product where categoryId = ? order by productId desc limit ?,? ";
+        String sql = "select * from product where categoryId = ? order by productId desc limit ?,? ";
 
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
             ps.setInt(1, categoryId);
@@ -183,12 +173,10 @@ public class ProductDAO {
             while (rs.next()) {
             	Product bean = new Product();
                 int id = rs.getInt(1);
-                int sellerId = rs.getInt("sellerId");
                 String name = rs.getString("name");
                 int inventory = rs.getInt("inventory");
                 float price = rs.getFloat("price");
                 Date dateAdded = DateUtil.t2d(rs.getTimestamp("dateAdded"));
-                User seller = new UserDAO().get(sellerId);
                 Category category = new CategoryDAO().get(categoryId);
                 
                 bean.setName(name);
@@ -196,11 +184,9 @@ public class ProductDAO {
                 bean.setPrice(price);
                 bean.setDateAdded(dateAdded);
                 bean.setCategory(category);
-                bean.setSeller(seller);
                 
                 bean.setId(id);
                 bean.setCategory(category);
-                bean.setSeller(seller);
                 setFirstProductImage(bean);
 
                 beans.add(bean);
@@ -220,7 +206,7 @@ public class ProductDAO {
     public List<Product> list(int start, int count) {
         List<Product> beans = new ArrayList<Product>();
 
-        String sql = "select * from Product limit ?,? ";
+        String sql = "select * from product limit ?,? ";
 
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
 
@@ -232,13 +218,11 @@ public class ProductDAO {
             while (rs.next()) {
             	Product bean = new Product();
                 int id = rs.getInt(1);
-                int sellerId = rs.getInt("sellerId");
                 int categoryId = rs.getInt("categoryId");
                 String name = rs.getString("name");
                 int inventory = rs.getInt("inventory");
                 float price = rs.getFloat("price");
                 Date dateAdded = DateUtil.t2d(rs.getTimestamp("dateAdded"));
-                User seller = new UserDAO().get(sellerId);
                 Category category = new CategoryDAO().get(categoryId);
                 
                 bean.setName(name);
@@ -246,11 +230,9 @@ public class ProductDAO {
                 bean.setPrice(price);
                 bean.setDateAdded(dateAdded);
                 bean.setCategory(category);
-                bean.setSeller(seller);
                 
                 bean.setId(id);
                 bean.setCategory(category);
-                bean.setSeller(seller);
                 setFirstProductImage(bean);
 
                 beans.add(bean);
@@ -261,108 +243,6 @@ public class ProductDAO {
         }
         return beans;
     }
-
-
-    public List<Product> listBySeller(int sellerId, int categoryId) {
-        return listBySeller(sellerId, categoryId, 0, Short.MAX_VALUE);
-    }
-
-   
-    public List<Product> listBySeller(int sellerId, int categoryId, int start, int count) {
-        List<Product> beans = new ArrayList<Product>();
-
-        String sql = "select * from product where sellerId = ? and categoryId = ? order by id desc limit ?,? ";
-
-        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
-        	ps.setInt(1, sellerId);
-            ps.setInt(2, categoryId);
-            ps.setInt(3, start);
-            ps.setInt(4, count);
-
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                Product bean = new Product();
-                int id = rs.getInt(1);
-
-                String name = rs.getString("name");
-                int inventory = rs.getInt("inventory");
-                float price = rs.getFloat("price");
-                Date dateAdded = DateUtil.t2d(rs.getTimestamp("dateAdded"));
-                User seller = new UserDAO().get(sellerId);
-                Category category = new CategoryDAO().get(categoryId);
-                
-                bean.setName(name);
-                bean.setInventory(inventory);
-                bean.setPrice(price);
-                bean.setDateAdded(dateAdded);
-                bean.setCategory(category);
-                bean.setSeller(seller);
-                
-                bean.setId(id);
-                bean.setCategory(category);
-                bean.setSeller(seller);
-                setFirstProductImage(bean);
-
-                beans.add(bean);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return beans;
-    }
-
-    public List<Product> listBySeller(int sellerId) {
-        return listBySeller(sellerId, 0, Short.MAX_VALUE);
-    }
-
-    public List<Product> listBySeller(int sellerId, int start, int count) {
-        List<Product> beans = new ArrayList<Product>();
-
-        String sql = "select * from product where sellerId = ? limit ?,? ";
-
-        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
-
-        	ps.setInt(1, sellerId);
-            ps.setInt(2, start);
-            ps.setInt(3, count);
-
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-            	 Product bean = new Product();
-                 int id = rs.getInt(1);
-                 
-                 int categoryId = rs.getInt("categoryId");
-                 String name = rs.getString("name");
-                 int inventory = rs.getInt("inventory");
-                 float price = rs.getFloat("price");
-                 Date dateAdded = DateUtil.t2d(rs.getTimestamp("dateAdded"));
-                 User seller = new UserDAO().get(sellerId);
-                 Category category = new CategoryDAO().get(categoryId);
-
-                 bean.setName(name);
-                 bean.setInventory(inventory);
-                 bean.setPrice(price);
-                 bean.setDateAdded(dateAdded);
-                 bean.setCategory(category);
-                 bean.setSeller(seller);
-                 
-                 bean.setId(id);
-                 bean.setCategory(category);
-                 bean.setSeller(seller);
-                 setFirstProductImage(bean);
-
-                 beans.add(bean);
-            }
-        } catch (SQLException e) {
-
-            e.printStackTrace();
-        }
-        return beans;
-    }
-
 
     public void fill(List<Category> cs) {
         for (Category c : cs) {
@@ -373,10 +253,6 @@ public class ProductDAO {
     public void fill(Category c) {
         List<Product> ps = this.list(c.getId());
         c.setProducts(ps);
-        
-        for(Product p : c.getProducts()) {
-        	System.out.println("378: " + p.getId());
-        }
     }
 
     public void fillByRow(List<Category> cs) {

@@ -11,15 +11,15 @@
     <thead>
       <tr>
         <th>#</th>
-        <th>使用者名稱</th>
+        <th>User Email</th>
       </tr>
     </thead>
     
     <tbody>
-      <c:forEach items="${userList}" var="userList">
+      <c:forEach items="${userList}" var="u">
       <tr>
-        <th>${ userList.id }</th>
-        <th>${ userList.name }</th>
+        <th>${ u.id }</th>
+        <th>${ u.email }</th>
       </tr>
       </c:forEach>
     </tbody>

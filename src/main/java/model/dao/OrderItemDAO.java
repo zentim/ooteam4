@@ -77,7 +77,7 @@ public class OrderItemDAO {
 
     public void update(OrderItem bean) {
 
-        String sql = "update order_item set orderId= ?, userId=?, productId=?, quantity=?, state=?, originalPrice=?, promotionalPrice=?  where orderId = ?";
+        String sql = "update order_item set orderId= ?, userId=?, productId=?, quantity=?, state=?, originalPrice=?, promotionalPrice=?  where orderItemId = ?";
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
         	// When an order_item created, it has not order info (orderId) 
             if(null == bean.getOrder()) {
@@ -106,7 +106,7 @@ public class OrderItemDAO {
 
         try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
 
-            String sql = "delete from order_item where orderId = " + id;
+            String sql = "delete from order_item where orderItemId = " + id;
 
             s.execute(sql);
 
@@ -121,31 +121,38 @@ public class OrderItemDAO {
 
         try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
 
-            String sql = "select * from order_item where orderId = " + id;
+            String sql = "select * from order_item where orderItemId = " + id;
 
             ResultSet rs = s.executeQuery(sql);
 
             if (rs.next()) {
             	int orderId = rs.getInt("orderId");
+            	int userId = rs.getInt("userId");
                 int productId = rs.getInt("productId");
-                int userId = rs.getInt("userId");
                 int quantity = rs.getInt("quantity");
                 int state = rs.getInt("state");
-                float originalPrice = rs.getInt("originalPrice");
-                float promotionalPrice = rs.getInt("promotionalPrice");
-                
+                float originalPrice = rs.getFloat("originalPrice");
+                float promotionalPrice = rs.getFloat("promotionalPrice");
+                System.out.println("136: ");
                 Product product = new ProductDAO().get(productId);
                 User user = new UserDAO().get(userId);
 
+                System.out.println("140: ");
                 if(-1 != orderId){
                     Order order = new OrderDAO().get(orderId);
                     bean.setOrder(order);
+                    System.out.println("144: ");
                 }
                 bean.setProduct(product);
+                System.out.println("147: ");
                 bean.setUser(user);
+                System.out.println("149: ");
                 bean.setQuantity(quantity);
+                System.out.println("151: ");
                 bean.setState(state);
+                System.out.println("153: ");
                 bean.setOriginalPrice(originalPrice);
+                System.out.println("155: ");
                 bean.setPromotionalPrice(promotionalPrice);
 
                 bean.setId(id);
@@ -216,7 +223,7 @@ public class OrderItemDAO {
     public List<OrderItem> listByOrder(int orderId, int start, int count) {
         List<OrderItem> beans = new ArrayList<OrderItem>();
 
-        String sql = "select * from order_item where orderId = ? order by orderItemId desc limit ?,? ";
+        String sql = "select * from order_item where orderItemId = ? order by orderItemId desc limit ?,? ";
 
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
 

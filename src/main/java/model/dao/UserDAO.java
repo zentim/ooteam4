@@ -128,7 +128,7 @@ public class UserDAO {
     public List<User> list(int start, int count) {
         List<User> beans = new ArrayList<User>();
 
-        String sql = "select * from user order userId desc limit ?,? ";
+        String sql = "select * from user order by userId desc limit ?,? ";
 
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
 

@@ -8,15 +8,14 @@
     </div>
 
 	<h1>${p.name}</h1>
-	<h3>原價: $<fmt:formatNumber type="number" value="${p.originalPrice}" minFractionDigits="2"/></h3>
-	<h3>促銷價: $<fmt:formatNumber type="number" value="${p.promotePrice}" minFractionDigits="2"/></h3>
+	<h3>原價: $<fmt:formatNumber type="number" value="${p.price}" minFractionDigits="2"/></h3>
 	
         
-	<p>庫存 ${p.stock} 件</p>
+	<p>庫存 ${p.inventory} 件</p>
 	
 	Quantities:
 	<div class="form-group" style="width:30%">
-		<input class="form-control productNumberSetting" value="1" type="number" name="quantity" min="1" max="${p.stock}"></br>
+		<input class="form-control productNumberSetting" value="1" type="number" name="quantity" min="1" max="${p.inventory}"></br>
 	</div>
 	
 	<Span><i class="glyphicon glyphicon-info-sign"></i>Product Information</Span>
@@ -36,7 +35,7 @@
  
 <script>
 $(function(){
-    var stock = ${p.stock};
+    var inventory = ${p.inventory};
     $(".productNumberSetting").keyup(function(){
         var num= $(".productNumberSetting").val();
         num = parseInt(num);
@@ -44,8 +43,8 @@ $(function(){
             num= 1;
         if(num<=0)
             num = 1;
-        if(num>stock)
-            num = stock;
+        if(num>inventory)
+            num = inventory;
         $(".productNumberSetting").val(num);
     });
      

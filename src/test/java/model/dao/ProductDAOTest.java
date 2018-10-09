@@ -19,10 +19,6 @@ public class ProductDAOTest {
 	public static Category category = new Category();
 	public static int categoryId;
 	
-	public static UserDAO userdao = new UserDAO();
-	public static User user = new User(); 
-	public static int userId;
-	
 	public static ProductDAO productdao = new ProductDAO();
 	public static Product product = new Product();
 	public static int productId;
@@ -33,11 +29,6 @@ public class ProductDAOTest {
 		category.setName("Book");
 		categoryId = categorydao.add(category);
 		
-		// create user
-		user.setEmail("abc@abc.com");
-		user.setPassword("1234");
-		userId = userdao.add(user);
-		
 		System.out.println("Test Start...");
 		
 		// create product
@@ -46,7 +37,6 @@ public class ProductDAOTest {
 		product.setPrice(1000);
 		product.setDateAdded(new Date());
 		product.setCategory(categorydao.get(categoryId));
-		product.setSeller(userdao.get(userId));
 		productId = productdao.add(product);
 	}
 	
@@ -55,12 +45,7 @@ public class ProductDAOTest {
 		int result = productdao.getTotal(categoryId);
 		assertNotNull("should not be null", result);
 	}
-	
-	@Test
-	public void testTotalBySeller() {
-		int result = productdao.getTotalBySeller(userId, categoryId);
-		assertNotNull("should not be null", result);
-	}
+
 	
 	@Test
 	public void testList() {
@@ -81,9 +66,6 @@ public class ProductDAOTest {
 		productdao.delete(productId);
 		
 		System.out.println("Test End...");
-		
-		// delete user
-		userdao.delete(userId);
 		
 		// delete category
 		categorydao.delete(categoryId);

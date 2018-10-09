@@ -13,7 +13,6 @@
       <tr>
         <th>#</th>
         <th>分類名稱</th>
-        <th>屬性管理</th>
         <th>產品管理</th>
         <th>編輯</th>
         <th>刪除</th>
@@ -25,13 +24,6 @@
       <tr>
         <td>${ c.id }</td>
         <td>${ c.name }</td>
-        <td>
-          <a href="admin_property_list?cid=${ c.id }">
-            <button type="button" class="btn btn-primary btn-sm">
-              <span data-feather="list"></span>
-            </button>
-          </a>
-        </td>
         <td>
           <a href="admin_product_list?cid=${ c.id }">
             <button type="button" class="btn btn-primary btn-sm">

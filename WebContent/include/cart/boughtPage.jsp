@@ -5,17 +5,17 @@
      
 <div style="max-width: 1013px; margin: 10px auto;">
 	<div class="btn-group" role="group" aria-label="Basic example">
-	  <a orderStatus="all" href="#nowhere">
+	  <a orderState="all" href="#nowhere">
 		  <button type="button" class="btn btn-secondary">
 		  	所有訂單
 		  </button>
 	  </a>
-	  <a orderStatus="waitPay" href="#nowhere">
+	  <a orderState="waitPay" href="#nowhere">
 		  <button type="button" class="btn btn-secondary">
 		  	待付款
 		  </button>
 	  </a>
-	  <a orderStatus="waitDelivery" href="#nowhere">
+	  <a orderState="waitDelivery" href="#nowhere">
 		  <button type="button" class="btn btn-secondary">
 		  	待發貨
 		  </button>
@@ -39,11 +39,11 @@
      
     <div class="orderListItem">
         <c:forEach items="${os}" var="o">
-            <table class="orderListItemTable table table-striped table-bordered table-sm" orderStatus="${o.status}" oid="${o.id}" style="border: 2px solid #ECECEC; width: 100%; margin: 20px 0px;">
+            <table class="orderListItemTable table table-striped table-bordered table-sm" orderState="${o.state}" oid="${o.id}" style="border: 2px solid #ECECEC; width: 100%; margin: 20px 0px;">
                 <tr style="background-color: #F1F1F1; font-size:12px;">
                     <td colspan="2">
-                    <b><fmt:formatDate value="${o.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></b> 
-                    <span>訂單號: ${o.orderCode} 
+                    <b><fmt:formatDate value="${o.dateOrdered}" pattern="yyyy-MM-dd HH:mm:ss"/></b> 
+                    <span>訂單號: ${o.id} 
                     </span>
                     </td>
                     <td  colspan="2"></td>
@@ -75,11 +75,8 @@
                             </div>
                         </td>
                         <td width="100px">
-                            <div style="color: #999; font-size: 14px">
-                            	$<fmt:formatNumber type="number" value="${oi.product.originalPrice}" minFractionDigits="2"/>
-                            </div>
                             <div style="color: #3C3C3C; font-size: 14px">
-                            	$<fmt:formatNumber type="number" value="${oi.product.promotePrice}" minFractionDigits="2"/>
+                            	$<fmt:formatNumber type="number" value="${oi.product.price}" minFractionDigits="2"/>
                             </div>
                         </td>
                         <c:if test="${st.count == 1}">
@@ -88,7 +85,7 @@
                             	valign="top" 
                             	rowspan="${fn:length(o.orderItems)}" 
                             	width="100px">
-                                <span class="orderListItemNumber">${o.totalNumber}</span>
+                                <span class="orderListItemNumber">數量</span>
                             </td>
                             <td 
                             	valign="top" 
@@ -105,7 +102,7 @@
                             	valign="top" 
                             	rowspan="${fn:length(o.orderItems)}" 
                             	width="100px">
-                                <c:if test="${o.status == 'waitPay' }">
+                                <c:if test="${o.state == 'waitPay' }">
                                     <a href="pay.jsp?oid=${ o.id }&total=${ o.total }">
                                         <button class="orderListItemConfirm">付款</button>
                                     </a>                              
@@ -131,14 +128,14 @@ var deleteOrder = false;
 var deleteOrderid = 0;
  
 $(function(){
-    $("a[orderStatus]").click(function(){
-        var orderStatus = $(this).attr("orderStatus");
-        if('all'==orderStatus){
-            $("table[orderStatus]").show(); 
+    $("a[orderState]").click(function(){
+        var orderState = $(this).attr("orderState");
+        if('all'==orderState){
+            $("table[orderState]").show(); 
         }
         else{
-            $("table[orderStatus]").hide();
-            $("table[orderStatus="+orderStatus+"]").show();         
+            $("table[orderState]").hide();
+            $("table[orderState="+orderState+"]").show();         
         }
     });
      

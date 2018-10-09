@@ -29,15 +29,11 @@
   			</tr>
   			<tr>
   				<td>原價 : </td>
-  				<td><input id="originalPrice" name="originalPrice" type="text" value="${ p.originalPrice }"></td>
-  			</tr>
-  			<tr>
-  				<td>優惠價 : </td>
-  				<td><input id="promotePrice" name="promotePrice" type="text" value="${ p.promotePrice }"></td>
+  				<td><input id="price" name="price" type="text" value="${ p.price }"></td>
   			</tr>
   			<tr>
   				<td>庫存 : </td>
-  				<td><input id="stock" name="stock" type="text" value="${ p.stock }"></td>
+  				<td><input id="inventory" name="inventory" type="text" value="${ p.inventory }"></td>
   			</tr>
   			<tr>
   				<td colspan="2" align="center">
@@ -59,13 +55,10 @@ $(function() {
 		if (!checkEmpty("name", "產品名稱")) {
 			return false;
 		}
-		if (!checkNumber("originalPrice", "原價")) {
+		if (!checkNumber("price", "原價")) {
 			return false;
 		}
-		if (!checkNumber("promotePrice", "優惠價")) {
-			return false;
-		}
-		if (!checkInt("stock", "庫存")) {
+		if (!checkInt("inventory", "庫存")) {
 			return false;
 		}
 		return true;

@@ -29,8 +29,8 @@ CREATE TABLE IF NOT EXISTS `user` (
 CREATE TABLE IF NOT EXISTS `order_` (
   `orderId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `userId` int(10) unsigned NOT NULL,
-  `dateOrdered` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `datePaid` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `dateOrdered` datetime DEFAULT NULL,
+  `datePaid` datetime DEFAULT NULL,
   `state` varchar(255) DEFAULT NULL,
   `total` float unsigned NOT NULL,
   `deliverMethod` tinyint(3) unsigned NOT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `order_` (
 -- 傾印  表格 mysql_shoppingcart.order_item 結構
 CREATE TABLE IF NOT EXISTS `order_item` (
   `orderItemId` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `orderId` int(11) unsigned DEFAULT NULL,
+  `orderId` int(11) DEFAULT NULL,
   `userId` int(11) unsigned NOT NULL,
   `productId` int(11) unsigned NOT NULL,
   `quantity` int(11) unsigned NOT NULL,
@@ -61,7 +61,6 @@ CREATE TABLE IF NOT EXISTS `product` (
   `price` float unsigned NOT NULL,
   `dateAdded` datetime DEFAULT NULL,
   `categoryId` int(11) unsigned NOT NULL,
-  `sellerId` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`productId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -105,7 +104,7 @@ CREATE TABLE IF NOT EXISTS `promotion` (
   `promotionId` int(11) NOT NULL AUTO_INCREMENT,
   `discountTypeId` int(11) unsigned NOT NULL,
   `name` varchar(255) NOT NULL,
-  `dateFrom` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `dateFrom` datetime DEFAULT NULL,
   `dateTo` datetime DEFAULT NULL,
   `state` tinyint(3) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`promotionId`)

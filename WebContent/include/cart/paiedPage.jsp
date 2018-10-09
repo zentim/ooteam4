@@ -7,7 +7,7 @@
 
 <div>
 	<ul>
-         <li>收貨地址: ${o.address} ${o.receiver} ${o.phone }</li>
+         <li>收貨地址: ${o.address} </li>
          <li>實付款: <span class="payedInfoPrice">
        		$ <fmt:formatNumber type="number" value="${param.total}" minFractionDigits="2"/>
          </li>

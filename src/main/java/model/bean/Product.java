@@ -14,7 +14,6 @@ public class Product {
     private List<ProductImage> productImages;
     private List<ProductImage> productSingleImages;
     private List<ProductImage> productDetailImages;
-    private User seller;
     
 	public int getId() {
 		return id;
@@ -75,12 +74,6 @@ public class Product {
 	}
 	public void setProductDetailImages(List<ProductImage> productDetailImages) {
 		this.productDetailImages = productDetailImages;
-	}
-	public User getSeller() {
-		return seller;
-	}
-	public void setSeller(User seller) {
-		this.seller = seller;
 	}
 	
 
