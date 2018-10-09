@@ -14,31 +14,30 @@ import main.java.model.dao.UserDAO;
 public class OrderDAOTest {
 	public static UserDAO userdao = new UserDAO();
 	public static User user = new User(); 
-	public static int uid;
+	public static int userId;
 	
 	public static OrderDAO orderdao = new OrderDAO();
 	public static Order order = new Order();
-	public static int oid;
+	public static int orderId;
 	
 	@BeforeClass
 	public static void testAdd() {
 		// create user
-		user.setName("hello");
-		user.setPassword("world");
-		uid = userdao.add(user);
+		user.setEmail("abc@abc.com");
+		user.setPassword("1234");
+		userId = userdao.add(user);
 		
 		System.out.println("Test Start...");
 		
 		// create order
-		order.setOrderCode("1234");
-		order.setAddress("Taiwan");
-		order.setReceiver("Someone");
-		order.setPhone("0912345678");
-		order.setCreateDate(new Date());
-		order.setPayDate(new Date());
-		order.setUser(userdao.get(uid));
-		order.setStatus(OrderDAO.waitPay);
-		oid = orderdao.add(order);
+		order.setUser(userdao.get(userId));
+		order.setDateOrdered(new Date());
+		order.setDatePaid(new Date());
+		order.setState(OrderDAO.waitPay);
+		order.setTotal(1000);
+		order.setDeliverMethod(0);
+		order.setAddress("Yuntech");
+		orderId = orderdao.add(order);
 	}
 	
 	@Test
@@ -51,12 +50,12 @@ public class OrderDAOTest {
 	@AfterClass
 	public static void testDelete() {
 		// delete order
-		orderdao.delete(oid);
+		orderdao.delete(orderId);
 		
 		System.out.println("Test End...");
 		
 		// delete user
-		userdao.delete(uid);
+		userdao.delete(userId);
 	}
 
 }

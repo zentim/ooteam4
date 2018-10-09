@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 import main.java.model.bean.Category;
 import main.java.model.bean.Product;
 import main.java.model.bean.ProductImage;
+import main.java.model.bean.User;
 import main.java.model.util.DBUtil;
 import main.java.model.util.DateUtil;
 
@@ -20,11 +22,28 @@ import main.java.model.util.DateUtil;
 
 public class ProductDAO {
 
-    public int getTotal(int cid) {
+    public int getTotal(int categoryId) {
         int total = 0;
         try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
 
-            String sql = "select count(*) from Product where cid = " + cid;
+            String sql = "select count(*) from product where categoryId = " + categoryId;
+
+            ResultSet rs = s.executeQuery(sql);
+            while (rs.next()) {
+                total = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+        return total;
+    }
+    
+    public int getTotalBySeller(int sellerId, int categoryId) {
+        int total = 0;
+        try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
+
+            String sql = "select count(*) from product where categoryId = " + categoryId + " and sellerId = " + sellerId;
 
             ResultSet rs = s.executeQuery(sql);
             while (rs.next()) {
@@ -39,18 +58,19 @@ public class ProductDAO {
 
     public int add(Product bean) {
 
-        String sql = "insert into Product values(DEFAULT,?,?,?,?,?,?)";
+        String sql = "insert into product values(DEFAULT,?,?,?,?,?,?)";
         try (
         		Connection c = DBUtil.getConnection();
         		PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         ) {
 
             ps.setString(1, bean.getName());
-            ps.setFloat(2, bean.getOriginalPrice());
-            ps.setFloat(3, bean.getPromotePrice());
-            ps.setInt(4, bean.getStock());
+            ps.setInt(2, bean.getInventory());
+            ps.setFloat(3, bean.getPrice());
+            ps.setTimestamp(4, DateUtil.d2t(bean.getDateAdded()));
             ps.setInt(5, bean.getCategory().getId());
-            ps.setTimestamp(6, DateUtil.d2t(bean.getCreateDate()));
+            ps.setInt(6, bean.getSeller().getId());
+            
             ps.execute();
 
             ResultSet rs = ps.getGeneratedKeys();
@@ -71,15 +91,16 @@ public class ProductDAO {
 
     public void update(Product bean) {
 
-        String sql = "update Product set name= ?, originalPrice=?,promotePrice=?,stock=?, cid = ?, createDate=? where id = ?";
+        String sql = "update product set name= ?, inventory=?, price=?, dateAdded=?, categoryId = ?, sellerId=? where productId = ?";
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
 
             ps.setString(1, bean.getName());
-            ps.setFloat(2, bean.getOriginalPrice());
-            ps.setFloat(3, bean.getPromotePrice());
-            ps.setInt(4, bean.getStock());
+            ps.setInt(2, bean.getInventory());
+            ps.setFloat(3, bean.getPrice());
+            ps.setTimestamp(4, DateUtil.d2t(bean.getDateAdded()));
             ps.setInt(5, bean.getCategory().getId());
-            ps.setTimestamp(6, DateUtil.d2t(bean.getCreateDate()));
+            ps.setInt(6, bean.getSeller().getId());
+            
             ps.setInt(7, bean.getId());
             ps.execute();
 
@@ -94,7 +115,7 @@ public class ProductDAO {
 
         try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
 
-            String sql = "delete from Product where id = " + id;
+            String sql = "delete from product where productId = " + id;
 
             s.execute(sql);
 
@@ -109,83 +130,77 @@ public class ProductDAO {
 
         try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
 
-            String sql = "select * from Product where id = " + id;
+            String sql = "select * from product where productId = " + id;
 
             ResultSet rs = s.executeQuery(sql);
 
             if (rs.next()) {
 
                 String name = rs.getString("name");
-                float originalPrice = rs.getFloat("originalPrice");
-                float promotePrice = rs.getFloat("promotePrice");
-                int stock = rs.getInt("stock");
-                int cid = rs.getInt("cid");
-                Date createDate = DateUtil.t2d( rs.getTimestamp("createDate"));
+                int inventory = rs.getInt("inventory");
+                float price = rs.getFloat("price");
+                Date dateAdded = DateUtil.t2d(rs.getTimestamp("dateAdded"));
+                int categoryId = rs.getInt("categoryId");
+                int sellerId = rs.getInt("sellerId");
+                
+                Category category = new CategoryDAO().get(categoryId);
+                User seller = new UserDAO().get(sellerId);
 
                 bean.setName(name);
-                bean.setOriginalPrice(originalPrice);
-                bean.setPromotePrice(promotePrice);
-                bean.setStock(stock);
-                Category category = new CategoryDAO().get(cid);
+                bean.setInventory(inventory);
+                bean.setPrice(price);
+                bean.setDateAdded(dateAdded);
                 bean.setCategory(category);
-                bean.setCreateDate(createDate);
+                bean.setSeller(seller);
+                
                 bean.setId(id);
                 setFirstProductImage(bean);
             }
 
         } catch (SQLException e) {
-
             e.printStackTrace();
         }
+        
         return bean;
     }
-
-    public List<Product> list(int cid) {
-        return list(cid,0, Short.MAX_VALUE);
+    
+    public List<Product> list(int categoryId) {
+        return list(categoryId, 0, Short.MAX_VALUE);
     }
 
-    // slow
-    public List<Product> list(int cid, int start, int count) {
+    public List<Product> list(int categoryId, int start, int count) {
         List<Product> beans = new ArrayList<Product>();
-        Category category = new CategoryDAO().get(cid);
-
-        String sql = "select * from Product where cid = ? order by id desc limit ?,? ";
-
-        // for postgresql
- 		if (DBUtil.DBMS.equals("postgresql")) {
- 			sql = "select * from Product where cid = ? order by id desc LIMIT ? OFFSET ? ";
- 		}
+        
+        String sql = "select * from Product where categoryId = ? order by id desc limit ?,? ";
 
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
-            ps.setInt(1, cid);
+            ps.setInt(1, categoryId);
             ps.setInt(2, start);
             ps.setInt(3, count);
-
-            // for postgresql
- 			if (DBUtil.DBMS.equals("postgresql")) {
- 				ps.setInt(3, start);
- 				ps.setInt(2, count);
- 			}
 
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                Product bean = new Product();
+            	Product bean = new Product();
                 int id = rs.getInt(1);
-
+                int sellerId = rs.getInt("sellerId");
                 String name = rs.getString("name");
-                float originalPrice = rs.getFloat("originalPrice");
-                float promotePrice = rs.getFloat("promotePrice");
-                int stock = rs.getInt("stock");
-                Date createDate = DateUtil.t2d( rs.getTimestamp("createDate"));
-
+                int inventory = rs.getInt("inventory");
+                float price = rs.getFloat("price");
+                Date dateAdded = DateUtil.t2d(rs.getTimestamp("dateAdded"));
+                User seller = new UserDAO().get(sellerId);
+                Category category = new CategoryDAO().get(categoryId);
+                
                 bean.setName(name);
-                bean.setOriginalPrice(originalPrice);
-                bean.setPromotePrice(promotePrice);
-                bean.setStock(stock);
-                bean.setCreateDate(createDate);
+                bean.setInventory(inventory);
+                bean.setPrice(price);
+                bean.setDateAdded(dateAdded);
+                bean.setCategory(category);
+                bean.setSeller(seller);
+                
                 bean.setId(id);
                 bean.setCategory(category);
+                bean.setSeller(seller);
                 setFirstProductImage(bean);
 
                 beans.add(bean);
@@ -207,44 +222,139 @@ public class ProductDAO {
 
         String sql = "select * from Product limit ?,? ";
 
-        // for postgresql
-  		if (DBUtil.DBMS.equals("postgresql")) {
-  			sql = "select * from Product limit LIMIT ? OFFSET ? ";
-  		}
-
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
 
             ps.setInt(1, start);
             ps.setInt(2, count);
 
-            // for postgresql
- 			if (DBUtil.DBMS.equals("postgresql")) {
- 				ps.setInt(2, start);
- 				ps.setInt(1, count);
- 			}
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+            	Product bean = new Product();
+                int id = rs.getInt(1);
+                int sellerId = rs.getInt("sellerId");
+                int categoryId = rs.getInt("categoryId");
+                String name = rs.getString("name");
+                int inventory = rs.getInt("inventory");
+                float price = rs.getFloat("price");
+                Date dateAdded = DateUtil.t2d(rs.getTimestamp("dateAdded"));
+                User seller = new UserDAO().get(sellerId);
+                Category category = new CategoryDAO().get(categoryId);
+                
+                bean.setName(name);
+                bean.setInventory(inventory);
+                bean.setPrice(price);
+                bean.setDateAdded(dateAdded);
+                bean.setCategory(category);
+                bean.setSeller(seller);
+                
+                bean.setId(id);
+                bean.setCategory(category);
+                bean.setSeller(seller);
+                setFirstProductImage(bean);
+
+                beans.add(bean);
+            }
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+        return beans;
+    }
+
+
+    public List<Product> listBySeller(int sellerId, int categoryId) {
+        return listBySeller(sellerId, categoryId, 0, Short.MAX_VALUE);
+    }
+
+   
+    public List<Product> listBySeller(int sellerId, int categoryId, int start, int count) {
+        List<Product> beans = new ArrayList<Product>();
+
+        String sql = "select * from product where sellerId = ? and categoryId = ? order by id desc limit ?,? ";
+
+        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+        	ps.setInt(1, sellerId);
+            ps.setInt(2, categoryId);
+            ps.setInt(3, start);
+            ps.setInt(4, count);
 
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
                 Product bean = new Product();
                 int id = rs.getInt(1);
-                int cid = rs.getInt("cid");
+
                 String name = rs.getString("name");
-                float originalPrice = rs.getFloat("originalPrice");
-                float promotePrice = rs.getFloat("promotePrice");
-                int stock = rs.getInt("stock");
-                Date createDate = DateUtil.t2d( rs.getTimestamp("createDate"));
-
+                int inventory = rs.getInt("inventory");
+                float price = rs.getFloat("price");
+                Date dateAdded = DateUtil.t2d(rs.getTimestamp("dateAdded"));
+                User seller = new UserDAO().get(sellerId);
+                Category category = new CategoryDAO().get(categoryId);
+                
                 bean.setName(name);
-                bean.setOriginalPrice(originalPrice);
-                bean.setPromotePrice(promotePrice);
-                bean.setStock(stock);
-                bean.setCreateDate(createDate);
-                bean.setId(id);
-
-                Category category = new CategoryDAO().get(cid);
+                bean.setInventory(inventory);
+                bean.setPrice(price);
+                bean.setDateAdded(dateAdded);
                 bean.setCategory(category);
+                bean.setSeller(seller);
+                
+                bean.setId(id);
+                bean.setCategory(category);
+                bean.setSeller(seller);
+                setFirstProductImage(bean);
+
                 beans.add(bean);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return beans;
+    }
+
+    public List<Product> listBySeller(int sellerId) {
+        return listBySeller(sellerId, 0, Short.MAX_VALUE);
+    }
+
+    public List<Product> listBySeller(int sellerId, int start, int count) {
+        List<Product> beans = new ArrayList<Product>();
+
+        String sql = "select * from product where sellerId = ? limit ?,? ";
+
+        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+
+        	ps.setInt(1, sellerId);
+            ps.setInt(2, start);
+            ps.setInt(3, count);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+            	 Product bean = new Product();
+                 int id = rs.getInt(1);
+                 
+                 int categoryId = rs.getInt("categoryId");
+                 String name = rs.getString("name");
+                 int inventory = rs.getInt("inventory");
+                 float price = rs.getFloat("price");
+                 Date dateAdded = DateUtil.t2d(rs.getTimestamp("dateAdded"));
+                 User seller = new UserDAO().get(sellerId);
+                 Category category = new CategoryDAO().get(categoryId);
+
+                 bean.setName(name);
+                 bean.setInventory(inventory);
+                 bean.setPrice(price);
+                 bean.setDateAdded(dateAdded);
+                 bean.setCategory(category);
+                 bean.setSeller(seller);
+                 
+                 bean.setId(id);
+                 bean.setCategory(category);
+                 bean.setSeller(seller);
+                 setFirstProductImage(bean);
+
+                 beans.add(bean);
             }
         } catch (SQLException e) {
 
@@ -284,60 +394,5 @@ public class ProductDAO {
         List<ProductImage> pis= new ProductImageDAO().list(p, ProductImageDAO.type_single);
         if(!pis.isEmpty())
             p.setFirstProductImage(pis.get(0));
-    }
-
-    public void setSaleNumber(Product p) {
-        int saleCount = new OrderItemDAO().getSaleCount(p.getId());
-        p.setSaleCount(saleCount);
-
-    }
-
-    public void setSaleNumber(List<Product> products) {
-        for (Product p : products) {
-            setSaleNumber(p);
-        }
-    }
-
-    public List<Product> search(String keyword, int start, int count) {
-         List<Product> beans = new ArrayList<Product>();
-
-         if(null==keyword||0==keyword.trim().length())
-             return beans;
-            String sql = "select * from Product where name like ? limit ?,? ";
-
-            try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
-                ps.setString(1, "%"+keyword.trim()+"%");
-                ps.setInt(2, start);
-                ps.setInt(3, count);
-
-                ResultSet rs = ps.executeQuery();
-
-                while (rs.next()) {
-                    Product bean = new Product();
-                    int id = rs.getInt(1);
-                    int cid = rs.getInt("cid");
-                    String name = rs.getString("name");
-                    float originalPrice = rs.getFloat("originalPrice");
-                    float promotePrice = rs.getFloat("promotePrice");
-                    int stock = rs.getInt("stock");
-                    Date createDate = DateUtil.t2d( rs.getTimestamp("createDate"));
-
-                    bean.setName(name);
-                    bean.setOriginalPrice(originalPrice);
-                    bean.setPromotePrice(promotePrice);
-                    bean.setStock(stock);
-                    bean.setCreateDate(createDate);
-                    bean.setId(id);
-
-                    Category category = new CategoryDAO().get(cid);
-                    bean.setCategory(category);
-                    setFirstProductImage(bean);
-                    beans.add(bean);
-                }
-            } catch (SQLException e) {
-
-                e.printStackTrace();
-            }
-            return beans;
     }
 }

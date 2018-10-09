@@ -10,7 +10,7 @@ import main.java.model.dao.CategoryDAO;
 public class CategoryDAOTest {
 	public static CategoryDAO categorydao = new CategoryDAO();
 	public static Category category = new Category();
-	public static int cid;
+	public static int categoryId;
 	
 	@BeforeClass
 	public static void testAdd() {
@@ -18,7 +18,7 @@ public class CategoryDAOTest {
 		
 		// create category
 		category.setName("Book");
-		cid = categorydao.add(category);
+		categoryId = categorydao.add(category);
 	}
 	
 	@Test
@@ -30,7 +30,7 @@ public class CategoryDAOTest {
 	@AfterClass
 	public static void testDelete() {
 		// delete category
-		categorydao.delete(cid);
+		categorydao.delete(categoryId);
 		
 		System.out.println("Test End...");
 	}

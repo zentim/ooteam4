@@ -7,46 +7,57 @@ import java.util.Date;
 import org.junit.*;
 
 import main.java.model.bean.ProductImage;
+import main.java.model.bean.User;
 import main.java.model.bean.Category;
 import main.java.model.bean.Product;
 import main.java.model.dao.ProductImageDAO;
+import main.java.model.dao.UserDAO;
 import main.java.model.dao.CategoryDAO;
 import main.java.model.dao.ProductDAO;
 
 public class ProductImageDAOTest {
 	public static CategoryDAO categorydao = new CategoryDAO();
 	public static Category category = new Category();
-	public static int cid;
+	public static int categoryId;
+	
+	public static UserDAO userdao = new UserDAO();
+	public static User user = new User(); 
+	public static int userId;
 	
 	public static ProductDAO productdao = new ProductDAO();
 	public static Product product = new Product();
-	public static int pid;
+	public static int productId;
 	
 	public static ProductImageDAO productimagedao = new ProductImageDAO();
 	public static ProductImage productimage = new ProductImage();
-	public static int piid;
+	public static int productImageId;
 	
 	@BeforeClass
 	public static void testAdd() {
 		// create category
 		category.setName("Book");
-		cid = categorydao.add(category);
+		categoryId = categorydao.add(category);
+		
+		// create user
+		user.setEmail("abc@abc.com");
+		user.setPassword("1234");
+		userId = userdao.add(user);
 		
 		// create product
 		product.setName("Harry Potter");
-		product.setOriginalPrice(1000);
-		product.setPromotePrice(800);
-		product.setStock(5);
-		product.setCategory(categorydao.get(cid));
-		product.setCreateDate(new Date());
-		pid = productdao.add(product);
+		product.setInventory(5);
+		product.setPrice(1000);
+		product.setDateAdded(new Date());
+		product.setCategory(categorydao.get(categoryId));
+		product.setSeller(userdao.get(userId));
+		productId = productdao.add(product);
 		
 		System.out.println("Test Start...");
 		
 		// create productimage
-		productimage.setProduct(productdao.get(pid));
+		productimage.setProduct(productdao.get(productId));
 		productimage.setType(ProductImageDAO.type_single);
-		piid = productimagedao.add(productimage);
+		productImageId = productimagedao.add(productimage);
 	}
 	
 	@Test
@@ -59,15 +70,18 @@ public class ProductImageDAOTest {
 	@AfterClass
 	public static void testDelete() {
 		// delete productimage
-		productimagedao.delete(piid);
+		productimagedao.delete(productImageId);
 		
 		System.out.println("Test End...");
 		
 		// delete product
-		productdao.delete(pid);
+		productdao.delete(productId);
+		
+		// delete user
+		userdao.delete(userId);
 		
 		// delete category
-		categorydao.delete(cid);
+		categorydao.delete(categoryId);
 	}
 
 }

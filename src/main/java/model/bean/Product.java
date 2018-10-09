@@ -1,66 +1,56 @@
 package main.java.model.bean;
 
-
 import java.util.Date;
- 
 import java.util.List;
- 
+
 public class Product {
+		private int id;
     private String name;
-    private float originalPrice;
-    private float promotePrice;
-    private int stock;
-    private Date createDate;
+    private float price;
+    private int inventory;
+    private Date dateAdded;
     private Category category;
-    private int id;
     private ProductImage firstProductImage;
     private List<ProductImage> productImages;
     private List<ProductImage> productSingleImages;
     private List<ProductImage> productDetailImages;
-    private int reviewCount;
-    private int saleCount;
+    private User seller;
     
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
 	}
-	public float getOriginalPrice() {
-		return originalPrice;
+	public float getPrice() {
+		return price;
 	}
-	public void setOriginalPrice(float originalPrice) {
-		this.originalPrice = originalPrice;
+	public void setPrice(float price) {
+		this.price = price;
 	}
-	public float getPromotePrice() {
-		return promotePrice;
+	public int getInventory() {
+		return inventory;
 	}
-	public void setPromotePrice(float promotePrice) {
-		this.promotePrice = promotePrice;
+	public void setInventory(int inventory) {
+		this.inventory = inventory;
 	}
-	public int getStock() {
-		return stock;
+	public Date getDateAdded() {
+		return dateAdded;
 	}
-	public void setStock(int stock) {
-		this.stock = stock;
-	}
-	public Date getCreateDate() {
-		return createDate;
-	}
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
+	public void setDateAdded(Date dateAdded) {
+		this.dateAdded = dateAdded;
 	}
 	public Category getCategory() {
 		return category;
 	}
 	public void setCategory(Category category) {
 		this.category = category;
-	}
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
 	}
 	public ProductImage getFirstProductImage() {
 		return firstProductImage;
@@ -86,19 +76,13 @@ public class Product {
 	public void setProductDetailImages(List<ProductImage> productDetailImages) {
 		this.productDetailImages = productDetailImages;
 	}
-	public int getReviewCount() {
-		return reviewCount;
+	public User getSeller() {
+		return seller;
 	}
-	public void setReviewCount(int reviewCount) {
-		this.reviewCount = reviewCount;
+	public void setSeller(User seller) {
+		this.seller = seller;
 	}
-	public int getSaleCount() {
-		return saleCount;
-	}
-	public void setSaleCount(int saleCount) {
-		this.saleCount = saleCount;
-	}
- 
+	
+
     
-     
 }

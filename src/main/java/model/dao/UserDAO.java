@@ -20,7 +20,7 @@ public class UserDAO {
         int total = 0;
         try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
 
-            String sql = "select count(*) from User_";
+            String sql = "select count(*) from user";
 
             ResultSet rs = s.executeQuery(sql);
             while (rs.next()) {
@@ -35,13 +35,13 @@ public class UserDAO {
 
     public int add(User bean) {
 
-        String sql = "insert into User_ values(DEFAULT ,? ,?)";
+        String sql = "insert into user values(DEFAULT ,? ,?)";
         try (
-            Connection c = DBUtil.getConnection(); 
+            Connection c = DBUtil.getConnection();
             PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         ) {
 
-            ps.setString(1, bean.getName());
+            ps.setString(1, bean.getEmail());
             ps.setString(2, bean.getPassword());
 
             ps.execute();
@@ -50,23 +50,24 @@ public class UserDAO {
             if (rs.next()) {
                 int id = rs.getInt(1);
                 bean.setId(id);
-                
+
                 return id;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
+
         return 0;
     }
 
     public void update(User bean) {
 
-        String sql = "update User_ set name= ? , password = ? where id = ? ";
+        String sql = "update user set email = ?, password = ? where userId = ? ";
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
 
-            ps.setString(1, bean.getName());
+        	ps.setString(1, bean.getEmail());
             ps.setString(2, bean.getPassword());
+            
             ps.setInt(3, bean.getId());
 
             ps.execute();
@@ -82,7 +83,7 @@ public class UserDAO {
 
         try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
 
-            String sql = "delete from User_ where id = " + id;
+            String sql = "delete from user where userId = " + id;
 
             s.execute(sql);
 
@@ -97,23 +98,26 @@ public class UserDAO {
 
         try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
 
-            String sql = "select * from User_ where id = " + id;
+            String sql = "select * from user where userId = " + id;
 
             ResultSet rs = s.executeQuery(sql);
 
             if (rs.next()) {
                 bean = new User();
-                String name = rs.getString("name");
-                bean.setName(name);
+                
+                String email = rs.getString("email");
                 String password = rs.getString("password");
+                
+                bean.setEmail(email);
                 bean.setPassword(password);
+                
                 bean.setId(id);
             }
 
         } catch (SQLException e) {
-
             e.printStackTrace();
         }
+        
         return bean;
     }
 
@@ -124,23 +128,12 @@ public class UserDAO {
     public List<User> list(int start, int count) {
         List<User> beans = new ArrayList<User>();
 
-        String sql = "select * from User_ order by id desc limit ?,? ";
-        
-        // for postgresql
-    if (DBUtil.DBMS.equals("postgresql")) {
-      sql = "select * from User_ order by id desc LIMIT ? OFFSET ? ";
-    }
+        String sql = "select * from user order userId desc limit ?,? ";
 
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
 
             ps.setInt(1, start);
             ps.setInt(2, count);
-            
-            // for postgresql
-      if (DBUtil.DBMS.equals("postgresql")) {
-        ps.setInt(2, start);
-        ps.setInt(1, count);
-      }
 
             ResultSet rs = ps.executeQuery();
 
@@ -148,9 +141,10 @@ public class UserDAO {
                 User bean = new User();
                 int id = rs.getInt(1);
 
-                String name = rs.getString("name");
-                bean.setName(name);
+                String email = rs.getString("email");
                 String password = rs.getString("password");
+                
+                bean.setEmail(email);
                 bean.setPassword(password);
 
                 bean.setId(id);
@@ -163,24 +157,24 @@ public class UserDAO {
         return beans;
     }
 
-    public boolean isExist(String name) {
-        User user = get(name);
-        return user!=null;
+    public boolean isExist(String email) {
+        User user = get(email);
+        return user != null;
 
     }
 
-    public User get(String name) {
+    public User get(String email) {
         User bean = null;
 
-        String sql = "select * from User_ where name = ?";
+        String sql = "select * from user where email = ?";
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
-            ps.setString(1, name);
-            ResultSet rs =ps.executeQuery();
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
                 bean = new User();
-                int id = rs.getInt("id");
-                bean.setName(name);
+                int id = rs.getInt("userId");
+                bean.setEmail(email);
                 String password = rs.getString("password");
                 bean.setPassword(password);
                 bean.setId(id);
@@ -192,28 +186,28 @@ public class UserDAO {
         }
         return bean;
     }
-
-    public User get(String name, String password) {
+    
+    public User get(String email, String password) {
         User bean = null;
 
-        String sql = "select * from User_ where name = ? and password=?";
+        String sql = "select * from user where email = ? and password = ?";
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
-            ps.setString(1, name);
-            ps.setString(2, password);
-            ResultSet rs =ps.executeQuery();
+            ps.setString(1, email);
+            ps.setString(2, email);
+            ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
                 bean = new User();
-                int id = rs.getInt("id");
-                bean.setName(name);
+                int id = rs.getInt("userId");
+                bean.setEmail(email);
                 bean.setPassword(password);
                 bean.setId(id);
             }
 
         } catch (SQLException e) {
-
             e.printStackTrace();
         }
+        
         return bean;
     }
 

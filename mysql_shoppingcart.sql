@@ -17,23 +17,21 @@ CREATE DATABASE IF NOT EXISTS `mysql_shoppingcart` /*!40100 DEFAULT CHARACTER SE
 USE `mysql_shoppingcart`;
 
 -- 傾印  表格 mysql_shoppingcart.account 結構
-CREATE TABLE IF NOT EXISTS `account` (
-  `accountId` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `userId` int(10) unsigned NOT NULL,
-  `account` varchar(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `user` (
+  `userId` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `email` varchar(100) NOT NULL,
   `password` varchar(20) NOT NULL,
-  `type` tinyint(4) DEFAULT '2',
-  PRIMARY KEY (`accountId`)
+  PRIMARY KEY (`userId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 取消選取資料匯出。
 -- 傾印  表格 mysql_shoppingcart.order 結構
-CREATE TABLE IF NOT EXISTS `order` (
+CREATE TABLE IF NOT EXISTS `order_` (
   `orderId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `userId` int(10) unsigned NOT NULL,
   `dateOrdered` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `datePaid` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `state` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `state` varchar(255) DEFAULT NULL,
   `total` float unsigned NOT NULL,
   `deliverMethod` tinyint(3) unsigned NOT NULL,
   `address` varchar(100) NOT NULL,
@@ -44,10 +42,10 @@ CREATE TABLE IF NOT EXISTS `order` (
 -- 傾印  表格 mysql_shoppingcart.order_item 結構
 CREATE TABLE IF NOT EXISTS `order_item` (
   `orderItemId` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `orderId` int(11) unsigned DEFAULT NULL,
   `userId` int(11) unsigned NOT NULL,
   `productId` int(11) unsigned NOT NULL,
   `quantity` int(11) unsigned NOT NULL,
-  `orderId` int(11) unsigned DEFAULT NULL,
   `state` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `originalPrice` float unsigned NOT NULL,
   `promotionalPrice` float unsigned NOT NULL,
@@ -61,8 +59,9 @@ CREATE TABLE IF NOT EXISTS `product` (
   `name` varchar(20) NOT NULL,
   `inventory` int(10) unsigned NOT NULL DEFAULT '0',
   `price` float unsigned NOT NULL,
-  `dateAdded` date NOT NULL,
+  `dateAdded` datetime DEFAULT NULL,
   `categoryId` int(11) unsigned NOT NULL,
+  `sellerId` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`productId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -86,19 +85,6 @@ CREATE TABLE IF NOT EXISTS `subscription` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 取消選取資料匯出。
--- 傾印  表格 mysql_shoppingcart.user 結構
-CREATE TABLE IF NOT EXISTS `user` (
-  `userId` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `firstName` varchar(10) NOT NULL,
-  `lastName` varchar(20) NOT NULL,
-  `phone` varchar(10) NOT NULL,
-  `email` varchar(50) NOT NULL,
-  `address` varchar(100) NOT NULL,
-  `gender` tinyint(3) unsigned NOT NULL,
-  PRIMARY KEY (`userId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- 取消選取資料匯出。
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
@@ -111,13 +97,14 @@ CREATE TABLE IF NOT EXISTS `category` (
 
 CREATE TABLE IF NOT EXISTS `discount_type` (
   `discountTypeId` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(10) NOT NULL,
+  `name` varchar(255) NOT NULL,
   PRIMARY KEY (`discountTypeId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `promotion` (
   `promotionId` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(10) NOT NULL,
+  `discountTypeId` int(11) unsigned NOT NULL,
+  `name` varchar(255) NOT NULL,
   `dateFrom` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `dateTo` datetime DEFAULT NULL,
   `state` tinyint(3) unsigned NOT NULL DEFAULT '0',
