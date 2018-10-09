@@ -76,8 +76,10 @@ $(function(){
                                 }
                         );                          
                     }
-                    else{
-                        $("#loginModal").modal('show');                     
+                    else{       
+                        document.getElementById('myModal').style.display = "block";
+	              		  $('.register-div').css("display","none");
+	              		  $('.login-div').css("display","block");
                     }
                 }
         );      
