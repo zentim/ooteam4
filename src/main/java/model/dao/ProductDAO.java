@@ -171,7 +171,7 @@ public class ProductDAO {
     public List<Product> list(int categoryId, int start, int count) {
         List<Product> beans = new ArrayList<Product>();
         
-        String sql = "select * from Product where categoryId = ? order by id desc limit ?,? ";
+        String sql = "select * from Product where categoryId = ? order by productId desc limit ?,? ";
 
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
             ps.setInt(1, categoryId);
@@ -373,6 +373,10 @@ public class ProductDAO {
     public void fill(Category c) {
         List<Product> ps = this.list(c.getId());
         c.setProducts(ps);
+        
+        for(Product p : c.getProducts()) {
+        	System.out.println("378: " + p.getId());
+        }
     }
 
     public void fillByRow(List<Category> cs) {
@@ -380,9 +384,9 @@ public class ProductDAO {
         for (Category c : cs) {
             List<Product> products =  c.getProducts();
             List<List<Product>> productsByRow =  new ArrayList<>();
-            for (int i = 0; i < products.size(); i+=productNumberEachRow) {
-                int size = i+productNumberEachRow;
-                size= size>products.size()?products.size():size;
+            for (int i = 0; i < products.size(); i += productNumberEachRow) {
+                int size = i + productNumberEachRow;
+                size = size > products.size() ? products.size() : size;
                 List<Product> productsOfEachRow =products.subList(i, size);
                 productsByRow.add(productsOfEachRow);
             }

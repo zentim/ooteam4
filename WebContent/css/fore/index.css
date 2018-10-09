@@ -48,6 +48,8 @@
 
 }
 
+
+
 .round a{
 	background-color:gray;
 }
@@ -59,11 +61,44 @@ a:link {
 
 .sidenav a:hover {
 	color:white;
-	background-color:black;
+	
 }
 
 .btn{
 	
 	margin:10px;
 }
+
+.sidenav a{
+	color:#101010;
+}
+
+  .sidenav ul {
+  width:100%;
+    float: none;
+    display: block;
+  }
+  .sidenav .navbar-nav li {
+  width:100%;
+    float: none;
+    display: block;
+  }
+  .sidenav .navbar li a {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    color:#101010;
+  }
+  
+  .sidenav .navbar-nav li a:hover {
+  
+  color:white;
+    background:#101010;
+  }
+}
+
+@media (min-width: 768px) {
+  .sidenav .navbar .navbar-collapse {
+    padding: 0;
+    max-height: none;
+  }
 

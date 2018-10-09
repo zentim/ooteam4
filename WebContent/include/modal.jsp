@@ -24,7 +24,7 @@
 					            </div>
 						
 						        <div class="form-group">
-						            <input type="text" name="name" class="form-control" id="name" placeholder="Account">
+						            <input type="text" name="email" class="form-control" id="email" placeholder="Email">
 						        </div>
 						
 						        <div class="form-group">
@@ -70,7 +70,7 @@ $(function(){
     </c:if>
      
     $("form.loginForm").submit(function(){
-        if(0 == $("#name").val().length || 0 == $("#password").val().length){
+        if(0 == $("#email").val().length || 0 == $("#password").val().length){
             $("span.errorMessage").html("請輸入帳號密碼");
             $("div.loginErrorMessageDiv").show();           
             return false;

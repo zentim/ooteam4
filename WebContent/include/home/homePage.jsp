@@ -40,7 +40,7 @@
 							            
 							        </div>
 							        <p style="text-align: right;">${fn:substring(p.name, 0, 20)}<br>
-							        	<b>$<fmt:formatNumber type="number" value="${p.promotePrice}" minFractionDigits="2"/></b>
+							        	<b>$<fmt:formatNumber type="number" value="${p.price}" minFractionDigits="2"/></b>
 							        </p>
 							    </div>
 						    </a>

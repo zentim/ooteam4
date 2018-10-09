@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import main.java.model.bean.Category;
 import main.java.model.bean.Product;
-import main.java.model.bean.PropertyValue;
 import main.java.model.util.Page;
 
 @WebServlet("/productServlet")
@@ -20,17 +19,15 @@ public class ProductServlet extends BaseBackServlet {
 		Category c = categoryDAO.get(cid);
 		
 		String name = request.getParameter("name");
-		float originalPrice = Float.parseFloat(request.getParameter("originalPrice"));
-		float promotePrice = Float.parseFloat(request.getParameter("promotePrice"));
-		int stock = Integer.parseInt(request.getParameter("stock"));
+		float price = Float.parseFloat(request.getParameter("price"));
+		int inventory = Integer.parseInt(request.getParameter("inventory"));
 		
 		Product p = new Product();
 		
 		p.setCategory(c);
 		p.setName(name);
-		p.setOriginalPrice(originalPrice);
-		p.setPromotePrice(promotePrice);
-		p.setStock(stock);
+		p.setPrice(price);
+		p.setInventory(inventory);
 		
 		productDAO.add(p);
 		
@@ -61,17 +58,15 @@ public class ProductServlet extends BaseBackServlet {
 		Category c = categoryDAO.get(cid);
 		
 		int id = Integer.parseInt(request.getParameter("id"));
-		int stock = Integer.parseInt(request.getParameter("stock"));
-		float originalPrice = Float.parseFloat(request.getParameter("originalPrice"));
-		float promotePrice = Float.parseFloat(request.getParameter("promotePrice"));
+		int inventory = Integer.parseInt(request.getParameter("inventory"));
+		float price = Float.parseFloat(request.getParameter("price"));
 		String name = request.getParameter("name");
 		
 		Product p = new Product();
 		
 		p.setName(name);
-		p.setOriginalPrice(originalPrice);
-		p.setPromotePrice(promotePrice);
-		p.setStock(stock);
+		p.setPrice(price);
+		p.setInventory(inventory);
 		p.setId(id);
 		p.setCategory(c);
 		
@@ -98,28 +93,28 @@ public class ProductServlet extends BaseBackServlet {
 		return "admin/listProduct.jsp";
 	}
 
-	public String editPropertyValue(HttpServletRequest request, HttpServletResponse response, Page page) {
-		int id = Integer.parseInt(request.getParameter("id"));
-		Product p = productDAO.get(id);
-		request.setAttribute("p", p);
-		propertyValueDAO.init(p);
-		
-		List<PropertyValue> pvs = propertyValueDAO.list(p.getId());
-		
-		request.setAttribute("pvs", pvs);
-		
-		return "admin/editPropertyValue.jsp";
-	}
+//	public String editPropertyValue(HttpServletRequest request, HttpServletResponse response, Page page) {
+//		int id = Integer.parseInt(request.getParameter("id"));
+//		Product p = productDAO.get(id);
+//		request.setAttribute("p", p);
+//		propertyValueDAO.init(p);
+//		
+//		List<PropertyValue> pvs = propertyValueDAO.list(p.getId());
+//		
+//		request.setAttribute("pvs", pvs);
+//		
+//		return "admin/editPropertyValue.jsp";
+//	}
 	
-	public String updatePropertyValue(HttpServletRequest request, HttpServletResponse response, Page page) {
-		int pvid = Integer.parseInt(request.getParameter("pvid"));
-		String value = request.getParameter("value");
-		
-		PropertyValue pv = propertyValueDAO.get(pvid);
-		pv.setValue(value);
-		propertyValueDAO.update(pv);
-		
-		return "%success";
-	}
+//	public String updatePropertyValue(HttpServletRequest request, HttpServletResponse response, Page page) {
+//		int pvid = Integer.parseInt(request.getParameter("pvid"));
+//		String value = request.getParameter("value");
+//		
+//		PropertyValue pv = propertyValueDAO.get(pvid);
+//		pv.setValue(value);
+//		propertyValueDAO.update(pv);
+//		
+//		return "%success";
+//	}
 	
 }

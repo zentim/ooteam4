@@ -121,7 +121,7 @@
 			        </c:if>
 	              
 	            	<c:if test="${!empty user}">
-			            <li><a href="forepersonalDetail">${user.name}</a></li>
+			            <li><a href="forepersonalDetail">${user.email}</a></li>
 			            <li><a href="forelogout">Logout</a></li>
 			        </c:if>
 			         

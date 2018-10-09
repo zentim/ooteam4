@@ -7,25 +7,31 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import main.java.model.dao.CategoryDAO;
+import main.java.model.dao.DiscountTypeDAO;
 import main.java.model.dao.OrderDAO;
 import main.java.model.dao.OrderItemDAO;
 import main.java.model.dao.ProductDAO;
+import main.java.model.dao.ProductDetailDAO;
 import main.java.model.dao.ProductImageDAO;
-import main.java.model.dao.PropertyDAO;
-import main.java.model.dao.PropertyValueDAO;
+import main.java.model.dao.PromotionDAO;
+import main.java.model.dao.PromotionItemDAO;
+import main.java.model.dao.SubscriptionDAO;
 import main.java.model.dao.UserDAO;
 import main.java.model.util.Page;
 
 public class BaseForeServlet extends HttpServlet {
 	
 	protected CategoryDAO categoryDAO = new CategoryDAO();
-    protected OrderDAO orderDAO = new OrderDAO();
-    protected OrderItemDAO orderItemDAO = new OrderItemDAO();
-    protected ProductDAO productDAO = new ProductDAO();
-    protected ProductImageDAO productImageDAO = new ProductImageDAO();
-    protected PropertyDAO propertyDAO = new PropertyDAO();
-    protected PropertyValueDAO propertyValueDAO = new PropertyValueDAO();
-    protected UserDAO userDAO = new UserDAO();
+	protected DiscountTypeDAO discountTypeDAO = new DiscountTypeDAO();
+	protected OrderDAO orderDAO = new OrderDAO();
+	protected OrderItemDAO orderItemDAO = new OrderItemDAO();
+	protected ProductDAO productDAO = new ProductDAO();
+	protected ProductDetailDAO productDetailDAO = new ProductDetailDAO();
+	protected ProductImageDAO productImageDAO = new ProductImageDAO();
+	protected PromotionDAO promotionDAO = new PromotionDAO();
+	protected PromotionItemDAO promotionItemDAO = new PromotionItemDAO();
+	protected SubscriptionDAO subscriptionDao = new SubscriptionDAO();
+	protected UserDAO userDAO = new UserDAO();
      
     public void service(HttpServletRequest request, HttpServletResponse response) {
         try {

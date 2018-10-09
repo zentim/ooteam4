@@ -17,7 +17,6 @@ import main.java.model.bean.Order;
 import main.java.model.bean.OrderItem;
 import main.java.model.bean.Product;
 import main.java.model.bean.ProductImage;
-import main.java.model.bean.PropertyValue;
 import main.java.model.bean.User;
 import main.java.model.dao.CategoryDAO;
 import main.java.model.dao.OrderDAO;
@@ -39,18 +38,18 @@ public class ForeServlet extends BaseForeServlet {
 	}
 
 	public String register(HttpServletRequest request, HttpServletResponse response, Page page) {
-        String name = request.getParameter("name");
+        String email = request.getParameter("email");
         String password = request.getParameter("password");
-        name = HtmlUtils.htmlEscape(name);
-        boolean exist = userDAO.isExist(name);
+        email = HtmlUtils.htmlEscape(email);
+        boolean exist = userDAO.isExist(email);
 
         if (exist) {
-            request.setAttribute("msg", "用戶名已經被使用，不能使用");
+            request.setAttribute("msg", "Email has been used!!!");
             return "register.jsp";
         }
 
         User user = new User();
-        user.setName(name);
+        user.setEmail(email);
         user.setPassword(password);
         userDAO.add(user);
 
@@ -58,18 +57,22 @@ public class ForeServlet extends BaseForeServlet {
     }
 
 	public String login(HttpServletRequest request, HttpServletResponse response, Page page) {
-        String name = request.getParameter("name");
-        name = HtmlUtils.htmlEscape(name);
+        String email = request.getParameter("email");
+        email = HtmlUtils.htmlEscape(email);
         String password = request.getParameter("password");
+        
+        System.out.println(email);
+        System.out.println(password);
 
-        User user = userDAO.get(name, password);
+        User user = userDAO.get(email, password);
 
         if (null == user) {
-            request.setAttribute("msg", "帳號密碼錯誤");
+            request.setAttribute("msg", "Account Error!!!");
             return "login.jsp";
         }
         request.getSession().setAttribute("user", user);
-        return "@forehome";
+        System.out.println("login success");
+        return "%forehome";
     }
 
     public String logout(HttpServletRequest request, HttpServletResponse response, Page page) {
@@ -84,11 +87,8 @@ public class ForeServlet extends BaseForeServlet {
         List<ProductImage> productDetailImages = productImageDAO.list(p, ProductImageDAO.type_detail);
         p.setProductSingleImages(productSingleImages);
         p.setProductDetailImages(productDetailImages);
-        List<PropertyValue> pvs = propertyValueDAO.list(p.getId());
-        productDAO.setSaleNumber(p);;
 
         request.setAttribute("p", p);
-        request.setAttribute("pvs", pvs);
         return "product.jsp";
     }
 
@@ -194,7 +194,7 @@ public class ForeServlet extends BaseForeServlet {
             int oiid = Integer.parseInt(oiidString);
             OrderItem ot = orderItemDAO.get(oiid);
             ois.add(ot);
-            total += (ot.getProduct().getPromotePrice() * ot.getNumber());
+            total += (ot.getProduct().getPrice() * ot.getQuantity());
         }
         request.getSession().setAttribute("ois", ois);
         request.setAttribute("total", total);
@@ -213,7 +213,7 @@ public class ForeServlet extends BaseForeServlet {
         List<OrderItem> ois = orderItemDAO.listByUser(user.getId());
         for (OrderItem oi : ois) {
             if (oi.getProduct().getId() == p.getId()) {
-                oi.setNumber(oi.getNumber() + num);
+            	oi.setQuantity(oi.getQuantity() + num);
                 orderItemDAO.update(oi);
                 found = true;
                 break;
@@ -223,7 +223,7 @@ public class ForeServlet extends BaseForeServlet {
         if (!found) {
             OrderItem oi = new OrderItem();
             oi.setUser(user);
-            oi.setNumber(num);
+            oi.setQuantity(num);
             oi.setProduct(p);
             orderItemDAO.add(oi);
         }
@@ -249,7 +249,7 @@ public class ForeServlet extends BaseForeServlet {
         int num = Integer.parseInt(request.getParameter("num"));
         int oiid = Integer.parseInt(request.getParameter("oiid"));
         OrderItem oi = orderItemDAO.get(oiid);
-        oi.setNumber(num);
+        oi.setQuantity(num);
         orderItemDAO.update(oi);
         return "%success";
     }
@@ -272,29 +272,22 @@ public class ForeServlet extends BaseForeServlet {
             return "@login.jsp";
 
         String address = request.getParameter("address");
-        String receiver = request.getParameter("receiver");
-        String phone = request.getParameter("phone");
-
 
         Order order = new Order();
         String orderCode = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date()) + RandomUtils.nextInt(1, 10000);
 
-        order.setOrderCode(orderCode);
-        order.setAddress(address);
-
-        order.setReceiver(receiver);
-        order.setPhone(phone);
-
-        order.setCreateDate(new Date());
         order.setUser(user);
-        order.setStatus(OrderDAO.waitPay);
+        order.setDateOrdered(new Date());
+        order.setState(OrderDAO.waitPay);
+        
+        order.setAddress(address);
 
         orderDAO.add(order);
         float total =0;
         for (OrderItem oi: ois) {
             oi.setOrder(order);
             orderItemDAO.update(oi);
-            total+=oi.getProduct().getPromotePrice() * oi.getNumber();
+            total+=oi.getProduct().getPrice() * oi.getQuantity();
         }
 
         return "@forepay?oid=" + order.getId() + "&total=" + total;
@@ -309,8 +302,8 @@ public class ForeServlet extends BaseForeServlet {
     public String paied(HttpServletRequest request, HttpServletResponse response, Page page){
           int oid = Integer.parseInt(request.getParameter("oid"));
           Order order = orderDAO.get(oid);
-          order.setStatus(orderDAO.waitDelivery);
-          order.setPayDate(new Date());
+          order.setState(orderDAO.waitDelivery);
+          order.setDatePaid(new Date());
           orderDAO.update(order);
           request.setAttribute("o", order);
           return "paied.jsp";
@@ -329,7 +322,7 @@ public class ForeServlet extends BaseForeServlet {
     public String deleteOrder(HttpServletRequest request, HttpServletResponse response, Page page){
         int oid = Integer.parseInt(request.getParameter("oid"));
         Order o = orderDAO.get(oid);
-        o.setStatus(OrderDAO.delete);
+        o.setState(OrderDAO.delete);
         orderDAO.update(o);
         return "%success";
     }

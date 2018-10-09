@@ -17,12 +17,15 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import main.java.model.dao.CategoryDAO;
+import main.java.model.dao.DiscountTypeDAO;
 import main.java.model.dao.OrderDAO;
 import main.java.model.dao.OrderItemDAO;
 import main.java.model.dao.ProductDAO;
+import main.java.model.dao.ProductDetailDAO;
 import main.java.model.dao.ProductImageDAO;
-import main.java.model.dao.PropertyDAO;
-import main.java.model.dao.PropertyValueDAO;
+import main.java.model.dao.PromotionDAO;
+import main.java.model.dao.PromotionItemDAO;
+import main.java.model.dao.SubscriptionDAO;
 import main.java.model.dao.UserDAO;
 import main.java.model.util.Page;
 
@@ -39,19 +42,22 @@ public abstract class BaseBackServlet extends HttpServlet {
 	public abstract String list(HttpServletRequest request, HttpServletResponse response, Page page);
 	
 	protected CategoryDAO categoryDAO = new CategoryDAO();
+	protected DiscountTypeDAO discountTypeDAO = new DiscountTypeDAO();
 	protected OrderDAO orderDAO = new OrderDAO();
 	protected OrderItemDAO orderItemDAO = new OrderItemDAO();
 	protected ProductDAO productDAO = new ProductDAO();
+	protected ProductDetailDAO productDetailDAO = new ProductDetailDAO();
 	protected ProductImageDAO productImageDAO = new ProductImageDAO();
-	protected PropertyDAO propertyDAO = new PropertyDAO();
-	protected PropertyValueDAO propertyValueDAO = new PropertyValueDAO();
+	protected PromotionDAO promotionDAO = new PromotionDAO();
+	protected PromotionItemDAO promotionItemDAO = new PromotionItemDAO();
+	protected SubscriptionDAO subscriptionDao = new SubscriptionDAO();
 	protected UserDAO userDAO = new UserDAO();
 	
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
 		try {
-			// 獲取分頁信息
+			// get pagination info
 			int start = 0;
 			int count = 5;
 			
@@ -68,19 +74,20 @@ public abstract class BaseBackServlet extends HttpServlet {
 			
 			Page page = new Page(start, count);
 			
-			// 借助反射調用對應的方法
+			// Call the corresponding method with reflection
 			String method = (String) req.getAttribute("method");
 			
 			Method m = this.getClass().getMethod(method, javax.servlet.http.HttpServletRequest.class, 
 					javax.servlet.http.HttpServletResponse.class, Page.class);
 			String redirect = m.invoke(this, req, resp, page).toString();
 			
-			// 根據方法的返回值，進行相應的客戶端跳轉、服務端跳轉，或者僅僅是輸出字符串
+			// According to the return value of the method, 
+			// the corresponding client redirect, server redirect, or just the output string
 			if (redirect.startsWith("@")) {
-				// 客戶端跳轉
+				// client redirect
 				resp.sendRedirect(redirect.substring(1));
 			} else if (redirect.startsWith("%")) {
-				// 服務端跳轉
+				// server redirect
 				resp.getWriter().print(redirect.substring(1));
 			} else {
 				req.getRequestDispatcher(redirect).forward(req, resp); 
@@ -98,7 +105,7 @@ public abstract class BaseBackServlet extends HttpServlet {
 		try {
 			DiskFileItemFactory factory = new DiskFileItemFactory();
 			ServletFileUpload upload = new ServletFileUpload(factory);
-			// 設置上傳文件的大小限制為 10M
+			// Set the size of the uploaded file to 10M
 			factory.setSizeThreshold(1024 * 1024);
 			
 			List items = upload.parseRequest(request);
@@ -106,7 +113,7 @@ public abstract class BaseBackServlet extends HttpServlet {
 			while (iter.hasNext()) {
 				FileItem item = (FileItem) iter.next();
 				if (!item.isFormField()) {
-					// item.getInputStream() 獲取上傳文件的輸入流
+					// item.getInputStream() //Get the input stream of the uploaded file
 					is = item.getInputStream();
 				} else {
 					String paramName = item.getFieldName();
@@ -118,6 +125,7 @@ public abstract class BaseBackServlet extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 		return is;
 	}
 

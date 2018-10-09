@@ -3,6 +3,7 @@ package test.java.model.dao;
 import static org.junit.Assert.*;
 
 import java.util.Date;
+import java.util.List;
 
 import org.junit.*;
 
@@ -59,6 +60,18 @@ public class ProductDAOTest {
 	public void testTotalBySeller() {
 		int result = productdao.getTotalBySeller(userId, categoryId);
 		assertNotNull("should not be null", result);
+	}
+	
+	@Test
+	public void testList() {
+		List<Product> products = productdao.list();
+		if (products == null) {
+			System.out.println("product list is null");
+		} else {
+			for (Product p : products) {
+				System.out.println("product id: " + p.getId());
+			}
+		}
 	}
 	
 	
