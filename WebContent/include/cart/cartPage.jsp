@@ -29,7 +29,7 @@
     </thead>
 
     <tbody>
-      <c:forEach items="${ois }" var="oi">
+      <c:forEach items="${ ois }" var="oi">
         <tr oiid="${oi.id}" class="cartProductItemTR">
 
             <td align="left">

@@ -62,9 +62,6 @@ public class ForeServlet extends BaseForeServlet {
         String email = request.getParameter("email");
         email = HtmlUtils.htmlEscape(email);
         String password = request.getParameter("password");
-        
-        System.out.println(email);
-        System.out.println(password);
 
         User user = userDAO.get(email, password);
 
@@ -198,13 +195,9 @@ public class ForeServlet extends BaseForeServlet {
         double total = 0;
         for (String oiidString : oiids) {
             int oiid = Integer.parseInt(oiidString);
-            System.out.println("199: " + oiid);
             OrderItem ot = orderItemDAO.get(oiid);
-            System.out.println("201: ");
             ois.add(ot);
-            System.out.println("203: ");
             total += (ot.getProduct().getPrice() * ot.getQuantity());
-            System.out.println("205: " + total);
         }
         request.getSession().setAttribute("ois", ois);
         request.setAttribute("total", total);
@@ -323,6 +316,7 @@ public class ForeServlet extends BaseForeServlet {
         User user = (User) request.getSession().getAttribute("user");
         List<Order> os = orderDAO.list(user.getId(), orderDAO.delete);
         orderItemDAO.fill(os);
+  
         request.setAttribute("os", os);
         return "bought.jsp";
     }

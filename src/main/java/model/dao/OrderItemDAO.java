@@ -133,26 +133,18 @@ public class OrderItemDAO {
                 int state = rs.getInt("state");
                 float originalPrice = rs.getFloat("originalPrice");
                 float promotionalPrice = rs.getFloat("promotionalPrice");
-                System.out.println("136: ");
                 Product product = new ProductDAO().get(productId);
                 User user = new UserDAO().get(userId);
 
-                System.out.println("140: ");
                 if(-1 != orderId){
                     Order order = new OrderDAO().get(orderId);
                     bean.setOrder(order);
-                    System.out.println("144: ");
                 }
                 bean.setProduct(product);
-                System.out.println("147: ");
                 bean.setUser(user);
-                System.out.println("149: ");
                 bean.setQuantity(quantity);
-                System.out.println("151: ");
                 bean.setState(state);
-                System.out.println("153: ");
                 bean.setOriginalPrice(originalPrice);
-                System.out.println("155: ");
                 bean.setPromotionalPrice(promotionalPrice);
 
                 bean.setId(id);
@@ -223,7 +215,7 @@ public class OrderItemDAO {
     public List<OrderItem> listByOrder(int orderId, int start, int count) {
         List<OrderItem> beans = new ArrayList<OrderItem>();
 
-        String sql = "select * from order_item where orderItemId = ? order by orderItemId desc limit ?,? ";
+        String sql = "select * from order_item where orderId = ? order by orderItemId desc limit ?,? ";
 
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
 
@@ -270,7 +262,7 @@ public class OrderItemDAO {
 
     public void fill(List<Order> os) {
         for (Order o : os) {
-            List<OrderItem> ois=listByOrder(o.getId());
+            List<OrderItem> ois = listByOrder(o.getId());
             float total = 0;
             int totalNumber = 0;
             for (OrderItem oi : ois) {
