@@ -2,9 +2,13 @@
     pageEncoding="UTF-8" isELIgnored="false"%>
 
 
-<div class="col-sm-2 sidenav">
-    <p><a href="/type?madeOf=glastic">glasstic bottle</a></p>
-    <p><a href="/stainless_steel">Stainless Steel bottle</a></p>
-    <p><a href="/plastic">Plastic bottle</a></p>
-    <p><a href="/thermos">Thermos bottle</a></p>
+<div class="col-sm-2 sidenav" style="padding:10px 0px 10px 0px;">
+
+    <ul class="nav navbar-nav" >
+            <li class="active"><a href="#">glasstic bottle</a></li>
+            <li><a href="#">Stainless Steel bottle</a></li>
+            <li><a href="#">Plastic bottle</a></li>
+            <li><a href="#">Thermos bottle</a></li>
+            <li><a href="#">Reviews <span class="badge">1,118</span></a></li>
+    </ul>
 </div>
