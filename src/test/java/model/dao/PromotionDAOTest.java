@@ -12,20 +12,20 @@ import main.java.model.dao.DiscountTypeDAO;
 import main.java.model.dao.PromotionDAO;
 
 public class PromotionDAOTest {
-	public static DiscountTypeDAO discounttypedao = new DiscountTypeDAO();
-	public static DiscountType discounttype = new DiscountType();
-	public static int discountTypeId;
-	
+  public static DiscountTypeDAO discounttypedao = new DiscountTypeDAO();
+  public static DiscountType discounttype = new DiscountType();
+  public static int discountTypeId;
+
   public static PromotionDAO promotiondao = new PromotionDAO();
   public static Promotion promotion = new Promotion();
   public static int promotionId;
 
   @BeforeClass
   public static void testAdd() {
-	// create discounttype
+    // create discounttype
     discounttype.setName("Buy X Get Y Free");
     discountTypeId = discounttypedao.add(discounttype);
-	  
+
     System.out.println("Test Start...");
 
     // create promotion
@@ -49,7 +49,7 @@ public class PromotionDAOTest {
     promotiondao.delete(promotionId);
 
     System.out.println("Test End...");
-    
+
     // delete discounttype
     discounttypedao.delete(discountTypeId);
   }

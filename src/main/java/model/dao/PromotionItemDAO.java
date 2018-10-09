@@ -1,7 +1,5 @@
 package main.java.model.dao;
 
-
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,8 +12,6 @@ import main.java.model.bean.PromotionItem;
 import main.java.model.bean.Product;
 import main.java.model.bean.Promotion;
 import main.java.model.util.DBUtil;
-
-
 
 public class PromotionItemDAO {
 
@@ -39,15 +35,13 @@ public class PromotionItemDAO {
     public int add(PromotionItem bean) {
 
         String sql = "insert into promotion_item values(DEFAULT,?, ?, ?, ?)";
-        try (
-        		Connection c = DBUtil.getConnection();
-        		PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-        ) {
+        try (Connection c = DBUtil.getConnection();
+                PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
             ps.setInt(1, bean.getPromotion().getId());
             ps.setInt(2, bean.getProduct().getId());
             ps.setInt(3, bean.getMinQuantity());
             ps.setInt(4, bean.getDiscountOf());
-            
+
             ps.execute();
 
             ResultSet rs = ps.getGeneratedKeys();
@@ -69,7 +63,7 @@ public class PromotionItemDAO {
 
         String sql = "update promotion_item set promotionId=?, productId=?, minQuantity=?, discountOf=?  where promotionId = ?";
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
-        	ps.setInt(1, bean.getPromotion().getId());
+            ps.setInt(1, bean.getPromotion().getId());
             ps.setInt(2, bean.getProduct().getId());
             ps.setInt(3, bean.getMinQuantity());
             ps.setInt(4, bean.getDiscountOf());
@@ -108,14 +102,13 @@ public class PromotionItemDAO {
             ResultSet rs = s.executeQuery(sql);
 
             if (rs.next()) {
-            	int promotionId = rs.getInt("promotionId");
+                int promotionId = rs.getInt("promotionId");
                 int productId = rs.getInt("productId");
                 int minQuantity = rs.getInt("minQuantity");
                 int discountOf = rs.getInt("discountOf");
-                
+
                 Promotion promotion = new PromotionDAO().get(promotionId);
                 Product product = new ProductDAO().get(productId);
-                
 
                 bean.setPromotion(promotion);
                 bean.setProduct(product);
@@ -128,7 +121,7 @@ public class PromotionItemDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
+
         return bean;
     }
 
@@ -157,16 +150,15 @@ public class PromotionItemDAO {
                 int productId = rs.getInt("productId");
                 int minQuantity = rs.getInt("minQuantity");
                 int discountOf = rs.getInt("discountOf");
-                
+
                 Promotion promotion = new PromotionDAO().get(promotionId);
                 Product product = new ProductDAO().get(productId);
-                
 
                 bean.setPromotion(promotion);
                 bean.setProduct(product);
                 bean.setMinQuantity(minQuantity);
                 bean.setDiscountOf(discountOf);
-                
+
                 bean.setId(id);
                 beans.add(bean);
             }
@@ -176,6 +168,7 @@ public class PromotionItemDAO {
         }
         return beans;
     }
+
     public List<PromotionItem> listByPromotion(int promotionId) {
         return listByPromotion(promotionId, 0, Short.MAX_VALUE);
     }
@@ -194,22 +187,21 @@ public class PromotionItemDAO {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-            	PromotionItem bean = new PromotionItem();
+                PromotionItem bean = new PromotionItem();
                 int id = rs.getInt(1);
 
                 int productId = rs.getInt("productId");
                 int minQuantity = rs.getInt("minQuantity");
                 int discountOf = rs.getInt("discountOf");
-                
+
                 Promotion promotion = new PromotionDAO().get(promotionId);
                 Product product = new ProductDAO().get(productId);
-                
 
                 bean.setPromotion(promotion);
                 bean.setProduct(product);
                 bean.setMinQuantity(minQuantity);
                 bean.setDiscountOf(discountOf);
-                
+
                 bean.setId(id);
                 beans.add(bean);
             }
@@ -238,26 +230,24 @@ public class PromotionItemDAO {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-            	PromotionItem bean = new PromotionItem();
+                PromotionItem bean = new PromotionItem();
                 int id = rs.getInt(1);
 
                 int promotionId = rs.getInt("promotionId");
                 int minQuantity = rs.getInt("minQuantity");
                 int discountOf = rs.getInt("discountOf");
-                
+
                 Promotion promotion = new PromotionDAO().get(promotionId);
                 Product product = new ProductDAO().get(productId);
-                
 
                 bean.setPromotion(promotion);
                 bean.setProduct(product);
                 bean.setMinQuantity(minQuantity);
                 bean.setDiscountOf(discountOf);
-                
+
                 bean.setId(id);
                 beans.add(bean);
-                
-                
+
             }
         } catch (SQLException e) {
 

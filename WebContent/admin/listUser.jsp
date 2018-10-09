@@ -3,7 +3,7 @@
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@include file="../include/admin/adminHeader.jsp"%>
-<%@include file="../include/admin/adminNavigator.jsp"%>	
+<%@include file="../include/admin/adminNavigator.jsp"%>
 
 <h2>User</h2>
 <div class="table-responsive">
@@ -11,10 +11,10 @@
     <thead>
       <tr>
         <th>#</th>
-        <th>User Email</th>
+        <th>Email</th>
       </tr>
     </thead>
-    
+
     <tbody>
       <c:forEach items="${userList}" var="u">
       <tr>

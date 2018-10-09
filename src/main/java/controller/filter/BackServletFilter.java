@@ -20,7 +20,7 @@ public class BackServletFilter implements Filter {
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -28,28 +28,27 @@ public class BackServletFilter implements Filter {
 			throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
-		
+
 		String contextPath = req.getServletContext().getContextPath(); // ooteam4/
 		String uri = req.getRequestURI(); // ooteam4/admin_category_list
-		
+
 		uri = StringUtils.remove(uri, contextPath);
 		if (uri.startsWith("/admin_")) {
 			String ServletPath = StringUtils.substringBetween(uri, "_", "_") + "Servlet"; // categoryServlet
 			String method = StringUtils.substringAfterLast(uri, "_");
 			req.setAttribute("method", method); // categoryServlet.list()
 			request.getRequestDispatcher("/" + ServletPath).forward(req, res);
+
 			return;
 		}
-		
+
 		chain.doFilter(req, res);
 	}
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		// TODO Auto-generated method stub
-		
-	}
 
-	
+	}
 
 }

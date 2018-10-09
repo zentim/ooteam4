@@ -40,7 +40,7 @@ public abstract class BaseBackServlet extends HttpServlet {
 	public abstract String update(HttpServletRequest request, HttpServletResponse response, Page page);
 
 	public abstract String list(HttpServletRequest request, HttpServletResponse response, Page page);
-	
+
 	protected CategoryDAO categoryDAO = new CategoryDAO();
 	protected DiscountTypeDAO discountTypeDAO = new DiscountTypeDAO();
 	protected OrderDAO orderDAO = new OrderDAO();
@@ -52,15 +52,15 @@ public abstract class BaseBackServlet extends HttpServlet {
 	protected PromotionItemDAO promotionItemDAO = new PromotionItemDAO();
 	protected SubscriptionDAO subscriptionDao = new SubscriptionDAO();
 	protected UserDAO userDAO = new UserDAO();
-	
+
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
+
 		try {
 			// get pagination info
 			int start = 0;
 			int count = 5;
-			
+
 			try {
 				start = Integer.parseInt(req.getParameter("page.start"));
 			} catch (Exception e) {
@@ -71,17 +71,17 @@ public abstract class BaseBackServlet extends HttpServlet {
 			} catch (Exception e) {
 				// TODO: handle exception
 			}
-			
+
 			Page page = new Page(start, count);
-			
+
 			// Call the corresponding method with reflection
 			String method = (String) req.getAttribute("method");
-			
-			Method m = this.getClass().getMethod(method, javax.servlet.http.HttpServletRequest.class, 
+
+			Method m = this.getClass().getMethod(method, javax.servlet.http.HttpServletRequest.class,
 					javax.servlet.http.HttpServletResponse.class, Page.class);
 			String redirect = m.invoke(this, req, resp, page).toString();
-			
-			// According to the return value of the method, 
+
+			// According to the return value of the method,
 			// the corresponding client redirect, server redirect, or just the output string
 			if (redirect.startsWith("@")) {
 				// client redirect
@@ -90,14 +90,14 @@ public abstract class BaseBackServlet extends HttpServlet {
 				// server redirect
 				resp.getWriter().print(redirect.substring(1));
 			} else {
-				req.getRequestDispatcher(redirect).forward(req, resp); 
+				req.getRequestDispatcher(redirect).forward(req, resp);
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
-		
+
 	}
 
 	public InputStream parseUpload(HttpServletRequest request, Map<String, String> params) {
@@ -107,7 +107,7 @@ public abstract class BaseBackServlet extends HttpServlet {
 			ServletFileUpload upload = new ServletFileUpload(factory);
 			// Set the size of the uploaded file to 10M
 			factory.setSizeThreshold(1024 * 1024);
-			
+
 			List items = upload.parseRequest(request);
 			Iterator iter = items.iterator();
 			while (iter.hasNext()) {
@@ -125,7 +125,7 @@ public abstract class BaseBackServlet extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return is;
 	}
 

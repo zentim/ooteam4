@@ -27,12 +27,12 @@ import main.java.model.util.Page;
 @WebServlet("/productImageServlet")
 public class ProductImageServlet extends BaseBackServlet {
 
-	@Override
-	public String add(HttpServletRequest request, HttpServletResponse response, Page page) {
-		// 上傳文件的輸入流
+    @Override
+    public String add(HttpServletRequest request, HttpServletResponse response, Page page) {
+        // 上傳文件的輸入流
         InputStream is = null;
         // 提交上傳文件時的其他參數
-        Map<String,String> params = new HashMap<>();
+        Map<String, String> params = new HashMap<>();
 
         // 解析上傳
         is = parseUpload(request, params);
@@ -48,16 +48,16 @@ public class ProductImageServlet extends BaseBackServlet {
         productImageDAO.add(pi);
 
         // 生成文件
-        String fileName = pi.getId()+ ".jpg";
+        String fileName = pi.getId() + ".jpg";
         String imageFolder;
         String imageFolder_small = null;
         String imageFolder_middle = null;
-        if(ProductImageDAO.type_single.equals(pi.getType())){
-            imageFolder= request.getSession().getServletContext().getRealPath("img/productSingle");
-            imageFolder_small= request.getSession().getServletContext().getRealPath("img/productSingle_small");
-            imageFolder_middle= request.getSession().getServletContext().getRealPath("img/productSingle_middle");
+        if (ProductImageDAO.type_single.equals(pi.getType())) {
+            imageFolder = request.getSession().getServletContext().getRealPath("img/productSingle");
+            imageFolder_small = request.getSession().getServletContext().getRealPath("img/productSingle_small");
+            imageFolder_middle = request.getSession().getServletContext().getRealPath("img/productSingle_middle");
         } else {
-            imageFolder= request.getSession().getServletContext().getRealPath("img/productDetail");
+            imageFolder = request.getSession().getServletContext().getRealPath("img/productDetail");
         }
 
         File f = new File(imageFolder, fileName);
@@ -65,8 +65,8 @@ public class ProductImageServlet extends BaseBackServlet {
 
         // 複製文件
         try {
-            if(is != null && is.available() != 0){
-                try(FileOutputStream fos = new FileOutputStream(f)){
+            if (is != null && is.available() != 0) {
+                try (FileOutputStream fos = new FileOutputStream(f)) {
                     byte b[] = new byte[1024 * 1024];
                     int length = 0;
                     while (-1 != (length = is.read(b))) {
@@ -77,7 +77,7 @@ public class ProductImageServlet extends BaseBackServlet {
                     BufferedImage img = ImageUtil.change2jpg(f);
                     ImageIO.write(img, "jpg", f);
 
-                    if(ProductImageDAO.type_single.equals(pi.getType())){
+                    if (ProductImageDAO.type_single.equals(pi.getType())) {
                         File f_small = new File(imageFolder_small, fileName);
                         f_small.getParentFile().mkdirs();
                         File f_middle = new File(imageFolder_middle, fileName);
@@ -87,8 +87,7 @@ public class ProductImageServlet extends BaseBackServlet {
                         ImageUtil.resizeImage(f, 217, 190, f_middle);
                     }
 
-                }
-                catch(Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -98,18 +97,19 @@ public class ProductImageServlet extends BaseBackServlet {
         }
 
         return "@admin_productImage_list?pid=" + p.getId();
-	}
+    }
 
-	@Override
-	public String delete(HttpServletRequest request, HttpServletResponse response, Page page) {
-		int id = Integer.parseInt(request.getParameter("id"));
+    @Override
+    public String delete(HttpServletRequest request, HttpServletResponse response, Page page) {
+        int id = Integer.parseInt(request.getParameter("id"));
         ProductImage pi = productImageDAO.get(id);
         productImageDAO.delete(id);
 
-        if(ProductImageDAO.type_single.equals(pi.getType())){
+        if (ProductImageDAO.type_single.equals(pi.getType())) {
             String imageFolder_single = request.getSession().getServletContext().getRealPath("img/productSingle");
             String imageFolder_small = request.getSession().getServletContext().getRealPath("img/productSingle_small");
-            String imageFolder_middle = request.getSession().getServletContext().getRealPath("img/productSingle_middle");
+            String imageFolder_middle = request.getSession().getServletContext()
+                    .getRealPath("img/productSingle_middle");
 
             File f_single = new File(imageFolder_single, pi.getId() + ".jpg");
             f_single.delete();
@@ -124,23 +124,23 @@ public class ProductImageServlet extends BaseBackServlet {
         }
 
         return "@admin_productImage_list?pid=" + pi.getProduct().getId();
-	}
+    }
 
-	@Override
-	public String edit(HttpServletRequest request, HttpServletResponse response, Page page) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public String edit(HttpServletRequest request, HttpServletResponse response, Page page) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public String update(HttpServletRequest request, HttpServletResponse response, Page page) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public String update(HttpServletRequest request, HttpServletResponse response, Page page) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public String list(HttpServletRequest request, HttpServletResponse response, Page page) {
-		int pid = Integer.parseInt(request.getParameter("pid"));
+    @Override
+    public String list(HttpServletRequest request, HttpServletResponse response, Page page) {
+        int pid = Integer.parseInt(request.getParameter("pid"));
         Product p = productDAO.get(pid);
         List<ProductImage> pisSingle = productImageDAO.list(p, ProductImageDAO.type_single);
         List<ProductImage> pisDetail = productImageDAO.list(p, ProductImageDAO.type_detail);
@@ -150,8 +150,6 @@ public class ProductImageServlet extends BaseBackServlet {
         request.setAttribute("pisDetail", pisDetail);
 
         return "admin/listProductImage.jsp";
-	}
-
-
+    }
 
 }

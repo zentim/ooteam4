@@ -20,32 +20,31 @@ import main.java.model.dao.PromotionItemDAO;
 import main.java.model.dao.UserDAO;
 
 public class PromotionItemDAOTest {
-	public static DiscountTypeDAO discounttypedao = new DiscountTypeDAO();
-	public static DiscountType discounttype = new DiscountType();
-	public static int discountTypeId;
-	
-	public static PromotionDAO promotiondao = new PromotionDAO();
-	public static Promotion promotion = new Promotion();
-	public static int promotionId;
-  
-	public static CategoryDAO categorydao = new CategoryDAO();
-	public static Category category = new Category();
-	public static int categoryId;
-	
-	public static ProductDAO productdao = new ProductDAO();
-	public static Product product = new Product();
-	public static int productId;
-	
-	public static PromotionItemDAO promotionitemdao = new PromotionItemDAO();
-	public static PromotionItem promotionitem = new PromotionItem();
-	public static int promotionItemId;
+  public static DiscountTypeDAO discounttypedao = new DiscountTypeDAO();
+  public static DiscountType discounttype = new DiscountType();
+  public static int discountTypeId;
+
+  public static PromotionDAO promotiondao = new PromotionDAO();
+  public static Promotion promotion = new Promotion();
+  public static int promotionId;
+
+  public static CategoryDAO categorydao = new CategoryDAO();
+  public static Category category = new Category();
+  public static int categoryId;
+
+  public static ProductDAO productdao = new ProductDAO();
+  public static Product product = new Product();
+  public static int productId;
+
+  public static PromotionItemDAO promotionitemdao = new PromotionItemDAO();
+  public static PromotionItem promotionitem = new PromotionItem();
+  public static int promotionItemId;
 
   @BeforeClass
   public static void testAdd() {
-	// create discounttype
+    // create discounttype
     discounttype.setName("Buy X Get Y Free");
     discountTypeId = discounttypedao.add(discounttype);
-	  
 
     // create promotion
     promotion.setDiscountType(discounttypedao.get(discountTypeId));
@@ -54,20 +53,19 @@ public class PromotionItemDAOTest {
     promotion.setDateTo(new Date());
     promotion.setState(0);
     promotionId = promotiondao.add(promotion);
-    
+
     // create category
-	category.setName("Book");
-	categoryId = categorydao.add(category);
-	
-	
-	// create product
-	product.setName("Harry Potter");
-	product.setInventory(5);
-	product.setPrice(1000);
-	product.setDateAdded(new Date());
-	product.setCategory(categorydao.get(categoryId));
-	productId = productdao.add(product);
-	  
+    category.setName("Book");
+    categoryId = categorydao.add(category);
+
+    // create product
+    product.setName("Harry Potter");
+    product.setInventory(5);
+    product.setPrice(1000);
+    product.setDateAdded(new Date());
+    product.setCategory(categorydao.get(categoryId));
+    productId = productdao.add(product);
+
     System.out.println("Test Start...");
 
     // create promotionitem
@@ -90,16 +88,16 @@ public class PromotionItemDAOTest {
     promotionitemdao.delete(promotionItemId);
 
     System.out.println("Test End...");
-    
+
     // delete product
-	productdao.delete(productId);
-	
-	// delete category
-	categorydao.delete(categoryId);
-    
+    productdao.delete(productId);
+
+    // delete category
+    categorydao.delete(categoryId);
+
     // delete promotion
     promotiondao.delete(promotionId);
-    
+
     // delete discounttype
     discounttypedao.delete(discountTypeId);
   }

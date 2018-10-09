@@ -1,6 +1,5 @@
 package main.java.model.dao;
 
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,8 +10,6 @@ import java.util.List;
 
 import main.java.model.bean.User;
 import main.java.model.util.DBUtil;
-
-
 
 public class UserDAO {
 
@@ -36,10 +33,8 @@ public class UserDAO {
     public int add(User bean) {
 
         String sql = "insert into user values(DEFAULT ,? ,?)";
-        try (
-            Connection c = DBUtil.getConnection();
-            PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-        ) {
+        try (Connection c = DBUtil.getConnection();
+                PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
 
             ps.setString(1, bean.getEmail());
             ps.setString(2, bean.getPassword());
@@ -65,9 +60,9 @@ public class UserDAO {
         String sql = "update user set email = ?, password = ? where userId = ? ";
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
 
-        	ps.setString(1, bean.getEmail());
+            ps.setString(1, bean.getEmail());
             ps.setString(2, bean.getPassword());
-            
+
             ps.setInt(3, bean.getId());
 
             ps.execute();
@@ -104,20 +99,20 @@ public class UserDAO {
 
             if (rs.next()) {
                 bean = new User();
-                
+
                 String email = rs.getString("email");
                 String password = rs.getString("password");
-                
+
                 bean.setEmail(email);
                 bean.setPassword(password);
-                
+
                 bean.setId(id);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
+
         return bean;
     }
 
@@ -143,7 +138,7 @@ public class UserDAO {
 
                 String email = rs.getString("email");
                 String password = rs.getString("password");
-                
+
                 bean.setEmail(email);
                 bean.setPassword(password);
 
@@ -186,7 +181,7 @@ public class UserDAO {
         }
         return bean;
     }
-    
+
     public User get(String email, String password) {
         User bean = null;
 
@@ -207,7 +202,7 @@ public class UserDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
+
         return bean;
     }
 

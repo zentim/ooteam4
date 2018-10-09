@@ -33,10 +33,8 @@ public class ProductDetailDAO {
 
 	public int add(ProductDetail bean) {
 		String sql = "insert into product_detail values(DEFAULT,?, ?, ?)";
-		try (
-				Connection c = DBUtil.getConnection();
-				PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-		) {
+		try (Connection c = DBUtil.getConnection();
+				PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
 			ps.setInt(1, bean.getProduct().getId());
 			ps.setString(2, bean.getField());
 			ps.setString(3, bean.getContent());
@@ -72,8 +70,8 @@ public class ProductDetailDAO {
 			ps.setInt(1, bean.getProduct().getId());
 			ps.setString(2, bean.getField());
 			ps.setString(3, bean.getContent());
-			
-			ps.setInt(4,  bean.getId());
+
+			ps.setInt(4, bean.getId());
 
 			ps.execute();
 
@@ -109,17 +107,17 @@ public class ProductDetailDAO {
 
 			if (rs.next()) {
 				bean = new ProductDetail();
-				
+
 				int productId = rs.getInt("productId");
 				String field = rs.getString("field");
 				String content = rs.getString("content");
-				
+
 				Product product = new ProductDAO().get(productId);
-				
+
 				bean.setProduct(product);
 				bean.setField(field);
 				bean.setContent(content);
-				
+
 				bean.setId(id);
 			}
 
@@ -148,20 +146,20 @@ public class ProductDetailDAO {
 
 			while (rs.next()) {
 				ProductDetail bean = new ProductDetail();
-				
+
 				int productDetailId = rs.getInt("productDetailId");
 				int productId = rs.getInt("productId");
 				String field = rs.getString("field");
 				String content = rs.getString("content");
-				
+
 				Product product = new ProductDAO().get(productId);
-				
+
 				bean.setProduct(product);
 				bean.setField(field);
 				bean.setContent(content);
-				
+
 				bean.setId(productDetailId);
-				
+
 				beans.add(bean);
 			}
 		} catch (SQLException e) {

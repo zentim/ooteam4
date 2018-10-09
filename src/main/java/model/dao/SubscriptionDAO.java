@@ -34,10 +34,8 @@ public class SubscriptionDAO {
 
 	public int add(Subscription bean) {
 		String sql = "insert into subscription values(DEFAULT,?, ?)";
-		try (
-				Connection c = DBUtil.getConnection();
-				PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-		) {
+		try (Connection c = DBUtil.getConnection();
+				PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
 			ps.setInt(1, bean.getUser().getId());
 			ps.setInt(2, bean.getProduct().getId());
 
@@ -107,13 +105,12 @@ public class SubscriptionDAO {
 
 			if (rs.next()) {
 				bean = new Subscription();
-				
-				
+
 				int userId = rs.getInt("userId");
 				int productId = rs.getInt("productId");
 				User user = new UserDAO().get(userId);
 				Product product = new ProductDAO().get(productId);
-				
+
 				bean.setUser(user);
 				bean.setProduct(product);
 				bean.setId(id);
@@ -148,7 +145,7 @@ public class SubscriptionDAO {
 				int productId = rs.getInt("productId");
 				User user = new UserDAO().get(userId);
 				Product product = new ProductDAO().get(productId);
-				
+
 				bean.setUser(user);
 				bean.setProduct(product);
 				beans.add(bean);

@@ -1,7 +1,5 @@
 package main.java.model.dao;
 
-
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,8 +13,6 @@ import main.java.model.bean.OrderItem;
 import main.java.model.bean.Product;
 import main.java.model.bean.User;
 import main.java.model.util.DBUtil;
-
-
 
 public class OrderItemDAO {
 
@@ -40,13 +36,11 @@ public class OrderItemDAO {
     public int add(OrderItem bean) {
 
         String sql = "insert into order_item values(DEFAULT,?, ?, ?, ?, ?, ?, ?)";
-        try (
-        		Connection c = DBUtil.getConnection();
-        		PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-        ) {
+        try (Connection c = DBUtil.getConnection();
+                PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
 
-        	// When an order_item created, it has not order info (orderId) 
-            if(null == bean.getOrder()) {
+            // When an order_item created, it has not order info (orderId)
+            if (null == bean.getOrder()) {
                 ps.setInt(1, -1);
             } else {
                 ps.setInt(1, bean.getOrder().getId());
@@ -57,7 +51,7 @@ public class OrderItemDAO {
             ps.setInt(5, bean.getState());
             ps.setFloat(6, bean.getOriginalPrice());
             ps.setFloat(7, bean.getPromotionalPrice());
-            
+
             ps.execute();
 
             ResultSet rs = ps.getGeneratedKeys();
@@ -79,8 +73,8 @@ public class OrderItemDAO {
 
         String sql = "update order_item set orderId= ?, userId=?, productId=?, quantity=?, state=?, originalPrice=?, promotionalPrice=?  where orderItemId = ?";
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
-        	// When an order_item created, it has not order info (orderId) 
-            if(null == bean.getOrder()) {
+            // When an order_item created, it has not order info (orderId)
+            if (null == bean.getOrder()) {
                 ps.setInt(1, -1);
             } else {
                 ps.setInt(1, bean.getOrder().getId());
@@ -126,8 +120,8 @@ public class OrderItemDAO {
             ResultSet rs = s.executeQuery(sql);
 
             if (rs.next()) {
-            	int orderId = rs.getInt("orderId");
-            	int userId = rs.getInt("userId");
+                int orderId = rs.getInt("orderId");
+                int userId = rs.getInt("userId");
                 int productId = rs.getInt("productId");
                 int quantity = rs.getInt("quantity");
                 int state = rs.getInt("state");
@@ -136,7 +130,7 @@ public class OrderItemDAO {
                 Product product = new ProductDAO().get(productId);
                 User user = new UserDAO().get(userId);
 
-                if(-1 != orderId){
+                if (-1 != orderId) {
                     Order order = new OrderDAO().get(orderId);
                     bean.setOrder(order);
                 }
@@ -153,7 +147,7 @@ public class OrderItemDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
+
         return bean;
     }
 
@@ -184,11 +178,11 @@ public class OrderItemDAO {
                 int state = rs.getInt("state");
                 float originalPrice = rs.getInt("originalPrice");
                 float promotionalPrice = rs.getInt("promotionalPrice");
-                
+
                 Product product = new ProductDAO().get(productId);
                 User user = new UserDAO().get(userId);
 
-                if(-1 != orderId){
+                if (-1 != orderId) {
                     Order order = new OrderDAO().get(orderId);
                     bean.setOrder(order);
                 }
@@ -198,7 +192,7 @@ public class OrderItemDAO {
                 bean.setState(state);
                 bean.setOriginalPrice(originalPrice);
                 bean.setPromotionalPrice(promotionalPrice);
-                
+
                 bean.setId(id);
                 beans.add(bean);
             }
@@ -208,6 +202,7 @@ public class OrderItemDAO {
         }
         return beans;
     }
+
     public List<OrderItem> listByOrder(int orderId) {
         return listByOrder(orderId, 0, Short.MAX_VALUE);
     }
@@ -226,7 +221,7 @@ public class OrderItemDAO {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-            	OrderItem bean = new OrderItem();
+                OrderItem bean = new OrderItem();
                 int id = rs.getInt(1);
 
                 int userId = rs.getInt("userId");
@@ -235,11 +230,11 @@ public class OrderItemDAO {
                 int state = rs.getInt("state");
                 float originalPrice = rs.getInt("originalPrice");
                 float promotionalPrice = rs.getInt("promotionalPrice");
-                
+
                 Product product = new ProductDAO().get(productId);
                 User user = new UserDAO().get(userId);
 
-                if(-1 != orderId){
+                if (-1 != orderId) {
                     Order order = new OrderDAO().get(orderId);
                     bean.setOrder(order);
                 }
@@ -249,7 +244,7 @@ public class OrderItemDAO {
                 bean.setState(state);
                 bean.setOriginalPrice(originalPrice);
                 bean.setPromotionalPrice(promotionalPrice);
-                
+
                 bean.setId(id);
                 beans.add(bean);
             }
@@ -266,8 +261,8 @@ public class OrderItemDAO {
             float total = 0;
             int totalNumber = 0;
             for (OrderItem oi : ois) {
-                 total += oi.getQuantity() * oi.getProduct().getPrice();
-                 totalNumber += oi.getQuantity();
+                total += oi.getQuantity() * oi.getProduct().getPrice();
+                totalNumber += oi.getQuantity();
             }
             o.setTotal(total);
             o.setOrderItems(ois);
@@ -276,10 +271,10 @@ public class OrderItemDAO {
     }
 
     public void fill(Order o) {
-        List<OrderItem> ois=listByOrder(o.getId());
+        List<OrderItem> ois = listByOrder(o.getId());
         float total = 0;
         for (OrderItem oi : ois) {
-        	total += oi.getQuantity() * oi.getProduct().getPrice();
+            total += oi.getQuantity() * oi.getProduct().getPrice();
         }
         o.setTotal(total);
         o.setOrderItems(ois);
@@ -303,7 +298,7 @@ public class OrderItemDAO {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-            	OrderItem bean = new OrderItem();
+                OrderItem bean = new OrderItem();
                 int id = rs.getInt(1);
 
                 int userId = rs.getInt("userId");
@@ -312,11 +307,11 @@ public class OrderItemDAO {
                 int state = rs.getInt("state");
                 float originalPrice = rs.getInt("originalPrice");
                 float promotionalPrice = rs.getInt("promotionalPrice");
-                
+
                 Product product = new ProductDAO().get(productId);
                 User user = new UserDAO().get(userId);
 
-                if(-1 != orderId){
+                if (-1 != orderId) {
                     Order order = new OrderDAO().get(orderId);
                     bean.setOrder(order);
                 }
@@ -326,7 +321,7 @@ public class OrderItemDAO {
                 bean.setState(state);
                 bean.setOriginalPrice(originalPrice);
                 bean.setPromotionalPrice(promotionalPrice);
-                
+
                 bean.setId(id);
                 beans.add(bean);
             }
@@ -338,20 +333,20 @@ public class OrderItemDAO {
     }
 
     public int getSaleCount(int productId) {
-         int total = 0;
-            try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
+        int total = 0;
+        try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
 
-                String sql = "select sum(quantity) from order_item where productId = " + productId;
+            String sql = "select sum(quantity) from order_item where productId = " + productId;
 
-                ResultSet rs = s.executeQuery(sql);
-                while (rs.next()) {
-                    total = rs.getInt(1);
-                }
-            } catch (SQLException e) {
-
-                e.printStackTrace();
+            ResultSet rs = s.executeQuery(sql);
+            while (rs.next()) {
+                total = rs.getInt(1);
             }
-            return total;
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+        return total;
     }
 
 }

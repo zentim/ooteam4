@@ -32,10 +32,8 @@ public class CategoryDAO {
 
 	public int add(Category bean) {
 		String sql = "insert into category values(DEFAULT,?)";
-		try (
-				Connection c = DBUtil.getConnection();
-				PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-		) {
+		try (Connection c = DBUtil.getConnection();
+				PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
 			ps.setString(1, bean.getName());
 
 			int affectedRows = ps.executeUpdate();

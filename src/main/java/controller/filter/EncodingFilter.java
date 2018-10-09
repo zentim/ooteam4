@@ -14,12 +14,12 @@ import javax.servlet.http.HttpServletResponse;
 @WebFilter("/*")
 public class EncodingFilter implements Filter {
 
-    /**
-     * Default constructor. 
-     */
-    public EncodingFilter() {
-        // TODO Auto-generated constructor stub
-    }
+	/**
+	 * Default constructor.
+	 */
+	public EncodingFilter() {
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * @see Filter#destroy()
@@ -31,11 +31,12 @@ public class EncodingFilter implements Filter {
 	/**
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
-	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
+	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
+			throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) req;
-        HttpServletResponse response = (HttpServletResponse) res;
- 
-        request.setCharacterEncoding("UTF-8");
+		HttpServletResponse response = (HttpServletResponse) res;
+
+		request.setCharacterEncoding("UTF-8");
 
 		// pass the request along the filter chain
 		chain.doFilter(request, response);

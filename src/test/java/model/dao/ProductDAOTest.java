@@ -18,19 +18,19 @@ public class ProductDAOTest {
 	public static CategoryDAO categorydao = new CategoryDAO();
 	public static Category category = new Category();
 	public static int categoryId;
-	
+
 	public static ProductDAO productdao = new ProductDAO();
 	public static Product product = new Product();
 	public static int productId;
-	
+
 	@BeforeClass
 	public static void testAdd() {
 		// create category
 		category.setName("Book");
 		categoryId = categorydao.add(category);
-		
+
 		System.out.println("Test Start...");
-		
+
 		// create product
 		product.setName("Harry Potter");
 		product.setInventory(5);
@@ -39,14 +39,13 @@ public class ProductDAOTest {
 		product.setCategory(categorydao.get(categoryId));
 		productId = productdao.add(product);
 	}
-	
+
 	@Test
 	public void testTotal() {
 		int result = productdao.getTotal(categoryId);
 		assertNotNull("should not be null", result);
 	}
 
-	
 	@Test
 	public void testList() {
 		List<Product> products = productdao.list();
@@ -58,15 +57,14 @@ public class ProductDAOTest {
 			}
 		}
 	}
-	
-	
+
 	@AfterClass
 	public static void testDelete() {
 		// delete product
 		productdao.delete(productId);
-		
+
 		System.out.println("Test End...");
-		
+
 		// delete category
 		categorydao.delete(categoryId);
 	}

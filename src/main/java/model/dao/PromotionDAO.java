@@ -35,10 +35,8 @@ public class PromotionDAO {
 
 	public int add(Promotion bean) {
 		String sql = "insert into promotion values(DEFAULT,?, ?, ?, ?, ?)";
-		try (
-				Connection c = DBUtil.getConnection();
-				PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-		) {
+		try (Connection c = DBUtil.getConnection();
+				PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
 			ps.setInt(1, bean.getDiscountType().getId());
 			ps.setString(2, bean.getName());
 			ps.setTimestamp(3, DateUtil.d2t(bean.getDateFrom()));
@@ -78,7 +76,7 @@ public class PromotionDAO {
 			ps.setTimestamp(3, DateUtil.d2t(bean.getDateFrom()));
 			ps.setTimestamp(4, DateUtil.d2t(bean.getDateTo()));
 			ps.setInt(5, bean.getState());
-			
+
 			ps.setInt(6, bean.getId());
 
 			ps.execute();
@@ -115,21 +113,21 @@ public class PromotionDAO {
 
 			if (rs.next()) {
 				bean = new Promotion();
-				
+
 				int discountTypeId = rs.getInt("discountTypeId");
 				String name = rs.getString("name");
 				Date dateFrom = DateUtil.t2d(rs.getTimestamp("dateFrom"));
 				Date dateTo = DateUtil.t2d(rs.getTimestamp("dateTo"));
 				int state = rs.getInt("state");
-				
+
 				DiscountType discountType = new DiscountTypeDAO().get(discountTypeId);
-				
+
 				bean.setDiscountType(discountType);
 				bean.setName(name);
 				bean.setDateFrom(dateFrom);
 				bean.setDateTo(dateTo);
 				bean.setState(state);
-				
+
 				bean.setId(id);
 			}
 
@@ -158,22 +156,22 @@ public class PromotionDAO {
 
 			while (rs.next()) {
 				Promotion bean = new Promotion();
-				
+
 				int discountTypeId = rs.getInt("discountTypeId");
 				String name = rs.getString("name");
 				Date dateFrom = DateUtil.t2d(rs.getTimestamp("dateFrom"));
 				Date dateTo = DateUtil.t2d(rs.getTimestamp("dateTo"));
 				int state = rs.getInt("state");
-				
+
 				DiscountType discountType = new DiscountTypeDAO().get(discountTypeId);
-				
+
 				bean.setDiscountType(discountType);
 				bean.setName(name);
 				bean.setDateFrom(dateFrom);
 				bean.setDateTo(dateTo);
 				bean.setState(state);
-				
-				bean.setId(discountTypeId);				
+
+				bean.setId(discountTypeId);
 				beans.add(bean);
 			}
 		} catch (SQLException e) {

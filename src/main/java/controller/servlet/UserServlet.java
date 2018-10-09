@@ -1,6 +1,5 @@
 package main.java.controller.servlet;
 
-
 import java.util.List;
 
 import javax.servlet.annotation.WebServlet;
@@ -47,7 +46,5 @@ public class UserServlet extends BaseBackServlet {
 		request.setAttribute("page", page);
 		return "admin/listUser.jsp";
 	}
-	
-	
 
 }

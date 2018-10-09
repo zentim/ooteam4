@@ -39,14 +39,14 @@ public class OrderServlet extends BaseBackServlet {
 	@Override
 	public String list(HttpServletRequest request, HttpServletResponse response, Page page) {
 		List<Order> os = orderDAO.list(page.getStart(), page.getCount());
-        orderItemDAO.fill(os);
-        int total = orderDAO.getTotal();
-        page.setTotal(total);
+		orderItemDAO.fill(os);
+		int total = orderDAO.getTotal();
+		page.setTotal(total);
 
-        request.setAttribute("os", os);
-        request.setAttribute("page", page);
+		request.setAttribute("os", os);
+		request.setAttribute("page", page);
 
-        return "admin/listOrder.jsp";
+		return "admin/listOrder.jsp";
 	}
 
 }

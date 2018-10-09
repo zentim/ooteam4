@@ -12,7 +12,6 @@ import main.java.model.bean.Product;
 import main.java.model.bean.ProductImage;
 import main.java.model.util.DBUtil;
 
-
 public class ProductImageDAO {
 
     public static final String type_single = "type_single";
@@ -38,10 +37,8 @@ public class ProductImageDAO {
     public int add(ProductImage bean) {
 
         String sql = "insert into product_image values(DEFAULT,?,?)";
-        try (
-        		Connection c = DBUtil.getConnection();
-        		PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-        ) {
+        try (Connection c = DBUtil.getConnection();
+                PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
             ps.setInt(1, bean.getProduct().getId());
             ps.setString(2, bean.getType());
             ps.execute();
@@ -80,7 +77,7 @@ public class ProductImageDAO {
     }
 
     public ProductImage get(int id) {
-    	ProductImage bean = new ProductImage();
+        ProductImage bean = new ProductImage();
 
         try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
 
@@ -125,7 +122,7 @@ public class ProductImageDAO {
 
             while (rs.next()) {
 
-            	ProductImage bean = new ProductImage();
+                ProductImage bean = new ProductImage();
                 int id = rs.getInt(1);
 
                 bean.setProduct(p);
