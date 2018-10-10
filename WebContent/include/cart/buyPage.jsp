@@ -4,8 +4,8 @@
 <div class="container">
 	<h1 class="form-heading" style="color:white">login Form</h1>
 	<div class="login-form">
-		<div class="main-div">
-			<form action="forecreateOrder" method="post">
+		<div>
+			<form action="forecreateOrder" method="post" style="width: 600px; margin: 0 auto;">
 				<div style="width: 600px; margin: 0 auto;">
 					<div class="panel">
 				   		<h4>輸入收貨地址</h4>   
