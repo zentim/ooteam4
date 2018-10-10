@@ -247,15 +247,23 @@ $(function(){
     });
 
     $(".numberPlus").click(function(){
-        var pid=$(this).attr("pid");
-        var oiid=$(this).attr("oiid");
-        var inventory= $("span.orderItemStock[pid="+pid+"]").text();
-        var price= $("span.orderItemPromotePrice[pid="+pid+"]").text();
-        var num= $(".orderItemNumberSetting[pid="+pid+"]").val();
+        var pid = $(this).attr("pid");
+        var oiid = $(this).attr("oiid");
+        var inventory = $("span.orderItemStock[pid="+pid+"]").text();
+        var price = $("span.orderItemPromotePrice[pid="+pid+"]").text();
+        var num = $(".orderItemNumberSetting[pid="+pid+"]").val();
+        
+        pid = parseInt(pid);
+        oiid = parseInt(oiid);
+        inventory = parseInt(inventory);
+        price = parseFloat(price);
+     	num = parseInt(num);
         
         num++;
-        if(num>inventory)
-            num = inventory;
+        if(num > inventory){
+        	num = inventory;
+        }
+            
         syncPrice(pid, num, price, oiid);
     });
     $(".numberMinus").click(function(){
@@ -264,6 +272,12 @@ $(function(){
         var price= $("span.orderItemPromotePrice[pid="+pid+"]").text();
         var oiid=$(this).attr("oiid");
         var num= $(".orderItemNumberSetting[pid="+pid+"]").val();
+        
+        pid = parseInt(pid);
+        oiid = parseInt(oiid);
+        inventory = parseInt(inventory);
+        price = parseFloat(price);
+     	num = parseInt(num);
         
         --num;
         if(num<=0)
@@ -306,7 +320,7 @@ function syncCreateOrderButton(){
 function syncSelect(){
     var selectAll = true;
     $(".cartProductItemIfSelected").each(function(){
-        if("false"==$(this).attr("selectit")){
+        if("false" == $(this).attr("selectit")){
             selectAll = false;
         }
     });
@@ -346,6 +360,10 @@ function syncPrice(pid, num, price, oiid){
     calcCartSumPriceAndNumber();
 
     var page = "forechangeOrderItem";
+ 	pid = parseInt(pid);
+ 	num = parseInt(num);
+ 	price = parseFloat(price);
+ 	oiid = parseInt(oiid);
     $.post(
         page,
         {"pid": pid, "num": num, "oiid": oiid},

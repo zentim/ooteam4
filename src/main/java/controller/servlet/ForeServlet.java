@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.RandomUtils;
+import org.springframework.http.codec.multipart.SynchronossPartHttpMessageReader;
 import org.springframework.web.util.HtmlUtils;
 
 import main.java.model.bean.Category;
@@ -232,7 +233,7 @@ public class ForeServlet extends BaseForeServlet {
         int num = Integer.parseInt(request.getParameter("num"));
         int oiid = Integer.parseInt(request.getParameter("oiid"));
         OrderItem oi = orderItemDAO.get(oiid);
-
+        
         oi.setQuantity(num);
         orderItemDAO.update(oi);
 
