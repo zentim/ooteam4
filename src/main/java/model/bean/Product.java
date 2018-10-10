@@ -95,4 +95,5 @@ public class Product {
 		this.productDetailImages = productDetailImages;
 	}
 
+	
 }

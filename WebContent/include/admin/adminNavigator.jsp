@@ -7,7 +7,7 @@
       <li class="nav-item">
         <a class="nav-link" href="admin_category_list">
           <span data-feather="layers"></span>
-          Category <span class="sr-only">(current)</span>
+          Category & Product<span class="sr-only">(current)</span>
         </a>
       </li>
       <li class="nav-item">
@@ -20,6 +20,12 @@
         <a class="nav-link" href="admin_user_list">
           <span data-feather="users"></span>
           Customers
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="admin_promotion_list">
+          <span data-feather="anchor"></span>
+          Discount
         </a>
       </li>
     </ul>

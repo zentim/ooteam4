@@ -16,22 +16,23 @@
 <div class="table-responsive table-bordered table-sm">
   <table class="table table-striped table-sm">
     <thead>
-      <tr>
+      <tr align="center">
         <th>#</th>
-        <th>圖片</th>
-        <th>產品名稱</th>
-        <th>原價</th>
-        <th>庫存數量</th>
-        <th>圖片管理</th>
-        <th>設置屬性</th>
-        <th>編輯</th>
-        <th>刪除</th>
+        <th>ProductImage</th>
+        <th>ProductName</th>
+        <th>Price</th>
+        <th>Inventory</th>
+        <th>ImageManage</th>
+        <th>ProductDetailSetting</th>
+        <th>DiscountSetting</th>
+        <th>Edit</th>
+        <th>Delete</th>
       </tr>
     </thead>
 
     <tbody>
       <c:forEach items="${ps}" var="p">
-      <tr>
+      <tr align="center">
         <td>${ p.id }</td>
         <td>
 	        <c:if test="${ !empty p.firstProductImage }">
@@ -52,6 +53,13 @@
           <a href="admin_product_editProductDetail?id=${ p.id }">
             <button type="button" class="btn btn-primary btn-sm">
               <span data-feather="list"></span>
+            </button>
+          </a>
+        </td>
+        <td>
+          <a href="admin_product_editPromotionItem?id=${ p.id }">
+            <button type="button" class="btn btn-primary btn-sm">
+              <span data-feather="edit"></span>
             </button>
           </a>
         </td>
@@ -89,49 +97,53 @@
 
 <div class="card" style="width: 23rem;">
   <div class="card-body">
-    <h4>Add A New Product</h4>
+    <h4>Add</h4>
 
     <form method="post" id="addForm" action="admin_product_add">
-  		<table>
-  			<tr>
-  				<td>ProductName : </td>
-  				<td>
-            <input
-              id="name"
-              name="name"
-              type="text">
-          </td>
-  			</tr>
-  			<tr>
-  				<td>Price : </td>
-  				<td>
-            <input
-              id="price"
-              name="price"
-              type="text">
-          </td>
-  			</tr>
-  			<tr>
-  				<td>Inventory : </td>
-  				<td>
-            <input
-              id="inventory"
-              name="inventory"
-              type="text">
-          </td>
-  			</tr>
-  			<tr>
-  				<td colspan="2" align="center">
-  					<input
-              type="hidden"
-              name="cid"
-              value="${ c.id }">
-  					<button
-              class="btn btn-lg btn-primary btn-block"
-              type="submit">Submit</button>
-  				</td>
-  			</tr>
-  		</table>
+  		
+  			<div class="input-group mb-3">
+			  <div class="input-group-prepend">
+			    <span class="input-group-text" id="inputGroup-sizing-default">ProductName</span>
+			  </div>
+			  <input 
+			  	id="name"
+			  	name="name"
+			  	type="text" 
+			  	class="form-control" 
+			  	aria-label="Sizing example input" 
+			  	aria-describedby="inputGroup-sizing-default">
+			</div>
+  		
+  			<div class="input-group mb-3">
+			  <div class="input-group-prepend">
+			    <span class="input-group-text" id="inputGroup-sizing-default">Price</span>
+			  </div>
+			  <input 
+			  	id="price"
+              	name="price"
+			  	type="text" 
+			  	class="form-control" 
+			  	aria-label="Sizing example input" 
+			  	aria-describedby="inputGroup-sizing-default">
+			</div>
+  			
+  			<div class="input-group mb-3">
+			  <div class="input-group-prepend">
+			    <span class="input-group-text" id="inputGroup-sizing-default">Inventory</span>
+			  </div>
+			  <input 
+			  	id="inventory"
+              	name="inventory"
+			  	type="text" 
+			  	class="form-control" 
+			  	aria-label="Sizing example input" 
+			  	aria-describedby="inputGroup-sizing-default">
+			</div>
+  			
+  			<input type="hidden" name="cid" value="${ c.id }">
+  			<button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+  			
+  		
   	</form>
 
   </div>

@@ -1,6 +1,7 @@
 package main.java.model.bean;
 
 import java.util.Date;
+import java.util.List;
 
 public class Promotion {
 	private int id;
@@ -9,6 +10,7 @@ public class Promotion {
 	private Date dateTo;
 	private int state;
 	private DiscountType discountType;
+	private List<PromotionItem> promotionItems;
 
 	public int getId() {
 		return id;
@@ -58,4 +60,13 @@ public class Promotion {
 		this.discountType = discountType;
 	}
 
+	public List<PromotionItem> getPromotionItems() {
+		return promotionItems;
+	}
+
+	public void setPromotionItems(List<PromotionItem> promotionItems) {
+		this.promotionItems = promotionItems;
+	}
+
+	
 }

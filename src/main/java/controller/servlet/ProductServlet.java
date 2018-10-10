@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import main.java.model.bean.Category;
 import main.java.model.bean.Product;
+import main.java.model.bean.Promotion;
+import main.java.model.bean.PromotionItem;
 import main.java.model.util.Page;
 
 @WebServlet("/productServlet")
@@ -17,11 +19,11 @@ public class ProductServlet extends BaseBackServlet {
 	public String add(HttpServletRequest request, HttpServletResponse response, Page page) {
 		int cid = Integer.parseInt(request.getParameter("cid"));
 		Category c = categoryDAO.get(cid);
-
+		
 		String name = request.getParameter("name");
 		float price = Float.parseFloat(request.getParameter("price"));
 		int inventory = Integer.parseInt(request.getParameter("inventory"));
-
+		
 		Product p = new Product();
 
 		p.setCategory(c);
@@ -77,7 +79,6 @@ public class ProductServlet extends BaseBackServlet {
 
 	@Override
 	public String list(HttpServletRequest request, HttpServletResponse response, Page page) {
-		System.out.println("80: product list");
 		int cid = Integer.parseInt(request.getParameter("cid"));
 		Category c = categoryDAO.get(cid);
 
@@ -120,4 +121,22 @@ public class ProductServlet extends BaseBackServlet {
 	// return "%success";
 	// }
 
+	public String editPromotionItem(HttpServletRequest request, HttpServletResponse response, Page page) {
+		int productId = Integer.parseInt(request.getParameter("id"));
+		Product p = productDAO.get(productId);
+		List<Promotion> ps = promotionDAO.list();
+		PromotionItem pi = promotionItemDAO.getByProduct(productId);
+		
+		request.setAttribute("p", p);
+		request.setAttribute("ps", ps);
+		request.setAttribute("pi", pi);
+		
+		int promotionItemId = promotionItemDAO.getByProduct(productId).getId();
+		if (promotionItemId > 0) {
+			return "admin/editPromotionItem.jsp";
+		}
+		
+		return "admin/listPromotionItem.jsp";
+	}
+	
 }

@@ -22,53 +22,50 @@
 
     <form method="post" id="editForm" action="admin_product_update">
 
-  		<table>
-  			<tr>
-  				<td>產品名稱 : </td>
-  				<td>
-            <input
-              id="name"
-              name="name"
-              type="text"
-              value="${ p.name }">
-          </td>
-  			</tr>
-  			<tr>
-  				<td>原價 : </td>
-  				<td>
-            <input
-              id="price"
-              name="price"
-              type="text"
-              value="${ p.price }">
-          </td>
-  			</tr>
-  			<tr>
-  				<td>庫存 : </td>
-  				<td>
-            <input
-              id="inventory"
-              name="inventory"
-              type="text"
-              value="${ p.inventory }">
-          </td>
-  			</tr>
-  			<tr>
-  				<td colspan="2" align="center">
-  					<input
-              type="hidden"
-              name="id"
-              value="${ p.id }">
-  					<input
-              type="hidden"
-              name="cid"
-              value="${ p.category.id }">
-  					<button
-              class="btn btn-lg btn-primary btn-block"
-              type="submit">Submit</button>
-  				</td>
-  			</tr>
-  		</table>
+  		<div class="input-group mb-3">
+			  <div class="input-group-prepend">
+			    <span class="input-group-text" id="inputGroup-sizing-default">ProductName</span>
+			  </div>
+			  <input 
+			  	id="name"
+			  	name="name"
+			  	type="text" 
+			  	class="form-control" 
+			  	aria-label="Sizing example input" 
+			  	aria-describedby="inputGroup-sizing-default">
+			</div>
+  		
+  			<div class="input-group mb-3">
+			  <div class="input-group-prepend">
+			    <span class="input-group-text" id="inputGroup-sizing-default">Price</span>
+			  </div>
+			  <input 
+			  	id="price"
+              	name="price"
+			  	type="text" 
+			  	class="form-control" 
+			  	aria-label="Sizing example input" 
+			  	aria-describedby="inputGroup-sizing-default">
+			</div>
+  			
+  			<div class="input-group mb-3">
+			  <div class="input-group-prepend">
+			    <span class="input-group-text" id="inputGroup-sizing-default">Inventory</span>
+			  </div>
+			  <input 
+			  	id="inventory"
+              	name="inventory"
+			  	type="text" 
+			  	class="form-control" 
+			  	aria-label="Sizing example input" 
+			  	aria-describedby="inputGroup-sizing-default">
+			</div>
+  		
+  		
+			<input type="hidden" name="id" value="${ p.id }">
+			<input type="hidden" name="cid" value="${ p.category.id }">
+			<button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+				
 
   	</form>
 

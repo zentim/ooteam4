@@ -156,7 +156,7 @@ public class PromotionDAO {
 
 			while (rs.next()) {
 				Promotion bean = new Promotion();
-
+				int promotionId = rs.getInt("promotionId");
 				int discountTypeId = rs.getInt("discountTypeId");
 				String name = rs.getString("name");
 				Date dateFrom = DateUtil.t2d(rs.getTimestamp("dateFrom"));
@@ -171,7 +171,7 @@ public class PromotionDAO {
 				bean.setDateTo(dateTo);
 				bean.setState(state);
 
-				bean.setId(discountTypeId);
+				bean.setId(promotionId);
 				beans.add(bean);
 			}
 		} catch (SQLException e) {

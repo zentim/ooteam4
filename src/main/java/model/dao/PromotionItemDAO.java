@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import main.java.model.bean.PromotionItem;
+import main.java.model.bean.Order;
+import main.java.model.bean.OrderItem;
 import main.java.model.bean.Product;
 import main.java.model.bean.Promotion;
 import main.java.model.util.DBUtil;
@@ -37,7 +39,13 @@ public class PromotionItemDAO {
         String sql = "insert into promotion_item values(DEFAULT,?, ?, ?, ?)";
         try (Connection c = DBUtil.getConnection();
                 PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
-            ps.setInt(1, bean.getPromotion().getId());
+        	
+        	if (bean.getPromotion() == null) {
+        		ps.setInt(1, -1);
+        	} else {
+        		ps.setInt(1, bean.getPromotion().getId());
+        	}
+        	
             ps.setInt(2, bean.getProduct().getId());
             ps.setInt(3, bean.getMinQuantity());
             ps.setInt(4, bean.getDiscountOf());
@@ -61,9 +69,15 @@ public class PromotionItemDAO {
 
     public void update(PromotionItem bean) {
 
-        String sql = "update promotion_item set promotionId=?, productId=?, minQuantity=?, discountOf=?  where promotionId = ?";
+        String sql = "update promotion_item set promotionId=?, productId=?, minQuantity=?, discountOf=?  where promotionItemId = ?";
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
-            ps.setInt(1, bean.getPromotion().getId());
+        	
+        	if (bean.getPromotion() == null) {
+        		ps.setInt(1, -1);
+        	} else {
+        		ps.setInt(1, bean.getPromotion().getId());
+        	}
+            
             ps.setInt(2, bean.getProduct().getId());
             ps.setInt(3, bean.getMinQuantity());
             ps.setInt(4, bean.getDiscountOf());
@@ -116,6 +130,39 @@ public class PromotionItemDAO {
                 bean.setDiscountOf(discountOf);
 
                 bean.setId(id);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return bean;
+    }
+    
+    public PromotionItem getByProduct(int productId) {
+        PromotionItem bean = new PromotionItem();
+
+        try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
+
+            String sql = "select * from promotion_item where productId = " + productId;
+
+            ResultSet rs = s.executeQuery(sql);
+
+            if (rs.next()) {
+            	int promotionItemId = rs.getInt("promotionItemId");
+                int promotionId = rs.getInt("promotionId");
+                int minQuantity = rs.getInt("minQuantity");
+                int discountOf = rs.getInt("discountOf");
+
+                Promotion promotion = new PromotionDAO().get(promotionId);
+                Product product = new ProductDAO().get(productId);
+
+                bean.setPromotion(promotion);
+                bean.setProduct(product);
+                bean.setMinQuantity(minQuantity);
+                bean.setDiscountOf(discountOf);
+
+                bean.setId(promotionItemId);
             }
 
         } catch (SQLException e) {
@@ -254,6 +301,20 @@ public class PromotionItemDAO {
             e.printStackTrace();
         }
         return beans;
+    }
+    
+
+    public void fill(List<Promotion> ps) {
+        for (Promotion p : ps) {
+            List<PromotionItem> pis = listByPromotion(p.getId());
+            p.setPromotionItems(pis);
+        }
+
+    }
+
+    public void fill(Promotion p) {
+    	List<PromotionItem> pis = listByPromotion(p.getId());
+        p.setPromotionItems(pis);
     }
 
 }

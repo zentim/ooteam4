@@ -10,7 +10,7 @@
 <div class="table-responsive table-bordered table-sm">
   <table class="table table-striped table-sm">
     <thead>
-      <tr>
+      <tr align="center">
         <th>#</th>
         <th>分類名稱</th>
         <th>產品管理</th>
@@ -22,7 +22,7 @@
     <tbody>
       <c:forEach items="${thecs}" var="c">
 
-      <tr>
+      <tr align="center">
         <td>${ c.id }</td>
         <td>${ c.name }</td>
         <td>
@@ -73,32 +73,27 @@
 
 <div class="card" style="width: 23rem;">
   <div class="card-body">
-    <h4>Add New Category</h4>
+    <h4>Add</h4>
 
     <form
       method="post"
       id="addForm"
       action="admin_category_add">
-  		<table>
-  			<tr>
-  				<td>分類名稱 : </td>
-  				<td>
-            <input
-              id="name"
-              name="name"
-              type="text">
-          </td>
-  			</tr>
-  			<tr>
-  				<td
-            colspan="2"
-            align="center">
-  					<button
-              class="btn btn-lg btn-primary btn-block"
-              type="submit">Submit</button>
-  				</td>
-  			</tr>
-  		</table>
+  		
+  		<div class="input-group mb-3">
+		  <div class="input-group-prepend">
+		    <span class="input-group-text" id="inputGroup-sizing-default">CategoryName</span>
+		  </div>
+		  <input 
+		  	id="name"
+		  	name="name"
+		  	type="text" 
+		  	class="form-control" 
+		  	aria-label="Sizing example input" 
+		  	aria-describedby="inputGroup-sizing-default">
+		</div>
+  		
+  		<button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
   	</form>
 
   </div>

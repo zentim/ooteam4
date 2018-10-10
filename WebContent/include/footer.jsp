@@ -13,24 +13,7 @@
     
     <%@include file="modal.jsp" %>
     
-    <script>
-	$(".userLoginLink").click(function(){
-        var page = "forecheckLogin";
-        
-        $.get(
-                page,
-                function(result){
-                    if("success" == result){
-                        
-                    }
-                    else{
-                        $("#loginModal").modal('show');                     
-                    }
-                }
-        );      
-        return false;
-    });
-	</script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </body>
 
 </html>

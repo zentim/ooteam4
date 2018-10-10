@@ -24,20 +24,20 @@
     <tbody>
       <c:forEach items="${os}" var="o">
 
-      <tr>
+      <tr align="center">
         <td>${ o.id }</td>
         <td>${ o.statusDesc}</td>
         <td align="right">
-          $<fmt:formatNumber type="number" value="${o.total}" minFractionDigits="2"/>
+          $ <fmt:formatNumber type="number" value="${o.total}" minFractionDigits="2"/>
         </td>
 		    <td align="center">${ o.user.email }</td>
 		    <td align="center">
           <fmt:formatDate value="${o.dateOrdered}" pattern="yyyy-MM-dd HH:mm:ss"/>
         </td>
-        <td align="center">
+        <td>
           <fmt:formatDate value="${o.datePaid}" pattern="yyyy-MM-dd HH:mm:ss"/>
         </td>
-        <td class="text-center">
+        <td>
             <button
               oid=${o.id}
               class="orderPageCheckOrderItems btn btn-primary btn-sm">
