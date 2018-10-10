@@ -30,7 +30,9 @@
 								        	<img style="position:absolute; max-width: 100%; max-height: 100%; top:0; bottom: 0; left: 0; right: 0; margin: auto; " src="img/productSingle/${p.firstProductImage.id}.jpg">
 							        	</div>
 							        	
-							            <span class="w3-tag w3-display-topleft">${ p.promotionItem.id }</span>
+							        	<c:if test="${!empty p.promotionName }">
+							            <span class="w3-tag w3-display-topleft">${ p.promotionName } - ${ p.discountTypeName }</span>
+							            </c:if>
 							            
 							            <!-- 
 							            <div class="w3-display-middle w3-display-hover">

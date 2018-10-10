@@ -8,6 +8,9 @@
     </div>
 
 	<h1>${p.name}</h1>
+	<c:if test="${!empty p.promotionName }">
+     <span class="w3-tag w3-display-topleft">${ p.promotionName } - ${ p.discountTypeName }</span>
+     </c:if>
 	<h3>原價: $<fmt:formatNumber type="number" value="${p.price}" minFractionDigits="2"/></h3>
 	
         
@@ -51,16 +54,18 @@ $(function(){
      
     $(".addCartLink").click(function(){
         var page = "forecheckLogin";
+        console.log(${p.id});
+        console.log($(".productNumberSetting").val());
         $.get(
                 page,
                 function(result){
                     if("success" == result){
                         var pid = ${p.id};
-                        var num= $(".productNumberSetting").val();
+                        var num = $(".productNumberSetting").val();
                         var addCartpage = "foreaddCart";
                         $.get(
                                 addCartpage,
-                                {"pid":pid,"num":num},
+                                {"pid":pid, "num":num},
                                 function(result){
                                     if("success" == result){
                                         $(".addCartButton").html("已加入購物車");

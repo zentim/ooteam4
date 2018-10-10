@@ -17,23 +17,38 @@ import main.java.model.bean.Order;
 import main.java.model.bean.OrderItem;
 import main.java.model.bean.Product;
 import main.java.model.bean.ProductImage;
+import main.java.model.bean.Promotion;
 import main.java.model.bean.User;
 import main.java.model.dao.CategoryDAO;
+import main.java.model.dao.DiscountTypeDAO;
 import main.java.model.dao.OrderDAO;
 import main.java.model.dao.ProductDAO;
 import main.java.model.dao.ProductImageDAO;
+import main.java.model.dao.PromotionDAO;
 import main.java.model.util.Page;
 
 @WebServlet("/foreServlet")
 public class ForeServlet extends BaseForeServlet {
 
     public String home(HttpServletRequest request, HttpServletResponse response, Page page) {
-        List<Category> cs = new CategoryDAO().list();
+        List<Category> cs = categoryDAO.list();
 
         new ProductDAO().fill(cs);
         new ProductDAO().fillByRow(cs);
+        
+        for (Category c : cs) {
+        	for (Product p : c.getProducts()) {
+        		Promotion promotionByProduct = promotionItemDAO.getByProduct(p.getId()).getPromotion();
+        		if (promotionByProduct != null) {
+        			String promotionName = promotionByProduct.getName();
+            		String discountTypeName = promotionByProduct.getDiscountType().getName();
+            		p.setPromotionName(promotionName);
+            		p.setDiscountTypeName(discountTypeName);
+        		}
+        	}
+        }
+        
         request.setAttribute("cs", cs);
-
         return "home.jsp";
     }
 
@@ -93,6 +108,14 @@ public class ForeServlet extends BaseForeServlet {
 
         p.setProductSingleImages(productSingleImages);
         p.setProductDetailImages(productDetailImages);
+        
+        Promotion promotionByProduct = promotionItemDAO.getByProduct(p.getId()).getPromotion();
+		if (promotionByProduct != null) {
+			String promotionName = promotionByProduct.getName();
+    		String discountTypeName = promotionByProduct.getDiscountType().getName();
+    		p.setPromotionName(promotionName);
+    		p.setDiscountTypeName(discountTypeName);
+		}
 
         request.setAttribute("p", p);
         return "product.jsp";
@@ -166,22 +189,24 @@ public class ForeServlet extends BaseForeServlet {
         int num = Integer.parseInt(request.getParameter("num"));
         User user = (User) request.getSession().getAttribute("user");
         Product p = productDAO.get(pid);
-
+        
         boolean found = false;
         List<OrderItem> ois = orderItemDAO.listByUser(user.getId());
         for (OrderItem oi : ois) {
             if (oi.getProduct().getId() == p.getId()) {
                 oi.setQuantity(oi.getQuantity() + num);
+                oi.setOriginalPrice(p.getPrice());
                 orderItemDAO.update(oi);
                 found = true;
                 break;
             }
         }
-
+        
         if (!found) {
             OrderItem oi = new OrderItem();
             oi.setUser(user);
             oi.setQuantity(num);
+            oi.setOriginalPrice(p.getPrice());
             oi.setProduct(p);
             orderItemDAO.add(oi);
         }

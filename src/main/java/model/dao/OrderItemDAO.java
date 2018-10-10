@@ -259,13 +259,14 @@ public class OrderItemDAO {
         for (Order o : os) {
             List<OrderItem> ois = listByOrder(o.getId());
             float total = 0;
-            int totalNumber = 0;
+            int totalQuantity = 0;
             for (OrderItem oi : ois) {
                 total += oi.getQuantity() * oi.getProduct().getPrice();
-                totalNumber += oi.getQuantity();
+                totalQuantity += oi.getQuantity();
             }
             o.setTotal(total);
             o.setOrderItems(ois);
+            o.setTotalQuantity(totalQuantity);
         }
 
     }

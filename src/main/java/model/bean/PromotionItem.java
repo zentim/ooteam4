@@ -7,7 +7,7 @@ public class PromotionItem {
 	private int id;
 	private int minQuantity;
 	private int discountOf;
-	private Promotion promotion;
+	private Promotion promotion = null;
 	private Product product;
 
 	public int getId() {

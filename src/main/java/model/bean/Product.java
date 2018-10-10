@@ -14,6 +14,8 @@ public class Product {
 	private List<ProductImage> productImages;
 	private List<ProductImage> productSingleImages;
 	private List<ProductImage> productDetailImages;
+	private String discountTypeName;
+	private String promotionName;
 
 	public int getId() {
 		return id;
@@ -93,6 +95,22 @@ public class Product {
 
 	public void setProductDetailImages(List<ProductImage> productDetailImages) {
 		this.productDetailImages = productDetailImages;
+	}
+
+	public String getDiscountTypeName() {
+		return discountTypeName;
+	}
+
+	public void setDiscountTypeName(String discountTypeName) {
+		this.discountTypeName = discountTypeName;
+	}
+
+	public String getPromotionName() {
+		return promotionName;
+	}
+
+	public void setPromotionName(String promotionName) {
+		this.promotionName = promotionName;
 	}
 
 	

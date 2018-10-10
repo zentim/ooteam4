@@ -15,6 +15,7 @@ public class Order {
 	private String address;
 	private User user;
 	private List<OrderItem> orderItems;
+	private int totalQuantity;
 
 	public String getStatusDesc() {
 		String desc = "未知";
@@ -115,4 +116,13 @@ public class Order {
 		this.orderItems = orderItems;
 	}
 
+	public int getTotalQuantity() {
+		return totalQuantity;
+	}
+
+	public void setTotalQuantity(int totalQuantity) {
+		this.totalQuantity = totalQuantity;
+	}
+
+	
 }

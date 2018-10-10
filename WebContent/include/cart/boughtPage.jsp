@@ -41,10 +41,10 @@
         <c:forEach items="${os}" var="o">
             <table class="orderListItemTable table table-striped table-bordered table-sm" orderState="${o.state}" oid="${o.id}" style="border: 2px solid #ECECEC; width: 100%; margin: 20px 0px;">
                 <tr style="background-color: #F1F1F1; font-size:12px;">
-                    <td colspan="2">
-                    <b><fmt:formatDate value="${o.dateOrdered}" pattern="yyyy-MM-dd HH:mm:ss"/></b> 
-                    <span>訂單號: ${o.id} 
-                    </span>
+                    <td colspan="2" align="left">
+	                    <b><fmt:formatDate value="${o.dateOrdered}" pattern="yyyy-MM-dd HH:mm:ss"/></b> 
+	                    <span>Order ID: ${o.id} 
+	                    </span>
                     </td>
                     <td  colspan="2"></td>
                     <td colspan="1">
@@ -85,7 +85,7 @@
                             	valign="top" 
                             	rowspan="${fn:length(o.orderItems)}" 
                             	width="100px">
-                                <span class="orderListItemNumber">數量</span>
+                                <span class="orderListItemNumber">${ o.totalQuantity }</span>
                             </td>
                             <td 
                             	valign="top" 
