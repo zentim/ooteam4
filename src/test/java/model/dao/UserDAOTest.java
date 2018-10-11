@@ -9,7 +9,7 @@ import main.java.model.dao.UserDAO;
 
 public class UserDAOTest {
 	public static UserDAO userdao = new UserDAO();
-	public static User user = new User();
+	public static User user;
 	public static int userId;
 
 	@BeforeClass
@@ -17,6 +17,7 @@ public class UserDAOTest {
 		System.out.println("Test Start...");
 
 		// create user
+		user = new User();
 		user.setEmail("abc@abc.com");
 		user.setPassword("1234");
 		userId = userdao.add(user);

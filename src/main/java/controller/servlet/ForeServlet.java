@@ -13,6 +13,7 @@ import org.apache.commons.lang3.RandomUtils;
 import org.springframework.http.codec.multipart.SynchronossPartHttpMessageReader;
 import org.springframework.web.util.HtmlUtils;
 
+import chainOfResponsibility.DiscountRequest;
 import main.java.model.bean.Category;
 import main.java.model.bean.Order;
 import main.java.model.bean.OrderItem;
@@ -171,15 +172,32 @@ public class ForeServlet extends BaseForeServlet {
     public String buy(HttpServletRequest request, HttpServletResponse response, Page page) {
         String[] oiids = request.getParameterValues("oiid");
         List<OrderItem> ois = new ArrayList<OrderItem>();
+        
+        String discountMsg = "";
+        double totalDiscount = 0;
         double total = 0;
         for (String oiidString : oiids) {
             int oiid = Integer.parseInt(oiidString);
             OrderItem ot = orderItemDAO.get(oiid);
+            ot.setOriginalPrice(ot.getProduct().getPrice());
             ois.add(ot);
-            total += (ot.getProduct().getPrice() * ot.getQuantity());
+            total += (ot.getOriginalPrice() * ot.getQuantity());
         }
+        
+        // Send OrderItem List to the pattern for calc discount.
+        // Return two value:
+        // 1. (String) discountMsg (e.g. "eachGroupOfN: -100")
+        // 2. (float) totalDiscount (e.g. 100.0)
+        DiscountRequest dr = new DiscountRequest();
+        dr.setProducts(ois);
+		dr.setNationHoliday(true);
+		dr.setLastYearAmount(100);
+        
+        // calc actual payment amount
+        total = total - totalDiscount;
 
         request.getSession().setAttribute("ois", ois);
+        request.setAttribute("discountMsg", discountMsg);
         request.setAttribute("total", total);
         return "buy.jsp";
     }

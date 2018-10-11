@@ -11,7 +11,7 @@ import main.java.model.dao.PromotionDAO;
 
 public class PromotionDAOTest {
   public static PromotionDAO promotiondao = new PromotionDAO();
-  public static Promotion promotion = new Promotion();
+  public static Promotion promotion;
   public static int promotionId;
 
   @BeforeClass
@@ -19,6 +19,7 @@ public class PromotionDAOTest {
     System.out.println("Test Start...");
 
     // create promotion
+    promotion = new Promotion();
     promotion.setDiscountType(promotiondao.buyXGetYFree);
     promotion.setName("National Holiday");
     promotion.setDateFrom(new Date());

@@ -18,25 +18,40 @@ import main.java.model.dao.PromotionItemDAO;
 import main.java.model.dao.UserDAO;
 
 public class PromotionItemDAOTest {
-  public static PromotionDAO promotiondao = new PromotionDAO();
-  public static Promotion promotion = new Promotion();
-  public static int promotionId;
-
   public static CategoryDAO categorydao = new CategoryDAO();
-  public static Category category = new Category();
+  public static Category category;
   public static int categoryId;
 
   public static ProductDAO productdao = new ProductDAO();
-  public static Product product = new Product();
+  public static Product product;
   public static int productId;
+	
+  public static PromotionDAO promotiondao = new PromotionDAO();
+  public static Promotion promotion;
+  public static int promotionId;
 
   public static PromotionItemDAO promotionitemdao = new PromotionItemDAO();
-  public static PromotionItem promotionitem = new PromotionItem();
+  public static PromotionItem promotionitem;
   public static int promotionItemId;
 
   @BeforeClass
   public static void testAdd() {
+	// create category
+    category = new Category();
+    category.setName("Book");
+    categoryId = categorydao.add(category);
+
+    // create product
+    product = new Product();
+    product.setName("Harry Potter");
+    product.setInventory(5);
+    product.setPrice(1000);
+    product.setDateAdded(new Date());
+    product.setCategory(categorydao.get(categoryId));
+    productId = productdao.add(product);
+	  
     // create promotion
+	promotion = new Promotion();
 	promotion.setDiscountType(promotiondao.buyXGetYFree);
     promotion.setName("National Holiday");
     promotion.setDateFrom(new Date());
@@ -44,21 +59,10 @@ public class PromotionItemDAOTest {
     promotion.setState(0);
     promotionId = promotiondao.add(promotion);
 
-    // create category
-    category.setName("Book");
-    categoryId = categorydao.add(category);
-
-    // create product
-    product.setName("Harry Potter");
-    product.setInventory(5);
-    product.setPrice(1000);
-    product.setDateAdded(new Date());
-    product.setCategory(categorydao.get(categoryId));
-    productId = productdao.add(product);
-
     System.out.println("Test Start...");
 
     // create promotionitem
+    promotionitem = new PromotionItem();
     promotionitem.setPromotion(promotiondao.get(promotionId));
     promotionitem.setProduct(productdao.get(productId));
     promotionitem.setMinQuantity(100);
@@ -79,14 +83,14 @@ public class PromotionItemDAOTest {
 
     System.out.println("Test End...");
 
+    // delete promotion
+    promotiondao.delete(promotionId);
+    
     // delete product
     productdao.delete(productId);
 
     // delete category
     categorydao.delete(categoryId);
-
-    // delete promotion
-    promotiondao.delete(promotionId);
   }
 
 }

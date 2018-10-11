@@ -16,22 +16,24 @@ import main.java.model.dao.CategoryDAO;
 
 public class ProductDAOTest {
 	public static CategoryDAO categorydao = new CategoryDAO();
-	public static Category category = new Category();
+	public static Category category;
 	public static int categoryId;
 
 	public static ProductDAO productdao = new ProductDAO();
-	public static Product product = new Product();
+	public static Product product;
 	public static int productId;
 
 	@BeforeClass
 	public static void testAdd() {
 		// create category
+		category = new Category();
 		category.setName("Book");
 		categoryId = categorydao.add(category);
 
 		System.out.println("Test Start...");
 
 		// create product
+		product = new Product();
 		product.setName("Harry Potter");
 		product.setInventory(5);
 		product.setPrice(1000);

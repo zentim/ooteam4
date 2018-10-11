@@ -9,7 +9,7 @@ import main.java.model.dao.CategoryDAO;
 
 public class CategoryDAOTest {
 	public static CategoryDAO categorydao = new CategoryDAO();
-	public static Category category = new Category();
+	public static Category category;
 	public static int categoryId;
 
 	@BeforeClass
@@ -17,6 +17,7 @@ public class CategoryDAOTest {
 		System.out.println("Test Start...");
 
 		// create category
+		category = new Category();
 		category.setName("Book");
 		categoryId = categorydao.add(category);
 	}

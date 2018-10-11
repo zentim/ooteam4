@@ -13,16 +13,17 @@ import main.java.model.dao.UserDAO;
 
 public class OrderDAOTest {
 	public static UserDAO userdao = new UserDAO();
-	public static User user = new User();
+	public static User user;
 	public static int userId;
 
 	public static OrderDAO orderdao = new OrderDAO();
-	public static Order order = new Order();
+	public static Order order;
 	public static int orderId;
 
 	@BeforeClass
 	public static void testAdd() {
 		// create user
+		user = new User();
 		user.setEmail("abc@abc.com");
 		user.setPassword("1234");
 		userId = userdao.add(user);
@@ -30,6 +31,7 @@ public class OrderDAOTest {
 		System.out.println("Test Start...");
 
 		// create order
+		order = new Order();
 		order.setUser(userdao.get(userId));
 		order.setDateOrdered(new Date());
 		order.setDatePaid(new Date());

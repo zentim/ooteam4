@@ -18,38 +18,35 @@ import main.java.model.dao.CategoryDAO;
 import main.java.model.dao.OrderDAO;
 
 public class OrderItemDAOTest {
-	public static UserDAO userdao = new UserDAO();
-	public static User user = new User();
-	public static int userId;
-
 	public static CategoryDAO categorydao = new CategoryDAO();
-	public static Category category = new Category();
+	public static Category category;
 	public static int categoryId;
 
 	public static ProductDAO productdao = new ProductDAO();
-	public static Product product = new Product();
+	public static Product product;
 	public static int productId;
+	
+	public static UserDAO userdao = new UserDAO();
+	public static User user;
+	public static int userId;
 
 	public static OrderDAO orderdao = new OrderDAO();
-	public static Order order = new Order();
+	public static Order order;
 	public static int orderId;
 
 	public static OrderItemDAO orderitemdao = new OrderItemDAO();
-	public static OrderItem orderitem = new OrderItem();
+	public static OrderItem orderitem;
 	public static int orderItemId;
 
 	@BeforeClass
 	public static void testAdd() {
-		// create user
-		user.setEmail("abc@abc.com");
-		user.setPassword("1234");
-		userId = userdao.add(user);
-
 		// create category
+		category = new Category();
 		category.setName("Book");
 		categoryId = categorydao.add(category);
 
 		// create product
+		product = new Product();
 		product.setName("Harry Potter");
 		product.setInventory(5);
 		product.setPrice(1000);
@@ -57,7 +54,14 @@ public class OrderItemDAOTest {
 		product.setCategory(categorydao.get(categoryId));
 		productId = productdao.add(product);
 
+		// create user
+		user = new User();
+		user.setEmail("abc@abc.com");
+		user.setPassword("1234");
+		userId = userdao.add(user);
+		
 		// create order
+		order = new Order();
 		order.setUser(userdao.get(userId));
 		order.setDateOrdered(new Date());
 		order.setDatePaid(new Date());
@@ -70,6 +74,7 @@ public class OrderItemDAOTest {
 		System.out.println("Test Start...");
 
 		// create orderitem
+		orderitem = new OrderItem();
 		orderitem.setUser(userdao.get(userId));
 		orderitem.setProduct(productdao.get(productId));
 		orderitem.setQuantity(100);
@@ -96,14 +101,14 @@ public class OrderItemDAOTest {
 		// delete order
 		orderdao.delete(orderId);
 
+		// delete user
+		userdao.delete(userId);
+		
 		// delete product
 		productdao.delete(productId);
 
 		// delete category
 		categorydao.delete(categoryId);
-
-		// delete user
-		userdao.delete(userId);
 	}
 
 }

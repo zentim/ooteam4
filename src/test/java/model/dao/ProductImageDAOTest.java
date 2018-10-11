@@ -17,24 +17,26 @@ import main.java.model.dao.ProductDAO;
 
 public class ProductImageDAOTest {
 	public static CategoryDAO categorydao = new CategoryDAO();
-	public static Category category = new Category();
+	public static Category category;
 	public static int categoryId;
 
 	public static ProductDAO productdao = new ProductDAO();
-	public static Product product = new Product();
+	public static Product product;
 	public static int productId;
 
 	public static ProductImageDAO productimagedao = new ProductImageDAO();
-	public static ProductImage productimage = new ProductImage();
+	public static ProductImage productimage;
 	public static int productImageId;
 
 	@BeforeClass
 	public static void testAdd() {
 		// create category
+		category = new Category();
 		category.setName("Book");
 		categoryId = categorydao.add(category);
 
 		// create product
+		product = new Product();
 		product.setName("Harry Potter");
 		product.setInventory(5);
 		product.setPrice(1000);
@@ -45,6 +47,7 @@ public class ProductImageDAOTest {
 		System.out.println("Test Start...");
 
 		// create productimage
+		productimage = new ProductImage();
 		productimage.setProduct(productdao.get(productId));
 		productimage.setType(ProductImageDAO.type_single);
 		productImageId = productimagedao.add(productimage);

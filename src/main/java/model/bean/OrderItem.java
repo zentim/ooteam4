@@ -78,4 +78,12 @@ public class OrderItem {
 		this.user = user;
 	}
 
+	@Override
+	public String toString() {
+		return "OrderItem [id=" + id + ", quantity=" + quantity + ", state=" + state + ", originalPrice="
+				+ originalPrice + ", promotionalPrice=" + promotionalPrice + ", product=" + product + ", order=" + order
+				+ ", user=" + user + "]";
+	}
+
+	
 }
