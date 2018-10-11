@@ -21,7 +21,6 @@ import main.java.model.bean.ProductImage;
 import main.java.model.bean.Promotion;
 import main.java.model.bean.User;
 import main.java.model.dao.CategoryDAO;
-import main.java.model.dao.DiscountTypeDAO;
 import main.java.model.dao.OrderDAO;
 import main.java.model.dao.ProductDAO;
 import main.java.model.dao.ProductImageDAO;
@@ -42,7 +41,7 @@ public class ForeServlet extends BaseForeServlet {
         		Promotion promotionByProduct = promotionItemDAO.getByProduct(p.getId()).getPromotion();
         		if (promotionByProduct != null) {
         			String promotionName = promotionByProduct.getName();
-            		String discountTypeName = promotionByProduct.getDiscountType().getName();
+            		String discountTypeName = promotionByProduct.getDiscountTypeDescription();
             		p.setPromotionName(promotionName);
             		p.setDiscountTypeName(discountTypeName);
         		}
@@ -113,7 +112,7 @@ public class ForeServlet extends BaseForeServlet {
         Promotion promotionByProduct = promotionItemDAO.getByProduct(p.getId()).getPromotion();
 		if (promotionByProduct != null) {
 			String promotionName = promotionByProduct.getName();
-    		String discountTypeName = promotionByProduct.getDiscountType().getName();
+    		String discountTypeName = promotionByProduct.getDiscountTypeDescription();
     		p.setPromotionName(promotionName);
     		p.setDiscountTypeName(discountTypeName);
 		}

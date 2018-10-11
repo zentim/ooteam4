@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import main.java.model.dao.CategoryDAO;
-import main.java.model.dao.DiscountTypeDAO;
 import main.java.model.dao.OrderDAO;
 import main.java.model.dao.OrderItemDAO;
 import main.java.model.dao.ProductDAO;
@@ -22,7 +21,6 @@ import main.java.model.util.Page;
 public class BaseForeServlet extends HttpServlet {
 
     protected CategoryDAO categoryDAO = new CategoryDAO();
-    protected DiscountTypeDAO discountTypeDAO = new DiscountTypeDAO();
     protected OrderDAO orderDAO = new OrderDAO();
     protected OrderItemDAO orderItemDAO = new OrderItemDAO();
     protected ProductDAO productDAO = new ProductDAO();

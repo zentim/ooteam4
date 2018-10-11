@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import main.java.model.bean.Category;
-import main.java.model.bean.DiscountType;
 import main.java.model.bean.Product;
 import main.java.model.bean.Promotion;
 import main.java.model.bean.PromotionItem;
@@ -35,7 +34,7 @@ public class PromotionServlet extends BaseBackServlet {
 		*/
 		
 		Promotion p = new Promotion();
-		p.setDiscountType(discountTypeDAO.get(discountType));
+		p.setDiscountType(discountType);
 		p.setName(discountName);
 		p.setDateFrom(dateFrom);
 		p.setDateTo(dateTo);
@@ -65,14 +64,12 @@ public class PromotionServlet extends BaseBackServlet {
 
 	@Override
 	public String list(HttpServletRequest request, HttpServletResponse response, Page page) {
-		List<DiscountType> dt = discountTypeDAO.list();
 		List<Promotion> ps = promotionDAO.list(page.getStart(), page.getCount());
 		List<Product> products = productDAO.list();
 		promotionItemDAO.fill(ps);
 		int total = promotionDAO.getTotal();
 		page.setTotal(total);
 
-		request.setAttribute("dt", dt);
 		request.setAttribute("ps", ps);
 		request.setAttribute("products", products);
 		request.setAttribute("page", page);

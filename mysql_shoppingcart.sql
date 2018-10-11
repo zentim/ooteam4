@@ -94,15 +94,9 @@ CREATE TABLE IF NOT EXISTS `category` (
   PRIMARY KEY (`categoryId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `discount_type` (
-  `discountTypeId` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  PRIMARY KEY (`discountTypeId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 CREATE TABLE IF NOT EXISTS `promotion` (
   `promotionId` int(11) NOT NULL AUTO_INCREMENT,
-  `discountTypeId` int(11) unsigned NOT NULL,
+  `discountType` int(10) unsigned DEFAULT 0,
   `name` varchar(255) NOT NULL,
   `dateFrom` datetime DEFAULT NULL,
   `dateTo` datetime DEFAULT NULL,

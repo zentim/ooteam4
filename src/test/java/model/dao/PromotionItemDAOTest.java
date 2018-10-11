@@ -7,23 +7,17 @@ import java.util.Date;
 import org.junit.*;
 
 import main.java.model.bean.Category;
-import main.java.model.bean.DiscountType;
 import main.java.model.bean.Product;
 import main.java.model.bean.Promotion;
 import main.java.model.bean.PromotionItem;
 import main.java.model.bean.User;
 import main.java.model.dao.CategoryDAO;
-import main.java.model.dao.DiscountTypeDAO;
 import main.java.model.dao.ProductDAO;
 import main.java.model.dao.PromotionDAO;
 import main.java.model.dao.PromotionItemDAO;
 import main.java.model.dao.UserDAO;
 
 public class PromotionItemDAOTest {
-  public static DiscountTypeDAO discounttypedao = new DiscountTypeDAO();
-  public static DiscountType discounttype = new DiscountType();
-  public static int discountTypeId;
-
   public static PromotionDAO promotiondao = new PromotionDAO();
   public static Promotion promotion = new Promotion();
   public static int promotionId;
@@ -42,12 +36,8 @@ public class PromotionItemDAOTest {
 
   @BeforeClass
   public static void testAdd() {
-    // create discounttype
-    discounttype.setName("Buy X Get Y Free");
-    discountTypeId = discounttypedao.add(discounttype);
-
     // create promotion
-    promotion.setDiscountType(discounttypedao.get(discountTypeId));
+	promotion.setDiscountType(promotiondao.buyXGetYFree);
     promotion.setName("National Holiday");
     promotion.setDateFrom(new Date());
     promotion.setDateTo(new Date());
@@ -97,9 +87,6 @@ public class PromotionItemDAOTest {
 
     // delete promotion
     promotiondao.delete(promotionId);
-
-    // delete discounttype
-    discounttypedao.delete(discountTypeId);
   }
 
 }

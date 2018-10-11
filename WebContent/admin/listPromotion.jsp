@@ -12,12 +12,12 @@
     <thead>
       <tr align="center">
         <th>#</th>
-        <th>活動名稱</th>
-        <th>折扣類別</th>
-        <th>開始時間</th>
-        <th>結束時間</th>
-        <th>狀態</th>
-        <th>操作</th>
+        <th>ActivityName</th>
+        <th>DiscountType</th>
+        <th>From</th>
+        <th>To</th>
+        <th>State</th>
+        <th>Operation</th>
       </tr>
     </thead>
 
@@ -27,7 +27,7 @@
       <tr align="center">
         <td>${ p.id }</td>
         <td>${ p.name }</td>
-        <td>${ p.discountType.name }</td>
+        <td>${ p.discountType }</td>
 		<td>
           <fmt:formatDate value="${p.dateFrom}" pattern="yyyy-MM-dd HH:mm:ss"/>
         </td>
@@ -168,9 +168,11 @@
 			  </div>
 			  <select class="custom-select" id="discount_type">
 			    <option selected>Choose...</option>
-			    <c:forEach items="${dt}" var="d">
-			    <option value="${ d.id }">${ d.name }</option>
-			    </c:forEach>
+			    <option value="0">noDiscount</option>
+			    <option value="1">productSet</option>
+			    <option value="2">eachGroupOfN</option>
+			    <option value="3">spendMoreThanInLastYear</option>
+			    <option value="4">buyXGetYFree</option>
 			  </select>
 			</div>
 		   </div>

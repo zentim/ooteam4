@@ -9,12 +9,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import main.java.model.bean.DiscountType;
 import main.java.model.bean.Promotion;
 import main.java.model.util.DBUtil;
 import main.java.model.util.DateUtil;
 
 public class PromotionDAO {
+	public static final int noDiscount = 0;
+	public static final int productSet = 1;
+    public static final int eachGroupOfN = 2;
+    public static final int spendMoreThanInLastYear = 3;
+    public static final int buyXGetYFree = 4;
 
 	public int getTotal() {
 		int total = 0;
@@ -37,7 +41,7 @@ public class PromotionDAO {
 		String sql = "insert into promotion values(DEFAULT,?, ?, ?, ?, ?)";
 		try (Connection c = DBUtil.getConnection();
 				PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
-			ps.setInt(1, bean.getDiscountType().getId());
+			ps.setInt(1, bean.getDiscountType());
 			ps.setString(2, bean.getName());
 			ps.setTimestamp(3, DateUtil.d2t(bean.getDateFrom()));
 			ps.setTimestamp(4, DateUtil.d2t(bean.getDateTo()));
@@ -71,7 +75,7 @@ public class PromotionDAO {
 		String sql = "update promotion set discountTypeId=?, name=?, dateFrom=?, dateTo=?, state=? where promotionId = ?";
 		try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
 
-			ps.setInt(1, bean.getDiscountType().getId());
+			ps.setInt(1, bean.getDiscountType());
 			ps.setString(2, bean.getName());
 			ps.setTimestamp(3, DateUtil.d2t(bean.getDateFrom()));
 			ps.setTimestamp(4, DateUtil.d2t(bean.getDateTo()));
@@ -113,14 +117,12 @@ public class PromotionDAO {
 
 			if (rs.next()) {
 				bean = new Promotion();
-
-				int discountTypeId = rs.getInt("discountTypeId");
+				
 				String name = rs.getString("name");
 				Date dateFrom = DateUtil.t2d(rs.getTimestamp("dateFrom"));
 				Date dateTo = DateUtil.t2d(rs.getTimestamp("dateTo"));
 				int state = rs.getInt("state");
-
-				DiscountType discountType = new DiscountTypeDAO().get(discountTypeId);
+				int discountType = rs.getInt("discountType");
 
 				bean.setDiscountType(discountType);
 				bean.setName(name);
@@ -156,14 +158,13 @@ public class PromotionDAO {
 
 			while (rs.next()) {
 				Promotion bean = new Promotion();
+				
 				int promotionId = rs.getInt("promotionId");
-				int discountTypeId = rs.getInt("discountTypeId");
 				String name = rs.getString("name");
 				Date dateFrom = DateUtil.t2d(rs.getTimestamp("dateFrom"));
 				Date dateTo = DateUtil.t2d(rs.getTimestamp("dateTo"));
 				int state = rs.getInt("state");
-
-				DiscountType discountType = new DiscountTypeDAO().get(discountTypeId);
+				int discountType = rs.getInt("discountType");
 
 				bean.setDiscountType(discountType);
 				bean.setName(name);

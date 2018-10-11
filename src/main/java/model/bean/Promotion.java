@@ -3,14 +3,45 @@ package main.java.model.bean;
 import java.util.Date;
 import java.util.List;
 
+import main.java.model.dao.OrderDAO;
+import main.java.model.dao.PromotionDAO;
+
 public class Promotion {
 	private int id;
 	private String name;
 	private Date dateFrom;
 	private Date dateTo;
 	private int state;
-	private DiscountType discountType;
+	private int discountType;
 	private List<PromotionItem> promotionItems;
+	
+	
+	public String getDiscountTypeDescription() {
+		String desc = "Unknow";
+		switch (discountType) {
+		case PromotionDAO.noDiscount:
+			desc = "No Discount";
+			break;
+		case PromotionDAO.productSet:
+			desc = "Product Set";
+			break;
+		case PromotionDAO.eachGroupOfN:
+			desc = "Each Group Of N";
+			break;
+		case PromotionDAO.spendMoreThanInLastYear:
+			desc = "Spend More Than In Last Year";
+			break;
+		case PromotionDAO.buyXGetYFree:
+			desc = "Buy X Get Y Free";
+			break;
+		default:
+			desc = "Unknow";
+		}
+		
+		return desc;
+	}
+	
+	
 
 	public int getId() {
 		return id;
@@ -52,11 +83,11 @@ public class Promotion {
 		this.state = state;
 	}
 
-	public DiscountType getDiscountType() {
+	public int getDiscountType() {
 		return discountType;
 	}
 
-	public void setDiscountType(DiscountType discountType) {
+	public void setDiscountType(int discountType) {
 		this.discountType = discountType;
 	}
 

@@ -32,10 +32,10 @@
 			  	<option value="-1" selected>Choose...</option>
 			    <c:forEach items="${ps}" var="promotion">	
 			    	<c:if test="${ pi.promotion.id != promotion.id }">
-			    		<option value="${ promotion.id }">${ promotion.name } - (${ promotion.discountType.name })</option>
+			    		<option value="${ promotion.id }">${ promotion.name } - (${ promotion.discountType })</option>
 			    	</c:if>
 			    	<c:if test="${ pi.promotion.id == promotion.id }">
-			    		<option selected value="${ promotion.id }">${ promotion.name } - (${ promotion.discountType.name })</option>
+			    		<option selected value="${ promotion.id }">${ promotion.name } - (${ promotion.discountType })</option>
 			    	</c:if>
 			    </c:forEach>
 			  </select>
