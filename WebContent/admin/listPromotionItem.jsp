@@ -30,7 +30,7 @@
 			  <select class="custom-select" id="promotion">
 			    <option value="-1" selected>Choose...</option>
 			    <c:forEach items="${ps}" var="promotion">
-			    <option value="${ promotion.id }">${ promotion.name } - (${ promotion.discountType })</option>
+			    <option value="${ promotion.id }">${ promotion.name } - (${ promotion.discountTypeDesc })</option>
 			    </c:forEach>
 			  </select>
 			</div>

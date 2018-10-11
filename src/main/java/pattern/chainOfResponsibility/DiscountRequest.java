@@ -46,5 +46,11 @@ public class DiscountRequest {
 	public void setTotalDiscount(float totalDiscount) {
 		this.totalDiscount = totalDiscount;
 	}
+	@Override
+	public String toString() {
+		return "DiscountRequest [orderItems=" + orderItems + ", lastYearAmount=" + lastYearAmount + ", isNationHoliday="
+				+ isNationHoliday + ", discountMsg=" + discountMsg + ", totalDiscount=" + totalDiscount + "]";
+	}
+	
 
 }

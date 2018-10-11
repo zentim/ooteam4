@@ -129,6 +129,7 @@ public class PromotionDAO {
 				bean.setDateFrom(dateFrom);
 				bean.setDateTo(dateTo);
 				bean.setState(state);
+				bean.setDiscountTypeDesc(bean.getDiscountTypeDescription());
 
 				bean.setId(id);
 			}
@@ -171,6 +172,7 @@ public class PromotionDAO {
 				bean.setDateFrom(dateFrom);
 				bean.setDateTo(dateTo);
 				bean.setState(state);
+				bean.setDiscountTypeDesc(bean.getDiscountTypeDescription());
 
 				bean.setId(promotionId);
 				beans.add(bean);

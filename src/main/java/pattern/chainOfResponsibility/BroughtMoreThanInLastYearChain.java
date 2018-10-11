@@ -15,7 +15,7 @@ import main.java.pattern.strategy.Strategy;
 /**
  * Chain Of Responsibility Pattern - concrete handler
  */
-public class SpentMoreThanInLastYearChain extends DiscountPolicy {
+public class BroughtMoreThanInLastYearChain extends DiscountPolicy {
 
 	@Override
 	public DiscountRequest handleDiscount(DiscountRequest discountRequest) {

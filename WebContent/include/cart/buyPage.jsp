@@ -99,14 +99,18 @@
 			    		<span>普通配送 快遞 免運費</span><br>
 						<span>
 							合計 (含運費): $
-							<fmt:formatNumber type="number" value="${total}" minFractionDigits="2"/>
+							<fmt:formatNumber type="number" value="${ totalWithoutDiscount }" minFractionDigits="2"/>
 						</span>
+			    	</p>
+			    	
+			    	<p>
+			    		<span style="color: red;">${ discountMsg }</span><br>
 			    	</p>
 			    	
 			    	<p>
 			    		<span>實付款 :</span>
 		            	<span style="color: #C40000; font-size: 22px; font-weight: bold; border-bottom: 1px dotted #F2F6FF;">
-		            		$<fmt:formatNumber type="number" value="${total}" minFractionDigits="2"/>
+		            		$<fmt:formatNumber type="number" value="${ total }" minFractionDigits="2"/>
 		            	</span>
 			    	</p>
 			    	

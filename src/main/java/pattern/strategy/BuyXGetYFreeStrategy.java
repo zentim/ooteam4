@@ -51,7 +51,7 @@ public class BuyXGetYFreeStrategy implements Strategy {
 					for (PromotionItem pi : pis) {
 						if (pi.getDiscountOf() == 100) {
 							// list all of free product, free product quantity is (free product minQuantity * count)
-							freeProducts += "[pid=" + pi.getProduct().getId() + ", " + pi.getMinQuantity() * count + "]"; 
+							freeProducts += "[pid=" + pi.getProduct().getId() + ", num=" + pi.getMinQuantity() * count + "]"; 
 						}
 					}
 				}

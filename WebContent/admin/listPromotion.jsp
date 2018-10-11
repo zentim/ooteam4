@@ -167,8 +167,7 @@
 			    <label class="input-group-text" for="inputGroupSelect01">DiscountType</label>
 			  </div>
 			  <select class="custom-select" id="discount_type">
-			    <option selected>Choose...</option>
-			    <option value="0">noDiscount</option>
+			    <option value="0" selected>Choose...</option>
 			    <option value="1">productSet</option>
 			    <option value="2">eachGroupOfN</option>
 			    <option value="3">spendMoreThanInLastYear</option>

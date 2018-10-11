@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import main.java.pattern.chainOfResponsibility.DiscountPolicy;
 import main.java.pattern.chainOfResponsibility.DiscountRequest;
-import main.java.pattern.chainOfResponsibility.SpentMoreThanInLastYearChain;
+import main.java.pattern.chainOfResponsibility.BroughtMoreThanInLastYearChain;
 import main.java.model.bean.Category;
 import main.java.model.bean.OrderItem;
 import main.java.model.bean.Product;
@@ -53,7 +53,7 @@ public class DiscountTest {
 	
 	// Init Chain
 	public static DiscountPolicy nationHolidayDiscount = new BuyXGetYFreeChain();
-	public static DiscountPolicy lastYear100KDiscount = new SpentMoreThanInLastYearChain();
+	public static DiscountPolicy lastYear100KDiscount = new BroughtMoreThanInLastYearChain();
 	public static DiscountPolicy eachGroupOf100Discount = new EachGroupOfNChain();
 	public static DiscountPolicy xyzDiscount = new ProductSetChain();
 	public static DiscountPolicy noDiscount = new NoDiscountChain();

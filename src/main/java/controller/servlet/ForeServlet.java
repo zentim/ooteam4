@@ -13,13 +13,13 @@ import org.apache.commons.lang3.RandomUtils;
 import org.springframework.http.codec.multipart.SynchronossPartHttpMessageReader;
 import org.springframework.web.util.HtmlUtils;
 
-import chainOfResponsibility.DiscountRequest;
 import main.java.model.bean.Category;
 import main.java.model.bean.Order;
 import main.java.model.bean.OrderItem;
 import main.java.model.bean.Product;
 import main.java.model.bean.ProductImage;
 import main.java.model.bean.Promotion;
+import main.java.model.bean.PromotionItem;
 import main.java.model.bean.User;
 import main.java.model.dao.CategoryDAO;
 import main.java.model.dao.OrderDAO;
@@ -27,6 +27,13 @@ import main.java.model.dao.ProductDAO;
 import main.java.model.dao.ProductImageDAO;
 import main.java.model.dao.PromotionDAO;
 import main.java.model.util.Page;
+import main.java.pattern.chainOfResponsibility.BuyXGetYFreeChain;
+import main.java.pattern.chainOfResponsibility.DiscountPolicy;
+import main.java.pattern.chainOfResponsibility.DiscountRequest;
+import main.java.pattern.chainOfResponsibility.EachGroupOfNChain;
+import main.java.pattern.chainOfResponsibility.NoDiscountChain;
+import main.java.pattern.chainOfResponsibility.ProductSetChain;
+import main.java.pattern.chainOfResponsibility.BroughtMoreThanInLastYearChain;
 
 @WebServlet("/foreServlet")
 public class ForeServlet extends BaseForeServlet {
@@ -39,8 +46,9 @@ public class ForeServlet extends BaseForeServlet {
         
         for (Category c : cs) {
         	for (Product p : c.getProducts()) {
-        		Promotion promotionByProduct = promotionItemDAO.getByProduct(p.getId()).getPromotion();
-        		if (promotionByProduct != null) {
+        		PromotionItem promotionItem = promotionItemDAO.getByProduct(p.getId()); 
+        		Promotion promotionByProduct = promotionItem.getPromotion();
+        		if (promotionByProduct != null && !(promotionItem.getDiscountOf() == 100 && promotionByProduct.getDiscountType() == PromotionDAO.buyXGetYFree)) {
         			String promotionName = promotionByProduct.getName();
             		String discountTypeName = promotionByProduct.getDiscountTypeDescription();
             		p.setPromotionName(promotionName);
@@ -173,8 +181,6 @@ public class ForeServlet extends BaseForeServlet {
         String[] oiids = request.getParameterValues("oiid");
         List<OrderItem> ois = new ArrayList<OrderItem>();
         
-        String discountMsg = "";
-        double totalDiscount = 0;
         double total = 0;
         for (String oiidString : oiids) {
             int oiid = Integer.parseInt(oiidString);
@@ -184,20 +190,41 @@ public class ForeServlet extends BaseForeServlet {
             total += (ot.getOriginalPrice() * ot.getQuantity());
         }
         
-        // Send OrderItem List to the pattern for calc discount.
-        // Return two value:
+        
+     
+        /**
+         * Chain Of Responsibility Pattern
+         */
+        // Init Chain
+    	DiscountPolicy nationHolidayDiscount = new BuyXGetYFreeChain();
+    	DiscountPolicy lastYear100KDiscount = new BroughtMoreThanInLastYearChain();
+    	DiscountPolicy eachGroupOf100Discount = new EachGroupOfNChain();
+    	DiscountPolicy xyzDiscount = new ProductSetChain();
+    	DiscountPolicy noDiscount = new NoDiscountChain();
+    	
+    	// Setting Chain Order
+    	nationHolidayDiscount.setNextDiscountPolicy(lastYear100KDiscount);
+		lastYear100KDiscount.setNextDiscountPolicy(eachGroupOf100Discount);
+		eachGroupOf100Discount.setNextDiscountPolicy(xyzDiscount);
+		xyzDiscount.setNextDiscountPolicy(noDiscount);
+        
+		// Send OrderItem List to the pattern for calc discount.
+        // Return DiscountRequest, it contains:
         // 1. (String) discountMsg (e.g. "eachGroupOfN: -100")
         // 2. (float) totalDiscount (e.g. 100.0)
         DiscountRequest dr = new DiscountRequest();
-        dr.setProducts(ois);
+        dr.setOrderItems(ois);
 		dr.setNationHoliday(true);
-		dr.setLastYearAmount(100);
+		dr.setLastYearAmount(200000);
+		dr = nationHolidayDiscount.handleDiscount(dr);
         
+		double totalWithoutDiscount = total;
         // calc actual payment amount
-        total = total - totalDiscount;
+        total = total - dr.getTotalDiscount();
 
         request.getSession().setAttribute("ois", ois);
-        request.setAttribute("discountMsg", discountMsg);
+        request.setAttribute("totalWithoutDiscount", totalWithoutDiscount);
+        request.setAttribute("discountMsg", dr.getDiscountMsg());
         request.setAttribute("total", total);
         return "buy.jsp";
     }

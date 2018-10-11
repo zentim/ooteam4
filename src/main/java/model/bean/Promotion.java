@@ -13,6 +13,7 @@ public class Promotion {
 	private Date dateTo;
 	private int state;
 	private int discountType;
+	private String discountTypeDesc;
 	private List<PromotionItem> promotionItems;
 	
 	
@@ -97,6 +98,14 @@ public class Promotion {
 
 	public void setPromotionItems(List<PromotionItem> promotionItems) {
 		this.promotionItems = promotionItems;
+	}
+
+	public String getDiscountTypeDesc() {
+		return discountTypeDesc;
+	}
+
+	public void setDiscountTypeDesc(String discountTypeDesc) {
+		this.discountTypeDesc = discountTypeDesc;
 	}
 
 	
