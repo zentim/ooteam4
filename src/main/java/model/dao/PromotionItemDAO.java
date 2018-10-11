@@ -96,7 +96,7 @@ public class PromotionItemDAO {
 
         try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
 
-            String sql = "delete from promotion_item where promotionId = " + id;
+            String sql = "delete from promotion_item where promotionItemId = " + id;
 
             s.execute(sql);
 
