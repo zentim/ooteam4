@@ -9,7 +9,7 @@ import main.java.model.dao.PromotionDAO;
 import main.java.model.dao.PromotionItemDAO;
 import main.java.pattern.strategy.StrategyContext;
 import main.java.pattern.strategy.ProductSetStrategy;
-import main.java.pattern.strategy.SpentMoreThanInLastYearStrategy;
+import main.java.pattern.strategy.BroughtMoreThanInLastYearStrategy;
 import main.java.pattern.strategy.Strategy;
 
 /**
@@ -32,7 +32,7 @@ public class SpentMoreThanInLastYearChain extends DiscountPolicy {
 		
 	    // Collect orderItem that discountType equals strategyDiscountType into discountOrderItems. 
 		// Else put into otherOrderItems
-	    int strategyDiscountType = PromotionDAO.spentMoreThanInLastYear;
+	    int strategyDiscountType = PromotionDAO.broughtMoreThanInLastYear;
 	    for (OrderItem oi : orderItems) {
 	    	promotionItem = promotionItemDAO.getByProduct(oi.getProduct().getId());
 	    	promotion = promotionDAO.get(promotionItem.getPromotion().getId());
@@ -49,7 +49,7 @@ public class SpentMoreThanInLastYearChain extends DiscountPolicy {
 	    
 	    
 	    // Use Strategy Pattern
-	    Strategy strategy = new SpentMoreThanInLastYearStrategy();
+	    Strategy strategy = new BroughtMoreThanInLastYearStrategy();
 	    if (!discountOrderItems.isEmpty()) {
 	    	StrategyContext cc = new StrategyContext(strategy);
 		    discountRequest = cc.ExecuteStrategy(discountRequest);

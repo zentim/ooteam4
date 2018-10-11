@@ -27,16 +27,35 @@ public class ProductSetStrategy implements Strategy {
 		// e.g. If a customer buys Product X, Product Y and Product Z he gets a discount of 5%.
 		float discountAmount = 0;
 		for (OrderItem oi : orderItems) {
-//			promotionItem = promotionItemDAO.getByProduct(oi.getProduct().getId());
-//			promotion = promotionDAO.get(promotionItem.getPromotion().getId());
-//			
-//			if (promotion.getState() == 1 && oi.getQuantity() >= promotionItem.getMinQuantity()) {
-//				discountAmount += oi.getQuantity() * (promotionItem.getDiscountOf() / 100);
-//			}
+			promotionItem = promotionItemDAO.getByProduct(oi.getProduct().getId());
+			promotion = promotionDAO.get(promotionItem.getPromotion().getId());
+			
+			if (promotion.getState() == 1) {
+				
+				// for verify one promotion's all of promotionItem condition
+				List<PromotionItem> pis = promotionItemDAO.listByPromotion(promotion.getId());
+				 
+				// count variable is for check one promotion's all of promotionItem condition is pass
+				int count = oi.getQuantity() / promotionItem.getMinQuantity(); 
+				for (PromotionItem pi : pis) {
+					if (pi.getDiscountOf() == 0) {
+						int temp = oi.getQuantity() / pi.getMinQuantity();
+						
+						if (count > temp) {
+							count = temp;
+						}
+					}
+				}
+				
+				if (count >= 1) {
+					discountAmount += oi.getQuantity() * oi.getProduct().getPrice() * ((float)promotionItem.getDiscountOf() / 100);
+					discountAmount = Math.round(discountAmount);
+				}
+			}
 		}
 		
 		discountRequest.setTotalDiscount(discountRequest.getTotalDiscount() + discountAmount);
-		discountRequest.setDiscountMsg(discountRequest.getDiscountMsg() + " ProductSet Discount: -" + discountAmount + " ");
+		discountRequest.setDiscountMsg(discountRequest.getDiscountMsg() + "(ProductSet Discount: -" + discountAmount + ")");
 		return discountRequest;
 	}
 

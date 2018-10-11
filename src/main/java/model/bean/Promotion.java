@@ -28,8 +28,8 @@ public class Promotion {
 		case PromotionDAO.eachGroupOfN:
 			desc = "Each Group Of N";
 			break;
-		case PromotionDAO.spentMoreThanInLastYear:
-			desc = "Spend More Than In Last Year";
+		case PromotionDAO.broughtMoreThanInLastYear:
+			desc = "Brought More Than In Last Year";
 			break;
 		case PromotionDAO.buyXGetYFree:
 			desc = "Buy X Get Y Free";

@@ -37,7 +37,8 @@ public class BuyXGetYFreeChain extends DiscountPolicy {
 	    	promotionItem = promotionItemDAO.getByProduct(oi.getProduct().getId());
 	    	promotion = promotionDAO.get(promotionItem.getPromotion().getId());
 	    	
-	    	if (promotion.getDiscountType() == (strategyDiscountType)) {
+	    	boolean isDiscountConditionPass = promotionItem.getDiscountOf() == 0;
+	    	if (promotion.getDiscountType() == strategyDiscountType && isDiscountConditionPass) {
 		    	discountOrderItems.add(oi);
 		    } else {
 		    	otherOrderItems.add(oi);
@@ -54,9 +55,6 @@ public class BuyXGetYFreeChain extends DiscountPolicy {
 	    	StrategyContext cc = new StrategyContext(strategy);
 		    discountRequest = cc.ExecuteStrategy(discountRequest);
 	    }
-	    
-	    
-	    
 	    
 	    // If otherOrderItems are not empty, pass request to the next chain
 	    if (!otherOrderItems.isEmpty()) {

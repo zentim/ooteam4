@@ -30,14 +30,15 @@ public class EachGroupOfNStrategy implements Strategy {
 			promotionItem = promotionItemDAO.getByProduct(oi.getProduct().getId());
 			promotion = promotionDAO.get(promotionItem.getPromotion().getId());
 			
-			if (promotion.getState() == 1 && oi.getQuantity() >= promotionItem.getMinQuantity()) {
+			boolean isDiscountConditionPass = oi.getQuantity() >= promotionItem.getMinQuantity();
+			if (promotion.getState() == 1 && isDiscountConditionPass) {
 				discountAmount += oi.getQuantity() * oi.getProduct().getPrice() * ((float)promotionItem.getDiscountOf() / 100);
 				discountAmount = Math.round(discountAmount);
 			}
 		}
 		
 		discountRequest.setTotalDiscount(discountRequest.getTotalDiscount() + discountAmount);
-		discountRequest.setDiscountMsg(discountRequest.getDiscountMsg() + " EachGroupOfN Discount: -" + discountAmount + " ");
+		discountRequest.setDiscountMsg(discountRequest.getDiscountMsg() + "(EachGroupOfN Discount: -" + discountAmount + ")");
 		return discountRequest;
 	}
 

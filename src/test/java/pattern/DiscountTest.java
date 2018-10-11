@@ -97,7 +97,7 @@ public class DiscountTest {
 		
 		// create promotion
 	    promotion = new Promotion();
-	    promotion.setDiscountType(promotiondao.buyXGetYFree);
+	    promotion.setDiscountType(PromotionDAO.buyXGetYFree);
 	    promotion.setName("Nation Holiday Discount");
 	    promotion.setDateFrom(new Date());
 	    promotion.setDateTo(new Date());
@@ -124,7 +124,7 @@ public class DiscountTest {
 		orderitem = new OrderItem();
 		orderitem.setUser(userdao.get(userId));
 		orderitem.setProduct(productdao.get(productId));
-		orderitem.setQuantity(2);
+		orderitem.setQuantity(40);
 		orderitem.setOrder(null);
 		orderitem.setState(0);
 		orderitem.setOriginalPrice(productdao.get(productId).getPrice());
@@ -133,13 +133,12 @@ public class DiscountTest {
 		
 		
 		
-		
 		/* Prepare Pattern */
 		List<OrderItem> ois = orderitemdao.listByUser(userId);
 		
 		DiscountRequest dr = new DiscountRequest();
 		dr.setOrderItems(ois);
-		dr.setNationHoliday(true);
+		dr.setNationHoliday(true); // on national holidays
 		dr.setLastYearAmount(100);
 		dr = nationHolidayDiscount.handleDiscount(dr);
 		System.out.println("Msg: " + dr.getDiscountMsg());
@@ -166,6 +165,72 @@ public class DiscountTest {
 	public void testLastYear100KDiscount() {
 		System.out.println();
 		System.out.println("testLastYear100KDiscount...");
+		
+		/* Prepare Test Data */
+		// create product
+		product = new Product();
+		product.setName("Harry Potter");
+		product.setInventory(200);
+		product.setPrice(1000);
+		product.setDateAdded(new Date());
+		product.setCategory(categorydao.get(categoryId));
+		int productId = productdao.add(product);
+		
+		// create promotion
+	    promotion = new Promotion();
+	    promotion.setDiscountType(PromotionDAO.broughtMoreThanInLastYear);
+	    promotion.setName("Brought More Than $100K In Last Year");
+	    promotion.setDateFrom(new Date());
+	    promotion.setDateTo(new Date());
+	    promotion.setState(1);
+	    int promotionId = promotiondao.add(promotion);
+	    
+    	// create promotionitem "has brought in the last year more than $100K, he gets a 20% discount"
+	    promotionitem = new PromotionItem();
+	    promotionitem.setPromotion(promotiondao.get(promotionId));
+	    promotionitem.setProduct(productdao.get(productId));
+	    promotionitem.setMinQuantity(100000);
+	    promotionitem.setDiscountOf(20);
+	    int promotionItemIdX = promotionitemdao.add(promotionitem);
+	    
+		// create orderitem
+		orderitem = new OrderItem();
+		orderitem.setUser(userdao.get(userId));
+		orderitem.setProduct(productdao.get(productId));
+		orderitem.setQuantity(100);
+		orderitem.setOrder(null);
+		orderitem.setState(0);
+		orderitem.setOriginalPrice(productdao.get(productId).getPrice());
+		orderitem.setPromotionalPrice(productdao.get(productId).getPrice());
+		int orderItemId = orderitemdao.add(orderitem);
+		
+		
+		
+		/* Prepare Pattern */
+		List<OrderItem> ois = orderitemdao.listByUser(userId);
+		
+		DiscountRequest dr = new DiscountRequest();
+		dr.setOrderItems(ois);
+		dr.setNationHoliday(false);
+		dr.setLastYearAmount(200000);
+		dr = nationHolidayDiscount.handleDiscount(dr);
+		System.out.println("Msg: " + dr.getDiscountMsg());
+		System.out.println("Total Discount Amount: " + dr.getTotalDiscount());
+		
+		
+		
+		/* Remove Test Data */
+		// delete orderitem
+		orderitemdao.delete(orderItemId);
+		
+		// delete promotionitem
+	    promotionitemdao.delete(promotionItemIdX);
+		
+		// delete promotion
+	    promotiondao.delete(promotionId);
+		
+		// delete product
+		productdao.delete(productId);
 	}
 	
 	@Test
@@ -185,7 +250,7 @@ public class DiscountTest {
 		
 		// create promotion
 	    promotion = new Promotion();
-	    promotion.setDiscountType(promotiondao.eachGroupOfN);
+	    promotion.setDiscountType(PromotionDAO.eachGroupOfN);
 	    promotion.setName("Each Group Of 100 Discount");
 	    promotion.setDateFrom(new Date());
 	    promotion.setDateTo(new Date());
@@ -210,7 +275,6 @@ public class DiscountTest {
 		orderitem.setOriginalPrice(productdao.get(productId).getPrice());
 		orderitem.setPromotionalPrice(productdao.get(productId).getPrice());
 		int orderItemId = orderitemdao.add(orderitem);
-		
 		
 		
 		
@@ -245,6 +309,96 @@ public class DiscountTest {
 	public void testXYZDiscount() {
 		System.out.println();
 		System.out.println("testXYZDiscount...");
+		
+		/* Prepare Test Data */
+		// create product XYZ
+		product = new Product();
+		product.setName("Harry Potter");
+		product.setInventory(200);
+		product.setPrice(1000);
+		product.setDateAdded(new Date());
+		product.setCategory(categorydao.get(categoryId));
+		int productIdX = productdao.add(product);
+		int productIdY = productdao.add(product);
+		int productIdZ = productdao.add(product);
+		
+		// create promotion
+	    promotion = new Promotion();
+	    promotion.setDiscountType(PromotionDAO.productSet);
+	    promotion.setName("XYZ Discount");
+	    promotion.setDateFrom(new Date());
+	    promotion.setDateTo(new Date());
+	    promotion.setState(1);
+	    int promotionId = promotiondao.add(promotion);
+	    
+    	// create promotionitem "buys Product X, Product Y and Product Z he gets a discount of 5%"
+	    promotionitem = new PromotionItem();
+	    promotionitem.setPromotion(promotiondao.get(promotionId));
+	    promotionitem.setMinQuantity(1);
+	    promotionitem.setDiscountOf(5);
+	    promotionitem.setProduct(productdao.get(productIdX));
+	    int promotionItemIdX = promotionitemdao.add(promotionitem);
+	    promotionitem.setProduct(productdao.get(productIdY));
+	    int promotionItemIdY = promotionitemdao.add(promotionitem);
+	    promotionitem.setProduct(productdao.get(productIdZ));
+	    int promotionItemIdZ = promotionitemdao.add(promotionitem);
+	    
+		// create orderitem
+		orderitem = new OrderItem();
+		orderitem.setUser(userdao.get(userId));
+		orderitem.setQuantity(1);
+		orderitem.setOrder(null);
+		orderitem.setState(0);
+		
+		orderitem.setOriginalPrice(productdao.get(productIdX).getPrice());
+		orderitem.setPromotionalPrice(productdao.get(productIdX).getPrice());
+		orderitem.setProduct(productdao.get(productIdX));
+		int orderItemIdX = orderitemdao.add(orderitem);
+		
+		orderitem.setOriginalPrice(productdao.get(productIdY).getPrice());
+		orderitem.setPromotionalPrice(productdao.get(productIdY).getPrice());
+		orderitem.setProduct(productdao.get(productIdY));
+		int orderItemIdY = orderitemdao.add(orderitem);
+		
+		orderitem.setOriginalPrice(productdao.get(productIdZ).getPrice());
+		orderitem.setPromotionalPrice(productdao.get(productIdZ).getPrice());
+		orderitem.setProduct(productdao.get(productIdZ));
+		int orderItemIdZ = orderitemdao.add(orderitem);
+		
+		
+		
+		
+		/* Prepare Pattern */
+		List<OrderItem> ois = orderitemdao.listByUser(userId);
+		
+		DiscountRequest dr = new DiscountRequest();
+		dr.setOrderItems(ois);
+		dr.setNationHoliday(false);
+		dr.setLastYearAmount(100);
+		dr = nationHolidayDiscount.handleDiscount(dr);
+		System.out.println("Msg: " + dr.getDiscountMsg());
+		System.out.println("Total Discount Amount: " + dr.getTotalDiscount());
+		
+		
+		
+		/* Remove Test Data */
+		// delete orderitem
+		orderitemdao.delete(orderItemIdZ);
+		orderitemdao.delete(orderItemIdY);
+		orderitemdao.delete(orderItemIdX);
+		
+		// delete promotionitem
+	    promotionitemdao.delete(promotionItemIdZ);
+	    promotionitemdao.delete(promotionItemIdY);
+	    promotionitemdao.delete(promotionItemIdX);
+		
+		// delete promotion
+	    promotiondao.delete(promotionId);
+		
+		// delete product
+		productdao.delete(productIdZ);
+		productdao.delete(productIdY);
+		productdao.delete(productIdX);
 	}
 	
 	@AfterClass

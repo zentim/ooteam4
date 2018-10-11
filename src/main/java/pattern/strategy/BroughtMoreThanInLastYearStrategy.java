@@ -12,7 +12,7 @@ import main.java.pattern.chainOfResponsibility.DiscountRequest;
 /**
  * Strategy Pattern - concrete strategy
  */
-public class SpentMoreThanInLastYearStrategy implements Strategy {
+public class BroughtMoreThanInLastYearStrategy implements Strategy {
 
 	public DiscountRequest Execute(DiscountRequest discountRequest) {
 		List<OrderItem> orderItems = discountRequest.getOrderItems();
@@ -27,16 +27,18 @@ public class SpentMoreThanInLastYearStrategy implements Strategy {
 		// e.g. If a customer has brought in the last year more than $100K, he gets a 20% discount
 		float discountAmount = 0;
 		for (OrderItem oi : orderItems) {
-//			promotionItem = promotionItemDAO.getByProduct(oi.getProduct().getId());
-//			promotion = promotionDAO.get(promotionItem.getPromotion().getId());
-//			
-//			if (promotion.getState() == 1 && oi.getQuantity() >= promotionItem.getMinQuantity()) {
-//				discountAmount += oi.getQuantity() * (promotionItem.getDiscountOf() / 100);
-//			}
+			promotionItem = promotionItemDAO.getByProduct(oi.getProduct().getId());
+			promotion = promotionDAO.get(promotionItem.getPromotion().getId());
+			
+			boolean isDiscountConditionPass = discountRequest.getLastYearAmount() >= promotionItem.getMinQuantity();
+			if (promotion.getState() == 1 && isDiscountConditionPass) {
+				discountAmount += oi.getQuantity() * oi.getProduct().getPrice() * ((float)promotionItem.getDiscountOf() / 100);
+				discountAmount = Math.round(discountAmount);
+			}
 		}
 		
 		discountRequest.setTotalDiscount(discountRequest.getTotalDiscount() + discountAmount);
-		discountRequest.setDiscountMsg(discountRequest.getDiscountMsg() + " SpentMoreThanInLastYearStrategy Discount: -" + discountAmount + " ");
+		discountRequest.setDiscountMsg(discountRequest.getDiscountMsg() + "(BroughtMoreThanInLastYear Discount: -" + discountAmount + ")");
 		return discountRequest;
 	}
 

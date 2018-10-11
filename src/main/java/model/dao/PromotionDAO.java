@@ -17,7 +17,7 @@ public class PromotionDAO {
 	public static final int noDiscount = 0;
 	public static final int productSet = 1;
     public static final int eachGroupOfN = 2;
-    public static final int spentMoreThanInLastYear = 3;
+    public static final int broughtMoreThanInLastYear = 3;
     public static final int buyXGetYFree = 4;
 
 	public int getTotal() {
