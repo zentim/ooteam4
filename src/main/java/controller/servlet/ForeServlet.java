@@ -27,13 +27,13 @@ import main.java.model.dao.ProductDAO;
 import main.java.model.dao.ProductImageDAO;
 import main.java.model.dao.PromotionDAO;
 import main.java.model.util.Page;
-import main.java.pattern.chainOfResponsibility.BuyXGetYFreeChain;
+import main.java.pattern.chainOfResponsibility.BuyXGetYFreePolicy;
 import main.java.pattern.chainOfResponsibility.DiscountPolicy;
 import main.java.pattern.chainOfResponsibility.DiscountRequest;
-import main.java.pattern.chainOfResponsibility.EachGroupOfNChain;
-import main.java.pattern.chainOfResponsibility.NoDiscountChain;
-import main.java.pattern.chainOfResponsibility.ProductSetChain;
-import main.java.pattern.chainOfResponsibility.BroughtMoreThanInLastYearChain;
+import main.java.pattern.chainOfResponsibility.EachGroupOfNPolicy;
+import main.java.pattern.chainOfResponsibility.NoDiscountPolicy;
+import main.java.pattern.chainOfResponsibility.ProductSetPolicy;
+import main.java.pattern.chainOfResponsibility.BroughtMoreThanInLastYearPolicy;
 
 @WebServlet("/foreServlet")
 public class ForeServlet extends BaseForeServlet {
@@ -196,11 +196,11 @@ public class ForeServlet extends BaseForeServlet {
          * Chain Of Responsibility Pattern
          */
         // Init Chain
-    	DiscountPolicy nationHolidayDiscount = new BuyXGetYFreeChain();
-    	DiscountPolicy lastYear100KDiscount = new BroughtMoreThanInLastYearChain();
-    	DiscountPolicy eachGroupOf100Discount = new EachGroupOfNChain();
-    	DiscountPolicy xyzDiscount = new ProductSetChain();
-    	DiscountPolicy noDiscount = new NoDiscountChain();
+    	DiscountPolicy nationHolidayDiscount = new BuyXGetYFreePolicy();
+    	DiscountPolicy lastYear100KDiscount = new BroughtMoreThanInLastYearPolicy();
+    	DiscountPolicy eachGroupOf100Discount = new EachGroupOfNPolicy();
+    	DiscountPolicy xyzDiscount = new ProductSetPolicy();
+    	DiscountPolicy noDiscount = new NoDiscountPolicy();
     	
     	// Setting Chain Order
     	nationHolidayDiscount.setNextDiscountPolicy(lastYear100KDiscount);

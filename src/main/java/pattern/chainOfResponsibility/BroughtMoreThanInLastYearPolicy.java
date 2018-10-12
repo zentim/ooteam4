@@ -15,7 +15,7 @@ import main.java.pattern.strategy.Strategy;
 /**
  * Chain Of Responsibility Pattern - concrete handler
  */
-public class BroughtMoreThanInLastYearChain extends DiscountPolicy {
+public class BroughtMoreThanInLastYearPolicy extends DiscountPolicy {
 
 	@Override
 	public DiscountRequest handleDiscount(DiscountRequest discountRequest) {
@@ -48,10 +48,13 @@ public class BroughtMoreThanInLastYearChain extends DiscountPolicy {
 	    discountRequest.setOrderItems(discountOrderItems);
 	    
 	    
-	    // Use Strategy Pattern
-	    Strategy strategy = new BroughtMoreThanInLastYearStrategy();
+	    /**
+	     * Use Strategy Pattern
+	     */
 	    if (!discountOrderItems.isEmpty()) {
+	    	Strategy strategy = new BroughtMoreThanInLastYearStrategy();
 	    	StrategyContext cc = new StrategyContext(strategy);
+	    	
 		    discountRequest = cc.ExecuteStrategy(discountRequest);
 	    }
 	    

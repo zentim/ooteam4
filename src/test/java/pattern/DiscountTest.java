@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import main.java.pattern.chainOfResponsibility.DiscountPolicy;
 import main.java.pattern.chainOfResponsibility.DiscountRequest;
-import main.java.pattern.chainOfResponsibility.BroughtMoreThanInLastYearChain;
+import main.java.pattern.chainOfResponsibility.BroughtMoreThanInLastYearPolicy;
 import main.java.model.bean.Category;
 import main.java.model.bean.OrderItem;
 import main.java.model.bean.Product;
@@ -23,10 +23,10 @@ import main.java.model.dao.ProductDAO;
 import main.java.model.dao.PromotionDAO;
 import main.java.model.dao.PromotionItemDAO;
 import main.java.model.dao.UserDAO;
-import main.java.pattern.chainOfResponsibility.BuyXGetYFreeChain;
-import main.java.pattern.chainOfResponsibility.NoDiscountChain;
-import main.java.pattern.chainOfResponsibility.EachGroupOfNChain;
-import main.java.pattern.chainOfResponsibility.ProductSetChain;
+import main.java.pattern.chainOfResponsibility.BuyXGetYFreePolicy;
+import main.java.pattern.chainOfResponsibility.NoDiscountPolicy;
+import main.java.pattern.chainOfResponsibility.EachGroupOfNPolicy;
+import main.java.pattern.chainOfResponsibility.ProductSetPolicy;
 
 public class DiscountTest {
 	// Init Test Data
@@ -52,11 +52,11 @@ public class DiscountTest {
 	  
 	
 	// Init Chain
-	public static DiscountPolicy nationHolidayDiscount = new BuyXGetYFreeChain();
-	public static DiscountPolicy lastYear100KDiscount = new BroughtMoreThanInLastYearChain();
-	public static DiscountPolicy eachGroupOf100Discount = new EachGroupOfNChain();
-	public static DiscountPolicy xyzDiscount = new ProductSetChain();
-	public static DiscountPolicy noDiscount = new NoDiscountChain();
+	public static DiscountPolicy nationHolidayDiscount = new BuyXGetYFreePolicy();
+	public static DiscountPolicy lastYear100KDiscount = new BroughtMoreThanInLastYearPolicy();
+	public static DiscountPolicy eachGroupOf100Discount = new EachGroupOfNPolicy();
+	public static DiscountPolicy xyzDiscount = new ProductSetPolicy();
+	public static DiscountPolicy noDiscount = new NoDiscountPolicy();
 
 	@BeforeClass
 	public static void testStart() {

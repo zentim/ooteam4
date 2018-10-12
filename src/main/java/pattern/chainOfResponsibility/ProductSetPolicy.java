@@ -15,7 +15,7 @@ import main.java.pattern.strategy.Strategy;
 /**
  * Chain Of Responsibility Pattern - concrete handler
  */
-public class ProductSetChain extends DiscountPolicy {
+public class ProductSetPolicy extends DiscountPolicy {
 
 	@Override
 	public DiscountRequest handleDiscount(DiscountRequest discountRequest) {
@@ -48,10 +48,13 @@ public class ProductSetChain extends DiscountPolicy {
 	    discountRequest.setOrderItems(discountOrderItems);
 	    
 
-	    // Use Strategy Pattern
-	    Strategy strategy = new ProductSetStrategy();
+	    /**
+	     * Use Strategy Pattern
+	     */
 	    if (!discountOrderItems.isEmpty()) {
+	    	Strategy strategy = new ProductSetStrategy();
 	    	StrategyContext cc = new StrategyContext(strategy);
+	    	
 		    discountRequest = cc.ExecuteStrategy(discountRequest);
 	    }
 	    
