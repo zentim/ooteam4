@@ -81,7 +81,7 @@
 </div>
 
 <!-- For delete order -->
-<div class="modal" id="deleteConfirmModal" tabindex="-1" role="dialog" >
+<div class="modal" id="deleteConfirmModal" tabindex="-1" role="dialog" style="z-index: 5000;">
     <div class="modal-dialog deleteConfirmModalDiv">
        <div class="modal-content">
           <div class="modal-header">

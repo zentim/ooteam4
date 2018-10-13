@@ -58,7 +58,10 @@ public class BuyXGetYFreeStrategy implements Strategy {
 			}
 		}
 		
-		discountRequest.setDiscountMsg(discountRequest.getDiscountMsg() + "(BuyXGetYFree Discount: Get Free " + freeProducts + ")");
+		if (!freeProducts.equals("")) {
+			discountRequest.setDiscountMsg(discountRequest.getDiscountMsg() + "(BuyXGetYFree Discount: Get Free " + freeProducts + ")");
+		}
+		
 		return discountRequest;
 	}
 

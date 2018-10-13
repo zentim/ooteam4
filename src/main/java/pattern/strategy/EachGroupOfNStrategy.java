@@ -37,8 +37,11 @@ public class EachGroupOfNStrategy implements Strategy {
 			}
 		}
 		
-		discountRequest.setTotalDiscount(discountRequest.getTotalDiscount() + discountAmount);
-		discountRequest.setDiscountMsg(discountRequest.getDiscountMsg() + "(EachGroupOfN Discount: -" + discountAmount + ")");
+		if (discountAmount > 0) {
+			discountRequest.setTotalDiscount(discountRequest.getTotalDiscount() + discountAmount);
+			discountRequest.setDiscountMsg(discountRequest.getDiscountMsg() + "(EachGroupOfN Discount: -" + discountAmount + ")");
+		}
+
 		return discountRequest;
 	}
 

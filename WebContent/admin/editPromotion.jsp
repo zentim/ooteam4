@@ -6,103 +6,7 @@
 <%@include file="../include/admin/adminNavigator.jsp"%>
 
 
-<h2>Discount</h2>
-<div class="table-responsive">
-  <table class="table table-striped table-bordered table-sm" >
-    <thead>
-      <tr align="center">
-        <th>#</th>
-        <th>ActivityName</th>
-        <th>DiscountType</th>
-        <th>From</th>
-        <th>To</th>
-        <th>State</th>
-        <th>Operation</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <c:forEach items="${ps}" var="p">
-
-      <tr align="center">
-        <td>${ p.id }</td>
-        <td>${ p.name }</td>
-        <td>${ p.discountTypeDesc }</td>
-		<td>
-          <fmt:formatDate value="${p.dateFrom}" pattern="yyyy-MM-dd HH:mm:ss"/>
-        </td>
-        <td>
-          <fmt:formatDate value="${p.dateTo}" pattern="yyyy-MM-dd HH:mm:ss"/>
-        </td>
-        <td>${ p.state }</td>
-        <td>
-        	<a href="admin_promotion_edit?id=${ p.id }">
-	            <button type="button" class="btn btn-primary btn-sm">
-	              <span data-feather="edit"></span>
-	            </button>
-	        </a>
-            <button
-              promotionId=${p.id}
-              class="promotionPageCheckPromotionItems btn btn-primary btn-sm">
-              MoreDetail
-            </button>
-            <a deleteLink="true" href="admin_promotion_delete?id=${p.id}">
-	            <button
-	              type="button"
-	              class="btn btn-danger btn-sm">
-	              <span data-feather="trash-2"></span>
-	            </button>
-	          </a>
-        </td>
-      </tr>
-      
-      <tr class="orderPageOrderItemTR"  promotionId=${p.id} style="display: none">
-	      <td colspan="10" align="center">
-
-	          <div  class="orderPageOrderItem">
-                <table width="800px" align="center" class="orderPageOrderItemTable">
-
-	                  <c:forEach items="${p.promotionItems }" var="pi">
-
-	                      <tr>
-	                          <td align="left">
-	                              <img
-                                  width="40px"
-                                  height="40px"
-                                  src="img/productSingle/${pi.product.firstProductImage.id}.jpg">
-	                          </td>
-	                          <td>
-	                              <a href="foreproduct?pid=${pi.product.id}">
-	                                 <span>${ pi.product.name }</span>
-	                              </a>
-	                          </td>
-	                          <td align="right">
-	                              <span class="text-muted">${ pi.minQuantity }個</span>
-	                          </td>
-	                          <td align="right">
-	                              <span class="text-muted">單價 : $${ pi.product.price }</span>
-	                          </td>
-	                      </tr>
-
-	                  </c:forEach>
-
-                </table>
-	           </div>
-
-	      </td>
-      </tr>
-      
-      </c:forEach>
-    </tbody>
-  </table>
-</div>
-
-
-<!-- Pagination -->
-<div>
-	<%@include file="../include/admin/adminPage.jsp" %>
-</div>
-
+<h2>Edit Promotion</h2>
 
 <!-- Add New Discount -->
 <div class="card" style="width: 23rem;">
@@ -119,7 +23,8 @@
 			  	type="text" 
 			  	class="form-control" 
 			  	aria-label="Sizing example input" 
-			  	aria-describedby="inputGroup-sizing-default">
+			  	aria-describedby="inputGroup-sizing-default"
+			  	value="${ promotion.name }">
 			</div>
 
 
@@ -133,7 +38,7 @@
 			        	From: 
 			            <div class="form-group">
 			                <div class='input-group date' id='datetimepicker1'>
-			                    <input type='text' class="form-control" name="dateFrom" id="date_from"/>
+			                    <input type='text' class="form-control" name="dateFrom" id="date_from" value="${ dateFrom }"/>
 			                    <span class="input-group-addon">
 			                        <span class="glyphicon glyphicon-calendar"></span>
 			                    </span>
@@ -154,7 +59,7 @@
 			        	To: 
 			            <div class="form-group">
 			                <div class='input-group date' id='datetimepicker2'>
-			                    <input type='text' class="form-control" name="date_to" id="date_to"/>
+			                    <input type='text' class="form-control" name="date_to" id="date_to" value="${ dateTo }"/>
 			                    <span class="input-group-addon">
 			                        <span class="glyphicon glyphicon-calendar"></span>
 			                    </span>
@@ -185,11 +90,31 @@
 			    <label class="input-group-text" for="inputGroupSelect01">DiscountType</label>
 			  </div>
 			  <select class="custom-select" id="discount_type">
-			    <option value="0" selected>Choose...</option>
-			    <option value="1">productSet</option>
-			    <option value="2">eachGroupOfN</option>
-			    <option value="3">spendMoreThanInLastYear</option>
-			    <option value="4">buyXGetYFree</option>
+			  	<option value="0" selected>Choose...</option>
+			  	<c:if test="${ promotion.discountType == 1 }">
+			  		<option value="1" selected>productSet</option>
+			  	</c:if>
+			  	<c:if test="${ promotion.discountType != 1 }">
+			  		<option value="1">productSet</option>
+			  	</c:if>
+			  	<c:if test="${ promotion.discountType == 2 }">
+			  		<option value="2" selected>eachGroupOfN</option>
+			  	</c:if>
+			  	<c:if test="${ promotion.discountType != 2 }">
+			  		<option value="2">eachGroupOfN</option>
+			  	</c:if>
+			  	<c:if test="${ promotion.discountType == 3 }">
+			  		<option value="3" selected>spendMoreThanInLastYear</option>
+			  	</c:if>
+			  	<c:if test="${ promotion.discountType != 3 }">
+			  		<option value="3">spendMoreThanInLastYear</option>
+			  	</c:if>
+			  	<c:if test="${ promotion.discountType == 4 }">
+			  		<option value="4" selected>buyXGetYFree</option>
+			  	</c:if>
+			  	<c:if test="${ promotion.discountType != 4 }">
+			  		<option value="4">buyXGetYFree</option>
+			  	</c:if>
 			  </select>
 			</div>
 		   </div>
@@ -215,8 +140,18 @@
 			    <label class="input-group-text" for="inputGroupSelect01">State</label>
 			  </div>
 			  <select class="custom-select" id="state">
-			    <option value="0" selected>inactive</option>
-				<option value="1">active</option>
+			  	<c:if test="${ promotion.state == 0 }">
+			  		<option value="0" selected>inactive</option>
+			  	</c:if>
+			  	<c:if test="${ promotion.state != 0 }">
+			  		<option value="0">inactive</option>
+			  	</c:if>
+			  	<c:if test="${ promotion.state == 1 }">
+			  		<option value="1" selected>active</option>
+			  	</c:if>
+			  	<c:if test="${ promotion.state != 1 }">
+			  		<option value="1">active</option>
+			  	</c:if>
 			  </select>
 			</div>
   			
@@ -228,16 +163,6 @@
 
   </div>
 </div>
-
-
-<script>
-$(function(){
-    $("button.promotionPageCheckPromotionItems").click(function(){
-        var promotionId = $(this).attr("promotionId");
-        $("tr.orderPageOrderItemTR[promotionId="+promotionId+"]").toggle();
-    });
-});
-</script>
 
 
 <script>
@@ -261,7 +186,7 @@ $(document).ready(function(){
 		
         if( discountType !== "Choose..." && discountType !== "" && discountName != "" ){
 	        	  $.ajax({
-	                  url: 'admin_promotion_add',
+	                  url: 'admin_promotion_update',
 	                  type: 'post',
 	                  async: false,
 	                  data: {
@@ -269,7 +194,8 @@ $(document).ready(function(){
 	                	  discountName: discountName,
 	                	  dateFrom: dateFrom,
 	                	  dateTo: dateTo,
-	                	  state: state
+	                	  state: state,
+	                	  promotionId: "${ promotion.id }"
 	                  },
 	                  success: function(result){
 	                     /* if(res == 'General customer'||res == 'VIP customer'){
@@ -282,7 +208,7 @@ $(document).ready(function(){
 	                      console.log("success!!!")
 	                      if("success" == result){
 	                              
-	                    	  location.reload();
+	                    	  location.href = './admin_promotion_list';
 	                         
 	                      }else{                    	
 	                      	$("#login_password").val('');

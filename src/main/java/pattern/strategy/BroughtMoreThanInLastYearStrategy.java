@@ -37,8 +37,11 @@ public class BroughtMoreThanInLastYearStrategy implements Strategy {
 			}
 		}
 		
-		discountRequest.setTotalDiscount(discountRequest.getTotalDiscount() + discountAmount);
-		discountRequest.setDiscountMsg(discountRequest.getDiscountMsg() + "(BroughtMoreThanInLastYear Discount: -" + discountAmount + ")");
+		if (discountAmount > 0) {
+			discountRequest.setTotalDiscount(discountRequest.getTotalDiscount() + discountAmount);
+			discountRequest.setDiscountMsg(discountRequest.getDiscountMsg() + "(BroughtMoreThanInLastYear Discount: -" + discountAmount + ")");
+		}
+
 		return discountRequest;
 	}
 

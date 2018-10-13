@@ -49,7 +49,10 @@ public class ForeServlet extends BaseForeServlet {
         		PromotionItem promotionItem = promotionItemDAO.getByProduct(p.getId()); 
         		Promotion promotionByProduct = promotionItem.getPromotion();
         		if (promotionByProduct != null && !(promotionItem.getDiscountOf() == 100 && promotionByProduct.getDiscountType() == PromotionDAO.buyXGetYFree)) {
-        			String promotionName = promotionByProduct.getName();
+        			String promotionName = "";
+        			if (promotionByProduct.getState() == 1) {
+        				promotionName = promotionByProduct.getName();
+        			}
             		String discountTypeName = promotionByProduct.getDiscountTypeDescription();
             		p.setPromotionName(promotionName);
             		p.setDiscountTypeName(discountTypeName);

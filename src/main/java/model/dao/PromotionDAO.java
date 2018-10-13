@@ -72,7 +72,7 @@ public class PromotionDAO {
 
 	public void update(Promotion bean) {
 
-		String sql = "update promotion set discountTypeId=?, name=?, dateFrom=?, dateTo=?, state=? where promotionId = ?";
+		String sql = "update promotion set discountType=?, name=?, dateFrom=?, dateTo=?, state=? where promotionId = ?";
 		try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
 
 			ps.setInt(1, bean.getDiscountType());

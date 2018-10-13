@@ -54,8 +54,11 @@ public class ProductSetStrategy implements Strategy {
 			}
 		}
 		
-		discountRequest.setTotalDiscount(discountRequest.getTotalDiscount() + discountAmount);
-		discountRequest.setDiscountMsg(discountRequest.getDiscountMsg() + "(ProductSet Discount: -" + discountAmount + ")");
+		if (discountAmount > 0) {
+			discountRequest.setTotalDiscount(discountRequest.getTotalDiscount() + discountAmount);
+			discountRequest.setDiscountMsg(discountRequest.getDiscountMsg() + "(ProductSet Discount: -" + discountAmount + ")");
+		}
+		
 		return discountRequest;
 	}
 
