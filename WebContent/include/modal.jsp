@@ -89,7 +89,7 @@
             <h4 class="modal-title">確認刪除？</h4>
           </div>
           <div class="modal-footer">
-            <button data-dismiss="modal" class="btn btn-default" type="button">close</button>
+            <button data-dismiss="modal" class="btn btn-default" type="button" style="margin-bottom: 0">close</button>
             <button class="btn btn-primary deleteConfirmButton" id="submit" type="button">confirm</button>
           </div>
       </div>
