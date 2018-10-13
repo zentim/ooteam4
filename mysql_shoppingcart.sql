@@ -12,11 +12,9 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 
--- 傾印 mysql_shoppingcart 的資料庫結構
 CREATE DATABASE IF NOT EXISTS `mysql_shoppingcart` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `mysql_shoppingcart`;
 
--- 傾印  表格 mysql_shoppingcart.account 結構
 CREATE TABLE IF NOT EXISTS `user` (
   `userId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `email` varchar(100) NOT NULL,
@@ -24,8 +22,6 @@ CREATE TABLE IF NOT EXISTS `user` (
   PRIMARY KEY (`userId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- 取消選取資料匯出。
--- 傾印  表格 mysql_shoppingcart.order 結構
 CREATE TABLE IF NOT EXISTS `order_` (
   `orderId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `userId` int(10) unsigned NOT NULL,
@@ -38,8 +34,6 @@ CREATE TABLE IF NOT EXISTS `order_` (
   PRIMARY KEY (`orderId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
--- 取消選取資料匯出。
--- 傾印  表格 mysql_shoppingcart.order_item 結構
 CREATE TABLE IF NOT EXISTS `order_item` (
   `orderItemId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `orderId` int(11) DEFAULT NULL,
@@ -52,8 +46,6 @@ CREATE TABLE IF NOT EXISTS `order_item` (
   PRIMARY KEY (`orderItemId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- 取消選取資料匯出。
--- 傾印  表格 mysql_shoppingcart.product 結構
 CREATE TABLE IF NOT EXISTS `product` (
   `productId` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(20) NOT NULL,
@@ -64,8 +56,6 @@ CREATE TABLE IF NOT EXISTS `product` (
   PRIMARY KEY (`productId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- 取消選取資料匯出。
--- 傾印  表格 mysql_shoppingcart.product_detail 結構
 CREATE TABLE IF NOT EXISTS `product_detail` (
   `productDetailId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `productId` int(10) unsigned NOT NULL,
@@ -74,19 +64,12 @@ CREATE TABLE IF NOT EXISTS `product_detail` (
   PRIMARY KEY (`productDetailId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- 取消選取資料匯出。
--- 傾印  表格 mysql_shoppingcart.subscription 結構
 CREATE TABLE IF NOT EXISTS `subscription` (
   `subscriptionId` int(11) NOT NULL AUTO_INCREMENT,
   `userId` int(11) NOT NULL,
   `productId` int(11) NOT NULL,
   PRIMARY KEY (`subscriptionId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- 取消選取資料匯出。
-/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
-/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 
 CREATE TABLE IF NOT EXISTS `category` (
   `categoryId` int(11) NOT NULL AUTO_INCREMENT,
@@ -119,3 +102,7 @@ CREATE TABLE IF NOT EXISTS `product_image` (
   `type` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`productImageId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
