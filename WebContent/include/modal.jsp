@@ -4,12 +4,12 @@
 <div>
 	    <!-- loginFrame !-->
 		<div id="myModal" class="modal">
-		  <span class="close cursor" onclick="closeModal()">&times;</span>
 		  <!-- loginFrame -->
 		  <div class="main-div">
 		  <div class="login-div">
 		    <div class="panel">
 		     <div class="card">
+		     <span class="close cursor" onclick="closeModal()">&times;</span>
 		   <h2 class="title"> Login</h2> 
 		   </div>
 		   
@@ -33,6 +33,7 @@
 		   <!-- RegisterFrame !-->
 		    <div class="register-div">
 		     <div class="card">
+		     <span class="close cursor" onclick="closeModal()">&times;</span>
     		<h2 class="title" style="clear:both">Register</h2>
     		</div>
 		    <div class="panel">
@@ -85,12 +86,11 @@
     <div class="modal-dialog deleteConfirmModalDiv">
        <div class="modal-content">
           <div class="modal-header">
-            <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
             <h4 class="modal-title">確認刪除？</h4>
           </div>
           <div class="modal-footer">
-            <button data-dismiss="modal" class="btn btn-default" type="button" style="margin-bottom: 0">close</button>
-            <button class="btn btn-primary deleteConfirmButton" id="submit" type="button">confirm</button>
+          	<button class="btn btn-danger deleteConfirmButton" id="submit" type="button" style="margin-bottom: 0">confirm</button>
+            <button data-dismiss="modal" class="btn btn-default" type="button">close</button>
           </div>
       </div>
     </div>
