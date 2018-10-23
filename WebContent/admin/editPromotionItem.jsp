@@ -7,8 +7,8 @@
 
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="admin_category_list">所有分類</a></li>
-    <li class="breadcrumb-item"><a href="admin_product_list?cid=${p.category.id}">${p.category.name}</a></li>
+    <li class="breadcrumb-item"><a href="admin_brand_list">All Brand</a></li>
+    <li class="breadcrumb-item"><a href="admin_product_list?cid=${p.brand.id}">${p.brand.name}</a></li>
     <li class="breadcrumb-item active" aria-current="page">${ p.name }</li>
     <li class="breadcrumb-item active" aria-current="page">Edit PromotionItem</li>
     </li>
@@ -72,7 +72,7 @@
   		
   		
 			<input type="hidden" name="productId" id="productId" value="${ p.id }">
-			<input type="hidden" name="categoryId" id="categoryId" value="${ p.category.id }">
+			<input type="hidden" name="brandId" id="brandId" value="${ p.brand.id }">
 			<input type="hidden" name="promotionItemId" id="promotionItemId" value="${ pi.id }">
 			<button class="btn btn-lg btn-primary btn-block" id="create_promotionItem_btn">Submit</button>
 
@@ -82,7 +82,7 @@
 <script>
 $(document).ready(function(){
     $("#create_promotionItem_btn").click(function(){
-    	var categoryId = $("#categoryId").val();
+    	var brandId = $("#brandId").val();
         var productId = $("#productId").val();
         var promotionItemId = $("#promotionItemId").val();
     	var promotionId = $("#promotion").val();
@@ -103,7 +103,7 @@ $(document).ready(function(){
 	                  type: 'post',
 	                  async: false,
 	                  data: {
-	                	  categoryId: categoryId,
+	                	  brandId: brandId,
 	                	  productId: productId,
 	                	  promotionItemId: promotionItemId,
 	                	  promotionId: promotionId, 
@@ -121,7 +121,7 @@ $(document).ready(function(){
 	                      console.log("success!!!")
 	                      if("success" == result){
 	                              
-	                    	  location.href = './admin_product_list?cid=' + categoryId;
+	                    	  location.href = './admin_product_list?cid=' + brandId;
 	                         
 	                      }else{                    	
 	                      	$("#login_password").val('');

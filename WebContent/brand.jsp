@@ -6,6 +6,6 @@
 <%@include file="./include/nav.jsp" %>
 
 <!-- Middle Content Area -->
-<%@include file="./include/category/categoryPage.jsp" %>
+<%@include file="./include/brand/brandPage.jsp" %>
 
 <%@include file="./include/footer.jsp" %>  

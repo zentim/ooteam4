@@ -7,9 +7,9 @@
 
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="admin_category_list">所有分類</a></li>
+    <li class="breadcrumb-item"><a href="admin_brand_list">All Brand</a></li>
     <li class="breadcrumb-item"><a href="admin_product_list?cid=${c.id}">${c.name}</a></li>
-    <li class="breadcrumb-item active" aria-current="page">產品管理</li>
+    <li class="breadcrumb-item active" aria-current="page">Manage Product</li>
   </ol>
 </nav>
 

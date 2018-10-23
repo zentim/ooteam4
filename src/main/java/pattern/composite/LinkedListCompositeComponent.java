@@ -4,8 +4,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import main.java.model.bean.Category;
-import main.java.model.dao.CategoryDAO;
+import main.java.model.bean.Brand;
+import main.java.model.dao.BrandDAO;
 
 /**
  * 
@@ -43,7 +43,7 @@ public class LinkedListCompositeComponent extends Component {
 
 	@Override
 	public void operation() {
-		Category c = new CategoryDAO().get(id);
+		Brand c = new BrandDAO().get(id);
 		System.out.println("- id: " + c.getId() + ", name: " + c.getName());
 		
 		Iterator iterator = components.iterator();

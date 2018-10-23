@@ -9,7 +9,7 @@ public class Product {
 	private float price;
 	private int inventory;
 	private Date dateAdded;
-	private Category category;
+	private Brand category;
 	private ProductImage firstProductImage;
 	private List<ProductImage> productImages;
 	private List<ProductImage> productSingleImages;
@@ -48,10 +48,10 @@ public class Product {
 	public void setDateAdded(Date dateAdded) {
 		this.dateAdded = dateAdded;
 	}
-	public Category getCategory() {
+	public Brand getBrand() {
 		return category;
 	}
-	public void setCategory(Category category) {
+	public void setBrand(Brand category) {
 		this.category = category;
 	}
 	public ProductImage getFirstProductImage() {

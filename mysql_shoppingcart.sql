@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS `product` (
   `inventory` int(10) unsigned NOT NULL DEFAULT '0',
   `price` float unsigned NOT NULL,
   `dateAdded` datetime DEFAULT NULL,
-  `categoryId` int(11) unsigned NOT NULL,
+  `brandId` int(11) unsigned NOT NULL,
   PRIMARY KEY (`productId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -71,10 +71,22 @@ CREATE TABLE IF NOT EXISTS `subscription` (
   PRIMARY KEY (`subscriptionId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE IF NOT EXISTS `segment` (
+  `segmentId` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(10) NOT NULL,
+  PRIMARY KEY (`segmentId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE IF NOT EXISTS `category` (
   `categoryId` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(10) NOT NULL,
   PRIMARY KEY (`categoryId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `brand` (
+  `brandId` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(10) NOT NULL,
+  PRIMARY KEY (`brandId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `promotion` (

@@ -1,22 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" isELIgnored="false"%>
 
-<c:if test="${empty param.categorycount}">
-    <c:set var="categorycount" scope="page" value="100"/>
+<c:if test="${empty param.brandcount}">
+    <c:set var="brandcount" scope="page" value="100"/>
 </c:if>
  
-<c:if test="${!empty param.categorycount}">
-    <c:set var="categorycount" scope="page" value="${param.categorycount}"/>
+<c:if test="${!empty param.brandcount}">
+    <c:set var="brandcount" scope="page" value="${param.brandcount}"/>
 </c:if>
 
                    
 <div class="col-sm-8 text-left" style="padding:10px">  
 	  
 	<c:forEach items="${ cs }" var="c" varStatus="stc">
-		<c:if test="${ stc.count <= categorycount }">
+		<c:if test="${ stc.count <= brandcount }">
 		
 			<div style="float: left; width: 100%;">
-				<a href="forecategory?cid=${ c.id }">
+				<a href="forebrand?cid=${ c.id }">
 					<h2 id="${ c.id }">${ c.name }</h2>
 				</a>
 			

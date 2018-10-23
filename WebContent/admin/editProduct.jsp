@@ -7,10 +7,10 @@
 
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="admin_category_list">所有分類</a></li>
-    <li class="breadcrumb-item"><a href="admin_product_list?cid=${p.category.id}">${p.category.name}</a></li>
+    <li class="breadcrumb-item"><a href="admin_brand_list">All Brand</a></li>
+    <li class="breadcrumb-item"><a href="admin_product_list?cid=${p.brand.id}">${p.brand.name}</a></li>
     <li class="breadcrumb-item active" aria-current="page">${ p.name }</li>
-    <li class="breadcrumb-item active" aria-current="page">編輯產品</li>
+    <li class="breadcrumb-item active" aria-current="page">Edit Product</li>
     </li>
   </ol>
 </nav>
@@ -63,7 +63,7 @@
   		
   		
 			<input type="hidden" name="id" value="${ p.id }">
-			<input type="hidden" name="cid" value="${ p.category.id }">
+			<input type="hidden" name="cid" value="${ p.brand.id }">
 			<button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
 				
 
@@ -75,13 +75,13 @@
 <script>
 $(function() {
 	$("#editForm").submit(function() {
-		if (!checkEmpty("name", "產品名稱")) {
+		if (!checkEmpty("name", "Product Name")) {
 			return false;
 		}
-		if (!checkNumber("price", "原價")) {
+		if (!checkNumber("price", "Price")) {
 			return false;
 		}
-		if (!checkInt("inventory", "庫存")) {
+		if (!checkInt("inventory", "Inventory")) {
 			return false;
 		}
 		return true;

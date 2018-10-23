@@ -7,10 +7,10 @@
 
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="admin_category_list">所有分類</a></li>
-    <li class="breadcrumb-item"><a href="admin_product_list?cid=${p.category.id}">${p.category.name}</a></li>
+    <li class="breadcrumb-item"><a href="admin_brand_list">All Brand</a></li>
+    <li class="breadcrumb-item"><a href="admin_product_list?cid=${p.brand.id}">${p.brand.name}</a></li>
     <li class="breadcrumb-item active" aria-current="page">${ p.name }</li>
-    <li class="breadcrumb-item active" aria-current="page">產品圖片管理</li>
+    <li class="breadcrumb-item active" aria-current="page">Manage Product Image</li>
   </ol>
 </nav>
 
@@ -20,12 +20,12 @@
       <!-- Add New ProductImage -->
       <div class="card">
         <div class="card-body">
-          <h4>新增產品<b class="text-primary"> 單個 </b>圖片</h4>
+          <h4>New Proudct<b class="text-primary"> Single </b>Image</h4>
 
           <form method="post" id="addFormSingle" action="admin_productImage_add" enctype="multipart/form-data">
             <table class="addTable">
               <tr>
-                <td>請選擇本地圖片 尺寸 400 X 400 為佳</td>
+                <td>Image Size 400 X 400 is better</td>
               </tr>
               <tr>
                 <td>
@@ -50,8 +50,8 @@
           <thead>
             <tr>
               <th>#</th>
-              <th>產品單個圖片縮略圖</th>
-              <th>刪除</th>
+              <th>Product single image thumbnail</th>
+              <th>Delete</th>
             </tr>
           </thead>
           
@@ -60,7 +60,7 @@
             <tr>
               <td>${ pi.id }</td>
               <td>
-                <a title="點擊查看原圖" href="img/productSingle/${pi.id}.jpg"><img height="50px" src="img/productSingle/${pi.id}.jpg"></a>  
+                <a title="click to see the original image" href="img/productSingle/${pi.id}.jpg"><img height="50px" src="img/productSingle/${pi.id}.jpg"></a>  
               </td>
               <td>
                 <a deleteLink="true" href="admin_productImage_delete?id=${ pi.id }">
@@ -75,67 +75,7 @@
         </table>
       </div>
     </div>
-
-    <div class="col-sm">
-      <!-- Add New ProductImage -->
-      <div class="card">
-        <div class="card-body">
-          <h4>新增產品<b class="text-primary"> 詳情 </b>圖片</h4>
-
-          <form method="post" id="addFormDetail" action="admin_productImage_add" enctype="multipart/form-data">
-            <table class="addTable">
-              <tr>
-                <td>請選擇本地圖片 寬度 790 為佳</td>
-              </tr>
-              <tr>
-                <td>
-                	<input id="filepathDetail" type="file" name="filepath" />
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2" align="center">
-                  <input type="hidden" name="type" value="type_detail" />
-                  <input type="hidden" name="pid" value="${ p.id }" />
-                  <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
-                </td>
-              </tr>
-            </table>
-          </form>
-
-        </div>
-      </div>
-
-      <div class="table-responsive">
-        <table class="table table-striped table-sm">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>產品詳情圖片縮略圖</th>
-              <th>刪除</th>
-            </tr>
-          </thead>
-          
-          <tbody>
-            <c:forEach items="${pisDetail}" var="pi">
-            <tr>
-              <td>${ pi.id }</td>
-              <td>
-                <a title="點擊查看原圖" href="img/productDetail/${pi.id}.jpg"><img height="50px" src="img/productDetail/${pi.id}.jpg"></a>  
-              </td>
-              <td>
-                <a deleteLink="true" href="admin_productImage_delete?id=${ p.id }">
-                  <button type="button" class="btn btn-danger btn-sm">
-                    <span data-feather="trash-2"></span>
-                  </button>
-                </a>
-              </td>
-            </tr>
-            </c:forEach>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    
+      
   </div>
 </div>
 
@@ -145,14 +85,14 @@
 $(function(){
 
   $(".addFormSingle").submit(function(){
-    if(checkEmpty("filepathSingle","圖片文件")){
+    if(checkEmpty("filepathSingle","Image File")){
       $("#filepathSingle").value("");
       return true;
     }
     return false;
   });
   $(".addFormDetail").submit(function(){
-    if(checkEmpty("filepathDetail","圖片文件"))
+    if(checkEmpty("filepathDetail","Image File"))
       return true;
     return false;
   });

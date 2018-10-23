@@ -8,16 +8,16 @@ import java.util.List;
 import org.junit.*;
 
 import main.java.model.bean.Product;
-import main.java.model.bean.Category;
+import main.java.model.bean.Brand;
 import main.java.model.dao.ProductDAO;
-import main.java.model.dao.CategoryDAO;
+import main.java.model.dao.BrandDAO;
 
 import main.java.pattern.composite.*;
 
 public class ProductDAOTest {
-	public static CategoryDAO categorydao = new CategoryDAO();
-	public static Category category;
-	public static int categoryId;
+	public static BrandDAO branddao = new BrandDAO();
+	public static Brand brand;
+	public static int brandId;
 
 	public static ProductDAO productdao = new ProductDAO();
 	public static Product product;
@@ -25,10 +25,10 @@ public class ProductDAOTest {
 
 	@BeforeClass
 	public static void testAdd() {
-		// create category
-		category = new Category();
-		category.setName("Book");
-		categoryId = categorydao.add(category);
+		// create brand
+		brand = new Brand();
+		brand.setName("Book");
+		brandId = branddao.add(brand);
 
 		System.out.println("Test Start...");
 
@@ -38,13 +38,13 @@ public class ProductDAOTest {
 		product.setInventory(5);
 		product.setPrice(1000);
 		product.setDateAdded(new Date());
-		product.setCategory(categorydao.get(categoryId));
+		product.setBrand(branddao.get(brandId));
 		productId = productdao.add(product);
 	}
 
 	@Test
 	public void testTotal() {
-		int result = productdao.getTotal(categoryId);
+		int result = productdao.getTotal(brandId);
 		assertNotNull("should not be null", result);
 	}
 
@@ -69,9 +69,9 @@ public class ProductDAOTest {
 		System.out.println("=== testCompositePattern");
 		
 		Component productComponent = new PrimitiveComponent(productId);
-		Component categoryComponent = new LinkedListCompositeComponent(categoryId);
-		categoryComponent.add(productComponent);
-		categoryComponent.operation();
+		Component brandComponent = new LinkedListCompositeComponent(brandId);
+		brandComponent.add(productComponent);
+		brandComponent.operation();
 		
 		System.out.println();
 	}
@@ -83,8 +83,8 @@ public class ProductDAOTest {
 
 		System.out.println("Test End...");
 
-		// delete category
-		categorydao.delete(categoryId);
+		// delete brand
+		branddao.delete(brandId);
 	}
 
 }

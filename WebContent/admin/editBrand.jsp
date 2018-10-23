@@ -7,8 +7,8 @@
 
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="admin_category_list">所有分類</a></li>
-    <li class="breadcrumb-item active" aria-current="page">編輯分類</li>
+    <li class="breadcrumb-item"><a href="admin_brand_list">All Brand</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Edit Brand</li>
   </ol>
 </nav>
 
@@ -20,11 +20,11 @@
     <form
       method="post"
       id="addForm"
-      action="admin_category_update">
+      action="admin_brand_update">
 
   		<table class="addTable">
   			<tr>
-  				<td>分類名稱 : </td>
+  				<td>Brand Name : </td>
   				<td>
             <input
               id="name"

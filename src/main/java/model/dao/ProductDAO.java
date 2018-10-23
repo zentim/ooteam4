@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import main.java.model.bean.Category;
+import main.java.model.bean.Brand;
 import main.java.model.bean.Product;
 import main.java.model.bean.ProductImage;
 import main.java.model.util.DBUtil;
@@ -17,11 +17,11 @@ import main.java.model.util.DateUtil;
 
 public class ProductDAO {
 
-    public int getTotal(int categoryId) {
+    public int getTotal(int brandId) {
         int total = 0;
         try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
 
-            String sql = "select count(*) from product where categoryId = " + categoryId;
+            String sql = "select count(*) from product where brandId = " + brandId;
 
             ResultSet rs = s.executeQuery(sql);
             while (rs.next()) {
@@ -34,11 +34,11 @@ public class ProductDAO {
         return total;
     }
 
-    public int getTotalBySeller(int sellerId, int categoryId) {
+    public int getTotalBySeller(int sellerId, int brandId) {
         int total = 0;
         try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
 
-            String sql = "select count(*) from product where categoryId = " + categoryId + " and sellerId = "
+            String sql = "select count(*) from product where brandId = " + brandId + " and sellerId = "
                     + sellerId;
 
             ResultSet rs = s.executeQuery(sql);
@@ -60,7 +60,7 @@ public class ProductDAO {
             ps.setInt(2, bean.getInventory());
             ps.setFloat(3, bean.getPrice());
             ps.setTimestamp(4, DateUtil.d2t(bean.getDateAdded()));
-            ps.setInt(5, bean.getCategory().getId());
+            ps.setInt(5, bean.getBrand().getId());
             ps.execute();
 
             ResultSet rs = ps.getGeneratedKeys();
@@ -81,14 +81,14 @@ public class ProductDAO {
 
     public void update(Product bean) {
 
-        String sql = "update product set name= ?, inventory=?, price=?, dateAdded=?, categoryId = ? where productId = ?";
+        String sql = "update product set name= ?, inventory=?, price=?, dateAdded=?, brandId = ? where productId = ?";
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
 
             ps.setString(1, bean.getName());
             ps.setInt(2, bean.getInventory());
             ps.setFloat(3, bean.getPrice());
             ps.setTimestamp(4, DateUtil.d2t(bean.getDateAdded()));
-            ps.setInt(5, bean.getCategory().getId());
+            ps.setInt(5, bean.getBrand().getId());
 
             ps.setInt(6, bean.getId());
             ps.execute();
@@ -129,15 +129,15 @@ public class ProductDAO {
                 int inventory = rs.getInt("inventory");
                 float price = rs.getFloat("price");
                 Date dateAdded = DateUtil.t2d(rs.getTimestamp("dateAdded"));
-                int categoryId = rs.getInt("categoryId");
+                int brandId = rs.getInt("brandId");
 
-                Category category = new CategoryDAO().get(categoryId);
+                Brand category = new BrandDAO().get(brandId);
 
                 bean.setName(name);
                 bean.setInventory(inventory);
                 bean.setPrice(price);
                 bean.setDateAdded(dateAdded);
-                bean.setCategory(category);
+                bean.setBrand(category);
 
                 bean.setId(id);
                 setFirstProductImage(bean);
@@ -150,17 +150,17 @@ public class ProductDAO {
         return bean;
     }
 
-    public List<Product> list(int categoryId) {
-        return list(categoryId, 0, Short.MAX_VALUE);
+    public List<Product> list(int brandId) {
+        return list(brandId, 0, Short.MAX_VALUE);
     }
 
-    public List<Product> list(int categoryId, int start, int count) {
+    public List<Product> list(int brandId, int start, int count) {
         List<Product> beans = new ArrayList<Product>();
 
-        String sql = "select * from product where categoryId = ? order by productId desc limit ?,? ";
+        String sql = "select * from product where brandId = ? order by productId desc limit ?,? ";
 
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
-            ps.setInt(1, categoryId);
+            ps.setInt(1, brandId);
             ps.setInt(2, start);
             ps.setInt(3, count);
 
@@ -173,16 +173,16 @@ public class ProductDAO {
                 int inventory = rs.getInt("inventory");
                 float price = rs.getFloat("price");
                 Date dateAdded = DateUtil.t2d(rs.getTimestamp("dateAdded"));
-                Category category = new CategoryDAO().get(categoryId);
+                Brand category = new BrandDAO().get(brandId);
 
                 bean.setName(name);
                 bean.setInventory(inventory);
                 bean.setPrice(price);
                 bean.setDateAdded(dateAdded);
-                bean.setCategory(category);
+                bean.setBrand(category);
 
                 bean.setId(id);
-                bean.setCategory(category);
+                bean.setBrand(category);
                 setFirstProductImage(bean);
 
                 beans.add(bean);
@@ -214,21 +214,21 @@ public class ProductDAO {
             while (rs.next()) {
                 Product bean = new Product();
                 int id = rs.getInt(1);
-                int categoryId = rs.getInt("categoryId");
+                int brandId = rs.getInt("brandId");
                 String name = rs.getString("name");
                 int inventory = rs.getInt("inventory");
                 float price = rs.getFloat("price");
                 Date dateAdded = DateUtil.t2d(rs.getTimestamp("dateAdded"));
-                Category category = new CategoryDAO().get(categoryId);
+                Brand category = new BrandDAO().get(brandId);
 
                 bean.setName(name);
                 bean.setInventory(inventory);
                 bean.setPrice(price);
                 bean.setDateAdded(dateAdded);
-                bean.setCategory(category);
+                bean.setBrand(category);
 
                 bean.setId(id);
-                bean.setCategory(category);
+                bean.setBrand(category);
                 setFirstProductImage(bean);
 
                 beans.add(bean);
@@ -240,20 +240,20 @@ public class ProductDAO {
         return beans;
     }
 
-    public void fill(List<Category> cs) {
-        for (Category c : cs) {
+    public void fill(List<Brand> cs) {
+        for (Brand c : cs) {
             fill(c);
         }
     }
 
-    public void fill(Category c) {
+    public void fill(Brand c) {
         List<Product> ps = this.list(c.getId());
         c.setProducts(ps);
     }
 
-    public void fillByRow(List<Category> cs) {
+    public void fillByRow(List<Brand> cs) {
         int productNumberEachRow = 8;
-        for (Category c : cs) {
+        for (Brand c : cs) {
             List<Product> products = c.getProducts();
             List<List<Product>> productsByRow = new ArrayList<>();
             for (int i = 0; i < products.size(); i += productNumberEachRow) {

@@ -12,12 +12,12 @@
     <thead>
       <tr align="center">
         <th>#</th>
-        <th>狀態</th>
-        <th>金額</th>
-        <th>買家名稱</th>
-        <th>創建時間</th>
-        <th>支付時間</th>
-        <th>操作</th>
+        <th>State</th>
+        <th>Price</th>
+        <th>User Name</th>
+        <th>Date Created</th>
+        <th>Date Paid</th>
+        <th>Operation</th>
       </tr>
     </thead>
 
@@ -70,7 +70,7 @@
 	                              <span class="text-muted">${ oi.quantity }個</span>
 	                          </td>
 	                          <td align="right">
-	                              <span class="text-muted">單價 : $${ oi.product.price }</span>
+	                              <span class="text-muted">Price : $${ oi.product.price }</span>
 	                          </td>
 	                      </tr>
 

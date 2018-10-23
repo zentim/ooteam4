@@ -2,11 +2,11 @@ package main.java.model.bean;
 
 import java.util.List;
 
-public class Category {
+public class Segment {
 
 	private String name;
 	private int id;
-	private List<Brand> brands;
+	private List<Category> categorys;
 	
 	public String getName() {
 		return name;
@@ -20,11 +20,11 @@ public class Category {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public List<Brand> getBrands() {
-		return brands;
+	public List<Category> getCategorys() {
+		return categorys;
 	}
-	public void setBrands(List<Brand> brands) {
-		this.brands = brands;
+	public void setCategorys(List<Category> categorys) {
+		this.categorys = categorys;
 	}
 
 	

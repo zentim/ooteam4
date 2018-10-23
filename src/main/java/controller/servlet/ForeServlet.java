@@ -13,7 +13,7 @@ import org.apache.commons.lang3.RandomUtils;
 import org.springframework.http.codec.multipart.SynchronossPartHttpMessageReader;
 import org.springframework.web.util.HtmlUtils;
 
-import main.java.model.bean.Category;
+import main.java.model.bean.Brand;
 import main.java.model.bean.Order;
 import main.java.model.bean.OrderItem;
 import main.java.model.bean.Product;
@@ -21,7 +21,7 @@ import main.java.model.bean.ProductImage;
 import main.java.model.bean.Promotion;
 import main.java.model.bean.PromotionItem;
 import main.java.model.bean.User;
-import main.java.model.dao.CategoryDAO;
+import main.java.model.dao.BrandDAO;
 import main.java.model.dao.OrderDAO;
 import main.java.model.dao.ProductDAO;
 import main.java.model.dao.ProductImageDAO;
@@ -39,12 +39,12 @@ import main.java.pattern.chainOfResponsibility.BroughtMoreThanInLastYearPolicy;
 public class ForeServlet extends BaseForeServlet {
 
     public String home(HttpServletRequest request, HttpServletResponse response, Page page) {
-        List<Category> cs = categoryDAO.list();
+        List<Brand> cs = brandDAO.list();
 
         new ProductDAO().fill(cs);
         new ProductDAO().fillByRow(cs);
         
-        for (Category c : cs) {
+        for (Brand c : cs) {
           for (Product p : c.getProducts()) {
             PromotionItem promotionItem = promotionItemDAO.getByProduct(p.getId()); 
             Promotion promotionByProduct = promotionItem.getPromotion();
@@ -134,14 +134,14 @@ public class ForeServlet extends BaseForeServlet {
     }
 
     
-    public String category(HttpServletRequest request, HttpServletResponse response, Page page) {
+    public String brand(HttpServletRequest request, HttpServletResponse response, Page page) {
         int cid = Integer.parseInt(request.getParameter("cid"));
-        Category category = categoryDAO.get(cid);
+        Brand brand = brandDAO.get(cid);
         
-        productDAO.fill(category);
+        productDAO.fill(brand);
 
-        request.setAttribute("c", category);
-        return "category.jsp";
+        request.setAttribute("c", brand);
+        return "brand.jsp";
     }
 
     /*

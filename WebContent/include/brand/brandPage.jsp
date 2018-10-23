@@ -3,19 +3,19 @@
 
     
      
-<c:if test="${empty param.categorycount}">
-    <c:set var="categorycount" scope="page" value="100"/>
+<c:if test="${empty param.brandcount}">
+    <c:set var="brandcount" scope="page" value="100"/>
 </c:if>
  
-<c:if test="${!empty param.categorycount}">
-    <c:set var="categorycount" scope="page" value="${param.categorycount}"/>
+<c:if test="${!empty param.brandcount}">
+    <c:set var="brandcount" scope="page" value="${param.brandcount}"/>
 </c:if>
 
 <div class="col-sm-8 text-left" style="padding:10px;">  
 
 	<div class="categoryProducts">
 		<c:forEach items="${ c.products }" var="p" varStatus="st">
-			<c:if test="${ st.count <= categorycount }">
+			<c:if test="${ st.count <= brandcount }">
 				
 				<div class="w3-col s6 l3">
 					<a href="foreproduct?pid=${p.id}">

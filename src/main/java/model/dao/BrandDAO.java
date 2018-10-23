@@ -8,16 +8,16 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import main.java.model.bean.Category;
+import main.java.model.bean.Brand;
 import main.java.model.util.DBUtil;
 
-public class CategoryDAO {
+public class BrandDAO {
 
 	public int getTotal() {
 		int total = 0;
 		try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
 
-			String sql = "select count(*) from category";
+			String sql = "select count(*) from brand";
 
 			ResultSet rs = s.executeQuery(sql);
 			while (rs.next()) {
@@ -30,8 +30,8 @@ public class CategoryDAO {
 		return total;
 	}
 
-	public int add(Category bean) {
-		String sql = "insert into category values(DEFAULT,?)";
+	public int add(Brand bean) {
+		String sql = "insert into brand values(DEFAULT,?)";
 		try (Connection c = DBUtil.getConnection();
 				PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
 			ps.setString(1, bean.getName());
@@ -59,9 +59,9 @@ public class CategoryDAO {
 		return 0;
 	}
 
-	public void update(Category bean) {
+	public void update(Brand bean) {
 
-		String sql = "update category set name= ? where categoryId = ?";
+		String sql = "update brand set name= ? where brandId = ?";
 		try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
 
 			ps.setString(1, bean.getName());
@@ -80,7 +80,7 @@ public class CategoryDAO {
 
 		try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
 
-			String sql = "delete from category where categoryId = " + id;
+			String sql = "delete from brand where brandId = " + id;
 
 			s.execute(sql);
 
@@ -90,17 +90,17 @@ public class CategoryDAO {
 		}
 	}
 
-	public Category get(int id) {
-		Category bean = null;
+	public Brand get(int id) {
+		Brand bean = null;
 
 		try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
 
-			String sql = "select * from category where categoryId = " + id;
+			String sql = "select * from brand where brandId = " + id;
 
 			ResultSet rs = s.executeQuery(sql);
 
 			if (rs.next()) {
-				bean = new Category();
+				bean = new Brand();
 				String name = rs.getString(2);
 				bean.setName(name);
 				bean.setId(id);
@@ -113,14 +113,14 @@ public class CategoryDAO {
 		return bean;
 	}
 
-	public List<Category> list() {
+	public List<Brand> list() {
 		return list(0, Short.MAX_VALUE);
 	}
 
-	public List<Category> list(int start, int count) {
-		List<Category> beans = new ArrayList<Category>();
+	public List<Brand> list(int start, int count) {
+		List<Brand> beans = new ArrayList<Brand>();
 
-		String sql = "select * from category order by categoryId desc limit ?,? ";
+		String sql = "select * from brand order by brandId desc limit ?,? ";
 
 		try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
 
@@ -130,7 +130,7 @@ public class CategoryDAO {
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
-				Category bean = new Category();
+				Brand bean = new Brand();
 				int id = rs.getInt(1);
 				String name = rs.getString(2);
 				bean.setId(id);

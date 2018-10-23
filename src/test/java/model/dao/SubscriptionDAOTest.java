@@ -6,19 +6,19 @@ import java.util.Date;
 
 import org.junit.*;
 
-import main.java.model.bean.Category;
+import main.java.model.bean.Brand;
 import main.java.model.bean.Product;
 import main.java.model.bean.Subscription;
 import main.java.model.bean.User;
-import main.java.model.dao.CategoryDAO;
+import main.java.model.dao.BrandDAO;
 import main.java.model.dao.ProductDAO;
 import main.java.model.dao.SubscriptionDAO;
 import main.java.model.dao.UserDAO;
 
 public class SubscriptionDAOTest {
-	public static CategoryDAO categorydao = new CategoryDAO();
-	public static Category category;
-	public static int categoryId;
+	public static BrandDAO branddao = new BrandDAO();
+	public static Brand brand;
+	public static int brandId;
 
 	public static ProductDAO productdao = new ProductDAO();
 	public static Product product;
@@ -35,10 +35,10 @@ public class SubscriptionDAOTest {
 	@BeforeClass
 	public static void testAdd() {
 
-		// create category
-		category = new Category();
-		category.setName("Book");
-		categoryId = categorydao.add(category);
+		// create brand
+		brand = new Brand();
+		brand.setName("Book");
+		brandId = branddao.add(brand);
 
 		// create product
 		product = new Product();
@@ -46,7 +46,7 @@ public class SubscriptionDAOTest {
 		product.setInventory(5);
 		product.setPrice(1000);
 		product.setDateAdded(new Date());
-		product.setCategory(categorydao.get(categoryId));
+		product.setBrand(branddao.get(brandId));
 		productId = productdao.add(product);
 		
 		// create user
@@ -83,8 +83,8 @@ public class SubscriptionDAOTest {
 		// delete product
 		productdao.delete(productId);
 
-		// delete category
-		categorydao.delete(categoryId);
+		// delete brand
+		branddao.delete(brandId);
 	}
 
 }

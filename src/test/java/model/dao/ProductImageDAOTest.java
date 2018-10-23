@@ -8,17 +8,17 @@ import org.junit.*;
 
 import main.java.model.bean.ProductImage;
 import main.java.model.bean.User;
-import main.java.model.bean.Category;
+import main.java.model.bean.Brand;
 import main.java.model.bean.Product;
 import main.java.model.dao.ProductImageDAO;
 import main.java.model.dao.UserDAO;
-import main.java.model.dao.CategoryDAO;
+import main.java.model.dao.BrandDAO;
 import main.java.model.dao.ProductDAO;
 
 public class ProductImageDAOTest {
-	public static CategoryDAO categorydao = new CategoryDAO();
-	public static Category category;
-	public static int categoryId;
+	public static BrandDAO branddao = new BrandDAO();
+	public static Brand brand;
+	public static int brandId;
 
 	public static ProductDAO productdao = new ProductDAO();
 	public static Product product;
@@ -30,10 +30,10 @@ public class ProductImageDAOTest {
 
 	@BeforeClass
 	public static void testAdd() {
-		// create category
-		category = new Category();
-		category.setName("Book");
-		categoryId = categorydao.add(category);
+		// create brand
+		brand = new Brand();
+		brand.setName("Book");
+		brandId = branddao.add(brand);
 
 		// create product
 		product = new Product();
@@ -41,7 +41,7 @@ public class ProductImageDAOTest {
 		product.setInventory(5);
 		product.setPrice(1000);
 		product.setDateAdded(new Date());
-		product.setCategory(categorydao.get(categoryId));
+		product.setBrand(branddao.get(brandId));
 		productId = productdao.add(product);
 
 		System.out.println("Test Start...");
@@ -69,8 +69,8 @@ public class ProductImageDAOTest {
 		// delete product
 		productdao.delete(productId);
 
-		// delete category
-		categorydao.delete(categoryId);
+		// delete brand
+		branddao.delete(brandId);
 	}
 
 }

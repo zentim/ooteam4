@@ -6,7 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import main.java.model.bean.Category;
+import main.java.model.bean.Brand;
 import main.java.model.bean.Product;
 import main.java.model.bean.Promotion;
 import main.java.model.bean.PromotionItem;
@@ -18,7 +18,7 @@ public class ProductServlet extends BaseBackServlet {
 	@Override
 	public String add(HttpServletRequest request, HttpServletResponse response, Page page) {
 		int cid = Integer.parseInt(request.getParameter("cid"));
-		Category c = categoryDAO.get(cid);
+		Brand c = brandDAO.get(cid);
 		
 		String name = request.getParameter("name");
 		float price = Float.parseFloat(request.getParameter("price"));
@@ -26,7 +26,7 @@ public class ProductServlet extends BaseBackServlet {
 		
 		Product p = new Product();
 
-		p.setCategory(c);
+		p.setBrand(c);
 		p.setName(name);
 		p.setPrice(price);
 		p.setInventory(inventory);
@@ -42,7 +42,7 @@ public class ProductServlet extends BaseBackServlet {
 		Product p = productDAO.get(id);
 		productDAO.delete(id);
 
-		return "@admin_product_list?cid=" + p.getCategory().getId();
+		return "@admin_product_list?cid=" + p.getBrand().getId();
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class ProductServlet extends BaseBackServlet {
 	@Override
 	public String update(HttpServletRequest request, HttpServletResponse response, Page page) {
 		int cid = Integer.parseInt(request.getParameter("cid"));
-		Category c = categoryDAO.get(cid);
+		Brand c = brandDAO.get(cid);
 
 		int id = Integer.parseInt(request.getParameter("id"));
 		int inventory = Integer.parseInt(request.getParameter("inventory"));
@@ -70,17 +70,17 @@ public class ProductServlet extends BaseBackServlet {
 		p.setPrice(price);
 		p.setInventory(inventory);
 		p.setId(id);
-		p.setCategory(c);
+		p.setBrand(c);
 
 		productDAO.update(p);
 
-		return "@admin_product_list?cid=" + p.getCategory().getId();
+		return "@admin_product_list?cid=" + p.getBrand().getId();
 	}
 
 	@Override
 	public String list(HttpServletRequest request, HttpServletResponse response, Page page) {
 		int cid = Integer.parseInt(request.getParameter("cid"));
-		Category c = categoryDAO.get(cid);
+		Brand c = brandDAO.get(cid);
 
 		List<Product> ps = productDAO.list(cid, page.getStart(), page.getCount());
 
