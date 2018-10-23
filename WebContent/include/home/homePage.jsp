@@ -16,7 +16,9 @@
 		<c:if test="${ stc.count <= categorycount }">
 		
 			<div style="float: left; width: 100%;">
-				<h2 id="${ c.id }">${ c.name }</h2>
+				<a href="forecategory?cid=${ c.id }">
+					<h2 id="${ c.id }">${ c.name }</h2>
+				</a>
 			
 				<c:forEach items="${ c.products }" var="p" varStatus="st">
 					<c:if test="${ st.count <= 8 }">

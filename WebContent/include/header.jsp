@@ -100,12 +100,6 @@
 	        </div>
 	        
 	        <div class="collapse navbar-collapse" id="myNavbar">
-	            <ul class="nav navbar-nav">
-	                <li class="active"><a href="forehome">Home</a></li>
-	                <li><a href="#">About</a></li>
-	                <li><a href="#">Projects</a></li>
-	                <li><a href="#">Contact</a></li>
-	            </ul>
 	            <ul class="nav navbar-nav navbar-right">
 	            	<c:if test="${!empty user}">
 			            <li><a href="forebought" style="cursor: pointer">My Orders</a></li>

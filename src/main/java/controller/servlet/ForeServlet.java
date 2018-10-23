@@ -45,19 +45,19 @@ public class ForeServlet extends BaseForeServlet {
         new ProductDAO().fillByRow(cs);
         
         for (Category c : cs) {
-        	for (Product p : c.getProducts()) {
-        		PromotionItem promotionItem = promotionItemDAO.getByProduct(p.getId()); 
-        		Promotion promotionByProduct = promotionItem.getPromotion();
-        		if (promotionByProduct != null && !(promotionItem.getDiscountOf() == 100 && promotionByProduct.getDiscountType() == PromotionDAO.buyXGetYFree)) {
-        			String promotionName = "";
-        			if (promotionByProduct.getState() == 1) {
-        				promotionName = promotionByProduct.getName();
-        			}
-            		String discountTypeName = promotionByProduct.getDiscountTypeDescription();
-            		p.setPromotionName(promotionName);
-            		p.setDiscountTypeName(discountTypeName);
-        		}
-        	}
+          for (Product p : c.getProducts()) {
+            PromotionItem promotionItem = promotionItemDAO.getByProduct(p.getId()); 
+            Promotion promotionByProduct = promotionItem.getPromotion();
+            if (promotionByProduct != null && !(promotionItem.getDiscountOf() == 100 && promotionByProduct.getDiscountType() == PromotionDAO.buyXGetYFree)) {
+              String promotionName = "";
+              if (promotionByProduct.getState() == 1) {
+                promotionName = promotionByProduct.getName();
+              }
+                String discountTypeName = promotionByProduct.getDiscountTypeDescription();
+                p.setPromotionName(promotionName);
+                p.setDiscountTypeName(discountTypeName);
+            }
+          }
         }
         
         request.setAttribute("cs", cs);
@@ -122,64 +122,76 @@ public class ForeServlet extends BaseForeServlet {
         p.setProductDetailImages(productDetailImages);
         
         Promotion promotionByProduct = promotionItemDAO.getByProduct(p.getId()).getPromotion();
-		if (promotionByProduct != null) {
-			String promotionName = promotionByProduct.getName();
-    		String discountTypeName = promotionByProduct.getDiscountTypeDescription();
-    		p.setPromotionName(promotionName);
-    		p.setDiscountTypeName(discountTypeName);
-		}
+    if (promotionByProduct != null) {
+      String promotionName = promotionByProduct.getName();
+        String discountTypeName = promotionByProduct.getDiscountTypeDescription();
+        p.setPromotionName(promotionName);
+        p.setDiscountTypeName(discountTypeName);
+    }
 
         request.setAttribute("p", p);
         return "product.jsp";
     }
 
+    
+    public String category(HttpServletRequest request, HttpServletResponse response, Page page) {
+        int cid = Integer.parseInt(request.getParameter("cid"));
+        Category category = categoryDAO.get(cid);
+        
+        productDAO.fill(category);
+
+        request.setAttribute("c", category);
+        return "category.jsp";
+    }
+
     /*
-     * public String category(HttpServletRequest request, HttpServletResponse
-     * response, Page page) { int cid =
-     * Integer.parseInt(request.getParameter("cid")); Category category =
-     * categoryDAO.get(cid); productDAO.fill(category);
-     * productDAO.setSaleAndReviewNumber(category.getProducts()); String sort =
-     * request.getParameter("sort"); if (sort != null) { switch (sort) { case
-     * "review": Collections.sort(category.getProducts(), new
-     * ProductReviewComparator()); break; case "date":
-     * Collections.sort(category.getProducts(), new ProductDateComparator()); break;
-     *
-     * case "saleCount": Collections.sort(category.getProducts(), new
-     * ProductSaleCountComparator()); break;
-     *
-     * case "price": Collections.sort(category.getProducts(), new
-     * ProductPriceComparator()); break;
-     *
-     * case "all": Collections.sort(category.getProducts(), new
-     * ProductAllComparator()); break; } }
-     *
-     * request.setAttribute("c", category); return "category.jsp"; }
-     *
-     * public String search(HttpServletRequest request, HttpServletResponse
-     * response, Page page) { String keyword = request.getParameter("keyword");
-     * String sort = request.getParameter("sort"); List<Product> productList =
-     * productDAO.search(keyword, 0, 20);
-     * productDAO.setSaleAndReviewNumber(productList); request.setAttribute("ps",
-     * productList); return "searchResult.jsp"; }
-     *
-     * public String buyone(HttpServletRequest request, HttpServletResponse
-     * response, Page page) { int pid =
-     * Integer.parseInt(request.getParameter("pid")); int num =
-     * Integer.parseInt(request.getParameter("num")); Product p =
-     * productDAO.get(pid); int oiid = 0;
-     *
-     * User user = (User) request.getSession().getAttribute("user"); boolean found =
-     * false; List<OrderItem> ois = orderItemDAO.listByUser(user.getId()); for
-     * (OrderItem oi : ois) { if (oi.getProduct().getId() == p.getId()) {
-     * oi.setNumber(oi.getNumber() + num); orderItemDAO.update(oi); found = true;
-     * oiid = oi.getId(); break; } }
-     *
-     * if (!found) { OrderItem oi = new OrderItem(); oi.setUser(user);
-     * oi.setNumber(num); oi.setProduct(p); orderItemDAO.add(oi); oiid = oi.getId();
-     * } return "@forebuy?oiid=" + oiid;
-     *
-     * }
-     */
+    public String search(HttpServletRequest request, HttpServletResponse response, Page page) {
+        String keyword = request.getParameter("keyword");
+        String sort = request.getParameter("sort");
+        List < Product > productList =
+            productDAO.search(keyword, 0, 20);
+        productDAO.setSaleAndReviewNumber(productList);
+        request.setAttribute("ps",
+            productList);
+        return "searchResult.jsp";
+    }
+
+    public String buyone(HttpServletRequest request, HttpServletResponse response, Page page) {
+        int pid =
+            Integer.parseInt(request.getParameter("pid"));
+        int num =
+            Integer.parseInt(request.getParameter("num"));
+        Product p =
+            productDAO.get(pid);
+        int oiid = 0;
+
+        User user = (User) request.getSession().getAttribute("user");
+        boolean found =
+            false;
+        List < OrderItem > ois = orderItemDAO.listByUser(user.getId());
+        for (OrderItem oi: ois) {
+            if (oi.getProduct().getId() == p.getId()) {
+                oi.setNumber(oi.getNumber() + num);
+                orderItemDAO.update(oi);
+                found = true;
+                oiid = oi.getId();
+                break;
+            }
+        }
+
+        if (!found) {
+            OrderItem oi = new OrderItem();
+            oi.setUser(user);
+            oi.setNumber(num);
+            oi.setProduct(p);
+            orderItemDAO.add(oi);
+            oiid = oi.getId();
+        }
+        return "@forebuy?oiid=" + oiid;
+
+    }
+    */
+     
     public String buy(HttpServletRequest request, HttpServletResponse response, Page page) {
         String[] oiids = request.getParameterValues("oiid");
         List<OrderItem> ois = new ArrayList<OrderItem>();
@@ -199,29 +211,29 @@ public class ForeServlet extends BaseForeServlet {
          * Chain Of Responsibility Pattern
          */
         // Init Chain
-    	DiscountPolicy nationHolidayDiscount = new BuyXGetYFreePolicy();
-    	DiscountPolicy lastYear100KDiscount = new BroughtMoreThanInLastYearPolicy();
-    	DiscountPolicy eachGroupOf100Discount = new EachGroupOfNPolicy();
-    	DiscountPolicy xyzDiscount = new ProductSetPolicy();
-    	DiscountPolicy noDiscount = new NoDiscountPolicy();
-    	
-    	// Setting Chain Order
-    	nationHolidayDiscount.setNextDiscountPolicy(lastYear100KDiscount);
-		lastYear100KDiscount.setNextDiscountPolicy(eachGroupOf100Discount);
-		eachGroupOf100Discount.setNextDiscountPolicy(xyzDiscount);
-		xyzDiscount.setNextDiscountPolicy(noDiscount);
+      DiscountPolicy nationHolidayDiscount = new BuyXGetYFreePolicy();
+      DiscountPolicy lastYear100KDiscount = new BroughtMoreThanInLastYearPolicy();
+      DiscountPolicy eachGroupOf100Discount = new EachGroupOfNPolicy();
+      DiscountPolicy xyzDiscount = new ProductSetPolicy();
+      DiscountPolicy noDiscount = new NoDiscountPolicy();
+      
+      // Setting Chain Order
+      nationHolidayDiscount.setNextDiscountPolicy(lastYear100KDiscount);
+    lastYear100KDiscount.setNextDiscountPolicy(eachGroupOf100Discount);
+    eachGroupOf100Discount.setNextDiscountPolicy(xyzDiscount);
+    xyzDiscount.setNextDiscountPolicy(noDiscount);
         
-		// Send OrderItem List to the pattern for calc discount.
+    // Send OrderItem List to the pattern for calc discount.
         // Return DiscountRequest, it contains:
         // 1. (String) discountMsg (e.g. "eachGroupOfN: -100")
         // 2. (float) totalDiscount (e.g. 100.0)
         DiscountRequest dr = new DiscountRequest();
         dr.setOrderItems(ois);
-		dr.setNationHoliday(true);
-		dr.setLastYearAmount(200000);
-		dr = nationHolidayDiscount.handleDiscount(dr);
+    dr.setNationHoliday(true);
+    dr.setLastYearAmount(200000);
+    dr = nationHolidayDiscount.handleDiscount(dr);
         
-		double totalWithoutDiscount = total;
+    double totalWithoutDiscount = total;
         // calc actual payment amount
         total = total - dr.getTotalDiscount();
 
