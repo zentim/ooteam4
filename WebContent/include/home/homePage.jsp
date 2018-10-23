@@ -16,12 +16,12 @@
 		<c:if test="${ stc.count <= categorycount }">
 		
 			<div style="float: left; width: 100%;">
-				<h2>${ c.name }</h2>
+				<h2 id="${ c.id }">${ c.name }</h2>
 			
 				<c:forEach items="${ c.products }" var="p" varStatus="st">
-					<c:if test="${ st.count <= 5 }">
+					<c:if test="${ st.count <= 8 }">
 						
-						<div class="w3-col l3 s6">
+						<div class="w3-col s6 l3">
 							<a href="foreproduct?pid=${p.id}">
 							    <div class="w3-container" style="border: 1px solid black; margin: 5px;">
 							        <div class="w3-display-container" >
