@@ -7,6 +7,8 @@ import org.junit.*;
 import main.java.model.bean.Category;
 import main.java.model.dao.CategoryDAO;
 
+import main.java.pattern.composite.*;
+
 public class CategoryDAOTest {
 	public static CategoryDAO categorydao = new CategoryDAO();
 	public static Category category;
@@ -26,6 +28,13 @@ public class CategoryDAOTest {
 	public void testTotal() {
 		int result = categorydao.getTotal();
 		assertNotNull("should not be null", result);
+	}
+	
+	@Test
+	public void testCompositePattern() {
+		System.out.println("testCompositePattern: ");
+		Component categoryComponent = new LinkedListCompositeComponent(categoryId);
+		categoryComponent.operation();
 	}
 
 	@AfterClass

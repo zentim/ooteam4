@@ -123,7 +123,7 @@ public class ForeServlet extends BaseForeServlet {
         
         Promotion promotionByProduct = promotionItemDAO.getByProduct(p.getId()).getPromotion();
     if (promotionByProduct != null) {
-      String promotionName = promotionByProduct.getName();
+    	String promotionName = promotionByProduct.getName();
         String discountTypeName = promotionByProduct.getDiscountTypeDescription();
         p.setPromotionName(promotionName);
         p.setDiscountTypeName(discountTypeName);
@@ -211,29 +211,29 @@ public class ForeServlet extends BaseForeServlet {
          * Chain Of Responsibility Pattern
          */
         // Init Chain
-      DiscountPolicy nationHolidayDiscount = new BuyXGetYFreePolicy();
-      DiscountPolicy lastYear100KDiscount = new BroughtMoreThanInLastYearPolicy();
-      DiscountPolicy eachGroupOf100Discount = new EachGroupOfNPolicy();
-      DiscountPolicy xyzDiscount = new ProductSetPolicy();
-      DiscountPolicy noDiscount = new NoDiscountPolicy();
-      
-      // Setting Chain Order
-      nationHolidayDiscount.setNextDiscountPolicy(lastYear100KDiscount);
-    lastYear100KDiscount.setNextDiscountPolicy(eachGroupOf100Discount);
-    eachGroupOf100Discount.setNextDiscountPolicy(xyzDiscount);
-    xyzDiscount.setNextDiscountPolicy(noDiscount);
-        
-    // Send OrderItem List to the pattern for calc discount.
-        // Return DiscountRequest, it contains:
-        // 1. (String) discountMsg (e.g. "eachGroupOfN: -100")
-        // 2. (float) totalDiscount (e.g. 100.0)
-        DiscountRequest dr = new DiscountRequest();
-        dr.setOrderItems(ois);
-    dr.setNationHoliday(true);
-    dr.setLastYearAmount(200000);
-    dr = nationHolidayDiscount.handleDiscount(dr);
-        
-    double totalWithoutDiscount = total;
+        DiscountPolicy nationHolidayDiscount = new BuyXGetYFreePolicy();
+        DiscountPolicy lastYear100KDiscount = new BroughtMoreThanInLastYearPolicy();
+		DiscountPolicy eachGroupOf100Discount = new EachGroupOfNPolicy();
+		DiscountPolicy xyzDiscount = new ProductSetPolicy();
+		DiscountPolicy noDiscount = new NoDiscountPolicy();
+		  
+		// Setting Chain Order
+      	nationHolidayDiscount.setNextDiscountPolicy(lastYear100KDiscount);
+		lastYear100KDiscount.setNextDiscountPolicy(eachGroupOf100Discount);
+		eachGroupOf100Discount.setNextDiscountPolicy(xyzDiscount);
+		xyzDiscount.setNextDiscountPolicy(noDiscount);
+		    
+		// Send OrderItem List to the pattern for calc discount.
+		    // Return DiscountRequest, it contains:
+		    // 1. (String) discountMsg (e.g. "eachGroupOfN: -100")
+		    // 2. (float) totalDiscount (e.g. 100.0)
+		    DiscountRequest dr = new DiscountRequest();
+		    dr.setOrderItems(ois);
+		dr.setNationHoliday(true);
+		dr.setLastYearAmount(200000);
+		dr = nationHolidayDiscount.handleDiscount(dr);
+		    
+		double totalWithoutDiscount = total;
         // calc actual payment amount
         total = total - dr.getTotalDiscount();
 

@@ -8,11 +8,11 @@ import java.util.List;
 import org.junit.*;
 
 import main.java.model.bean.Product;
-import main.java.model.bean.User;
 import main.java.model.bean.Category;
 import main.java.model.dao.ProductDAO;
-import main.java.model.dao.UserDAO;
 import main.java.model.dao.CategoryDAO;
+
+import main.java.pattern.composite.*;
 
 public class ProductDAOTest {
 	public static CategoryDAO categorydao = new CategoryDAO();
@@ -50,6 +50,8 @@ public class ProductDAOTest {
 
 	@Test
 	public void testList() {
+		System.out.println("=== testList");
+		
 		List<Product> products = productdao.list();
 		if (products == null) {
 			System.out.println("product list is null");
@@ -58,6 +60,20 @@ public class ProductDAOTest {
 				System.out.println("product id: " + p.getId());
 			}
 		}
+		
+		System.out.println();
+	}
+	
+	@Test
+	public void testCompositePattern() {
+		System.out.println("=== testCompositePattern");
+		
+		Component productComponent = new PrimitiveComponent(productId);
+		Component categoryComponent = new LinkedListCompositeComponent(categoryId);
+		categoryComponent.add(productComponent);
+		categoryComponent.operation();
+		
+		System.out.println();
 	}
 
 	@AfterClass
