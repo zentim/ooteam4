@@ -22,6 +22,7 @@ import main.java.pattern.chainOfResponsibility.DiscountRequest;
 import main.java.pattern.chainOfResponsibility.EachGroupOfNPolicy;
 import main.java.pattern.chainOfResponsibility.NoDiscountPolicy;
 import main.java.pattern.chainOfResponsibility.ProductSetPolicy;
+import main.java.pattern.facade.ClearOrderFacade;
 import main.java.pattern.chainOfResponsibility.BroughtMoreThanInLastYearPolicy;
 
 @WebServlet("/foreServlet")
@@ -249,11 +250,11 @@ public class ForeServlet extends BaseForeServlet {
 		xyzDiscount.setNextDiscountPolicy(noDiscount);
 		    
 		// Send OrderItem List to the pattern for calc discount.
-		    // Return DiscountRequest, it contains:
-		    // 1. (String) discountMsg (e.g. "eachGroupOfN: -100")
-		    // 2. (float) totalDiscount (e.g. 100.0)
-		    DiscountRequest dr = new DiscountRequest();
-		    dr.setOrderItems(ois);
+	    // Return DiscountRequest, it contains:
+	    // 1. (String) discountMsg (e.g. "eachGroupOfN: -100")
+	    // 2. (float) totalDiscount (e.g. 100.0)
+	    DiscountRequest dr = new DiscountRequest();
+	    dr.setOrderItems(ois);
 		dr.setNationHoliday(true);
 		dr.setLastYearAmount(200000);
 		dr = nationHolidayDiscount.handleDiscount(dr);
@@ -333,6 +334,18 @@ public class ForeServlet extends BaseForeServlet {
         orderItemDAO.delete(oiid);
 
         return "%success";
+    }
+    
+    public String clearOrder(HttpServletRequest request, HttpServletResponse response, Page page) {
+    	List<OrderItem> ois = (List<OrderItem>) request.getSession().getAttribute("ois");
+    	
+    	/**
+    	 * Facade Pattern
+    	 */
+    	ClearOrderFacade clearOrderFacade = new ClearOrderFacade(ois);
+    	clearOrderFacade.operation();
+    	
+    	return "@forecart";
     }
 
     public String createOrder(HttpServletRequest request, HttpServletResponse response, Page page) {

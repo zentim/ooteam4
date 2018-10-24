@@ -7,26 +7,50 @@
 		<div>
 			<form action="forecreateOrder" method="post" style="width: 600px; margin: 0 auto;">
 				<div style="width: 600px; margin: 0 auto;">
-					<div class="panel">
-				   		<h4>輸入收貨地址</h4>   
+					<div class="panel" style="margin-top: 50px">
+				   		<h4>Enter the shipping information</h4>   
 				   	</div>
 				   
-				    
-				
-				        <div class="form-group">
-				            <input type="text" name="address" class="form-control" placeholder="Address">
-				        </div>
-				        
-				        <div class="form-group">
-				            <input type="text"  name="phone" class="form-control" placeholder="Phone">
-				        </div>
+			        <div class="form-group">
+			            <input type="text" name="address" class="form-control" placeholder="Address">
+			        </div>
+			        
+			        <div class="form-group">
+			            <input type="text"  name="phone" class="form-control" placeholder="Phone">
+			        </div>
+			        
+			        
+			        <div class="panel" style="margin-top: 50px">
+				   		<h4>Payment options</h4>   
+				   	</div>
+				   
+			        <div class="form-check">
+					  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+					  <label class="form-check-label" for="exampleRadios1">
+					    CreditCard
+					  </label>
+					</div>
+					
+					<div class="form-check">
+					  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
+					  <label class="form-check-label" for="exampleRadios2">
+					    LinePay
+					  </label>
+					</div>
+					
+					<div class="form-check">
+					  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option3">
+					  <label class="form-check-label" for="exampleRadios3">
+					    WeChatPay
+					  </label>
+					</div>
 					   
 				
 				</div>
 			    
 				<div>
-					<div class="panel">
-				   		<h4>確認訂單信息</h4>   
+					<div class="panel" style="margin-top: 50px">
+				   		<h4>Confirm Order Information</h4>   
 				   	</div>
 				
 					<table class="table table-striped table-bordered table-sm">
@@ -35,10 +59,10 @@
 					      <tr align="center">
 					
 					        <th></th>
-					        <th>商品</th>
-					        <th>單價</th>
-					        <th>數量</th>
-					        <th>小計</th>
+					        <th>Product</th>
+					        <th>Price</th>
+					        <th>Quantity</th>
+					        <th>Subtotal</th>
 					
 					      </tr>
 					    </thead>
@@ -117,6 +141,10 @@
 			    		<button type="submit" class="btn btn-lg" style="font-weight: bold; background-color: #C40000; color: white;">Submit Order</button>
 			    	</p>
 			    </div>
+		    </form>
+		    
+		    <form action="foreclearOrder" method="post">
+		    	<button type="submit" class="btn btn-lg">Clear Order</button>
 		    </form>
 	    </div>
 	</div>

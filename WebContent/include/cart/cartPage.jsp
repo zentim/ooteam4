@@ -16,14 +16,14 @@
             selectit="false" 
             class="selectAllItem" 
             src="img/site/cartNotSelected.png" 
-            style="cursor: pointer">全選
+            style="cursor: pointer">Select All
         </th>
-        <th>商品圖片</th>
-        <th>商品名稱</th>
-        <th>單價</th>
-        <th>數量</th>
-        <th>金額</th>
-        <th>操作</th>
+        <th>Product Image</th>
+        <th>Product Name</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Subtotal</th>
+        <th>Operation</th>
 
       </tr>
     </thead>
@@ -125,7 +125,7 @@
               <a 
                 class="deleteOrderItem" 
                 oiid="${ oi.id }"  
-                href="#nowhere">删除</a>
+                href="#nowhere">Delete</a>
             </td>
         </tr>
       </c:forEach>
@@ -140,10 +140,14 @@
   style="background-color: #E5E5E5; line-height: 50px; margin: 20px 0px; color: black; padding-left: 20px;">
 
     <div class="pull-right">
-        <span>已選商品 <span class="cartSumNumber" >0</span> 件</span>
-        <span>合計 (不含運費): </span>
+        <span>Selected <span class="cartSumNumber" >0</span> Item</span>
+        <span>Total : </span>
         <span class="cartSumPrice" >$ 0.00</span>
-        <button class="createOrderButton" disabled="disabled" >結 算</button>
+        <button 
+        	type="submit" 
+        	class="btn btn-lg createOrderButton" 
+        	style="font-weight: bold; background-color: #C40000; color: white;"
+        	disabled="disabled">Check Out</button>
     </div>
 
 </div>
