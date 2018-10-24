@@ -25,21 +25,21 @@
 				   	</div>
 				   
 			        <div class="form-check">
-					  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+					  <input class="form-check-input" type="radio" name="paymentOption" id="exampleRadios1" value="CreditCard" checked>
 					  <label class="form-check-label" for="exampleRadios1">
 					    CreditCard
 					  </label>
 					</div>
 					
 					<div class="form-check">
-					  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
+					  <input class="form-check-input" type="radio" name="paymentOption" id="exampleRadios2" value="LinePay">
 					  <label class="form-check-label" for="exampleRadios2">
 					    LinePay
 					  </label>
 					</div>
 					
 					<div class="form-check">
-					  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option3">
+					  <input class="form-check-input" type="radio" name="paymentOption" id="exampleRadios2" value="WeChatPay">
 					  <label class="form-check-label" for="exampleRadios3">
 					    WeChatPay
 					  </label>
@@ -144,6 +144,7 @@
 		    </form>
 		    
 		    <form action="foreclearOrder" method="post">
+
 		    	<button type="submit" class="btn btn-lg">Clear Order</button>
 		    </form>
 	    </div>

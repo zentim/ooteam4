@@ -6,7 +6,7 @@
 		$ <fmt:formatNumber type="number" value="${ param.total }" minFractionDigits="2"/>
 	</span><br>
 	<a href="forepaied?oid=${ param.oid }&total=${ param.total }">
-		<button class="btn btn-primary btn-lg" style="width: 120px;">確認支付</button>
+		<button class="btn btn-primary btn-lg">Pay By ${ param.paymentOption }</button>
 	</a>
 </div>
 

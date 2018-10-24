@@ -356,16 +356,17 @@ public class ForeServlet extends BaseForeServlet {
             return "@login.jsp";
 
         String address = request.getParameter("address");
+        String paymentOption = request.getParameter("paymentOption");
 
         Order order = new Order();
 
         order.setUser(user);
         order.setDateOrdered(new Date());
         order.setState(OrderDAO.waitPay);
-
         order.setAddress(address);
 
         orderDAO.add(order);
+        
         float total = 0;
         for (OrderItem oi : ois) {
             oi.setOrder(order);
@@ -373,7 +374,7 @@ public class ForeServlet extends BaseForeServlet {
             total += oi.getProduct().getPrice() * oi.getQuantity();
         }
 
-        return "@forepay?oid=" + order.getId() + "&total=" + total;
+        return "@forepay?oid=" + order.getId() + "&total=" + total + "&paymentOption=" + paymentOption;
     }
 
     public String pay(HttpServletRequest request, HttpServletResponse response, Page page) {
