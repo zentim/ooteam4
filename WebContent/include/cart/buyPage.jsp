@@ -96,29 +96,48 @@
 			    
 			    <div style="float: right;">
 			    	<p>
-			    		<span>普通配送 快遞 免運費</span><br>
 						<span>
-							合計 (含運費): $
+							 Sum: $
 							<fmt:formatNumber type="number" value="${ totalWithoutDiscount }" minFractionDigits="2"/>
 						</span>
 			    	</p>
 			    	
 			    	<p>
-			    		<span style="color: red;">${ discountMsg }</span><br>
+			    		<span style="color: red;" id="discountMessage">${ discountMsg }</span><br>
 			    	</p>
 			    	
 			    	<p>
-			    		<span>實付款 :</span>
+			    		<span>Payment :</span>
 		            	<span style="color: #C40000; font-size: 22px; font-weight: bold; border-bottom: 1px dotted #F2F6FF;">
 		            		$<fmt:formatNumber type="number" value="${ total }" minFractionDigits="2"/>
 		            	</span>
 			    	</p>
 			    	
 			    	<p>
-			    		<button type="submit" class="btn btn-lg" style="width: 120px; font-weight: bold; background-color: #C40000; color: white;">提交訂單</button>
+			    		<button type="submit" class="btn btn-lg" style="font-weight: bold; background-color: #C40000; color: white;">Submit Order</button>
 			    	</p>
 			    </div>
 		    </form>
 	    </div>
 	</div>
 </div>
+
+
+<script>
+$(function() {
+	
+	// display the discount message
+	$("#discountMessage").html(function(){
+		var s = "${ discountMsg }";
+		var arrStr = s.split(/[()]/);
+		
+		var discountResult = ""
+		for (var i = 0; i < arrStr.length; i++) {
+			discountResult += arrStr[i] + "<br>";
+		}
+		return discountResult;
+	})
+})
+</script>
+
+
