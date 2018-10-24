@@ -1,29 +1,35 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-
+<div style="width: 80%; margin: 0 auto;">
 
 <h2>Shopping Cart</h2>
 
+<div style="text-align: right; font-size: 30px;">
+	<span class="fa fa-undo fa-icon" style="cursor: pointer;"></span>
+	<span class="fa fa-rotate-right fa-icon" style="cursor: pointer;"></span>
+</div>
+
 <div class="table-responsive">
+
   <table class="table table-striped table-bordered table-sm">
 
     <thead>
-      <tr align="center">
+      <tr>
 
-        <th class="selectAndImage">
+        <th class="selectAndImage" style="width: 100px; text-align: center">
           <img 
             selectit="false" 
             class="selectAllItem" 
             src="img/site/cartNotSelected.png" 
             style="cursor: pointer">Select All
         </th>
-        <th>Product Image</th>
-        <th>Product Name</th>
-        <th>Price</th>
-        <th>Quantity</th>
-        <th>Subtotal</th>
-        <th>Operation</th>
+        <th style="text-align: center">Product Image</th>
+        <th style="text-align: center">Product Name</th>
+        <th style="text-align: center">Price</th>
+        <th style="text-align: center">Quantity</th>
+        <th style="text-align: center">Subtotal</th>
+        <th style="text-align: center">Operation</th>
 
       </tr>
     </thead>
@@ -32,7 +38,7 @@
       <c:forEach items="${ ois }" var="oi">
         <tr oiid="${oi.id}" class="cartProductItemTR">
 
-            <td align="left">
+            <td align="left" style="width: 100px;">
                 <img 
                   selectit="false" 
                   oiid="${oi.id}" 
@@ -152,6 +158,8 @@
 
 </div>
 
+
+</div>
 
 
 <script>
