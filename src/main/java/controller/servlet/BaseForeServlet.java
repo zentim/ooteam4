@@ -6,20 +6,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import main.java.model.dao.BrandDAO;
-import main.java.model.dao.OrderDAO;
-import main.java.model.dao.OrderItemDAO;
-import main.java.model.dao.ProductDAO;
-import main.java.model.dao.ProductDetailDAO;
-import main.java.model.dao.ProductImageDAO;
-import main.java.model.dao.PromotionDAO;
-import main.java.model.dao.PromotionItemDAO;
-import main.java.model.dao.SubscriptionDAO;
-import main.java.model.dao.UserDAO;
+import main.java.model.dao.*;
 import main.java.model.util.Page;
 
 public class BaseForeServlet extends HttpServlet {
-
+	
+	protected SegmentDAO segmentDAO = new SegmentDAO();
+	protected CategoryDAO categoryDAO = new CategoryDAO();
     protected BrandDAO brandDAO = new BrandDAO();
     protected OrderDAO orderDAO = new OrderDAO();
     protected OrderItemDAO orderItemDAO = new OrderItemDAO();

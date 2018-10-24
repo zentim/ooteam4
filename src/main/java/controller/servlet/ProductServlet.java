@@ -7,9 +7,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import main.java.model.bean.Brand;
+import main.java.model.bean.Category;
 import main.java.model.bean.Product;
 import main.java.model.bean.Promotion;
 import main.java.model.bean.PromotionItem;
+import main.java.model.bean.Segment;
 import main.java.model.util.Page;
 
 @WebServlet("/productServlet")
@@ -49,7 +51,14 @@ public class ProductServlet extends BaseBackServlet {
 	public String edit(HttpServletRequest request, HttpServletResponse response, Page page) {
 		int id = Integer.parseInt(request.getParameter("id"));
 		Product p = productDAO.get(id);
+		Brand b = brandDAO.get(p.getBrand().getId());
+		Category c = categoryDAO.get(b.getCategory().getId());
+		Segment s = segmentDAO.get(c.getSegment().getId());
+		
 		request.setAttribute("p", p);
+		request.setAttribute("b", b);
+		request.setAttribute("c", c);
+		request.setAttribute("s", s);
 
 		return "admin/editProduct.jsp";
 	}
@@ -94,32 +103,6 @@ public class ProductServlet extends BaseBackServlet {
 
 		return "admin/listProduct.jsp";
 	}
-
-	// public String editPropertyValue(HttpServletRequest request,
-	// HttpServletResponse response, Page page) {
-	// int id = Integer.parseInt(request.getParameter("id"));
-	// Product p = productDAO.get(id);
-	// request.setAttribute("p", p);
-	// propertyValueDAO.init(p);
-	//
-	// List<PropertyValue> pvs = propertyValueDAO.list(p.getId());
-	//
-	// request.setAttribute("pvs", pvs);
-	//
-	// return "admin/editPropertyValue.jsp";
-	// }
-
-	// public String updatePropertyValue(HttpServletRequest request,
-	// HttpServletResponse response, Page page) {
-	// int pvid = Integer.parseInt(request.getParameter("pvid"));
-	// String value = request.getParameter("value");
-	//
-	// PropertyValue pv = propertyValueDAO.get(pvid);
-	// pv.setValue(value);
-	// propertyValueDAO.update(pv);
-	//
-	// return "%success";
-	// }
 
 	public String editPromotionItem(HttpServletRequest request, HttpServletResponse response, Page page) {
 		int productId = Integer.parseInt(request.getParameter("id"));

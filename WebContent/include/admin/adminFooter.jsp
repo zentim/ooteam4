@@ -23,7 +23,7 @@
 	function checkEmpty(id, name){
 		var value = $("#"+id).val();
 		if(value.length==0){
-			alert(name+ "不能為空");
+			alert(name+ "Can not be empty!");
 			$("#"+id)[0].focus();
 			return false;
 		}
@@ -33,12 +33,12 @@
 	function checkNumber(id, name){
 		var value = $("#"+id).val();
 		if(value.length==0){
-			alert(name+ "不能為空");
+			alert(name+ "Can not be empty!");
 			$("#"+id)[0].focus();
 			return false;
 		}
 		if(isNaN(value)){
-			alert(name+ "必須是數字");
+			alert(name+ "Must be a number!");
 			$("#"+id)[0].focus();
 			return false;
 		}
@@ -49,12 +49,12 @@
 	function checkInt(id, name){
 		var value = $("#"+id).val();
 		if(value.length==0){
-			alert(name+ "不能為空");
+			alert(name+ "Can not be empty!");
 			$("#"+id)[0].focus();
 			return false;
 		}
 		if(parseInt(value)!=value){
-			alert(name+ "必須是整數");
+			alert(name+ "Must be an integer!");
 			$("#"+id)[0].focus();
 			return false;
 		}
@@ -68,7 +68,7 @@
 			var deleteLink = $(this).attr("deleteLink");
 			console.log(deleteLink);
 			if(deleteLink == "true"){
-				var confirmDelete = confirm("確認要刪除");
+				var confirmDelete = confirm("Confirm to delete?");
 				if(confirmDelete){
 					return true;
 				}

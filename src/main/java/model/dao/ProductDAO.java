@@ -131,13 +131,13 @@ public class ProductDAO {
                 Date dateAdded = DateUtil.t2d(rs.getTimestamp("dateAdded"));
                 int brandId = rs.getInt("brandId");
 
-                Brand category = new BrandDAO().get(brandId);
+                Brand brand = new BrandDAO().get(brandId);
 
                 bean.setName(name);
                 bean.setInventory(inventory);
                 bean.setPrice(price);
                 bean.setDateAdded(dateAdded);
-                bean.setBrand(category);
+                bean.setBrand(brand);
 
                 bean.setId(id);
                 setFirstProductImage(bean);
@@ -173,16 +173,16 @@ public class ProductDAO {
                 int inventory = rs.getInt("inventory");
                 float price = rs.getFloat("price");
                 Date dateAdded = DateUtil.t2d(rs.getTimestamp("dateAdded"));
-                Brand category = new BrandDAO().get(brandId);
+                Brand brand = new BrandDAO().get(brandId);
 
                 bean.setName(name);
                 bean.setInventory(inventory);
                 bean.setPrice(price);
                 bean.setDateAdded(dateAdded);
-                bean.setBrand(category);
+                bean.setBrand(brand);
 
                 bean.setId(id);
-                bean.setBrand(category);
+                bean.setBrand(brand);
                 setFirstProductImage(bean);
 
                 beans.add(bean);
@@ -219,16 +219,16 @@ public class ProductDAO {
                 int inventory = rs.getInt("inventory");
                 float price = rs.getFloat("price");
                 Date dateAdded = DateUtil.t2d(rs.getTimestamp("dateAdded"));
-                Brand category = new BrandDAO().get(brandId);
+                Brand brand = new BrandDAO().get(brandId);
 
                 bean.setName(name);
                 bean.setInventory(inventory);
                 bean.setPrice(price);
                 bean.setDateAdded(dateAdded);
-                bean.setBrand(category);
+                bean.setBrand(brand);
 
                 bean.setId(id);
-                bean.setBrand(category);
+                bean.setBrand(brand);
                 setFirstProductImage(bean);
 
                 beans.add(bean);

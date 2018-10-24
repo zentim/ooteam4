@@ -9,7 +9,7 @@ public class Product {
 	private float price;
 	private int inventory;
 	private Date dateAdded;
-	private Brand category;
+	private Brand brand;
 	private ProductImage firstProductImage;
 	private List<ProductImage> productImages;
 	private List<ProductImage> productSingleImages;
@@ -49,10 +49,10 @@ public class Product {
 		this.dateAdded = dateAdded;
 	}
 	public Brand getBrand() {
-		return category;
+		return brand;
 	}
-	public void setBrand(Brand category) {
-		this.category = category;
+	public void setBrand(Brand brand) {
+		this.brand = brand;
 	}
 	public ProductImage getFirstProductImage() {
 		return firstProductImage;

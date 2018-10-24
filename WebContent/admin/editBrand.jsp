@@ -7,15 +7,19 @@
 
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="admin_brand_list">All Brand</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Edit Brand</li>
+    <li class="breadcrumb-item"><a href="admin_segment_list">All Segment</a></li>
+    <li class="breadcrumb-item"><a href="admin_category_list?cid=${ s.id }">${ s.name }</a></li>
+    <li class="breadcrumb-item"><a href="admin_brand_list?cid=${ c.id }">${ c.name }</a></li>
+    <li class="breadcrumb-item active" aria-current="page">${ b.name }</li>
+    <li class="breadcrumb-item active" aria-current="page">Edit Product</li>
+    </li>
   </ol>
 </nav>
 
-<!-- Edit Category -->
+<!-- Edit Brand -->
 <div class="card" style="width: 23rem;">
   <div class="card-body">
-    <h4>Edit Category</h4>
+    <h4>Edit Brand</h4>
 
     <form
       method="post"
@@ -29,20 +33,16 @@
             <input
               id="name"
               name="name"
-              value="${ c.name }"
+              value="${ b.name }"
               type="text"
               class="form-control">
           </td>
   			</tr>
   			<tr>
   				<td colspan="2" align="center">
-  					<input
-              type="hidden"
-              name="id"
-              value="${ c.id }">
-  					<button
-              class="btn btn-lg btn-primary btn-block"
-              type="submit">Submit</button>
+  					<input type="hidden" name="id" value="${ b.id }">
+  					<input type="hidden" name="cid" value="${ b.category.id }">
+  					<button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
   				</td>
   			</tr>
   		</table>

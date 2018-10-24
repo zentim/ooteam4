@@ -1,4 +1,4 @@
 
 <% 
-	response.sendRedirect("../admin_brand_list");
+	response.sendRedirect("../admin_segment_list");
 %>

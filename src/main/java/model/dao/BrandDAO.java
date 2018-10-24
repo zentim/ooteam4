@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import main.java.model.bean.Brand;
+import main.java.model.bean.Category;
+import main.java.model.bean.Segment;
 import main.java.model.util.DBUtil;
 
 public class BrandDAO {
@@ -31,10 +33,11 @@ public class BrandDAO {
 	}
 
 	public int add(Brand bean) {
-		String sql = "insert into brand values(DEFAULT,?)";
+		String sql = "insert into brand values(DEFAULT,?, ?)";
 		try (Connection c = DBUtil.getConnection();
 				PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
 			ps.setString(1, bean.getName());
+			ps.setInt(2, bean.getCategory().getId());
 
 			int affectedRows = ps.executeUpdate();
 
@@ -101,8 +104,13 @@ public class BrandDAO {
 
 			if (rs.next()) {
 				bean = new Brand();
-				String name = rs.getString(2);
+				String name = rs.getString("name");
+				int categoryId = rs.getInt("categoryId");
+				
+				Category category = new CategoryDAO().get(categoryId);
+				
 				bean.setName(name);
+				bean.setCategory(category);
 				bean.setId(id);
 			}
 
@@ -132,9 +140,14 @@ public class BrandDAO {
 			while (rs.next()) {
 				Brand bean = new Brand();
 				int id = rs.getInt(1);
-				String name = rs.getString(2);
-				bean.setId(id);
+				String name = rs.getString("name");
+				int categoryId = rs.getInt("categoryId");
+				
+				Category category = new CategoryDAO().get(categoryId);
+				
 				bean.setName(name);
+				bean.setCategory(category);
+				bean.setId(id);
 				beans.add(bean);
 			}
 		} catch (SQLException e) {
@@ -143,5 +156,52 @@ public class BrandDAO {
 		}
 		return beans;
 	}
+	
+	public List<Brand> list(int categoryId) {
+        return list(categoryId, 0, Short.MAX_VALUE);
+    }
+
+    public List<Brand> list(int categoryId, int start, int count) {
+        List<Brand> beans = new ArrayList<Brand>();
+
+        String sql = "select * from brand where categoryId = ? order by brandId desc limit ?,? ";
+
+        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+            ps.setInt(1, categoryId);
+            ps.setInt(2, start);
+            ps.setInt(3, count);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+            	Brand bean = new Brand();
+				int id = rs.getInt(1);
+				String name = rs.getString("name");
+				
+				Category category = new CategoryDAO().get(categoryId);
+				
+				bean.setName(name);
+				bean.setCategory(category);
+				bean.setId(id);
+				beans.add(bean);
+            }
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+
+        return beans;
+    }
+    
+    public void fill(List<Category> cs) {
+        for (Category c : cs) {
+            fill(c);
+        }
+    }
+
+    public void fill(Category c) {
+        List<Brand> ps = this.list(c.getId());
+        c.setBrands(ps);
+    }
 
 }

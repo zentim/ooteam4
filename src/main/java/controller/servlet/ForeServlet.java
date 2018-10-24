@@ -13,19 +13,8 @@ import org.apache.commons.lang3.RandomUtils;
 import org.springframework.http.codec.multipart.SynchronossPartHttpMessageReader;
 import org.springframework.web.util.HtmlUtils;
 
-import main.java.model.bean.Brand;
-import main.java.model.bean.Order;
-import main.java.model.bean.OrderItem;
-import main.java.model.bean.Product;
-import main.java.model.bean.ProductImage;
-import main.java.model.bean.Promotion;
-import main.java.model.bean.PromotionItem;
-import main.java.model.bean.User;
-import main.java.model.dao.BrandDAO;
-import main.java.model.dao.OrderDAO;
-import main.java.model.dao.ProductDAO;
-import main.java.model.dao.ProductImageDAO;
-import main.java.model.dao.PromotionDAO;
+import main.java.model.bean.*;
+import main.java.model.dao.*;
 import main.java.model.util.Page;
 import main.java.pattern.chainOfResponsibility.BuyXGetYFreePolicy;
 import main.java.pattern.chainOfResponsibility.DiscountPolicy;
@@ -39,8 +28,18 @@ import main.java.pattern.chainOfResponsibility.BroughtMoreThanInLastYearPolicy;
 public class ForeServlet extends BaseForeServlet {
 
     public String home(HttpServletRequest request, HttpServletResponse response, Page page) {
+    	List<Segment> segments = segmentDAO.list();
+    	new CategoryDAO().fill(segments);
+    	new CategoryDAO().fillByRow(segments);
+    	
+    	for (Segment s : segments) {
+    		System.out.println("segment id: " + s.getId() + ", " + s.getName());
+    		for (Category category : s.getCategorys()) {
+    			System.out.println("- category id: " + category.getId() + ", " + category.getName());
+    		}
+    	}
+    	
         List<Brand> cs = brandDAO.list();
-
         new ProductDAO().fill(cs);
         new ProductDAO().fillByRow(cs);
         
@@ -60,6 +59,7 @@ public class ForeServlet extends BaseForeServlet {
           }
         }
         
+        request.setAttribute("segments", segments);
         request.setAttribute("cs", cs);
         return "home.jsp";
     }

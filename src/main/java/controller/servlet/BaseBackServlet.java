@@ -16,6 +16,8 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
+import main.java.model.dao.SegmentDAO;
+import main.java.model.dao.CategoryDAO;
 import main.java.model.dao.BrandDAO;
 import main.java.model.dao.OrderDAO;
 import main.java.model.dao.OrderItemDAO;
@@ -40,6 +42,8 @@ public abstract class BaseBackServlet extends HttpServlet {
 
 	public abstract String list(HttpServletRequest request, HttpServletResponse response, Page page);
 
+	protected SegmentDAO segmentDAO = new SegmentDAO();
+	protected CategoryDAO categoryDAO = new CategoryDAO();
 	protected BrandDAO brandDAO = new BrandDAO();
 	protected OrderDAO orderDAO = new OrderDAO();
 	protected OrderItemDAO orderItemDAO = new OrderItemDAO();

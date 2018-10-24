@@ -6,6 +6,7 @@ public class Category {
 
 	private String name;
 	private int id;
+	private Segment segment;
 	private List<Brand> brands;
 	
 	public String getName() {
@@ -19,6 +20,12 @@ public class Category {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	public Segment getSegment() {
+		return segment;
+	}
+	public void setSegment(Segment segment) {
+		this.segment = segment;
 	}
 	public List<Brand> getBrands() {
 		return brands;

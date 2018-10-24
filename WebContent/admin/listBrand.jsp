@@ -6,7 +6,14 @@
 <%@include file="../include/admin/adminNavigator.jsp"%>
 
 
-<h2>Brand</h2>
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="admin_category_list?cid=${ c.segment.id }">${ c.segment.name }</a></li>
+    <li class="breadcrumb-item active" aria-current="page">${c.name}</li>
+    <li class="breadcrumb-item active" aria-current="page">Manage Brand</li>
+  </ol>
+</nav>
+
 <div class="table-responsive table-bordered table-sm">
   <table class="table table-striped table-sm">
     <thead>
@@ -93,6 +100,7 @@
 		  	aria-describedby="inputGroup-sizing-default">
 		</div>
   		
+  		<input type="hidden" name="cid" value="${ c.id }">
   		<button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
   	</form>
 
@@ -104,7 +112,7 @@
 $(function(){
 
   $("#addForm").submit(function(){
-    if(!checkEmpty("name", "分類名稱"))
+    if(!checkEmpty("name", "Brand Name"))
       return false;
     return true;
   });

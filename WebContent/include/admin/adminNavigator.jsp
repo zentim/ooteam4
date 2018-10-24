@@ -5,9 +5,9 @@
   <div class="sidebar-sticky">
     <ul class="nav flex-column">
       <li class="nav-item">
-        <a class="nav-link" href="admin_category_list">
+        <a class="nav-link" href="admin_segment_list">
           <span data-feather="layers"></span>
-          Category & Product<span class="sr-only">(current)</span>
+          Products<span class="sr-only">(current)</span>
         </a>
       </li>
       <li class="nav-item">

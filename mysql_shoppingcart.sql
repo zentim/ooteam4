@@ -18,7 +18,7 @@ USE `mysql_shoppingcart`;
 CREATE TABLE IF NOT EXISTS `user` (
   `userId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `email` varchar(100) NOT NULL,
-  `password` varchar(20) NOT NULL,
+  `password` varchar(30) NOT NULL,
   PRIMARY KEY (`userId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `order_` (
   `state` varchar(255) DEFAULT NULL,
   `total` float unsigned NOT NULL,
   `deliverMethod` tinyint(3) unsigned NOT NULL,
-  `address` varchar(100) NOT NULL,
+  `address` varchar(255) NOT NULL,
   PRIMARY KEY (`orderId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `order_item` (
 
 CREATE TABLE IF NOT EXISTS `product` (
   `productId` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(20) NOT NULL,
+  `name` varchar(255) NOT NULL,
   `inventory` int(10) unsigned NOT NULL DEFAULT '0',
   `price` float unsigned NOT NULL,
   `dateAdded` datetime DEFAULT NULL,
@@ -73,19 +73,21 @@ CREATE TABLE IF NOT EXISTS `subscription` (
 
 CREATE TABLE IF NOT EXISTS `segment` (
   `segmentId` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(10) NOT NULL,
+  `name` varchar(255) NOT NULL,
   PRIMARY KEY (`segmentId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `category` (
   `categoryId` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(10) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `segmentId` int(11) unsigned NOT NULL,
   PRIMARY KEY (`categoryId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `brand` (
   `brandId` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(10) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `categoryId` int(11) unsigned NOT NULL,
   PRIMARY KEY (`brandId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

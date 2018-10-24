@@ -7,6 +7,7 @@ public class Segment {
 	private String name;
 	private int id;
 	private List<Category> categorys;
+	private List<List<Category>> categorysByRow;
 	
 	public String getName() {
 		return name;
@@ -26,6 +27,12 @@ public class Segment {
 	public void setCategorys(List<Category> categorys) {
 		this.categorys = categorys;
 	}
-
+	public List<List<Category>> getCategorysByRow() {
+		return categorysByRow;
+	}
+	public void setCategorysByRow(List<List<Category>> categorysByRow) {
+		this.categorysByRow = categorysByRow;
+	}
+	
 	
 }
