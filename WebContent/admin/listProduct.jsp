@@ -39,7 +39,11 @@
 	        	<img width="40px" src="img/productSingle/${ p.firstProductImage.id }.jpg">
 	        </c:if>
         </td>
-        <td>${ p.name }</td>
+        <td>
+        	<a href="foreproduct?pid=${p.id}">
+               <span>${ p.name }</span>
+            </a>
+        </td>
         <td>${ p.price }</td>
         <td>${ p.inventory }</td>
         <td>

@@ -72,7 +72,7 @@
                                   src="img/productSingle/${pi.product.firstProductImage.id}.jpg">
 	                          </td>
 	                          <td>
-	                              <a href="foreproduct?pid=${pi.product.id}">
+	                              <a href="admin_productImage_list?pid=${pi.product.id}">
 	                                 <span>${ pi.product.name }</span>
 	                              </a>
 	                          </td>
