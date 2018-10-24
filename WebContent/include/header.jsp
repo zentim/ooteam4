@@ -106,7 +106,7 @@
 		            	<li>
 				            <a href="forecart" style="cursor: pointer">
 				            	<span style="margin:0px" class=" glyphicon glyphicon-shopping-cart"></span>
-				            	Shopping Cart <strong>(${cartTotalItemNumber})</strong>
+				            	Show Cart <strong>(${cartTotalItemNumber})</strong>
 				            </a>
 				        </li>  
 			        </c:if>
@@ -116,7 +116,7 @@
 		            	<li>
 				            <a onclick="openModal()"  class="userLoginLink" style="cursor: pointer">
 				            	<span style="margin:0px" class=" glyphicon glyphicon-shopping-cart"></span>
-				            	Shopping Cart <strong>(${cartTotalItemNumber})</strong>
+				            	Show Cart <strong>(${cartTotalItemNumber})</strong>
 				            </a>
 				        </li>  
 			        </c:if>
