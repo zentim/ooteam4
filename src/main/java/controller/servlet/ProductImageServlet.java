@@ -17,8 +17,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import main.java.model.bean.Brand;
+import main.java.model.bean.Category;
 import main.java.model.bean.Product;
 import main.java.model.bean.ProductImage;
+import main.java.model.bean.Segment;
 import main.java.model.dao.ProductImageDAO;
 import main.java.model.util.ImageUtil;
 
@@ -142,10 +145,16 @@ public class ProductImageServlet extends BaseBackServlet {
     public String list(HttpServletRequest request, HttpServletResponse response, Page page) {
         int pid = Integer.parseInt(request.getParameter("pid"));
         Product p = productDAO.get(pid);
+        Brand b = brandDAO.get(p.getBrand().getId());
+		Category c = categoryDAO.get(b.getCategory().getId());
+		Segment s = segmentDAO.get(c.getSegment().getId());
         List<ProductImage> pisSingle = productImageDAO.list(p, ProductImageDAO.type_single);
         List<ProductImage> pisDetail = productImageDAO.list(p, ProductImageDAO.type_detail);
 
         request.setAttribute("p", p);
+        request.setAttribute("b", b);
+		request.setAttribute("c", c);
+		request.setAttribute("s", s);
         request.setAttribute("pisSingle", pisSingle);
         request.setAttribute("pisDetail", pisDetail);
 

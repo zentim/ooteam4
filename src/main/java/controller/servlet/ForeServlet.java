@@ -32,18 +32,11 @@ public class ForeServlet extends BaseForeServlet {
     	new CategoryDAO().fill(segments);
     	new CategoryDAO().fillByRow(segments);
     	
-    	for (Segment s : segments) {
-    		System.out.println("segment id: " + s.getId() + ", " + s.getName());
-    		for (Category category : s.getCategorys()) {
-    			System.out.println("- category id: " + category.getId() + ", " + category.getName());
-    		}
-    	}
-    	
-        List<Brand> cs = brandDAO.list();
-        new ProductDAO().fill(cs);
-        new ProductDAO().fillByRow(cs);
+        List<Brand> brands = brandDAO.list();
+        new ProductDAO().fill(brands);
+        new ProductDAO().fillByRow(brands);
         
-        for (Brand c : cs) {
+        for (Brand c : brands) {
           for (Product p : c.getProducts()) {
             PromotionItem promotionItem = promotionItemDAO.getByProduct(p.getId()); 
             Promotion promotionByProduct = promotionItem.getPromotion();
@@ -60,8 +53,40 @@ public class ForeServlet extends BaseForeServlet {
         }
         
         request.setAttribute("segments", segments);
-        request.setAttribute("cs", cs);
+        request.setAttribute("brands", brands);
         return "home.jsp";
+    }
+    
+    public String category(HttpServletRequest request, HttpServletResponse response, Page page) {
+    	int cid = Integer.parseInt(request.getParameter("cid"));
+    	
+    	List<Segment> segments = segmentDAO.list();
+    	new CategoryDAO().fill(segments);
+    	new CategoryDAO().fillByRow(segments);
+    	
+        List<Brand> brands = brandDAO.list(cid);
+        new ProductDAO().fill(brands);
+        new ProductDAO().fillByRow(brands);
+        
+        for (Brand c : brands) {
+          for (Product p : c.getProducts()) {
+            PromotionItem promotionItem = promotionItemDAO.getByProduct(p.getId()); 
+            Promotion promotionByProduct = promotionItem.getPromotion();
+            if (promotionByProduct != null && !(promotionItem.getDiscountOf() == 100 && promotionByProduct.getDiscountType() == PromotionDAO.buyXGetYFree)) {
+              String promotionName = "";
+              if (promotionByProduct.getState() == 1) {
+                promotionName = promotionByProduct.getName();
+              }
+                String discountTypeName = promotionByProduct.getDiscountTypeDescription();
+                p.setPromotionName(promotionName);
+                p.setDiscountTypeName(discountTypeName);
+            }
+          }
+        }
+        
+        request.setAttribute("segments", segments);
+        request.setAttribute("brands", brands);
+        return "category.jsp";
     }
 
     public String register(HttpServletRequest request, HttpServletResponse response, Page page) {

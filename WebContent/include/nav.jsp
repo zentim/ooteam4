@@ -33,7 +33,7 @@
 		        <ul class="nav navbar-nav">
 		        
 			    	<c:forEach items="${ segment.categorys }" var="c" varStatus="st">
-						<li><a href="#${ c.id }">${ c.name } <span class="badge">${ c.brands.size() }</span></a></li>
+						<li><a href="forecategory?cid=${ c.id }">${ c.name } <span class="badge">${ c.brands.size() }</span></a></li>
 			    	</c:forEach>
 			    	
 			    </ul>

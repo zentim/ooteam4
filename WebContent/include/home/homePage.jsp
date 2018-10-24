@@ -12,7 +12,7 @@
                    
 <div class="col-sm-8 text-left" style="padding:10px">  
 	  
-	<c:forEach items="${ cs }" var="c" varStatus="stc">
+	<c:forEach items="${ brands }" var="c" varStatus="stc">
 		<c:if test="${ stc.count <= brandcount }">
 		
 			<div style="float: left; width: 100%;">
