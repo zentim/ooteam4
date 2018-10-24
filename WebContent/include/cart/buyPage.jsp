@@ -44,6 +44,24 @@
 					    WeChatPay
 					  </label>
 					</div>
+					
+					
+					<div class="panel" style="margin-top: 50px">
+				   		<h4>Do you need a tax ID number on your receipt?</h4>   
+				   	</div>
+				   	
+				   	<p>
+					  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" style="margin: 0;">
+					    Click here to enter your tax ID number (Optional)
+					  </button>
+					</p>
+					<div class="collapse" id="collapseExample">
+					  <div class="card card-body">
+					    <div class="form-group">
+				            <input type="text" name="taxIdNumber" class="form-control" placeholder="Tax ID Number">
+				        </div>
+					  </div>
+					</div>
 					   
 				
 				</div>
