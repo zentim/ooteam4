@@ -1,10 +1,19 @@
 package main.java.model.bean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Product implements Serializable {
+import main.java.pattern.observer.Observer;
+import main.java.pattern.observer.Subject;
+
+/**
+ * 
+ * Observer Pattern - concrete subject
+ *
+ */
+public class Product implements Subject, Serializable {
 	private int id;
 	private String name;
 	private float price;
@@ -18,7 +27,37 @@ public class Product implements Serializable {
 	private int discountType = -1;
 	private String discountTypeName;
 	private String promotionName;
+	private ArrayList<Observer> observers = new ArrayList<Observer>();
 	
+	@Override
+	public void addObserver(Observer o) {
+		observers.add(o);
+	}
+	
+	@Override
+	public void removeObserver(Observer o) {
+		observers.remove(o);
+	}
+	
+	@Override
+	public void notifyObservers() {
+		for(Observer o : observers) {
+			o.update(this);
+		}
+	}
+	
+	public void setInventory(int inventory) {
+		if (this.inventory == 0 && inventory > 0) {
+			this.inventory = inventory;
+			notifyObservers();
+		} else {
+			this.inventory = inventory;
+		}
+	}
+	
+	
+	
+	/* Getter and Setter */
 	public int getId() {
 		return id;
 	}
@@ -40,9 +79,7 @@ public class Product implements Serializable {
 	public int getInventory() {
 		return inventory;
 	}
-	public void setInventory(int inventory) {
-		this.inventory = inventory;
-	}
+	
 	public Date getDateAdded() {
 		return dateAdded;
 	}

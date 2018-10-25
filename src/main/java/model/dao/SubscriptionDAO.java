@@ -59,11 +59,11 @@ public class SubscriptionDAO {
 
 	}
 
-	public void delete(int id) {
+	public void delete(int uid,int pid) {
 
 		try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
 
-			String sql = "delete from subscription where subscriptionId = " + id;
+			String sql = "delete from subscription where userId = " + uid +" AND productId =" + pid;
 
 			s.execute(sql);
 
@@ -101,6 +101,66 @@ public class SubscriptionDAO {
 		}
 		return bean;
 	}
+	
+	public List<Subscription> list(int id) {
+		List<Subscription> beans = new ArrayList<Subscription>();
+		Subscription bean = null;
+
+		try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
+
+			String sql = "select * from subscription where userId = " + id;
+
+			ResultSet rs = s.executeQuery(sql);
+
+			while (rs.next()) {
+				bean = new Subscription();
+
+				int userId = rs.getInt("userId");
+				int productId = rs.getInt("productId");
+				User user = new UserDAO().get(userId);
+				Product product = new ProductDAO().get(productId);
+
+				bean.setUser(user);
+				bean.setProduct(product);
+				bean.setId(id);
+				beans.add(bean);
+			}
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}
+		return beans;
+	}
+	
+	public List<User> getUsers(int pid) {
+		List<User> beans = new ArrayList<User>();
+		User bean = null;
+
+		try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
+
+			String sql = "select * from subscription S, user U where S.userId = U.userId AND productId = " + pid;
+
+			ResultSet rs = s.executeQuery(sql);
+
+			while (rs.next()) {
+				bean = new User();
+
+				int userId = rs.getInt("userId");
+				String email = rs.getString("email");
+				
+				bean.setId(userId);
+				bean.setEmail(email);
+				beans.add(bean);
+			}
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}
+		return beans;
+	}
+	
 	
 	
 	public boolean check(int pid,int uid) {

@@ -29,7 +29,7 @@
 		</button>
 	</a>
 	
-	<button class="btn btn-danger col-sm-9" type="button" id="subscribe" onclick="subscribe()">
+	<button onclick="subscribe(${p.id})" class="btn btn-danger col-sm-9" type="button" id="subscribe_btn">
 		<i class="fa fa-heart"></i> Subscribe
 	</button>
 	
@@ -108,6 +108,24 @@ $(function(){
     });
      
 });
+
+function subscribe(pid){
+	 var page = "forecreatesubscribe";
+	 var returnpage = window.location.href.split("/").pop();
+	 console.log(returnpage);
+	 $.get(
+           page,
+           {"pid":pid, "returnpage":returnpage},
+           function(result){
+               if("success" == result){
+              	 $("#subscribe_btn").html("已訂閱");
+                   $("#subscribe_btn").attr("disabled","disabled");
+              
+               }else{
+              	 alert("請再次嘗試，訂閱失敗!");
+               }
+           });
+}
  
 </script>
 

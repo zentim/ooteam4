@@ -12,6 +12,7 @@ import main.java.model.bean.Product;
 import main.java.model.bean.Promotion;
 import main.java.model.bean.PromotionItem;
 import main.java.model.bean.Segment;
+import main.java.model.bean.User;
 import main.java.model.util.Page;
 
 @WebServlet("/productServlet")
@@ -74,12 +75,21 @@ public class ProductServlet extends BaseBackServlet {
 		String name = request.getParameter("name");
 
 		Product p = new Product();
+		
+		/**
+		 * Use Observer Pattern
+		 */
+		List<User> subscribers = subscriptionDao.getUsers(id);
+		for(User subscriber : subscribers) {
+			p.addObserver(subscriber);
+		}
 
+		p.setId(id);
 		p.setName(name);
 		p.setPrice(price);
-		p.setInventory(inventory);
-		p.setId(id);
 		p.setBrand(c);
+		p.setInventory(inventory);
+		
 
 		productDAO.update(p);
 

@@ -489,7 +489,19 @@ public class ForeServlet extends BaseForeServlet {
     }
     
     public String subscribe(HttpServletRequest request, HttpServletResponse response, Page page) {
+    	
+     	int uid=((User) request.getSession().getAttribute("user")).getId();
+     	List<Subscription> subscriptions= subscriptionDAO.list(uid);
+     	Product product=null;
+     	List<Product> products= new ArrayList<Product>();
+     	for(Subscription subscription:subscriptions) {
+     		product=productDAO.get(subscription.getProduct().getId());
+     		products.add(product);
+     	}
+     	request.setAttribute("products", products);
      	return "subscribe.jsp";
+    	
+    	
     }
     
     public String createsubscribe(HttpServletRequest request, HttpServletResponse response, Page page) {
@@ -511,6 +523,13 @@ public class ForeServlet extends BaseForeServlet {
     		return "%failed";
     	}
     
+    }
+    
+    public String deleteSubscription(HttpServletRequest request, HttpServletResponse response, Page page) {
+        int uid =((User) request.getSession().getAttribute("user")).getId();
+    	int pid = Integer.parseInt(request.getParameter("pid"));
+        subscriptionDAO.delete(uid,pid);
+        return "%success";
     }
 
 }
