@@ -39,7 +39,7 @@
 					</div>
 					
 					<div class="form-check">
-					  <input class="form-check-input" type="radio" name="paymentOption" id="exampleRadios2" value="WeChatPay">
+					  <input class="form-check-input" type="radio" name="paymentOption" id="exampleRadios3" value="WeChatPay">
 					  <label class="form-check-label" for="exampleRadios3">
 					    WeChatPay
 					  </label>

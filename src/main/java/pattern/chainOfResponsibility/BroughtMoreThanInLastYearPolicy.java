@@ -35,13 +35,18 @@ public class BroughtMoreThanInLastYearPolicy extends DiscountPolicy {
 	    int strategyDiscountType = PromotionDAO.broughtMoreThanInLastYear;
 	    for (OrderItem oi : orderItems) {
 	    	promotionItem = promotionItemDAO.getByProduct(oi.getProduct().getId());
-	    	promotion = promotionDAO.get(promotionItem.getPromotion().getId());
 	    	
-	    	if (promotion.getDiscountType() == (strategyDiscountType)) {
-		    	discountOrderItems.add(oi);
-		    } else {
-		    	otherOrderItems.add(oi);
-		    }
+	    	if (promotionItem.getId() == 0) {
+	    		otherOrderItems.add(oi);
+	    	} else {
+	    		promotion = promotionDAO.get(promotionItem.getPromotion().getId());
+		    	
+		    	if (promotion.getDiscountType() == (strategyDiscountType)) {
+			    	discountOrderItems.add(oi);
+			    } else {
+			    	otherOrderItems.add(oi);
+			    }
+	    	}
 	    }
 	    
 	    // Prepare data with discountOrderItems for Strategy Pattern

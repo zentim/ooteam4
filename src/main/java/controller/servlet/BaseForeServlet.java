@@ -21,7 +21,7 @@ public class BaseForeServlet extends HttpServlet {
     protected ProductImageDAO productImageDAO = new ProductImageDAO();
     protected PromotionDAO promotionDAO = new PromotionDAO();
     protected PromotionItemDAO promotionItemDAO = new PromotionItemDAO();
-    protected SubscriptionDAO subscriptionDao = new SubscriptionDAO();
+    protected SubscriptionDAO subscriptionDAO = new SubscriptionDAO();
     protected UserDAO userDAO = new UserDAO();
 
     public void service(HttpServletRequest request, HttpServletResponse response) {

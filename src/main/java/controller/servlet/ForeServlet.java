@@ -487,5 +487,30 @@ public class ForeServlet extends BaseForeServlet {
 
         return "%success";
     }
+    
+    public String subscribe(HttpServletRequest request, HttpServletResponse response, Page page) {
+     	return "subscribe.jsp";
+    }
+    
+    public String createsubscribe(HttpServletRequest request, HttpServletResponse response, Page page) {
+    	int pid=Integer.parseInt(request.getParameter("pid"));
+    	String returnURL=request.getParameter("returnpage");
+    	System.out.println(pid);
+    	System.out.println(returnURL);
+    	if(request.getSession().getAttribute("user")!=null) {
+    		int uid=((User) request.getSession().getAttribute("user")).getId();
+    		if(subscriptionDAO.check(pid,uid)) {
+    			return "%success";
+    		}else{
+    			subscriptionDAO.add(pid,uid);
+    			return "%success";
+    		}
+    		
+    		
+    	}else{
+    		return "%failed";
+    	}
+    
+    }
 
 }

@@ -158,7 +158,7 @@ public class OrderItemDAO {
     public List<OrderItem> listCartByUser(int userId, int start, int count) {
         List<OrderItem> beans = new ArrayList<OrderItem>();
 
-        String sql = "select * from order_item where userId = ? and orderId = -1 order by orderItemId desc limit ?,? ";
+        String sql = "select * from order_item where state = 1 and userId = ? and orderId = -1 order by orderItemId desc limit ?,? ";
 
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
 

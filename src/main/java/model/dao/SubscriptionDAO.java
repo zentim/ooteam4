@@ -32,34 +32,13 @@ public class SubscriptionDAO {
 		return total;
 	}
 
-	public int add(Subscription bean) {
-		String sql = "insert into subscription values(DEFAULT,?, ?)";
-		try (Connection c = DBUtil.getConnection();
-				PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
-			ps.setInt(1, bean.getUser().getId());
-			ps.setInt(2, bean.getProduct().getId());
-
-			int affectedRows = ps.executeUpdate();
-
-			if (affectedRows == 0) {
-				throw new SQLException("Creating failed, no rows affected.");
-			}
-
-			try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
-				if (generatedKeys.next()) {
-					int id = generatedKeys.getInt(1);
-					bean.setId(id);
-
-					return id;
-				} else {
-					throw new SQLException("Createing failed, no ID obtained.");
-				}
-			}
-		} catch (SQLException e) {
+	public void add(int pid,int uid) {
+		String sql = "insert into subscription values(DEFAULT,"+ uid +","+ pid+")";
+		try (Connection c = DBUtil.getConnection();Statement s = c.createStatement();) {
+			s.execute(sql);
+		}catch (SQLException e) {
 			e.printStackTrace();
 		}
-
-		return 0;
 	}
 
 	public void update(Subscription bean) {
@@ -99,7 +78,7 @@ public class SubscriptionDAO {
 
 		try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
 
-			String sql = "select * from subscription where subscriptionId = " + id;
+			String sql = "select * from subscription where productId = " + id;
 
 			ResultSet rs = s.executeQuery(sql);
 
@@ -121,6 +100,32 @@ public class SubscriptionDAO {
 			e.printStackTrace();
 		}
 		return bean;
+	}
+	
+	
+	public boolean check(int pid,int uid) {
+		try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
+
+			String sql = "select * from subscription where productId = " + pid + " AND userId = " +uid;
+			
+			ResultSet rs = s.executeQuery(sql);
+
+			if(rs.next()) {
+				return true;
+			}else {
+				
+				return false;
+				
+			
+			}
+			
+
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+			return false;
+		}
+		
 	}
 
 	public List<Subscription> list() {

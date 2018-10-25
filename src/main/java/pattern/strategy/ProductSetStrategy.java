@@ -1,5 +1,6 @@
 package main.java.pattern.strategy;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import main.java.model.bean.OrderItem;
@@ -26,30 +27,37 @@ public class ProductSetStrategy implements Strategy {
 		// ProductSet Algorithm
 		// e.g. If a customer buys Product X, Product Y and Product Z he gets a discount of 5%.
 		float discountAmount = 0;
+		
+		
+		
 		for (OrderItem oi : orderItems) {
 			promotionItem = promotionItemDAO.getByProduct(oi.getProduct().getId());
 			promotion = promotionDAO.get(promotionItem.getPromotion().getId());
 			
 			if (promotion.getState() == 1) {
 				
-				// for verify one promotion's all of promotionItem condition
+				// Get all promotionItem of the promotion 
 				List<PromotionItem> pis = promotionItemDAO.listByPromotion(promotion.getId());
-				 
-				// count variable is for check one promotion's all of promotionItem condition is pass
-				int count = oi.getQuantity() / promotionItem.getMinQuantity(); 
+				
+				// Record whether all PromotionItem is found in the shopping cart 
+				List<OrderItem> foundOrderItems = new ArrayList<OrderItem>();
 				for (PromotionItem pi : pis) {
-					if (pi.getDiscountOf() == 0) {
-						int temp = oi.getQuantity() / pi.getMinQuantity();
-						
-						if (count > temp) {
-							count = temp;
+					for (OrderItem oi2 : orderItems) {
+						if (oi2.getProduct().getId() == pi.getProduct().getId()) {
+							if (!foundOrderItems.contains(oi2) ) {
+								foundOrderItems.add(oi2);
+							}
 						}
 					}
 				}
 				
-				if (count >= 1) {
+				// If some promotionItem were not found in the shopping cart,
+				// this time will not have the discount
+				if (foundOrderItems.size() == pis.size()) {
 					discountAmount += oi.getQuantity() * oi.getProduct().getPrice() * ((float)promotionItem.getDiscountOf() / 100);
 					discountAmount = Math.round(discountAmount);
+					
+					System.out.println("discount amount = " + discountAmount);
 				}
 			}
 		}

@@ -35,14 +35,20 @@ public class BuyXGetYFreePolicy extends DiscountPolicy {
 	    int strategyDiscountType = PromotionDAO.buyXGetYFree;
 	    for (OrderItem oi : orderItems) {
 	    	promotionItem = promotionItemDAO.getByProduct(oi.getProduct().getId());
-	    	promotion = promotionDAO.get(promotionItem.getPromotion().getId());
 	    	
-	    	boolean isDiscountConditionPass = promotionItem.getDiscountOf() == 0;
-	    	if (promotion.getDiscountType() == strategyDiscountType && isDiscountConditionPass) {
-		    	discountOrderItems.add(oi);
-		    } else {
-		    	otherOrderItems.add(oi);
-		    }
+	    	if (promotionItem.getId() == 0) {
+	    		otherOrderItems.add(oi);
+	    	} else {
+	    		promotion = promotionDAO.get(promotionItem.getPromotion().getId());
+		    	
+		    	if (promotion.getDiscountType() == strategyDiscountType) {
+		    		if (promotionItem.getDiscountOf() == 0) {
+		    			discountOrderItems.add(oi);
+		    		}
+			    } else {
+			    	otherOrderItems.add(oi);
+			    }
+	    	}
 	    }
 	    
 	    // Prepare data with discountOrderItems for Strategy Pattern

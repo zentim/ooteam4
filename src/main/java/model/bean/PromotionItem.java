@@ -50,4 +50,12 @@ public class PromotionItem {
 		this.product = product;
 	}
 
+	@Override
+	public String toString() {
+		return "PromotionItem [id=" + id + ", minQuantity=" + minQuantity + ", discountOf=" + discountOf
+				+ ", promotion=" + promotion + ", product=" + product + "]";
+	}
+	
+	
+
 }

@@ -29,7 +29,7 @@
 		</button>
 	</a>
 	
-	<button class="btn btn-danger col-sm-9" type="button" id="subscribe">
+	<button class="btn btn-danger col-sm-9" type="button" id="subscribe" onclick="subscribe()">
 		<i class="fa fa-heart"></i> Subscribe
 	</button>
 	
