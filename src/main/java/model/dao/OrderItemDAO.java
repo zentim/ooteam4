@@ -151,11 +151,11 @@ public class OrderItemDAO {
         return bean;
     }
 
-    public List<OrderItem> listByUser(int userId) {
-        return listByUser(userId, 0, Short.MAX_VALUE);
+    public List<OrderItem> listCartByUser(int userId) {
+        return listCartByUser(userId, 0, Short.MAX_VALUE);
     }
 
-    public List<OrderItem> listByUser(int userId, int start, int count) {
+    public List<OrderItem> listCartByUser(int userId, int start, int count) {
         List<OrderItem> beans = new ArrayList<OrderItem>();
 
         String sql = "select * from order_item where userId = ? and orderId = -1 order by orderItemId desc limit ?,? ";

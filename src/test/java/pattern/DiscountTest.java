@@ -134,7 +134,7 @@ public class DiscountTest {
 		
 		
 		/* Prepare Pattern */
-		List<OrderItem> ois = orderitemdao.listByUser(userId);
+		List<OrderItem> ois = orderitemdao.listCartByUser(userId);
 		
 		DiscountRequest dr = new DiscountRequest();
 		dr.setOrderItems(ois);
@@ -207,7 +207,7 @@ public class DiscountTest {
 		
 		
 		/* Prepare Pattern */
-		List<OrderItem> ois = orderitemdao.listByUser(userId);
+		List<OrderItem> ois = orderitemdao.listCartByUser(userId);
 		
 		DiscountRequest dr = new DiscountRequest();
 		dr.setOrderItems(ois);
@@ -279,7 +279,7 @@ public class DiscountTest {
 		
 		
 		/* Prepare Pattern */
-		List<OrderItem> ois = orderitemdao.listByUser(userId);
+		List<OrderItem> ois = orderitemdao.listCartByUser(userId);
 		
 		DiscountRequest dr = new DiscountRequest();
 		dr.setOrderItems(ois);
@@ -369,7 +369,7 @@ public class DiscountTest {
 		
 		
 		/* Prepare Pattern */
-		List<OrderItem> ois = orderitemdao.listByUser(userId);
+		List<OrderItem> ois = orderitemdao.listCartByUser(userId);
 		
 		DiscountRequest dr = new DiscountRequest();
 		dr.setOrderItems(ois);

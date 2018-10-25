@@ -1,8 +1,9 @@
 package main.java.model.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Segment {
+public class Segment implements Serializable {
 
 	private String name;
 	private int id;

@@ -1,8 +1,10 @@
 package main.java.model.bean;
 
+import java.io.Serializable;
+
 import main.java.model.bean.Product;
 
-public class ProductImage {
+public class ProductImage implements Serializable {
 
     private String type;
     private Product product;

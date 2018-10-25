@@ -1,11 +1,12 @@
 package main.java.model.bean;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 import main.java.model.dao.OrderDAO;
 
-public class Order {
+public class Order implements Serializable{
 	private int id;
 	private Date dateOrdered;
 	private Date datePaid;

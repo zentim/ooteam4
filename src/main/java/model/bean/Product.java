@@ -1,9 +1,10 @@
 package main.java.model.bean;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class Product {
+public class Product implements Serializable {
 	private int id;
 	private String name;
 	private float price;

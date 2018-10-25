@@ -1,5 +1,6 @@
 package main.java.controller.servlet;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,6 +24,9 @@ import main.java.pattern.chainOfResponsibility.EachGroupOfNPolicy;
 import main.java.pattern.chainOfResponsibility.NoDiscountPolicy;
 import main.java.pattern.chainOfResponsibility.ProductSetPolicy;
 import main.java.pattern.facade.ClearOrderFacade;
+import main.java.pattern.memento.Caretaker;
+import main.java.pattern.memento.Memento;
+import main.java.pattern.memento.ShoppingCart;
 import main.java.pattern.chainOfResponsibility.BroughtMoreThanInLastYearPolicy;
 
 @WebServlet("/foreServlet")
@@ -277,7 +281,7 @@ public class ForeServlet extends BaseForeServlet {
         Product p = productDAO.get(pid);
         
         boolean found = false;
-        List<OrderItem> ois = orderItemDAO.listByUser(user.getId());
+        List<OrderItem> ois = orderItemDAO.listCartByUser(user.getId());
         for (OrderItem oi : ois) {
             if (oi.getProduct().getId() == p.getId()) {
                 oi.setQuantity(oi.getQuantity() + num);
@@ -292,6 +296,7 @@ public class ForeServlet extends BaseForeServlet {
             OrderItem oi = new OrderItem();
             oi.setUser(user);
             oi.setQuantity(num);
+            oi.setState(1);
             oi.setOriginalPrice(p.getPrice());
             oi.setProduct(p);
             orderItemDAO.add(oi);
@@ -304,34 +309,105 @@ public class ForeServlet extends BaseForeServlet {
         User user = (User) request.getSession().getAttribute("user");
         List<OrderItem> ois = new ArrayList<>();
 
-        ois = orderItemDAO.listByUser(user.getId());
+        ois = orderItemDAO.listCartByUser(user.getId());
 
+        ShoppingCart shoppingCart = (ShoppingCart) request.getSession().getAttribute("shoppingCart");
+        Caretaker caretaker = (Caretaker) request.getSession().getAttribute("caretaker");
+        if (shoppingCart == null) {
+        	shoppingCart = new ShoppingCart();
+        }
+        if (caretaker == null) {
+        	caretaker = new Caretaker();
+        }
+        
+        shoppingCart.setOrderItems(ois);
+        
+        request.getSession().setAttribute("shoppingCart", shoppingCart);
+        request.getSession().setAttribute("caretaker", caretaker);
         request.setAttribute("ois", ois);
         return "cart.jsp";
     }
+    
+    public String undoCart(HttpServletRequest request, HttpServletResponse response, Page page) {
+        User user = (User) request.getSession().getAttribute("user");
+        if (user == null) {
+        	return "%fail";
+        }
+        List<OrderItem> ois;
 
-    public String changeOrderItem(HttpServletRequest request, HttpServletResponse response, Page page) {
+        ShoppingCart shoppingCart = (ShoppingCart) request.getSession().getAttribute("shoppingCart");
+        Caretaker caretaker = (Caretaker) request.getSession().getAttribute("caretaker");
+        
+        /**
+         * Memento Pattern
+         */
+        shoppingCart.restoreFromMemento(caretaker.getMemento());
+        ois = shoppingCart.getOrderItems();
+        for (OrderItem oi : ois) {
+        	orderItemDAO.update(oi);
+        }
+        
+        request.getSession().setAttribute("shoppingCart", shoppingCart);
+        request.getSession().setAttribute("caretaker", caretaker);
+
+        return "%success";
+    }
+
+    public String changeOrderItem(HttpServletRequest request, HttpServletResponse response, Page page) throws ClassNotFoundException, IOException {
         User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
             return "%fail";
         }
         int num = Integer.parseInt(request.getParameter("num"));
         int oiid = Integer.parseInt(request.getParameter("oiid"));
+        int state = Integer.parseInt(request.getParameter("state"));
         OrderItem oi = orderItemDAO.get(oiid);
         
+        /**
+         * Memento Pattern
+         */
+        ShoppingCart shoppingCart = (ShoppingCart) request.getSession().getAttribute("shoppingCart");
+        Caretaker caretaker = (Caretaker) request.getSession().getAttribute("caretaker");
+        caretaker.saveMemento(shoppingCart.createMemento());
+         
         oi.setQuantity(num);
+        oi.setState(state);
         orderItemDAO.update(oi);
+        
+        List<OrderItem> ois;
+        ois = orderItemDAO.listCartByUser(user.getId());
+        shoppingCart.setOrderItems(ois);
+        
+        request.getSession().setAttribute("shoppingCart", shoppingCart);
+        request.getSession().setAttribute("caretaker", caretaker);
 
         return "%success";
     }
 
-    public String deleteOrderItem(HttpServletRequest request, HttpServletResponse response, Page page) {
+    public String deleteOrderItem(HttpServletRequest request, HttpServletResponse response, Page page) throws ClassNotFoundException, IOException {
         User user = (User) request.getSession().getAttribute("user");
         if (null == user)
             return "%fail";
+        
         int oiid = Integer.parseInt(request.getParameter("oiid"));
-
-        orderItemDAO.delete(oiid);
+        OrderItem oi = orderItemDAO.get(oiid);
+        
+        /**
+         * Memento Pattern
+         */
+        ShoppingCart shoppingCart = (ShoppingCart) request.getSession().getAttribute("shoppingCart");
+        Caretaker caretaker = (Caretaker) request.getSession().getAttribute("caretaker");
+        caretaker.saveMemento(shoppingCart.createMemento());
+        
+        oi.setState(0);
+        orderItemDAO.update(oi);
+        
+        List<OrderItem> ois;
+        ois = orderItemDAO.listCartByUser(user.getId());
+        shoppingCart.setOrderItems(ois);
+        
+        request.getSession().setAttribute("shoppingCart", shoppingCart);
+        request.getSession().setAttribute("caretaker", caretaker);
 
         return "%success";
     }

@@ -6,8 +6,7 @@
 <h2>Shopping Cart</h2>
 
 <div style="text-align: right; font-size: 30px;">
-	<span class="fa fa-undo fa-icon" style="cursor: pointer;"></span>
-	<span class="fa fa-rotate-right fa-icon" style="cursor: pointer;"></span>
+	<span id="undoBtn" class="fa fa-undo fa-icon" style="cursor: pointer;"></span>
 </div>
 
 <div class="table-responsive">
@@ -36,6 +35,8 @@
 
     <tbody>
       <c:forEach items="${ ois }" var="oi">
+      	<c:if test="${ oi.state == 1 }">
+      
         <tr oiid="${oi.id}" class="cartProductItemTR">
 
             <td align="left" style="width: 100px;">
@@ -134,6 +135,8 @@
                 href="#nowhere">Delete</a>
             </td>
         </tr>
+        
+        </c:if>
       </c:forEach>
     </tbody>
 
@@ -167,6 +170,19 @@ var deleteOrderItem = false;
 var deleteOrderItemid = 0;
 
 $(function(){
+	$("span#undoBtn").click(function() {
+		$.post(
+                "foreundoCart",
+                function(result){
+                    if("success" == result){
+                    	location.href="forecart";
+                    }
+                    else{
+                    	console.log("undo cart fail!");
+                    }
+                }
+            );
+	});
 
     $("a.deleteOrderItem").click(function(){
         deleteOrderItem = false;
@@ -378,7 +394,7 @@ function syncPrice(pid, num, price, oiid){
  	oiid = parseInt(oiid);
     $.post(
         page,
-        {"pid": pid, "num": num, "oiid": oiid},
+        {"pid": pid, "num": num, "oiid": oiid, "state": 1},
         function(result){
           if("success" != result){
             location.href="login.jsp";
@@ -386,4 +402,5 @@ function syncPrice(pid, num, price, oiid){
         }
       );
 }
+
 </script>
