@@ -77,10 +77,13 @@
 	                              </a>
 	                          </td>
 	                          <td align="right">
-	                              <span class="text-muted">${ pi.minQuantity }個</span>
+	                              <span class="text-muted">Price : $${ pi.product.price }</span>
 	                          </td>
 	                          <td align="right">
-	                              <span class="text-muted">單價 : $${ pi.product.price }</span>
+	                              <span class="text-muted">minQuantity: ${ pi.minQuantity }</span>
+	                          </td>
+	                          <td align="right">
+	                              <span class="text-muted">discountOf: ${ pi.discountOf }%</span>
 	                          </td>
 	                      </tr>
 

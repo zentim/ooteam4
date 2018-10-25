@@ -16,9 +16,13 @@
 		<c:if test="${ stc.count <= brandcount }">
 		
 			<div style="float: left; width: 100%;">
-				<a href="forebrand?cid=${ c.id }">
-					<h2 id="${ c.id }">${ c.name }</h2>
-				</a>
+				
+				<h2 id="${ c.id }">
+					<a href="forebrand?cid=${ c.id }">
+						${ c.name }
+					</a>
+				</h2>
+				
 			
 				<c:forEach items="${ c.products }" var="p" varStatus="st">
 					<c:if test="${ st.count <= 8 }">
@@ -43,7 +47,7 @@
 							             -->
 							            
 							        </div>
-							        <p style="text-align: right;">${fn:substring(p.name, 0, 20)}<br>
+							        <p style="text-align: right;">${fn:substring(p.name, 0, 50)}<br>
 							        	<b>$<fmt:formatNumber type="number" value="${p.price}" minFractionDigits="2"/></b>
 							        </p>
 							    </div>
