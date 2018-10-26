@@ -67,8 +67,6 @@ $(function(){
      
     $(".addCartLink").click(function(){
         var page = "forecheckLogin";
-        console.log(${p.id});
-        console.log($(".productNumberSetting").val());
         $.get(
                 page,
                 function(result){
