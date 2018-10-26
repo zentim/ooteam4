@@ -32,13 +32,30 @@ public class SubscriptionDAO {
 		return total;
 	}
 
-	public void add(int pid,int uid) {
+	public int add(int pid,int uid) {
 		String sql = "insert into subscription values(DEFAULT,"+ uid +","+ pid+")";
-		try (Connection c = DBUtil.getConnection();Statement s = c.createStatement();) {
-			s.execute(sql);
+		try (Connection c = DBUtil.getConnection();
+				PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
+			int affectedRows = ps.executeUpdate();
+
+			if (affectedRows == 0) {
+				throw new SQLException("Creating failed, no rows affected.");
+			}
+
+			try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+				if (generatedKeys.next()) {
+					int id = generatedKeys.getInt(1);
+
+					return id;
+				} else {
+					throw new SQLException("Createing failed, no ID obtained.");
+				}
+			}
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
+		return 0;
 	}
 
 	public void update(Subscription bean) {

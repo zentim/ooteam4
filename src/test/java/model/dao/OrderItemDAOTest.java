@@ -8,16 +8,28 @@ import org.junit.*;
 
 import main.java.model.bean.OrderItem;
 import main.java.model.bean.Product;
+import main.java.model.bean.Segment;
 import main.java.model.bean.User;
 import main.java.model.bean.Brand;
+import main.java.model.bean.Category;
 import main.java.model.bean.Order;
 import main.java.model.dao.OrderItemDAO;
 import main.java.model.dao.ProductDAO;
+import main.java.model.dao.SegmentDAO;
 import main.java.model.dao.UserDAO;
 import main.java.model.dao.BrandDAO;
+import main.java.model.dao.CategoryDAO;
 import main.java.model.dao.OrderDAO;
 
 public class OrderItemDAOTest {
+	public static SegmentDAO segmentdao = new SegmentDAO();
+	public static Segment segment;
+	public static int segmentId;
+	
+	public static CategoryDAO categorydao = new CategoryDAO();
+	public static Category category;
+	public static int categoryId;
+	
 	public static BrandDAO branddao = new BrandDAO();
 	public static Brand brand;
 	public static int brandId;
@@ -40,9 +52,21 @@ public class OrderItemDAOTest {
 
 	@BeforeClass
 	public static void testAdd() {
+		// create segment
+		segment = new Segment();
+		segment.setName("SegmentTest");
+		segmentId = segmentdao.add(segment);
+
+		// create category
+		category = new Category();
+		category.setName("CategoryTest");
+		category.setSegment(segmentdao.get(segmentId));
+		categoryId = categorydao.add(category);
+
 		// create brand
 		brand = new Brand();
 		brand.setName("Book");
+		brand.setCategory(categorydao.get(categoryId));
 		brandId = branddao.add(brand);
 
 		// create product
@@ -109,6 +133,12 @@ public class OrderItemDAOTest {
 
 		// delete brand
 		branddao.delete(brandId);
+		
+		// delete category
+		categorydao.delete(categoryId);
+		
+		// delete segment
+		segmentdao.delete(segmentId);
 	}
 
 }

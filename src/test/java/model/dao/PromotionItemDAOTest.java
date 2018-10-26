@@ -7,20 +7,32 @@ import java.util.Date;
 import org.junit.*;
 
 import main.java.model.bean.Brand;
+import main.java.model.bean.Category;
 import main.java.model.bean.Product;
 import main.java.model.bean.Promotion;
 import main.java.model.bean.PromotionItem;
+import main.java.model.bean.Segment;
 import main.java.model.bean.User;
 import main.java.model.dao.BrandDAO;
+import main.java.model.dao.CategoryDAO;
 import main.java.model.dao.ProductDAO;
 import main.java.model.dao.PromotionDAO;
 import main.java.model.dao.PromotionItemDAO;
+import main.java.model.dao.SegmentDAO;
 import main.java.model.dao.UserDAO;
 
 public class PromotionItemDAOTest {
-  public static BrandDAO branddao = new BrandDAO();
-  public static Brand brand;
-  public static int brandId;
+	public static SegmentDAO segmentdao = new SegmentDAO();
+	public static Segment segment;
+	public static int segmentId;
+	
+	public static CategoryDAO categorydao = new CategoryDAO();
+	public static Category category;
+	public static int categoryId;
+	
+	public static BrandDAO branddao = new BrandDAO();
+	public static Brand brand;
+	public static int brandId;
 
   public static ProductDAO productdao = new ProductDAO();
   public static Product product;
@@ -36,10 +48,22 @@ public class PromotionItemDAOTest {
 
   @BeforeClass
   public static void testAdd() {
+	// create segment
+	segment = new Segment();
+	segment.setName("SegmentTest");
+	segmentId = segmentdao.add(segment);
+
+	// create category
+	category = new Category();
+	category.setName("CategoryTest");
+	category.setSegment(segmentdao.get(segmentId));
+	categoryId = categorydao.add(category);
+
 	// create brand
-    brand = new Brand();
-    brand.setName("Book");
-    brandId = branddao.add(brand);
+	brand = new Brand();
+	brand.setName("Book");
+	brand.setCategory(categorydao.get(categoryId));
+	brandId = branddao.add(brand);
 
     // create product
     product = new Product();
@@ -90,7 +114,15 @@ public class PromotionItemDAOTest {
     productdao.delete(productId);
 
     // delete brand
-    branddao.delete(brandId);
+	branddao.delete(brandId);
+
+	System.out.println("Test End...");
+	
+	// delete category
+	categorydao.delete(categoryId);
+	
+	// delete segment
+	segmentdao.delete(segmentId);
   }
 
 }
