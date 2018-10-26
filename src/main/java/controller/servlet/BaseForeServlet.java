@@ -17,7 +17,6 @@ public class BaseForeServlet extends HttpServlet {
     protected OrderDAO orderDAO = new OrderDAO();
     protected OrderItemDAO orderItemDAO = new OrderItemDAO();
     protected ProductDAO productDAO = new ProductDAO();
-    protected ProductDetailDAO productDetailDAO = new ProductDetailDAO();
     protected ProductImageDAO productImageDAO = new ProductImageDAO();
     protected PromotionDAO promotionDAO = new PromotionDAO();
     protected PromotionItemDAO promotionItemDAO = new PromotionItemDAO();

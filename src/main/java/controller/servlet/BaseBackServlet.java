@@ -22,7 +22,6 @@ import main.java.model.dao.BrandDAO;
 import main.java.model.dao.OrderDAO;
 import main.java.model.dao.OrderItemDAO;
 import main.java.model.dao.ProductDAO;
-import main.java.model.dao.ProductDetailDAO;
 import main.java.model.dao.ProductImageDAO;
 import main.java.model.dao.PromotionDAO;
 import main.java.model.dao.PromotionItemDAO;
@@ -48,7 +47,6 @@ public abstract class BaseBackServlet extends HttpServlet {
 	protected OrderDAO orderDAO = new OrderDAO();
 	protected OrderItemDAO orderItemDAO = new OrderItemDAO();
 	protected ProductDAO productDAO = new ProductDAO();
-	protected ProductDetailDAO productDetailDAO = new ProductDetailDAO();
 	protected ProductImageDAO productImageDAO = new ProductImageDAO();
 	protected PromotionDAO promotionDAO = new PromotionDAO();
 	protected PromotionItemDAO promotionItemDAO = new PromotionItemDAO();
