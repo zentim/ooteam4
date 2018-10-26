@@ -35,7 +35,6 @@ public class ForeServlet extends BaseForeServlet {
     public String home(HttpServletRequest request, HttpServletResponse response, Page page) {
     	List<Segment> segments = segmentDAO.list();
     	new CategoryDAO().fill(segments);
-    	new CategoryDAO().fillByRow(segments);
     	
         List<Brand> brands = brandDAO.list();
         new ProductDAO().fill(brands);
@@ -49,24 +48,59 @@ public class ForeServlet extends BaseForeServlet {
     public String category(HttpServletRequest request, HttpServletResponse response, Page page) {
     	int cid = Integer.parseInt(request.getParameter("cid"));
     	
+    	Category category = categoryDAO.get(cid);
+    	
     	List<Segment> segments = segmentDAO.list();
-    	new CategoryDAO().fill(segments);
-    	new CategoryDAO().fillByRow(segments);
+    	categoryDAO.fill(segments);
     	
         List<Brand> brands = brandDAO.list(cid);
         new ProductDAO().fill(brands);
         new ProductDAO().fillPromotion(brands);
         
+        request.setAttribute("category", category);
         request.setAttribute("segments", segments);
         request.setAttribute("brands", brands);
         return "category.jsp";
     }
-
+    
     public String register(HttpServletRequest request, HttpServletResponse response, Page page) {
-        String email = request.getParameter("email");
+    	String email = request.getParameter("email");
         String password = request.getParameter("password");
+        String repeatPassword = request.getParameter("repeatPassword");
         email = HtmlUtils.htmlEscape(email);
         boolean exist = userDAO.isExist(email);
+        
+        if (!password.equals(repeatPassword)) {
+        	request.setAttribute("msg", "Inconsistent password!!!");
+			return "register.jsp";
+        }
+
+		if (exist) {
+			request.setAttribute("msg", "Email has been used!!!");
+			return "register.jsp";
+		}
+
+		User user = new User();
+		user.setEmail(email);
+		user.setPassword(password);
+		userDAO.add(user);
+        User newUser = userDAO.get(email, password);
+
+        request.getSession().setAttribute("user", newUser);
+		return "@forehome";
+	}
+
+    public String registerAjax(HttpServletRequest request, HttpServletResponse response, Page page) {
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        String repeatPassword = request.getParameter("repeatPassword");
+        email = HtmlUtils.htmlEscape(email);
+        boolean exist = userDAO.isExist(email);
+        
+        if (!password.equals(repeatPassword)) {
+        	request.setAttribute("msg", "Inconsistent password!!!");
+			return "%fail";
+        }
 
         if (exist) {
             request.setAttribute("msg", "Email has been used!!!");
@@ -82,14 +116,31 @@ public class ForeServlet extends BaseForeServlet {
         request.getSession().setAttribute("user", newUser);
         return "%success";
     }
+    
+    public String login(HttpServletRequest request, HttpServletResponse response, Page page) {
+    	String email = request.getParameter("email");
+    	email = HtmlUtils.htmlEscape(email);
+		String password = request.getParameter("password");
+
+		User user = userDAO.get(email, password);
+
+		if (null == user) {
+			request.setAttribute("msg", "Incorrect account password");
+			return "login.jsp";
+		}
+		request.getSession().setAttribute("user", user);
+		return "@forehome";
+	}
 
     public String loginAjax(HttpServletRequest request, HttpServletResponse response, Page page) {
         String email = request.getParameter("email");
         email = HtmlUtils.htmlEscape(email);
         String password = request.getParameter("password");
+        
         User user = userDAO.get(email, password);
 
         if (null == user) {
+        	request.setAttribute("msg", "Incorrect account password");
             return "%fail";
         }
 
@@ -191,54 +242,54 @@ public class ForeServlet extends BaseForeServlet {
     */
      
     public String buy(HttpServletRequest request, HttpServletResponse response, Page page) {
-        String[] oiids = request.getParameterValues("oiid");
-        List<OrderItem> ois = new ArrayList<OrderItem>();
-        
-        double total = 0;
-        for (String oiidString : oiids) {
-            int oiid = Integer.parseInt(oiidString);
-            OrderItem ot = orderItemDAO.get(oiid);
-            ot.setOriginalPrice(ot.getProduct().getPrice());
-            ois.add(ot);
-            total += (ot.getOriginalPrice() * ot.getQuantity());
-        }
-        
-        
-     
-        /**
-         * Chain Of Responsibility Pattern
-         */
-        // Init Chain
-        DiscountPolicy nationHolidayDiscount = new BuyXGetYFreePolicy();
-        DiscountPolicy lastYear100KDiscount = new BroughtMoreThanInLastYearPolicy();
-		DiscountPolicy eachGroupOf100Discount = new EachGroupOfNPolicy();
-		DiscountPolicy xyzDiscount = new ProductSetPolicy();
-		DiscountPolicy noDiscount = new NoDiscountPolicy();
-		  
-		// Setting Chain Order
-      	nationHolidayDiscount.setNextDiscountPolicy(lastYear100KDiscount);
-		lastYear100KDiscount.setNextDiscountPolicy(eachGroupOf100Discount);
-		eachGroupOf100Discount.setNextDiscountPolicy(xyzDiscount);
-		xyzDiscount.setNextDiscountPolicy(noDiscount);
-		    
-		// Send OrderItem List to the pattern for calc discount.
-	    // Return DiscountRequest, it contains:
-	    // 1. (String) discountMsg (e.g. "eachGroupOfN: -100")
-	    // 2. (float) totalDiscount (e.g. 100.0)
-	    DiscountRequest dr = new DiscountRequest();
-	    dr.setOrderItems(ois);
-		dr.setNationHoliday(true);
-		dr.setLastYearAmount(200000);
-		dr = nationHolidayDiscount.handleDiscount(dr);
-		    
-		double totalWithoutDiscount = total;
-        // calc actual payment amount
-        total = total - dr.getTotalDiscount();
-
-        request.getSession().setAttribute("ois", ois);
-        request.setAttribute("totalWithoutDiscount", totalWithoutDiscount);
-        request.setAttribute("discountMsg", dr.getDiscountMsg());
-        request.setAttribute("total", total);
+//        String[] oiids = request.getParameterValues("oiid");
+//        List<OrderItem> ois = new ArrayList<OrderItem>();
+//        
+//        double total = 0;
+//        for (String oiidString : oiids) {
+//            int oiid = Integer.parseInt(oiidString);
+//            OrderItem ot = orderItemDAO.get(oiid);
+//            ot.setOriginalPrice(ot.getProduct().getPrice());
+//            ois.add(ot);
+//            total += (ot.getOriginalPrice() * ot.getQuantity());
+//        }
+//        
+//        
+//     
+//        /**
+//         * Chain Of Responsibility Pattern
+//         */
+//        // Init Chain
+//        DiscountPolicy nationHolidayDiscount = new BuyXGetYFreePolicy();
+//        DiscountPolicy lastYear100KDiscount = new BroughtMoreThanInLastYearPolicy();
+//		DiscountPolicy eachGroupOf100Discount = new EachGroupOfNPolicy();
+//		DiscountPolicy xyzDiscount = new ProductSetPolicy();
+//		DiscountPolicy noDiscount = new NoDiscountPolicy();
+//		  
+//		// Setting Chain Order
+//      	nationHolidayDiscount.setNextDiscountPolicy(lastYear100KDiscount);
+//		lastYear100KDiscount.setNextDiscountPolicy(eachGroupOf100Discount);
+//		eachGroupOf100Discount.setNextDiscountPolicy(xyzDiscount);
+//		xyzDiscount.setNextDiscountPolicy(noDiscount);
+//		    
+//		// Send OrderItem List to the pattern for calc discount.
+//	    // Return DiscountRequest, it contains:
+//	    // 1. (String) discountMsg (e.g. "eachGroupOfN: -100")
+//	    // 2. (float) totalDiscount (e.g. 100.0)
+//	    DiscountRequest dr = new DiscountRequest();
+//	    dr.setOrderItems(ois);
+//		dr.setNationHoliday(true);
+//		dr.setLastYearAmount(200000);
+//		dr = nationHolidayDiscount.handleDiscount(dr);
+//		    
+//		double totalWithoutDiscount = total;
+//        // calc actual payment amount
+//        total = total - dr.getTotalDiscount();
+//
+//        request.getSession().setAttribute("ois", ois);
+//        request.setAttribute("totalWithoutDiscount", totalWithoutDiscount);
+//        request.setAttribute("discountMsg", dr.getDiscountMsg());
+//        request.setAttribute("total", total);
         return "buy.jsp";
     }
 

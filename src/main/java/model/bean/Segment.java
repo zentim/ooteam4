@@ -19,7 +19,6 @@ public class Segment extends Component implements Serializable {
 	private String name;
 	private int id;
 	private List<Category> categorys;
-	private List<List<Category>> categorysByRow;
 	private Map<Integer, Component> components = new TreeMap<Integer, Component>();
 	
 	
@@ -77,12 +76,7 @@ public class Segment extends Component implements Serializable {
 	public void setCategorys(List<Category> categorys) {
 		this.categorys = categorys;
 	}
-	public List<List<Category>> getCategorysByRow() {
-		return categorysByRow;
-	}
-	public void setCategorysByRow(List<List<Category>> categorysByRow) {
-		this.categorysByRow = categorysByRow;
-	}
+	
 	
 	
 }

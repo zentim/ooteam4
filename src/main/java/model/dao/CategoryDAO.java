@@ -207,20 +207,5 @@ public class CategoryDAO {
         List<Category> ps = this.list(c.getId());
         c.setCategorys(ps);
     }
-    
-    public void fillByRow(List<Segment> cs) {
-        int categoryNumberEachRow = 8;
-        for (Segment c : cs) {
-            List<Category> categorys = c.getCategorys();
-            List<List<Category>> categorysByRow = new ArrayList<>();
-            for (int i = 0; i < categorys.size(); i += categoryNumberEachRow) {
-                int size = i + categoryNumberEachRow;
-                size = size > categorys.size() ? categorys.size() : size;
-                List<Category> categorysOfEachRow = categorys.subList(i, size);
-                categorysByRow.add(categorysOfEachRow);
-            }
-            c.setCategorysByRow(categorysByRow);
-        }
-    }
 
 }

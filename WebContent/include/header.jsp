@@ -7,20 +7,38 @@
 
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>ooteam4</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="./css/fore/index.css">
-    <link rel="stylesheet" href="./css/fore/lightBox.css">
-    <link rel="stylesheet" href="./css/fore/login.css">
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <!-- Title  -->
+    <title>OO Team4</title>
+
+    <!-- Favicon  -->
+    <link rel="icon" href="img/core-img/favicon.ico">
+
+    <!-- Core Style CSS -->
+    <link rel="stylesheet" href="css/core-style.css">
+    <link rel="stylesheet" href="style.css">
     
-    <script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+
+	<!-- jQuery -->
+	<script src="js/jquery/jquery-2.2.4.min.js"></script>
+<!-- 
+	<script
+	  src="https://code.jquery.com/jquery-3.3.1.min.js"
+	  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+	  crossorigin="anonymous"></script>
+ --> 
+	<!-- Format -->
+	<script>
 	function formatMoney(num){
 	    num = num.toString().replace(/\$|\,/g,'');  
 	    if(isNaN(num))  
@@ -75,84 +93,194 @@
 	});
 	 
 	</script> 
-	
 </head>
 
 <body>
-  <!-- Right Button !-->
-  <!-- 
-  	<c:if test="${!empty user}">
-   	 	<a class="fa fa-heart round" style="top: 60%;color:white;font-size:24px;text-decoration:none;" href="foresubscribe"></a>
-    	<a class="fa fa-shopping-cart round" style="top: 70%;color:white;font-size:24px;text-decoration:none;" href="forecart"></a>
-  	</c:if>
+    <!-- ##### Header Area Start ##### -->
+    <header class="header_area">
+        <div class="classy-nav-container breakpoint-off d-flex align-items-center justify-content-between">
+            <!-- Classy Menu -->
+            <nav class="classy-navbar" id="essenceNav">
+                <!-- Logo -->
+                <a class="nav-brand" href="forehome">OO Team4</a>
+                <!-- Navbar Toggler -->
+                <div class="classy-navbar-toggler">
+                    <span class="navbarToggler"><span></span><span></span><span></span></span>
+                </div>
+                <!-- Menu -->
+                <div class="classy-menu">
+                    <!-- close btn -->
+                    <div class="classycloseIcon">
+                        <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
+                    </div>
+                    <!-- Nav Start -->
+                    <div class="classynav">
+                        <ul>
+                            <li><a href="#">Shop</a>
+                                <div class="megamenu">
+                                
+                                
+                                
+                                	<c:forEach items="${ segments }" var="segment" varStatus="stSegment">
+	                                    <ul class="single-mega cn-col-4">
+	                                        <li class="title">${ segment.name }</li>
+	                                        <c:forEach items="${ segment.categorys }" var="c" varStatus="st">
+	                                        	<li><a href="forecategory?cid=${ c.id }">${ c.name }</a></li>
+	                                        </c:forEach>
+	                                    </ul>
+									</c:forEach>
+                                    
+                                    
+                                    
+                                    
+                                    <div class="single-mega cn-col-4">
+                                        <img src="img/bg-img/bg-6.jpg" alt="">
+                                    </div>
+                                </div>
+                            </li>
+                            <li><a href="#">Pages</a>
+                                <ul class="dropdown">
+                                    <li><a href="forehome">Home</a></li>
+                                    <li><a href="forecategory?cid=1">Shop</a></li>
+                                    <li><a href="foreproduct?pid=1">Product Details</a></li>
+                                    <li><a href="forebuy">Checkout</a></li>
+                                    <li><a href="blog.html">Blog</a></li>
+                                    <li><a href="single-blog.html">Single Blog</a></li>
+                                    <li><a href="regular-page.html">Regular Page</a></li>
+                                    <li><a href="contact.html">Contact</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="blog.html">Blog</a></li>
+                            <li><a href="contact.html">Contact</a></li>
+                        </ul>
+                    </div>
+                    <!-- Nav End -->
+                </div>
+            </nav>
 
-	<c:if test="${empty user}">
-	    <a class="fa fa-heart round" style="top: 60%;color:white;font-size:24px;text-decoration:none;" onclick="openModal()"></a>
-	    <a class="fa fa-shopping-cart round" style="top: 70%;color:white;font-size:24px;text-decoration:none;" onclick="openModal()" ></a>
-	    <!-- <a class="fa fa-cart-plus round" style="top: 70%;color:white;font-size:24px;text-decoration:none;" href="#"></a>! -->
-	</c:if>
+            <!-- Header Meta Data -->
+            <div class="header-meta d-flex clearfix justify-content-end">
 
-  	<a class="fa fa-chevron-circle-up round" style="top: 80%;color:white;font-size:24px;text-decoration:none;" href="#top_anchor" ></a>
-  -->
-  
-  <!-- Right Button !-->
-  
-  
-  
-    <nav class="navbar navbar-inverse">
-	    <a name="top_anchor"></a>
-	    <div class="container-fluid">
-	    
-	        <div class="navbar-header">
-	            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-	                <span class="icon-bar"></span>
-	                <span class="icon-bar"></span>
-	                <span class="icon-bar"></span>
-	            </button>
-	            <a class="navbar-brand" href="forehome">OO Team4</a>
-	        </div>
-	        
-	        <div class="collapse navbar-collapse" id="myNavbar">
-	            <ul class="nav navbar-nav navbar-right">
-	            	<c:if test="${!empty user}">
-	            		<li><a href="foresubscribe" style="cursor: pointer">Subscriptions</a></li>
-			            <li><a href="forebought" style="cursor: pointer">Orders</a></li>
-		            	<li>
-				            <a href="forecart" style="cursor: pointer">
-				            	<span style="margin:0px" class=" glyphicon glyphicon-shopping-cart"></span>
-				            	Show Cart <strong>(${cartTotalItemNumber})</strong>
-				            </a>
-				        </li>  
-			        </c:if>
-			        
-			        <c:if test="${empty user}">
-			            <li><a onclick="openModal()" class="userLoginLink" style="cursor: pointer">My Orders</a></li>
-		            	<li>
-				            <a onclick="openModal()"  class="userLoginLink" style="cursor: pointer">
-				            	<span style="margin:0px" class=" glyphicon glyphicon-shopping-cart"></span>
-				            	Show Cart <strong>(${cartTotalItemNumber})</strong>
-				            </a>
-				        </li>  
-			        </c:if>
-	              
-	            	<c:if test="${!empty user}">
-			            <li><a href="#" style="cursor: pointer">${user.email}</a></li>
-			            <li><a href="forelogout" style="cursor: pointer">Logout</a></li>
-			        </c:if>
-			         
-			        <c:if test="${empty user}">
-			        	<li>
-			        		<a onclick="openModal()" style="cursor: pointer">Login</a>
-			        	</li>
-			            <li><a onclick="registerShow()" style="cursor: pointer">Register</a></li>     
-			        </c:if>
-	                
-	            </ul>
-	        </div>
-	    </div>
-	</nav>
-    
-    <div class="container-fluid text-center"> 
-    	
-		
-    	
+                <!-- Search Area -->
+<!-- 
+                <div class="search-area">
+                    <form action="#" method="post">
+                        <input type="search" name="search" id="headerSearch" placeholder="Type for search">
+                        <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+                    </form>
+                </div>
+ -->
+ 				<c:if test="${!empty user}">
+	                <!-- Favourite Area -->
+	                <div class="favourite-area">
+	                    <a href="foresubscribe"><img src="img/core-img/heart.svg" alt=""></a>
+	                </div>
+	                <!-- Orders Area -->
+	                <div class="favourite-area">
+	                    <a href="forebought"><i class="fas fa-clipboard-list fa-lg"></i></a>
+	                </div>
+                </c:if>
+                <!-- Cart Area -->
+                <div class="cart-area">
+                    <a href="#" id="essenceCartBtn"><i class="fas fa-shopping-cart fa-lg"></i> <span>${cartTotalItemNumber}</span></a>
+                </div>
+                <!-- User Login Info -->
+                <c:if test="${empty user}">
+	                <div class="user-login-info">
+	                    <a href="login.jsp">Login</a>
+	                </div>
+                </c:if>
+                <c:if test="${!empty user}">
+                	<div class="user-login-info">
+                		<a href="#" style="width: 200px;">Hi! ${ user.email }</a>
+	                </div>
+	                <div class="user-login-info">
+	                    <a href="forelogout">Logout</a>
+	                </div>
+                </c:if>
+            </div>
+
+        </div>
+    </header>
+    <!-- ##### Header Area End ##### -->
+
+    <!-- ##### Right Side Cart Area ##### -->
+    <div class="cart-bg-overlay"></div>
+
+    <div class="right-side-cart-area">
+
+        <!-- Cart Button -->
+        <div class="cart-button">
+            <a href="#" id="rightSideCart"><img src="img/core-img/bag.svg" alt=""> <span>3</span></a>
+        </div>
+
+        <div class="cart-content d-flex">
+
+            <!-- Cart List Area -->
+            <div class="cart-list">
+                <!-- Single Cart Item -->
+                <div class="single-cart-item">
+                    <a href="#" class="product-image">
+                        <img src="img/product-img/product-1.jpg" class="cart-thumb" alt="">
+                        <!-- Cart Item Desc -->
+                        <div class="cart-item-desc">
+                          <span class="product-remove"><i class="fa fa-close" aria-hidden="true"></i></span>
+                            <span class="badge">Mango</span>
+                            <h6>Button Through Strap Mini Dress</h6>
+                            <p class="size">Size: S</p>
+                            <p class="color">Color: Red</p>
+                            <p class="price">$45.00</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Single Cart Item -->
+                <div class="single-cart-item">
+                    <a href="#" class="product-image">
+                        <img src="img/product-img/product-2.jpg" class="cart-thumb" alt="">
+                        <!-- Cart Item Desc -->
+                        <div class="cart-item-desc">
+                          <span class="product-remove"><i class="fa fa-close" aria-hidden="true"></i></span>
+                            <span class="badge">Mango</span>
+                            <h6>Button Through Strap Mini Dress</h6>
+                            <p class="size">Size: S</p>
+                            <p class="color">Color: Red</p>
+                            <p class="price">$45.00</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Single Cart Item -->
+                <div class="single-cart-item">
+                    <a href="#" class="product-image">
+                        <img src="img/product-img/product-3.jpg" class="cart-thumb" alt="">
+                        <!-- Cart Item Desc -->
+                        <div class="cart-item-desc">
+                          <span class="product-remove"><i class="fa fa-close" aria-hidden="true"></i></span>
+                            <span class="badge">Mango</span>
+                            <h6>Button Through Strap Mini Dress</h6>
+                            <p class="size">Size: S</p>
+                            <p class="color">Color: Red</p>
+                            <p class="price">$45.00</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Cart Summary -->
+            <div class="cart-amount-summary">
+
+                <h2>Summary</h2>
+                <ul class="summary-table">
+                    <li><span>subtotal:</span> <span>$274.00</span></li>
+                    <li><span>delivery:</span> <span>Free</span></li>
+                    <li><span>discount:</span> <span>-15%</span></li>
+                    <li><span>total:</span> <span>$232.00</span></li>
+                </ul>
+                <div class="checkout-btn mt-100">
+                    <a href="checkout.html" class="btn essence-btn">check out</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ##### Right Side Cart End ##### -->
