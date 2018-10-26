@@ -56,14 +56,6 @@ CREATE TABLE IF NOT EXISTS `product` (
   PRIMARY KEY (`productId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `product_detail` (
-  `productDetailId` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `productId` int(10) unsigned NOT NULL,
-  `field` varchar(20) NOT NULL,
-  `content` text,
-  PRIMARY KEY (`productDetailId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 CREATE TABLE IF NOT EXISTS `subscription` (
   `subscriptionId` int(11) NOT NULL AUTO_INCREMENT,
   `userId` int(11) NOT NULL,

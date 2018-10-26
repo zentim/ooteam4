@@ -34,11 +34,11 @@ public class ForeServlet extends BaseForeServlet {
 
     public String home(HttpServletRequest request, HttpServletResponse response, Page page) {
     	List<Segment> segments = segmentDAO.list();
-    	new CategoryDAO().fill(segments);
+    	categoryDAO.fill(segments);
     	
         List<Brand> brands = brandDAO.list();
-        new ProductDAO().fill(brands);
-        new ProductDAO().fillPromotion(brands);
+        productDAO.fill(brands);
+        productDAO.fillPromotion(brands);
         
         request.setAttribute("segments", segments);
         request.setAttribute("brands", brands);
@@ -54,8 +54,8 @@ public class ForeServlet extends BaseForeServlet {
     	categoryDAO.fill(segments);
     	
         List<Brand> brands = brandDAO.list(cid);
-        new ProductDAO().fill(brands);
-        new ProductDAO().fillPromotion(brands);
+        productDAO.fill(brands);
+        productDAO.fillPromotion(brands);
         
         request.setAttribute("category", category);
         request.setAttribute("segments", segments);
@@ -165,18 +165,16 @@ public class ForeServlet extends BaseForeServlet {
         int id = Integer.parseInt(request.getParameter("pid"));
         Product p = productDAO.get(id);
         List<ProductImage> productSingleImages = productImageDAO.list(p, ProductImageDAO.type_single);
-        List<ProductImage> productDetailImages = productImageDAO.list(p, ProductImageDAO.type_detail);
 
         p.setProductSingleImages(productSingleImages);
-        p.setProductDetailImages(productDetailImages);
         
         Promotion promotionByProduct = promotionItemDAO.getByProduct(p.getId()).getPromotion();
-    if (promotionByProduct != null) {
-    	String promotionName = promotionByProduct.getName();
-        String discountTypeName = promotionByProduct.getDiscountTypeDescription();
-        p.setPromotionName(promotionName);
-        p.setDiscountTypeName(discountTypeName);
-    }
+	    if (promotionByProduct != null) {
+	    	String promotionName = promotionByProduct.getName();
+	        String discountTypeName = promotionByProduct.getDiscountTypeDescription();
+	        p.setPromotionName(promotionName);
+	        p.setDiscountTypeName(discountTypeName);
+	    }
 
         request.setAttribute("p", p);
         return "product.jsp";
