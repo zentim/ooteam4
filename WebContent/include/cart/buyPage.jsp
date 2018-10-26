@@ -5,8 +5,8 @@
 	<h1 class="form-heading" style="color:white">login Form</h1>
 	<div class="login-form">
 		<div>
-			<form action="forecreateOrder" method="post" style="width: 600px; margin: 0 auto;">
-				<div style="width: 600px; margin: 0 auto;">
+			<form action="forecreateOrder" method="post" style="width: 800px; margin: 0 auto;">
+				<div style="width: 800px; margin: 0 auto;">
 					<div class="panel" style="margin-top: 50px">
 				   		<h4>Enter the shipping information</h4>   
 				   	</div>
@@ -77,10 +77,10 @@
 					      <tr align="center">
 					
 					        <th></th>
-					        <th>Product</th>
-					        <th>Price</th>
-					        <th>Quantity</th>
-					        <th>Subtotal</th>
+					        <th style="text-align: center">Product Name</th>
+					        <th style="text-align: center">Price</th>
+					        <th style="text-align: center">Quantity</th>
+					        <th style="text-align: center">Subtotal</th>
 					
 					      </tr>
 					    </thead>

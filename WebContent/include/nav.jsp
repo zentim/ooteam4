@@ -14,7 +14,7 @@
 		      <h5 class="mb-0">
 		        <button 
 		        	class="btn btn-link" 
-		        	style="font-size: 24px; font-weight: bold;"
+		        	style="font-size: 20px; font-weight: bold;"
 		        	type="button" 
 		        	data-toggle="collapse" 
 		        	data-target="#collapse${ segment.id }" 

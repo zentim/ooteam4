@@ -80,6 +80,7 @@
 
 <body>
   <!-- Right Button !-->
+  <!-- 
   	<c:if test="${!empty user}">
    	 	<a class="fa fa-heart round" style="top: 60%;color:white;font-size:24px;text-decoration:none;" href="foresubscribe"></a>
     	<a class="fa fa-shopping-cart round" style="top: 70%;color:white;font-size:24px;text-decoration:none;" href="forecart"></a>
@@ -92,6 +93,8 @@
 	</c:if>
 
   	<a class="fa fa-chevron-circle-up round" style="top: 80%;color:white;font-size:24px;text-decoration:none;" href="#top_anchor" ></a>
+  -->
+  
   <!-- Right Button !-->
   
   
@@ -112,7 +115,8 @@
 	        <div class="collapse navbar-collapse" id="myNavbar">
 	            <ul class="nav navbar-nav navbar-right">
 	            	<c:if test="${!empty user}">
-			            <li><a href="forebought" style="cursor: pointer">My Orders</a></li>
+	            		<li><a href="foresubscribe" style="cursor: pointer">Subscriptions</a></li>
+			            <li><a href="forebought" style="cursor: pointer">Orders</a></li>
 		            	<li>
 				            <a href="forecart" style="cursor: pointer">
 				            	<span style="margin:0px" class=" glyphicon glyphicon-shopping-cart"></span>
@@ -132,7 +136,7 @@
 			        </c:if>
 	              
 	            	<c:if test="${!empty user}">
-			            <li><a href="forepersonalDetail" style="cursor: pointer">${user.email}</a></li>
+			            <li><a href="#" style="cursor: pointer">${user.email}</a></li>
 			            <li><a href="forelogout" style="cursor: pointer">Logout</a></li>
 			        </c:if>
 			         
