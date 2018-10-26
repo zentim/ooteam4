@@ -39,22 +39,7 @@ public class ForeServlet extends BaseForeServlet {
     	
         List<Brand> brands = brandDAO.list();
         new ProductDAO().fill(brands);
-        
-        for (Brand c : brands) {
-          for (Product p : c.getProducts()) {
-            PromotionItem promotionItem = promotionItemDAO.getByProduct(p.getId()); 
-            Promotion promotionByProduct = promotionItem.getPromotion();
-            if (promotionByProduct != null && !(promotionItem.getDiscountOf() == 100 && promotionByProduct.getDiscountType() == PromotionDAO.buyXGetYFree)) {
-              String promotionName = "";
-              if (promotionByProduct.getState() == 1) {
-                promotionName = promotionByProduct.getName();
-              }
-                String discountTypeName = promotionByProduct.getDiscountTypeDescription();
-                p.setPromotionName(promotionName);
-                p.setDiscountTypeName(discountTypeName);
-            }
-          }
-        }
+        new ProductDAO().fillPromotion(brands);
         
         request.setAttribute("segments", segments);
         request.setAttribute("brands", brands);
@@ -70,22 +55,7 @@ public class ForeServlet extends BaseForeServlet {
     	
         List<Brand> brands = brandDAO.list(cid);
         new ProductDAO().fill(brands);
-        
-        for (Brand c : brands) {
-          for (Product p : c.getProducts()) {
-            PromotionItem promotionItem = promotionItemDAO.getByProduct(p.getId()); 
-            Promotion promotionByProduct = promotionItem.getPromotion();
-            if (promotionByProduct != null && !(promotionItem.getDiscountOf() == 100 && promotionByProduct.getDiscountType() == PromotionDAO.buyXGetYFree)) {
-              String promotionName = "";
-              if (promotionByProduct.getState() == 1) {
-                promotionName = promotionByProduct.getName();
-              }
-                String discountTypeName = promotionByProduct.getDiscountTypeDescription();
-                p.setPromotionName(promotionName);
-                p.setDiscountTypeName(discountTypeName);
-            }
-          }
-        }
+        new ProductDAO().fillPromotion(brands);
         
         request.setAttribute("segments", segments);
         request.setAttribute("brands", brands);

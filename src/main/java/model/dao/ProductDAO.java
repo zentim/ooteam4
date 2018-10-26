@@ -12,6 +12,8 @@ import java.util.List;
 import main.java.model.bean.Brand;
 import main.java.model.bean.Product;
 import main.java.model.bean.ProductImage;
+import main.java.model.bean.Promotion;
+import main.java.model.bean.PromotionItem;
 import main.java.model.util.DBUtil;
 import main.java.model.util.DateUtil;
 
@@ -255,5 +257,24 @@ public class ProductDAO {
         List<ProductImage> pis = new ProductImageDAO().list(p, ProductImageDAO.type_single);
         if (!pis.isEmpty())
             p.setFirstProductImage(pis.get(0));
+    }
+    
+    public void fillPromotion(List<Brand> brands) {
+    	PromotionItemDAO promotionItemDAO = new PromotionItemDAO();
+    	for (Brand c : brands) {
+            for (Product p : c.getProducts()) {
+              PromotionItem promotionItem = promotionItemDAO.getByProduct(p.getId()); 
+              Promotion promotionByProduct = promotionItem.getPromotion();
+              if (promotionByProduct != null && !(promotionItem.getDiscountOf() == 100 && promotionByProduct.getDiscountType() == PromotionDAO.buyXGetYFree)) {
+                String promotionName = "";
+                if (promotionByProduct.getState() == 1) {
+                  promotionName = promotionByProduct.getName();
+                }
+                  String discountTypeName = promotionByProduct.getDiscountTypeDescription();
+                  p.setPromotionName(promotionName);
+                  p.setDiscountTypeName(discountTypeName);
+              }
+            }
+          }
     }
 }
