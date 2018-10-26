@@ -156,6 +156,7 @@
 			    	</p>
 			    	
 			    	<p>
+			    		<input type="hidden" name="total" value="${ total }">
 			    		<button type="submit" class="btn btn-lg" style="font-weight: bold; background-color: #C40000; color: white;">Submit Order</button>
 			    	</p>
 			    </div>

@@ -394,6 +394,7 @@ public class ForeServlet extends BaseForeServlet {
 
     public String createOrder(HttpServletRequest request, HttpServletResponse response, Page page) {
         User user = (User) request.getSession().getAttribute("user");
+        float total = Float.parseFloat(request.getParameter("total"));
 
         List<OrderItem> ois = (List<OrderItem>) request.getSession().getAttribute("ois");
         if (ois.isEmpty())
@@ -408,14 +409,19 @@ public class ForeServlet extends BaseForeServlet {
         order.setDateOrdered(new Date());
         order.setState(OrderDAO.waitPay);
         order.setAddress(address);
+        order.setTotal(total);
 
         orderDAO.add(order);
         
-        float total = 0;
+        
         for (OrderItem oi : ois) {
+        	Product p = oi.getProduct();
+        	int newQuantity = p.getInventory() - oi.getQuantity();
+            p.setInventory(newQuantity);
+            productDAO.update(p);
+        	
             oi.setOrder(order);
             orderItemDAO.update(oi);
-            total += oi.getProduct().getPrice() * oi.getQuantity();
         }
 
         return "@forepay?oid=" + order.getId() + "&total=" + total + "&paymentOption=" + paymentOption;

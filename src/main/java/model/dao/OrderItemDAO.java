@@ -172,7 +172,6 @@ public class OrderItemDAO {
                 OrderItem bean = new OrderItem();
                 int id = rs.getInt(1);
 
-                int orderId = rs.getInt("orderId");
                 int productId = rs.getInt("productId");
                 int quantity = rs.getInt("quantity");
                 int state = rs.getInt("state");
@@ -181,19 +180,30 @@ public class OrderItemDAO {
 
                 Product product = new ProductDAO().get(productId);
                 User user = new UserDAO().get(userId);
+                
+                if (product.getInventory() < quantity) {
+                	quantity = product.getInventory();
+                	
+                    bean.setProduct(product);
+                    bean.setUser(user);
+                    bean.setQuantity(quantity);
+                    bean.setState(state);
+                    bean.setOriginalPrice(originalPrice);
+                    bean.setPromotionalPrice(promotionalPrice);
 
-                if (-1 != orderId) {
-                    Order order = new OrderDAO().get(orderId);
-                    bean.setOrder(order);
+                    bean.setId(id);
+                    new OrderItemDAO().update(bean);
+                } else {
+                    bean.setProduct(product);
+                    bean.setUser(user);
+                    bean.setQuantity(quantity);
+                    bean.setState(state);
+                    bean.setOriginalPrice(originalPrice);
+                    bean.setPromotionalPrice(promotionalPrice);
+
+                    bean.setId(id);
                 }
-                bean.setProduct(product);
-                bean.setUser(user);
-                bean.setQuantity(quantity);
-                bean.setState(state);
-                bean.setOriginalPrice(originalPrice);
-                bean.setPromotionalPrice(promotionalPrice);
 
-                bean.setId(id);
                 beans.add(bean);
             }
         } catch (SQLException e) {
