@@ -22,7 +22,7 @@
 					    <div class="w3-container" style="border: 1px solid black; margin: 5px;">
 					        <div class="w3-display-container" >
 					        	
-					        	<div style="position:relative; width:225px; height: 225px;">
+					        	<div style="position:relative; width:170px; height: 225px; margin: auto;">
 						        	<img style="position:absolute; max-width: 100%; max-height: 100%; top:0; bottom: 0; left: 0; right: 0; margin: auto; " src="img/productSingle/${p.firstProductImage.id}.jpg">
 					        	</div>
 					        	

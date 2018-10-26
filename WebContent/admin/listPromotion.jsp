@@ -66,10 +66,9 @@
 
 	                      <tr>
 	                          <td align="left">
-	                              <img
-                                  width="40px"
-                                  height="40px"
-                                  src="img/productSingle/${pi.product.firstProductImage.id}.jpg">
+	                          	<div style="width: 40px; height: 40px; max-width: 100%; display: flex; align-items: center; justify-content: center;">
+						  	  		<img src="img/productSingle/${pi.product.firstProductImage.id}.jpg" style="height: 100%;">
+						  	  	</div>
 	                          </td>
 	                          <td>
 	                              <a href="admin_productImage_list?pid=${pi.product.id}">
