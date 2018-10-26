@@ -39,7 +39,6 @@ public class ForeServlet extends BaseForeServlet {
     	
         List<Brand> brands = brandDAO.list();
         new ProductDAO().fill(brands);
-        new ProductDAO().fillByRow(brands);
         
         for (Brand c : brands) {
           for (Product p : c.getProducts()) {
@@ -71,7 +70,6 @@ public class ForeServlet extends BaseForeServlet {
     	
         List<Brand> brands = brandDAO.list(cid);
         new ProductDAO().fill(brands);
-        new ProductDAO().fillByRow(brands);
         
         for (Brand c : brands) {
           for (Product p : c.getProducts()) {

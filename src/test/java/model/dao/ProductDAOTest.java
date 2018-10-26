@@ -90,11 +90,15 @@ public class ProductDAOTest {
 	@Test
 	public void testCompositePattern() {
 		System.out.println("=== testCompositePattern");
+		Component productComponent = productdao.get(productId);
+		Component brandComponent = branddao.get(brandId);
+		Component categoryComponent = categorydao.get(categoryId);
+		Component segmentComponent = segmentdao.get(segmentId);
 		
-		Component productComponent = new PrimitiveComponent(productId);
-		Component brandComponent = new LinkedListCompositeComponent(brandId);
 		brandComponent.add(productComponent);
-		brandComponent.operation();
+		categoryComponent.add(brandComponent);
+		segmentComponent.add(categoryComponent);
+		segmentComponent.operation();
 		
 		System.out.println();
 	}

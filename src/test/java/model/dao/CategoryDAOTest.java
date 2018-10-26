@@ -40,13 +40,6 @@ public class CategoryDAOTest {
 		int result = categorydao.getTotal();
 		assertNotNull("should not be null", result);
 	}
-	
-	@Test
-	public void testCompositePattern() {
-		System.out.println("testCompositePattern: ");
-		Component categoryComponent = new LinkedListCompositeComponent(categoryId);
-		categoryComponent.operation();
-	}
 
 	@AfterClass
 	public static void testDelete() {

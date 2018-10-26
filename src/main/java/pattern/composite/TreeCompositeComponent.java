@@ -1,6 +1,8 @@
 package main.java.pattern.composite;
 
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 /**
  * 
@@ -8,11 +10,14 @@ import java.util.TreeMap;
  *
  */
 public class TreeCompositeComponent extends Component {
+	private Component component;
 	private int id;
+	private String name;
 	private Map<Integer, Component> components = new TreeMap<Integer, Component>();
 	
-	public TreeCompositeComponent(int id) {
-		this.id = id;
+	public TreeCompositeComponent(Component component) {
+		this.id = component.getId();
+		this.name = component.getName();
 	}
 
 	@Override
@@ -32,8 +37,13 @@ public class TreeCompositeComponent extends Component {
 
 	@Override
 	public void operation() {
-		// TODO Auto-generated method stub
-		super.operation();
+		System.out.println("Segment id: " + id + ", name: " + name);
+		
+		Set<Integer> keys = components.keySet();
+		Iterator iterator = keys.iterator();
+		while(iterator.hasNext()) {
+			((Component)components.get(iterator.next())).operation();
+		}
 	}
 
 	@Override
@@ -41,5 +51,9 @@ public class TreeCompositeComponent extends Component {
 		return id;
 	}
 	
+	@Override
+	public String getName() {
+		return name;
+	}
 
 }

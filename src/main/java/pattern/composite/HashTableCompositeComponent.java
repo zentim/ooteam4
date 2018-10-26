@@ -1,6 +1,8 @@
 package main.java.pattern.composite;
 
 import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * 
@@ -8,11 +10,14 @@ import java.util.Hashtable;
  *
  */
 public class HashTableCompositeComponent extends Component {
+	private Component component;
 	private int id;
+	private String name;
 	private Hashtable<Integer, Component> components = new Hashtable<Integer, Component>();
 	
-	public HashTableCompositeComponent(int id) {
-		this.id = id;
+	public HashTableCompositeComponent(Component component) {
+		this.id = component.getId();
+		this.name = component.getName();
 	}
 
 	@Override
@@ -32,13 +37,23 @@ public class HashTableCompositeComponent extends Component {
 
 	@Override
 	public void operation() {
-		// TODO Auto-generated method stub
-		super.operation();
+		System.out.println("-- id: " + id + ", name: " + name);
+		
+		Set<Integer> keys = components.keySet();
+		Iterator iterator = keys.iterator();
+		while(iterator.hasNext()) {
+			((Component)components.get(iterator.next())).operation();
+		}
 	}
 
 	@Override
 	public int getId() {
 		return id;
+	}
+	
+	@Override
+	public String getName() {
+		return name;
 	}
 
 }

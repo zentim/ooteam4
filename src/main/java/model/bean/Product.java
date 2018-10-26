@@ -5,15 +5,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import main.java.pattern.composite.Component;
 import main.java.pattern.observer.Observer;
 import main.java.pattern.observer.Subject;
 
 /**
  * 
  * Observer Pattern - concrete subject
+ * Composite Pattern - leaf component
  *
  */
-public class Product implements Subject, Serializable {
+public class Product extends Component implements Subject, Serializable {
 	private int id;
 	private String name;
 	private float price;
@@ -29,6 +31,7 @@ public class Product implements Subject, Serializable {
 	private String promotionName;
 	private ArrayList<Observer> observers = new ArrayList<Observer>();
 	
+	/* Observer Methods */
 	@Override
 	public void addObserver(Observer o) {
 		observers.add(o);
@@ -55,18 +58,30 @@ public class Product implements Subject, Serializable {
 		}
 	}
 	
+	/* Composite Method */
+	@Override
+	public void operation() {
+		System.out.println("--- id: " + id + ", name: " + name);
+	}
 	
-	
-	/* Getter and Setter */
+	@Override
 	public int getId() {
 		return id;
 	}
-	public void setId(int id) {
-		this.id = id;
-	}
+	
+	@Override
 	public String getName() {
 		return name;
 	}
+	
+	
+	
+	/* Getter and Setter */
+	
+	public void setId(int id) {
+		this.id = id;
+	}
+	
 	public void setName(String name) {
 		this.name = name;
 	}

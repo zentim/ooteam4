@@ -28,6 +28,11 @@ import main.java.pattern.chainOfResponsibility.NoDiscountPolicy;
 import main.java.pattern.chainOfResponsibility.EachGroupOfNPolicy;
 import main.java.pattern.chainOfResponsibility.ProductSetPolicy;
 
+/**
+ * 
+ * Test Chain Of Responsibility Pattern and Strategy Pattern
+ *
+ */
 public class DiscountTest {
 	// Init Test Data
 	public static BrandDAO branddao = new BrandDAO();

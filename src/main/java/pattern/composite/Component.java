@@ -26,5 +26,9 @@ public abstract class Component {
 	public int getId() {
 		throw new UnsupportedOperationException();
 	}
+	
+	public String getName() {
+		throw new UnsupportedOperationException();
+	}
 
 }

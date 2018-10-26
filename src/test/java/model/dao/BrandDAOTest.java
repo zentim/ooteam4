@@ -52,13 +52,6 @@ public class BrandDAOTest {
 		int result = branddao.getTotal();
 		assertNotNull("should not be null", result);
 	}
-	
-	@Test
-	public void testCompositePattern() {
-		System.out.println("testCompositePattern: ");
-		Component brandComponent = new LinkedListCompositeComponent(brandId);
-		brandComponent.operation();
-	}
 
 	@AfterClass
 	public static void testDelete() {

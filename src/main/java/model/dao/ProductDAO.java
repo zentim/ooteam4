@@ -251,21 +251,6 @@ public class ProductDAO {
         c.setProducts(ps);
     }
 
-    public void fillByRow(List<Brand> cs) {
-        int productNumberEachRow = 8;
-        for (Brand c : cs) {
-            List<Product> products = c.getProducts();
-            List<List<Product>> productsByRow = new ArrayList<>();
-            for (int i = 0; i < products.size(); i += productNumberEachRow) {
-                int size = i + productNumberEachRow;
-                size = size > products.size() ? products.size() : size;
-                List<Product> productsOfEachRow = products.subList(i, size);
-                productsByRow.add(productsOfEachRow);
-            }
-            c.setProductsByRow(productsByRow);
-        }
-    }
-
     public void setFirstProductImage(Product p) {
         List<ProductImage> pis = new ProductImageDAO().list(p, ProductImageDAO.type_single);
         if (!pis.isEmpty())

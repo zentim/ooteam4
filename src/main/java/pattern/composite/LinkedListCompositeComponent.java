@@ -13,11 +13,14 @@ import main.java.model.dao.BrandDAO;
  *
  */
 public class LinkedListCompositeComponent extends Component {
+	private Component component;
 	private int id;
+	private String name;
 	private List<Component> components = new LinkedList<Component>();
 	
-	public LinkedListCompositeComponent(int id) {
-		this.id = id;
+	public LinkedListCompositeComponent(Component component) {
+		this.id = component.getId();
+		this.name = component.getName();
 	}
 
 	@Override
@@ -43,18 +46,22 @@ public class LinkedListCompositeComponent extends Component {
 
 	@Override
 	public void operation() {
-		Brand c = new BrandDAO().get(id);
-		System.out.println("- id: " + c.getId() + ", name: " + c.getName());
+		System.out.println("- id: " + id + ", name: " + id);
 		
 		Iterator iterator = components.iterator();
 		while(iterator.hasNext()) {
-			((Component)iterator.next()).operation();;
+			((Component)iterator.next()).operation();
 		}
 	}
 
 	@Override
 	public int getId() {
 		return id;
+	}
+	
+	@Override
+	public String getName() {
+		return name;
 	}
 
 }
