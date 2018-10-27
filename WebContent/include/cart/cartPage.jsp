@@ -3,7 +3,7 @@
 
 <div style="width: 80%; margin: 0 auto;">
 
-<h2>Shopping Cart</h2>
+<h2 style="padding-top: 20px;">Shopping Cart</h2>
 
 <div style="text-align: right; font-size: 30px;">
 	<span id="undoBtn" class="fa fa-undo fa-icon" style="cursor: pointer;"></span>
@@ -16,17 +16,17 @@
     <thead>
       <tr>
 
-        <th class="selectAndImage" style="width: 100px; text-align: center">
+        <th class="selectAndImage" style="width: 100px;">
           <img 
             selectit="false" 
             class="selectAllItem" 
             src="img/site/cartNotSelected.png" 
-            style="cursor: pointer">Select All
+            style="cursor: pointer"> Select All
         </th>
         <th style="text-align: center">Product Image</th>
         <th style="text-align: center">Product Name</th>
         <th style="text-align: center">Price</th>
-        <th style="text-align: center">Quantity</th>
+        <th style="text-align: center">Qty</th>
         <th style="text-align: center">Subtotal</th>
         <th style="text-align: center">Operation</th>
 
@@ -83,7 +83,7 @@
             <td align="center">
               <div 
                 class="cartProductChangeNumberDiv" 
-                style="border: solid 1px #E5E5E5; width: 80px;">
+                style="border: solid 1px #E5E5E5; width: 120px; font-size: 18px; text-align: center;">
                   <span 
                     class="hidden orderItemStock " 
                     pid="${ oi.product.id }">
@@ -99,21 +99,21 @@
                     oiid="${ oi.id }" 
                     class="numberMinus" 
                     href="#nowhere" 
-                    style="text-decoration: none">-</a>
+                    style="text-decoration: none; font-size: 18px; padding: 8px;">-</a>
                   <input 
                     pid="${ oi.product.id }" 
                     oiid="${ oi.id }" 
                     class="orderItemNumberSetting" 
                     autocomplete="off" 
                     value="${ oi.quantity }" 
-                    style="border: solid 1px #AAAAAA; width: 42px; display: inline-block;">
+                    style="border: solid 1px #AAAAAA; width: 45px; display: inline-block; text-align: center">
                   <a  
                     inventory="${ oi.product.inventory }" 
                     pid="${ oi.product.id }" 
                     oiid="${ oi.id }" 
                     class="numberPlus" 
                     href="#nowhere" 
-                    style="text-decoration: none">+</a>
+                    style="text-decoration: none ;font-size: 18px; padding: 8px;">+</a>
               </div>
             </td>
 
@@ -146,12 +146,12 @@
 
 <div 
   class="cartFoot" 
-  style="background-color: #E5E5E5; line-height: 50px; margin: 20px 0px; color: black; padding-left: 20px;">
+  style="height: 50px; line-height: 50px; margin: 20px 0px; color: black; padding-left: 20px;">
 
-    <div class="pull-right">
-        <span>Selected <span class="cartSumNumber" >0</span> Item</span>
+    <div class="pull-right" style="font-size: 20px;">
+        <span>Selected <span class="cartSumNumber" style="color: red;">0</span> Item, </span>
         <span>Total : </span>
-        <span class="cartSumPrice" >$ 0.00</span>
+        <span class="cartSumPrice" style="color: red; padding: 0 10px;">$ 0.00</span>
         <button 
         	type="submit" 
         	class="btn btn-lg createOrderButton" 
