@@ -187,7 +187,7 @@ public class ForeServlet extends BaseForeServlet {
         
         productDAO.fill(brand);
 
-        request.setAttribute("c", brand);
+        request.setAttribute("brand", brand);
         return "brand.jsp";
     }
 

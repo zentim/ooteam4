@@ -217,30 +217,32 @@
 		                        <div class="row">
 		
 									<c:forEach items="${ brand.products }" var="product" varStatus="st">
-										<c:if test="${ st.count <= 8 }">		
+										<c:if test="${ st.count <= 9 }">		
 				                            <!-- Single Product -->
 				                            <div class="col-12 col-sm-6 col-lg-4">
 				                                <div class="single-product-wrapper">
-				                                    <!-- Product Image -->
-				                                    <div class="product-img">
-				                                        <img src="img/product-img/product-3.jpg" alt="">
-				                                        <!-- Hover Thumb -->
-				                                        <img class="hover-img" src="img/product-img/product-4.jpg" alt="">
-				
-				                                        <!-- Product Badge -->
-				                                        <c:if test="${!empty product.promotionName }">
-					                                        <div class="product-badge new-badge" style="top: 75%; left: 30%; height: auto;">
-					                                            <span>${ product.promotionName } - ${ product.discountTypeName }</span>
+				                                	<a href="foreproduct?pid=${ product.id }">
+					                                    <!-- Product Image -->
+					                                    <div class="product-img">
+					                                        <img src="img/product-img/product-3.jpg" alt="">
+					                                        <!-- Hover Thumb -->
+					                                        <img class="hover-img" src="img/product-img/product-4.jpg" alt="">
+					
+					                                        <!-- Product Badge -->
+					                                        <c:if test="${!empty product.promotionName }">
+						                                        <div class="product-badge new-badge" style="top: 75%; left: 30%; height: auto;">
+						                                            <span>${ product.promotionName } - ${ product.discountTypeName }</span>
+						                                        </div>
+					                                        </c:if>
+					
+					                                        <!-- Favourite -->
+	<!-- 				                                        
+					                                        <div class="product-favourite">
+					                                            <a href="#" class="favme fa fa-heart"></a>
 					                                        </div>
-				                                        </c:if>
-				
-				                                        <!-- Favourite -->
-<!-- 				                                        
-				                                        <div class="product-favourite">
-				                                            <a href="#" class="favme fa fa-heart"></a>
-				                                        </div>
--->				                                        
-				                                    </div>
+	-->				                                        
+					                                    </div>
+													</a>
 				
 				                                    <!-- Product Description -->
 				                                    <div class="product-description">

@@ -11,41 +11,75 @@
     <c:set var="brandcount" scope="page" value="${param.brandcount}"/>
 </c:if>
 
-<div class="col-sm-8 text-left" style="padding:10px;">  
 
-	<div class="categoryProducts">
-		<c:forEach items="${ c.products }" var="p" varStatus="st">
-			<c:if test="${ st.count <= brandcount }">
+<div class="col-12 col-md-8 offset-md-2">
+                    <div class="shop_grid_product_area">
+		
+		
+						
+						<a href="forebrand?cid=${ brand.id }" >
+							<h2>${ brand.name }</h2>
+						</a>
+		
+						
+								
+								
+		                        <div class="row">
+		
+									<c:forEach items="${ brand.products }" var="product" varStatus="st">
+										<c:if test="${ st.count <= brandcount }">		
+				                            <!-- Single Product -->
+				                            <div class="col-12 col-sm-6 col-lg-3">
+				                                <div class="single-product-wrapper">
+				                                
+				                                	<a href="foreproduct?pid=${ product.id }">
+					                                    <!-- Product Image -->
+					                                    <div class="product-img">
+					                                        <img src="img/product-img/product-3.jpg" alt="">
+					                                        <!-- Hover Thumb -->
+					                                        <img class="hover-img" src="img/product-img/product-4.jpg" alt="">
+					
+					                                        <!-- Product Badge -->
+					                                        <c:if test="${!empty product.promotionName }">
+						                                        <div class="product-badge new-badge" style="top: 75%; left: 30%; height: auto;">
+						                                            <span>${ product.promotionName } - ${ product.discountTypeName }</span>
+						                                        </div>
+					                                        </c:if>
+					
+					                                        <!-- Favourite -->
+	<!-- 				                                        
+					                                        <div class="product-favourite">
+					                                            <a href="#" class="favme fa fa-heart"></a>
+					                                        </div>
+	-->				                                        
+					                                    </div>
+					                                </a>
 				
-				<div class="w3-col s6 l3">
-					<a href="foreproduct?pid=${p.id}">
-					    <div class="w3-container" style="border: 1px solid black; margin: 5px;">
-					        <div class="w3-display-container" >
-					        	
-					        	<div style="position:relative; width:170px; height: 225px; margin: auto;">
-						        	<img style="position:absolute; max-width: 100%; max-height: 100%; top:0; bottom: 0; left: 0; right: 0; margin: auto; " src="img/productSingle/${p.firstProductImage.id}.jpg">
-					        	</div>
-					        	
-					        	<c:if test="${!empty p.promotionName }">
-					            <span class="w3-tag w3-display-topleft">${ p.promotionName } - ${ p.discountTypeName }</span>
-					            </c:if>
-					            
-					            <!-- 
-					            <div class="w3-display-middle w3-display-hover">
-					                <button class="w3-button w3-black">Buy now <i class="fa fa-shopping-cart"></i></button>
-					            </div>
-					             -->
-					            
-					        </div>
-					        <p style="text-align: right;">${fn:substring(p.name, 0, 50)}<br>
-					        	<b>$<fmt:formatNumber type="number" value="${p.price}" minFractionDigits="2"/></b>
-					        </p>
-					    </div>
-				    </a>
-				</div>
+				                                    <!-- Product Description -->
+				                                    <div class="product-description">
+				                                        <span>topshop</span>
+				                                        <a href="foreproduct?pid=${ product.id }">
+				                                            <h6>${ product.name }</h6>
+				                                        </a>
+				                                        <p class="product-price">$${ product.price }</p>
 				
-			</c:if>
-		</c:forEach>
+				                                        <!-- Hover Content -->
+				                                        <div class="hover-content">
+				                                            <!-- Add to Cart -->
+<!-- 				                                            
+				                                            <div class="add-to-cart-btn">
+				                                                <a href="#" class="btn essence-btn">Add to Cart</a>
+				                                            </div>
+ -->				                                            
+				                                        </div>
+				                                    </div>
+				                                </div>
+				                            </div>
+										</c:if>
+									</c:forEach>
+		                            
+		                        </div>
+							
 		
 	    
 	    <div style="clear:both"></div>
