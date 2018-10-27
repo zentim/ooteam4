@@ -15,11 +15,13 @@ public class Page {
 
 	public int getTotalPage() {
 		int totalPage;
-		// 假設總數是 50，是能夠被 5 整除的，那麼就有 10 頁
+		// Assuming a total of 50, which is divisible by 5, 
+		// then there are 10 pages.
 		if (total % count == 0) {
 			totalPage = total / count;
 		} else {
-			// 假設總數是 51，不能夠被 5 整除的，那麼就有 11 頁
+			// Assuming the total number is 51 and cannot be divisible by 5, 
+		    // then there are 11 pages.
 			totalPage = (total / count) + 1;
 		}
 
@@ -32,11 +34,13 @@ public class Page {
 
 	public int getLast() {
 		int last;
-		// 假設總數是 50，是能夠被 5 整除的，那麼最後一頁的開始就是 45
+		// Assuming the total is 50, it is divisible by 5, 
+		// then the beginning of the last page is 45
 		if (total % count == 0) {
 			last = total - count;
 		} else {
-			// 假設總數是 51，不能夠被 5 整除的，那麼最後一頁的開始就是 50
+			// Assuming the total number is 51 and cannot be divisible by 5, 
+		    // then the beginning of the last page is 50.
 			last = total - (total % count);
 		}
 		last = last < 0 ? 0 : last;

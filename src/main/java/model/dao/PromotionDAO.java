@@ -34,6 +34,7 @@ public class PromotionDAO {
 
 			e.printStackTrace();
 		}
+		
 		return total;
 	}
 
@@ -71,8 +72,10 @@ public class PromotionDAO {
 	}
 
 	public void update(Promotion bean) {
-
-		String sql = "update promotion set discountType=?, name=?, dateFrom=?, dateTo=?, state=? where promotionId = ?";
+		String sql = "update promotion "
+		        + "set discountType=?, name=?, dateFrom=?, dateTo=?, state=? "
+		        + "where promotionId = ?";
+		
 		try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
 
 			ps.setInt(1, bean.getDiscountType());
@@ -89,11 +92,9 @@ public class PromotionDAO {
 
 			e.printStackTrace();
 		}
-
 	}
 
 	public void delete(int id) {
-
 		try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
 
 			String sql = "delete from promotion where promotionId = " + id;
@@ -138,6 +139,7 @@ public class PromotionDAO {
 
 			e.printStackTrace();
 		}
+		
 		return bean;
 	}
 
@@ -181,6 +183,7 @@ public class PromotionDAO {
 
 			e.printStackTrace();
 		}
+		
 		return beans;
 	}
 

@@ -54,7 +54,8 @@ public abstract class BaseBackServlet extends HttpServlet {
 	protected UserDAO userDAO = new UserDAO();
 
 	@Override
-	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void service(HttpServletRequest req, HttpServletResponse resp) 
+			throws ServletException, IOException {
 
 		try {
 			// get pagination info
@@ -77,18 +78,20 @@ public abstract class BaseBackServlet extends HttpServlet {
 			// Call the corresponding method with reflection
 			String method = (String) req.getAttribute("method");
 
-			Method m = this.getClass().getMethod(method, javax.servlet.http.HttpServletRequest.class,
-					javax.servlet.http.HttpServletResponse.class, Page.class);
+			Method m = this.getClass().getMethod(
+					method, 
+					javax.servlet.http.HttpServletRequest.class,
+					javax.servlet.http.HttpServletResponse.class, 
+					Page.class);
+			
 			String redirect = m.invoke(this, req, resp, page).toString();
 
-			// According to the return value of the method,
-			// the corresponding client redirect, server redirect, or just the output string
+			// According to the return value of the method, the corresponding 
+			// client redirect, server redirect, or just the output string.
 			if (redirect.startsWith("@")) {
-				// client redirect
-				resp.sendRedirect(redirect.substring(1));
+				resp.sendRedirect(redirect.substring(1)); // client redirect
 			} else if (redirect.startsWith("%")) {
-				// server redirect
-				resp.getWriter().print(redirect.substring(1));
+				resp.getWriter().print(redirect.substring(1)); // server redirect
 			} else {
 				req.getRequestDispatcher(redirect).forward(req, resp);
 			}

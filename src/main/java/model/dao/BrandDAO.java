@@ -10,7 +10,6 @@ import java.util.List;
 
 import main.java.model.bean.Brand;
 import main.java.model.bean.Category;
-import main.java.model.bean.Segment;
 import main.java.model.util.DBUtil;
 
 public class BrandDAO {
@@ -18,7 +17,7 @@ public class BrandDAO {
 	public int getTotal() {
 		int total = 0;
 		try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
-
+		    
 			String sql = "select count(*) from brand";
 
 			ResultSet rs = s.executeQuery(sql);
@@ -29,6 +28,7 @@ public class BrandDAO {
 
 			e.printStackTrace();
 		}
+		
 		return total;
 	}
 

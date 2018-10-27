@@ -90,7 +90,6 @@ public class ProductServlet extends BaseBackServlet {
 		p.setBrand(c);
 		p.setInventory(inventory);
 		
-
 		productDAO.update(p);
 
 		return "@admin_product_list?cid=" + p.getBrand().getId();

@@ -45,11 +45,14 @@ public class ForeServletFilter implements Filter {
 		String contextPath = request.getServletContext().getContextPath();
 		request.getServletContext().setAttribute("contextPath", contextPath);
 
-		// 當用戶登入之後，從 session 中獲取用戶對象，並根據這個用戶對象獲取購物車中的物品總數
+		// After the user logs in, the user object is obtained from the 
+		// session, and the total number of items in the shopping cart is 
+		// obtained according to the user object.
 		User user = (User) request.getSession().getAttribute("user");
 		int cartTotalItemNumber = 0;
 		if (null != user) {
 			List<OrderItem> ois = new OrderItemDAO().listCartByUser(user.getId());
+			
 			for (OrderItem oi : ois) {
 				cartTotalItemNumber += oi.getQuantity();
 			}

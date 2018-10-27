@@ -7,7 +7,7 @@ import org.junit.*;
 import main.java.model.bean.Segment;
 import main.java.model.dao.SegmentDAO;
 
-import main.java.pattern.composite.*;
+
 
 public class SegmentDAOTest {
 	public static SegmentDAO segmentdao = new SegmentDAO();

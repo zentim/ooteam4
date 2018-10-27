@@ -1,7 +1,6 @@
 package main.java.controller.servlet;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -10,8 +9,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.RandomUtils;
-import org.springframework.http.codec.multipart.SynchronossPartHttpMessageReader;
 import org.springframework.web.util.HtmlUtils;
 
 import main.java.model.bean.*;
@@ -96,8 +93,6 @@ public class ForeServlet extends BaseForeServlet {
         Brand brand = brandDAO.get(cid);
         productDAO.fill(brand);
         productDAO.fillPromotion(brand);
-        
-        
         request.setAttribute("brand", brand);
         
         // for head nav
@@ -173,6 +168,7 @@ public class ForeServlet extends BaseForeServlet {
 			request.setAttribute("msg", "Invalid email or password!");
 			return "login.jsp";
 		}
+		
 		request.getSession().setAttribute("user", user);
 		return "@forehome";
 	}
@@ -205,56 +201,6 @@ public class ForeServlet extends BaseForeServlet {
         request.getSession().removeAttribute("user");
         return "@forehome";
     }
-
-    
-
-    /*
-    public String search(HttpServletRequest request, HttpServletResponse response, Page page) {
-        String keyword = request.getParameter("keyword");
-        String sort = request.getParameter("sort");
-        List < Product > productList =
-            productDAO.search(keyword, 0, 20);
-        productDAO.setSaleAndReviewNumber(productList);
-        request.setAttribute("ps",
-            productList);
-        return "searchResult.jsp";
-    }
-
-    public String buyone(HttpServletRequest request, HttpServletResponse response, Page page) {
-        int pid =
-            Integer.parseInt(request.getParameter("pid"));
-        int num =
-            Integer.parseInt(request.getParameter("num"));
-        Product p =
-            productDAO.get(pid);
-        int oiid = 0;
-
-        User user = (User) request.getSession().getAttribute("user");
-        boolean found =
-            false;
-        List < OrderItem > ois = orderItemDAO.listByUser(user.getId());
-        for (OrderItem oi: ois) {
-            if (oi.getProduct().getId() == p.getId()) {
-                oi.setNumber(oi.getNumber() + num);
-                orderItemDAO.update(oi);
-                found = true;
-                oiid = oi.getId();
-                break;
-            }
-        }
-
-        if (!found) {
-            OrderItem oi = new OrderItem();
-            oi.setUser(user);
-            oi.setNumber(num);
-            oi.setProduct(p);
-            orderItemDAO.add(oi);
-            oiid = oi.getId();
-        }
-        return "@forebuy?oiid=" + oiid;
-
-    }
-    */
      
     public String buy(HttpServletRequest request, HttpServletResponse response, Page page) {
         String[] oiids = request.getParameterValues("oiid");
@@ -281,7 +227,7 @@ public class ForeServlet extends BaseForeServlet {
 		DiscountPolicy xyzDiscount = new ProductSetPolicy();
 		DiscountPolicy noDiscount = new NoDiscountPolicy();
 		  
-		// Setting Chain Order
+		// Set the order of chains
       	nationHolidayDiscount.setNextDiscountPolicy(lastYear100KDiscount);
 		lastYear100KDiscount.setNextDiscountPolicy(eachGroupOf100Discount);
 		eachGroupOf100Discount.setNextDiscountPolicy(xyzDiscount);
@@ -370,9 +316,11 @@ public class ForeServlet extends BaseForeServlet {
     
     public String undoCart(HttpServletRequest request, HttpServletResponse response, Page page) {
         User user = (User) request.getSession().getAttribute("user");
+        
         if (user == null) {
         	return "%fail";
         }
+        
         List<OrderItem> ois;
 
         ShoppingCart shoppingCart = (ShoppingCart) request.getSession().getAttribute("shoppingCart");
@@ -395,9 +343,11 @@ public class ForeServlet extends BaseForeServlet {
 
     public String changeOrderItem(HttpServletRequest request, HttpServletResponse response, Page page) throws ClassNotFoundException, IOException {
         User user = (User) request.getSession().getAttribute("user");
+        
         if (user == null) {
             return "%fail";
         }
+        
         int num = Integer.parseInt(request.getParameter("num"));
         int oiid = Integer.parseInt(request.getParameter("oiid"));
         int state = Integer.parseInt(request.getParameter("state"));
@@ -426,8 +376,10 @@ public class ForeServlet extends BaseForeServlet {
 
     public String deleteOrderItem(HttpServletRequest request, HttpServletResponse response, Page page) throws ClassNotFoundException, IOException {
         User user = (User) request.getSession().getAttribute("user");
-        if (null == user)
+        
+        if (null == user) {
             return "%fail";
+        }
         
         int oiid = Integer.parseInt(request.getParameter("oiid"));
         OrderItem oi = orderItemDAO.get(oiid);
@@ -469,9 +421,11 @@ public class ForeServlet extends BaseForeServlet {
         float total = Float.parseFloat(request.getParameter("total"));
 
         List<OrderItem> ois = (List<OrderItem>) request.getSession().getAttribute("ois");
-        if (ois.isEmpty())
+        
+        if (ois.isEmpty()) {
             return "@login.jsp";
-
+        }
+        
         String address = request.getParameter("address");
         String paymentOption = request.getParameter("paymentOption");
 
@@ -535,15 +489,16 @@ public class ForeServlet extends BaseForeServlet {
     }
     
     public String subscribe(HttpServletRequest request, HttpServletResponse response, Page page) {
-    	
-     	int uid=((User) request.getSession().getAttribute("user")).getId();
+     	int uid = ((User) request.getSession().getAttribute("user")).getId();
      	List<Subscription> subscriptions = subscriptionDAO.list(uid);
      	Product product = null;
      	List<Product> products = new ArrayList<Product>();
+     	
      	for(Subscription subscription:subscriptions) {
      		product = productDAO.get(subscription.getProduct().getId());
      		products.add(product);
      	}
+     	
      	request.setAttribute("products", products);
      	
      	return "subscribe.jsp";
@@ -553,12 +508,13 @@ public class ForeServlet extends BaseForeServlet {
     	int pid=Integer.parseInt(request.getParameter("pid"));
     	String returnURL = request.getParameter("returnpage");
     	
-    	if(request.getSession().getAttribute("user")!= null) {
-    		int uid=((User) request.getSession().getAttribute("user")).getId();
+    	if(request.getSession().getAttribute("user") != null) {
+    		int uid = ((User) request.getSession().getAttribute("user")).getId();
+    		
     		if(subscriptionDAO.check(pid, uid)) {
     			return "%success";
     		}else{
-    			subscriptionDAO.add(pid, uid);
+    			subscriptionDAO.add(pid, uid);	
     			return "%success";
     		}
     	}else{

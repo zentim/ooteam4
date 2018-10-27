@@ -8,13 +8,11 @@ import org.junit.*;
 
 import main.java.model.bean.ProductImage;
 import main.java.model.bean.Segment;
-import main.java.model.bean.User;
 import main.java.model.bean.Brand;
 import main.java.model.bean.Category;
 import main.java.model.bean.Product;
 import main.java.model.dao.ProductImageDAO;
 import main.java.model.dao.SegmentDAO;
-import main.java.model.dao.UserDAO;
 import main.java.model.dao.BrandDAO;
 import main.java.model.dao.CategoryDAO;
 import main.java.model.dao.ProductDAO;

@@ -29,6 +29,7 @@ public class SubscriptionDAO {
 
 			e.printStackTrace();
 		}
+		
 		return total;
 	}
 
@@ -116,6 +117,7 @@ public class SubscriptionDAO {
 
 			e.printStackTrace();
 		}
+		
 		return bean;
 	}
 	
@@ -147,6 +149,7 @@ public class SubscriptionDAO {
 
 			e.printStackTrace();
 		}
+		
 		return beans;
 	}
 	
@@ -156,7 +159,8 @@ public class SubscriptionDAO {
 
 		try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
 
-			String sql = "select * from subscription S, user U where S.userId = U.userId AND productId = " + pid;
+			String sql = "select * from subscription S, user U "
+			        + "where S.userId = U.userId AND productId = " + pid;
 
 			ResultSet rs = s.executeQuery(sql);
 
@@ -175,6 +179,7 @@ public class SubscriptionDAO {
 
 			e.printStackTrace();
 		}
+		
 		return beans;
 	}
 	
@@ -183,26 +188,22 @@ public class SubscriptionDAO {
 	public boolean check(int pid,int uid) {
 		try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
 
-			String sql = "select * from subscription where productId = " + pid + " AND userId = " +uid;
+			String sql = "select * from subscription "
+			        + "where productId = " + pid + " AND userId = " +uid;
 			
 			ResultSet rs = s.executeQuery(sql);
 
 			if(rs.next()) {
 				return true;
 			}else {
-				
 				return false;
-				
-			
 			}
-			
 
 		} catch (SQLException e) {
 			
 			e.printStackTrace();
 			return false;
 		}
-		
 	}
 
 	public List<Subscription> list() {
@@ -236,6 +237,7 @@ public class SubscriptionDAO {
 
 			e.printStackTrace();
 		}
+		
 		return beans;
 	}
 

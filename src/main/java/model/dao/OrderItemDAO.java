@@ -30,6 +30,7 @@ public class OrderItemDAO {
 
             e.printStackTrace();
         }
+        
         return total;
     }
 
@@ -71,7 +72,10 @@ public class OrderItemDAO {
 
     public void update(OrderItem bean) {
 
-        String sql = "update order_item set orderId= ?, userId=?, productId=?, quantity=?, state=?, originalPrice=?, promotionalPrice=?  where orderItemId = ?";
+        String sql = "update order_item set "
+                + "orderId= ?, userId=?, productId=?, quantity=?, state=?, "
+                + "originalPrice=?, promotionalPrice=?  "
+                + "where orderItemId = ?";
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
             // When an order_item created, it has not order info (orderId)
             if (null == bean.getOrder()) {
@@ -158,7 +162,9 @@ public class OrderItemDAO {
     public List<OrderItem> listCartByUser(int userId, int start, int count) {
         List<OrderItem> beans = new ArrayList<OrderItem>();
 
-        String sql = "select * from order_item where state = 1 and userId = ? and orderId = -1 order by orderItemId desc limit ?,? ";
+        String sql = "select * from order_item "
+                + "where state = 1 and userId = ? and orderId = -1 "
+                + "order by orderItemId desc limit ?,? ";
 
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
 
@@ -210,6 +216,7 @@ public class OrderItemDAO {
 
             e.printStackTrace();
         }
+        
         return beans;
     }
 
@@ -262,6 +269,7 @@ public class OrderItemDAO {
 
             e.printStackTrace();
         }
+        
         return beans;
     }
 
@@ -340,6 +348,7 @@ public class OrderItemDAO {
 
             e.printStackTrace();
         }
+        
         return beans;
     }
 
@@ -357,6 +366,7 @@ public class OrderItemDAO {
 
             e.printStackTrace();
         }
+        
         return total;
     }
 

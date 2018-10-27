@@ -4,6 +4,7 @@ import main.java.model.bean.Promotion;
 import main.java.model.bean.Product;
 
 public class PromotionItem {
+    
 	private int id;
 	private int minQuantity;
 	private int discountOf;

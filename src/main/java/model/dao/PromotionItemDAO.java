@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import main.java.model.bean.PromotionItem;
-import main.java.model.bean.Order;
-import main.java.model.bean.OrderItem;
 import main.java.model.bean.Product;
 import main.java.model.bean.Promotion;
 import main.java.model.util.DBUtil;
@@ -31,6 +29,7 @@ public class PromotionItemDAO {
 
             e.printStackTrace();
         }
+        
         return total;
     }
 
@@ -69,7 +68,9 @@ public class PromotionItemDAO {
 
     public void update(PromotionItem bean) {
 
-        String sql = "update promotion_item set promotionId=?, productId=?, minQuantity=?, discountOf=?  where promotionItemId = ?";
+        String sql = "update promotion_item "
+                + "set promotionId=?, productId=?, minQuantity=?, discountOf=?  "
+                + "where promotionItemId = ?";
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
         	
         	if (bean.getPromotion() == null) {
@@ -179,7 +180,9 @@ public class PromotionItemDAO {
     public List<PromotionItem> listByUser(int userId, int start, int count) {
         List<PromotionItem> beans = new ArrayList<PromotionItem>();
 
-        String sql = "select * from promotion_item where userId = ? and promotionId = -1 order by promotionItemId desc limit ?,? ";
+        String sql = "select * from promotion_item "
+                + "where userId = ? and promotionId = -1 "
+                + "order by promotionItemId desc limit ?,? ";
 
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
 
@@ -213,6 +216,7 @@ public class PromotionItemDAO {
 
             e.printStackTrace();
         }
+        
         return beans;
     }
 
@@ -223,7 +227,9 @@ public class PromotionItemDAO {
     public List<PromotionItem> listByPromotion(int promotionId, int start, int count) {
         List<PromotionItem> beans = new ArrayList<PromotionItem>();
 
-        String sql = "select * from promotion_item where promotionId = ? order by promotionItemId desc limit ?,? ";
+        String sql = "select * from promotion_item "
+                + "where promotionId = ? "
+                + "order by promotionItemId desc limit ?,? ";
 
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
 
@@ -256,6 +262,7 @@ public class PromotionItemDAO {
 
             e.printStackTrace();
         }
+        
         return beans;
     }
 
@@ -266,7 +273,9 @@ public class PromotionItemDAO {
     public List<PromotionItem> listByProduct(int productId, int start, int count) {
         List<PromotionItem> beans = new ArrayList<PromotionItem>();
 
-        String sql = "select * from promotion_item where productId = ? order by promotionItemId desc limit ?,? ";
+        String sql = "select * from promotion_item "
+                + "where productId = ? "
+                + "order by promotionItemId desc limit ?,? ";
 
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
 
@@ -300,6 +309,7 @@ public class PromotionItemDAO {
 
             e.printStackTrace();
         }
+        
         return beans;
     }
     
@@ -309,7 +319,6 @@ public class PromotionItemDAO {
             List<PromotionItem> pis = listByPromotion(p.getId());
             p.setPromotionItems(pis);
         }
-
     }
 
     public void fill(Promotion p) {

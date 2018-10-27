@@ -8,7 +8,6 @@ import main.java.model.bean.Category;
 import main.java.model.bean.Segment;
 import main.java.model.dao.CategoryDAO;
 import main.java.model.dao.SegmentDAO;
-import main.java.pattern.composite.*;
 
 public class CategoryDAOTest {
 	public static SegmentDAO segmentdao = new SegmentDAO();

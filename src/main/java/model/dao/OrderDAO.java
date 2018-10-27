@@ -71,7 +71,10 @@ public class OrderDAO {
 
     public void update(Order bean) {
 
-        String sql = "update order_ set userId= ?, dateOrdered=?, datePaid=?, state = ? , total =? , deliverMethod =?, address=? where orderId = ?";
+        String sql = "update order_ set "
+                + "userId= ?, dateOrdered=?, datePaid=?, state = ? , total =? , "
+                + "deliverMethod =?, address=? "
+                + "where orderId = ?";
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
 
             ps.setInt(1, bean.getUser().getId());
@@ -240,6 +243,7 @@ public class OrderDAO {
 
             e.printStackTrace();
         }
+        
         return beans;
     }
 

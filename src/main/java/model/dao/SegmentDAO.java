@@ -27,6 +27,7 @@ public class SegmentDAO {
 
 			e.printStackTrace();
 		}
+		
 		return total;
 	}
 
@@ -110,6 +111,7 @@ public class SegmentDAO {
 
 			e.printStackTrace();
 		}
+		
 		return bean;
 	}
 
@@ -141,6 +143,7 @@ public class SegmentDAO {
 
 			e.printStackTrace();
 		}
+		
 		return beans;
 	}
 

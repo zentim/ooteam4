@@ -3,10 +3,10 @@ package main.java.model.bean;
 import java.util.Date;
 import java.util.List;
 
-import main.java.model.dao.OrderDAO;
 import main.java.model.dao.PromotionDAO;
 
 public class Promotion {
+    
 	private int id;
 	private String name;
 	private Date dateFrom;

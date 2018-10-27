@@ -1,6 +1,7 @@
 package main.java.model.bean;
 
 public class Subscription {
+    
 	private int id;
 	private User user;
 	private Product product;

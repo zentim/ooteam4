@@ -7,6 +7,7 @@ import main.java.model.bean.Product;
 import main.java.model.bean.User;
 
 public class OrderItem implements Serializable {
+    
 	private int id;
 	private int quantity;
 	private int state;

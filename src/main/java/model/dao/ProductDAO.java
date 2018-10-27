@@ -33,6 +33,7 @@ public class ProductDAO {
 
             e.printStackTrace();
         }
+        
         return total;
     }
 
@@ -40,8 +41,8 @@ public class ProductDAO {
         int total = 0;
         try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
 
-            String sql = "select count(*) from product where brandId = " + brandId + " and sellerId = "
-                    + sellerId;
+            String sql = "select count(*) from product "
+                    + "where brandId = " + brandId + " and sellerId = " + sellerId;
 
             ResultSet rs = s.executeQuery(sql);
             while (rs.next()) {
@@ -51,6 +52,7 @@ public class ProductDAO {
 
             e.printStackTrace();
         }
+        
         return total;
     }
 
@@ -83,7 +85,9 @@ public class ProductDAO {
 
     public void update(Product bean) {
 
-        String sql = "update product set name= ?, inventory=?, price=?, dateAdded=?, brandId = ? where productId = ?";
+        String sql = "update product set "
+                + "name= ?, inventory=?, price=?, dateAdded=?, brandId = ? "
+                + "where productId = ?";
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
 
             ps.setString(1, bean.getName());
@@ -265,14 +269,19 @@ public class ProductDAO {
         for (Product p : brand.getProducts()) {
           PromotionItem promotionItem = promotionItemDAO.getByProduct(p.getId()); 
           Promotion promotionByProduct = promotionItem.getPromotion();
-          if (promotionByProduct != null && !(promotionItem.getDiscountOf() == 100 && promotionByProduct.getDiscountType() == PromotionDAO.buyXGetYFree)) {
-            String promotionName = "";
-            if (promotionByProduct.getState() == 1) {
-              promotionName = promotionByProduct.getName();
-            }
-              String discountTypeName = promotionByProduct.getDiscountTypeDescription();
-              p.setPromotionName(promotionName);
-              p.setDiscountTypeName(discountTypeName);
+          
+          if (promotionByProduct != null 
+                  && !(promotionItem.getDiscountOf() == 100 
+                  && promotionByProduct.getDiscountType() == PromotionDAO.buyXGetYFree)) {
+              
+                String promotionName = "";
+                if (promotionByProduct.getState() == 1) {
+                    promotionName = promotionByProduct.getName();
+                }
+                
+                String discountTypeName = promotionByProduct.getDiscountTypeDescription();
+                p.setPromotionName(promotionName);
+                p.setDiscountTypeName(discountTypeName);
           }
         }
           
@@ -280,20 +289,26 @@ public class ProductDAO {
     
     public void fillPromotion(List<Brand> brands) {
     	PromotionItemDAO promotionItemDAO = new PromotionItemDAO();
+    	
     	for (Brand c : brands) {
-            for (Product p : c.getProducts()) {
-              PromotionItem promotionItem = promotionItemDAO.getByProduct(p.getId()); 
-              Promotion promotionByProduct = promotionItem.getPromotion();
-              if (promotionByProduct != null && !(promotionItem.getDiscountOf() == 100 && promotionByProduct.getDiscountType() == PromotionDAO.buyXGetYFree)) {
-                String promotionName = "";
-                if (promotionByProduct.getState() == 1) {
-                  promotionName = promotionByProduct.getName();
-                }
-                  String discountTypeName = promotionByProduct.getDiscountTypeDescription();
-                  p.setPromotionName(promotionName);
-                  p.setDiscountTypeName(discountTypeName);
-              }
+    	    for (Product p : c.getProducts()) {
+    	        PromotionItem promotionItem = promotionItemDAO.getByProduct(p.getId()); 
+    	        Promotion promotionByProduct = promotionItem.getPromotion();
+    	        
+    	        if (promotionByProduct != null 
+    	                && !(promotionItem.getDiscountOf() == 100 
+    	                && promotionByProduct.getDiscountType() == PromotionDAO.buyXGetYFree)) {
+                  
+    	            String promotionName = "";
+    	            if (promotionByProduct.getState() == 1) {
+    	                promotionName = promotionByProduct.getName();
+    	            }
+    	            
+    	            String discountTypeName = promotionByProduct.getDiscountTypeDescription();
+    	            p.setPromotionName(promotionName);
+    	            p.setDiscountTypeName(discountTypeName);
+    	        }
             }
-          }
+    	}
     }
 }

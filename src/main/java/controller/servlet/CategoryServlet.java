@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import main.java.model.bean.Segment;
-import main.java.model.bean.Brand;
 import main.java.model.bean.Category;
 
 import main.java.model.util.Page;

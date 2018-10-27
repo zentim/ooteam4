@@ -27,6 +27,7 @@ public class UserDAO {
 
             e.printStackTrace();
         }
+        
         return total;
     }
 
@@ -149,13 +150,13 @@ public class UserDAO {
 
             e.printStackTrace();
         }
+        
         return beans;
     }
 
     public boolean isExist(String email) {
         User user = get(email);
         return user != null;
-
     }
 
     public User get(String email) {
@@ -179,6 +180,7 @@ public class UserDAO {
 
             e.printStackTrace();
         }
+        
         return bean;
     }
 

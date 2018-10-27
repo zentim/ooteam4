@@ -11,6 +11,7 @@ import main.java.pattern.observer.Subject;
  *
  */
 public class User implements Observer, Serializable {
+    
 	private int id;
 	private String email;
 	private String password;
@@ -18,8 +19,10 @@ public class User implements Observer, Serializable {
 	@Override
 	public void update(Subject subject) {
 		Product product = (Product) subject;
-		System.out.println("User "+ id + " get a notify from Product " + product.getId() + ": ");
-		System.out.println("Product is available now you can buy it. (Inventory Quantity: " + product.getInventory() + ")");
+		System.out.println("UserId " + id + " get a notify "
+		        + "from ProductId " + product.getId() + ": ");
+		System.out.println("Product is available now you can buy it. ");
+		System.out.println("(Inventory Quantity: " + product.getInventory() + ")");
 	}
 
 	/* Getter and Setter */

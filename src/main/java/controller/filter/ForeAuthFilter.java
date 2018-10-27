@@ -42,17 +42,23 @@ public class ForeAuthFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
         String contextPath = request.getServletContext().getContextPath();
-        String[] noNeedAuthPage = new String[] { "home", "checkLogin", "registerAjax", "register", "loginAjax", "login", "product",
-                "brand", "category", "search" };
+        String[] noNeedAuthPage = new String[] { 
+        		"home", "search", "checkLogin", 
+        		"registerAjax", "register", 
+        		"loginAjax", "login", 
+        		"product", "brand", "category"};
 
         String uri = request.getRequestURI();
         uri = StringUtils.remove(uri, contextPath);
         if (uri.startsWith("/fore") && !uri.startsWith("/foreServlet")) {
             String method = StringUtils.substringAfterLast(uri, "/fore");
+            
             if (!Arrays.asList(noNeedAuthPage).contains(method)) {
                 User user = (User) request.getSession().getAttribute("user");
+                
                 if (null == user) {
                     response.sendRedirect("login.jsp");
+                    
                     return;
                 }
             }

@@ -7,6 +7,7 @@ import java.util.List;
 import main.java.model.dao.OrderDAO;
 
 public class Order implements Serializable{
+    
 	private int id;
 	private Date dateOrdered;
 	private Date datePaid;
@@ -19,29 +20,30 @@ public class Order implements Serializable{
 	private int totalQuantity;
 
 	public String getStatusDesc() {
-		String desc = "未知";
+		String desc = "unknown";
 		switch (state) {
 		case OrderDAO.waitPay:
-			desc = "待付款";
+			desc = "wait pay";
 			break;
 		case OrderDAO.waitDelivery:
-			desc = "待發貨";
+			desc = "wait delivery";
 			break;
-		// case OrderDAO.waitConfirm:
-		// desc="待收貨";
-		// break;
-		// case OrderDAO.waitReview:
-		// desc="待評價";
-		// break;
+		case OrderDAO.waitConfirm:
+		    desc = "waitConfirm";
+		    break;
+		case OrderDAO.waitReview:
+		    desc = "waitReview";
+		    break;
 		case OrderDAO.finish:
-			desc = "完成";
+			desc = "finish";
 			break;
 		case OrderDAO.delete:
-			desc = "刪除";
+			desc = "delete";
 			break;
 		default:
-			desc = "未知";
+			desc = "unknown";
 		}
+		
 		return desc;
 	}
 

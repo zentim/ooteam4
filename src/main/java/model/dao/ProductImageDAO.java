@@ -31,6 +31,7 @@ public class ProductImageDAO {
 
             e.printStackTrace();
         }
+        
         return total;
     }
 
@@ -98,6 +99,7 @@ public class ProductImageDAO {
 
             e.printStackTrace();
         }
+        
         return bean;
     }
 
@@ -108,7 +110,9 @@ public class ProductImageDAO {
     public List<ProductImage> list(Product p, String type, int start, int count) {
         List<ProductImage> beans = new ArrayList<ProductImage>();
 
-        String sql = "select * from product_image where productId =? and type =? order by productImageId desc limit ?,? ";
+        String sql = "select * from product_image "
+                + "where productId =? and type =? "
+                + "order by productImageId desc limit ?,? ";
 
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
 
@@ -135,6 +139,7 @@ public class ProductImageDAO {
 
             e.printStackTrace();
         }
+        
         return beans;
     }
 

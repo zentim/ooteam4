@@ -28,8 +28,6 @@ public class ShoppingCart {
 		orderItems = memento.getOrderItems();
 	}
 	
-	
-
 	public List<OrderItem> getOrderItems() {
 		return orderItems;
 	}

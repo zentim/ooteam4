@@ -3,7 +3,6 @@ package test.java.pattern;
 import static org.junit.Assert.*;
 
 import java.util.Date;
-import java.util.List;
 
 import org.junit.*;
 

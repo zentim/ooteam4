@@ -4,8 +4,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import main.java.model.bean.Brand;
-import main.java.model.dao.BrandDAO;
+
+
 
 /**
  * 

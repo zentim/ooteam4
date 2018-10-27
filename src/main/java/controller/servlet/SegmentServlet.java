@@ -14,7 +14,6 @@ public class SegmentServlet extends BaseBackServlet {
 
 	@Override
 	public String add(HttpServletRequest request, HttpServletResponse response, Page page) {
-
 		String name = request.getParameter("name");
 		Segment c = new Segment();
 		c.setName(name);
@@ -27,6 +26,7 @@ public class SegmentServlet extends BaseBackServlet {
 	public String delete(HttpServletRequest request, HttpServletResponse response, Page page) {
 		int id = Integer.parseInt(request.getParameter("id"));
 		segmentDAO.delete(id);
+		
 		return "@admin_segment_list";
 	}
 

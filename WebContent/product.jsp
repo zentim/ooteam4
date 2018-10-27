@@ -5,7 +5,4 @@
 <!-- Middle Content Area -->
 <%@include file="./include/product/productPage.jsp" %>
 
-<!-- Right SideNav -->
-<div class="col-sm-2 sidenav"></div>
-
 <%@include file="./include/footer.jsp" %>  

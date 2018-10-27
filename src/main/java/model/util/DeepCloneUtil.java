@@ -18,6 +18,7 @@ public class DeepCloneUtil {
 	    ObjectInputStream in = new ObjectInputStream(byteIn);  
 	    @SuppressWarnings("unchecked")  
 	    List<T> dest = (List<T>) in.readObject();  
+	    
 	    return dest;  
 	}  
 

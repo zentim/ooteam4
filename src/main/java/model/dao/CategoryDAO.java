@@ -6,16 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import main.java.model.bean.Brand;
 import main.java.model.bean.Category;
-import main.java.model.bean.Category;
-import main.java.model.bean.Product;
 import main.java.model.bean.Segment;
 import main.java.model.util.DBUtil;
-import main.java.model.util.DateUtil;
 
 public class CategoryDAO {
 

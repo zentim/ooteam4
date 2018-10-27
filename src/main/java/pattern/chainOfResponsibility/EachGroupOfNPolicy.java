@@ -8,7 +8,7 @@ import main.java.model.bean.PromotionItem;
 import main.java.model.dao.PromotionDAO;
 import main.java.model.dao.PromotionItemDAO;
 import main.java.pattern.strategy.StrategyContext;
-import main.java.pattern.strategy.BuyXGetYFreeStrategy;
+
 import main.java.pattern.strategy.EachGroupOfNStrategy;
 import main.java.pattern.strategy.Strategy;
 

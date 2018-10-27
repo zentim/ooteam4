@@ -5,14 +5,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
-import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
-import javax.servlet.ServletContext;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,15 +29,15 @@ public class ProductImageServlet extends BaseBackServlet {
 
     @Override
     public String add(HttpServletRequest request, HttpServletResponse response, Page page) {
-        // 上傳文件的輸入流
+        // Input stream for uploading files
         InputStream is = null;
-        // 提交上傳文件時的其他參數
+        // Additional parameters when submitting the uploaded file
         Map<String, String> params = new HashMap<>();
 
-        // 解析上傳
+        // Parse upload
         is = parseUpload(request, params);
 
-        // 根據上傳的參數生成 productImage 物件
+        // Generate a productImage object based on the uploaded parameters
         String type = params.get("type");
         int pid = Integer.parseInt(params.get("pid"));
         Product p = productDAO.get(pid);
@@ -50,23 +47,27 @@ public class ProductImageServlet extends BaseBackServlet {
         pi.setProduct(p);
         productImageDAO.add(pi);
 
-        // 生成文件
+        // Generate file
         String fileName = pi.getId() + ".jpg";
         String imageFolder;
         String imageFolder_small = null;
         String imageFolder_middle = null;
         if (ProductImageDAO.type_single.equals(pi.getType())) {
-            imageFolder = request.getSession().getServletContext().getRealPath("img/productSingle");
-            imageFolder_small = request.getSession().getServletContext().getRealPath("img/productSingle_small");
-            imageFolder_middle = request.getSession().getServletContext().getRealPath("img/productSingle_middle");
+            imageFolder = request.getSession().getServletContext()
+                    .getRealPath("img/productSingle");
+            imageFolder_small = request.getSession().getServletContext()
+                    .getRealPath("img/productSingle_small");
+            imageFolder_middle = request.getSession().getServletContext()
+                    .getRealPath("img/productSingle_middle");
         } else {
-            imageFolder = request.getSession().getServletContext().getRealPath("img/productDetail");
+            imageFolder = request.getSession().getServletContext()
+                    .getRealPath("img/productDetail");
         }
 
         File f = new File(imageFolder, fileName);
         f.getParentFile().mkdirs();
 
-        // 複製文件
+        // Copy file
         try {
             if (is != null && is.available() != 0) {
                 try (FileOutputStream fos = new FileOutputStream(f)) {
@@ -76,7 +77,7 @@ public class ProductImageServlet extends BaseBackServlet {
                         fos.write(b, 0, length);
                     }
                     fos.flush();
-                    // 通過如下代碼，把文件保存為 jpg 格式
+                    // Save the file to jpg format with the following code
                     BufferedImage img = ImageUtil.change2jpg(f);
                     ImageIO.write(img, "jpg", f);
 
@@ -109,8 +110,10 @@ public class ProductImageServlet extends BaseBackServlet {
         productImageDAO.delete(id);
 
         if (ProductImageDAO.type_single.equals(pi.getType())) {
-            String imageFolder_single = request.getSession().getServletContext().getRealPath("img/productSingle");
-            String imageFolder_small = request.getSession().getServletContext().getRealPath("img/productSingle_small");
+            String imageFolder_single = request.getSession().getServletContext()
+                    .getRealPath("img/productSingle");
+            String imageFolder_small = request.getSession().getServletContext()
+                    .getRealPath("img/productSingle_small");
             String imageFolder_middle = request.getSession().getServletContext()
                     .getRealPath("img/productSingle_middle");
 
@@ -121,7 +124,8 @@ public class ProductImageServlet extends BaseBackServlet {
             File f_middle = new File(imageFolder_middle, pi.getId() + ".jpg");
             f_middle.delete();
         } else {
-            String imageFolder_detail = request.getSession().getServletContext().getRealPath("img/productDetail");
+            String imageFolder_detail = request.getSession().getServletContext()
+                    .getRealPath("img/productDetail");
             File f_detail = new File(imageFolder_detail, pi.getId() + ".jpg");
             f_detail.delete();
         }

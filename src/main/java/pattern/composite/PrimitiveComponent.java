@@ -1,7 +1,7 @@
 package main.java.pattern.composite;
 
-import main.java.model.bean.Product;
-import main.java.model.dao.ProductDAO;
+
+
 
 /**
  * 

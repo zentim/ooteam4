@@ -16,6 +16,7 @@ import main.java.pattern.observer.Subject;
  *
  */
 public class Product extends Component implements Subject, Serializable {
+    
 	private int id;
 	private String name;
 	private float price;
@@ -25,7 +26,6 @@ public class Product extends Component implements Subject, Serializable {
 	private ProductImage firstProductImage;
 	private List<ProductImage> productImages;
 	private List<ProductImage> productSingleImages;
-	private List<ProductImage> productDetailImages;
 	private int discountType = -1;
 	private String discountTypeName;
 	private String promotionName;
@@ -124,12 +124,6 @@ public class Product extends Component implements Subject, Serializable {
 	}
 	public void setProductSingleImages(List<ProductImage> productSingleImages) {
 		this.productSingleImages = productSingleImages;
-	}
-	public List<ProductImage> getProductDetailImages() {
-		return productDetailImages;
-	}
-	public void setProductDetailImages(List<ProductImage> productDetailImages) {
-		this.productDetailImages = productDetailImages;
 	}
 	public int getDiscountType() {
 		return discountType;

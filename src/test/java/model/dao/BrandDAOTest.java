@@ -10,7 +10,6 @@ import main.java.model.bean.Segment;
 import main.java.model.dao.BrandDAO;
 import main.java.model.dao.CategoryDAO;
 import main.java.model.dao.SegmentDAO;
-import main.java.pattern.composite.*;
 
 public class BrandDAOTest {
 	public static SegmentDAO segmentdao = new SegmentDAO();
