@@ -121,7 +121,7 @@
 					            	${oi.quantity}
 					            </td>
 					
-								<td>
+								<td align="right">
 									<span class="orderItemUnitSum">
 		                        		$ <fmt:formatNumber 
 		                        			type="number" 
@@ -138,39 +138,38 @@
 				</div>		
 			    
 			    <div style="float: right; width: 50%">
-			    	<p>
+			    	<p style="text-align: right;">
 						<span>
 							 Sum: $
-							<fmt:formatNumber type="number" value="${ totalWithoutDiscount }" minFractionDigits="2"/>
+							<fmt:formatNumber type="number" value="${ totalWithoutDiscount }" minFractionDigits="1"/>
 						</span>
 			    	</p>
 			    	
-			    	<p>
-			    		<span style="color: red;" id="discountMessage">${ discountMsg }</span><br>
-			    	</p>
+			    	<hr>
 			    	
-			    	<p>
+			    	<table class="table table-borderless">
+					  <tbody id="discountMsg">
+					    <tr>
+					      <td></td>
+					      <td></td>
+					    </tr>
+					  </tbody>
+					</table>
+			    	
+			    	<hr>
+			    	
+			    	<p style="text-align: right;">
+			    		
 			    		<span>Payment :</span>
 		            	<span style="color: #C40000; font-size: 22px; font-weight: bold; border-bottom: 1px dotted #F2F6FF;">
 		            		$<fmt:formatNumber type="number" value="${ total }" minFractionDigits="2"/>
 		            	</span>
 			    	</p>
 			    	
-			    	<p>
+			    	<p style="text-align: right;">
 			    		<input type="hidden" name="total" value="${ total }">
 			    		<button type="submit" class="btn btn-lg" style="font-weight: bold; background-color: #C40000; color: white;">Submit Order</button>
 			    	</p>
-			    	
-			    	
-			    	<table class="table table-borderless">
-					  <tbody id="discountMsg">
-					    <tr>
-					      <td>Payment : </td>
-					      <td>
-					      </td>
-					    </tr>
-					  </tbody>
-					</table>
 			    </div>
 		    </form>
 		    
@@ -189,19 +188,6 @@
 $(function() {
 	
 	// display the discount message
-	$("#discountMessage").html(function(){
-		var s = "${ discountMsg }";
-		var arrStr = s.split(/[()]/);
-		
-		var discountResult = ""
-		for (var i = 0; i < arrStr.length; i++) {
-			discountResult += arrStr[i] + "<br>";
-		}
-		return discountResult;
-	})
-	
-	
-	// display the discount message
 	$("#discountMsg").html(function(){
 		var s = "${ discountMsg }";
 		var arrStr = s.split(/[()]/);
@@ -212,8 +198,8 @@ $(function() {
 				var str = arrStr[i].split(":");
 				
 				discountResult += '<tr style="color: red">'
-					discountResult += '<td >' + str[0] + '<td>';
-					discountResult += '<td>' + str[1] + '<td>';
+					discountResult += '<td style="text-align: left">' + str[0] + '<td>';
+					discountResult += '<td style="text-align: right">' + str[1] + '<td>';
 				discountResult += '</tr>'	
 			}
 		}
