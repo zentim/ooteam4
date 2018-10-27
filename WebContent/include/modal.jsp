@@ -20,7 +20,7 @@
                   </div>
                 
                   <div class="row justify-content-center">
-              <form method="post" action="forelogin" id="ajaxLoginForm" style="width: 100%; max-width: 420px; padding: 15px; margin: auto;">
+              <form id="ajaxLoginForm" style="width: 100%; max-width: 420px; padding: 15px; margin: auto;">
                 <div class="registerErrorMessageDiv" style="display: none;">
                       <div class="alert alert-danger" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
@@ -81,7 +81,7 @@
                   </div>
                 
                   <div class="row justify-content-center">
-              <form method="post" action="forelogin" id="ajaxRegisterForm" style="width: 100%; max-width: 420px; padding: 15px; margin: auto;">
+              <form id="ajaxRegisterForm" style="width: 100%; max-width: 420px; padding: 15px; margin: auto;">
                 <div class="registerErrorMessageDiv" style="display: none;">
                       <div class="alert alert-danger" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
@@ -147,7 +147,7 @@
     <div class="modal-dialog deleteConfirmModalDiv">
        <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title">確認刪除？</h4>
+            <h4 class="modal-title">Confirm Delete？</h4>
           </div>
           <div class="modal-footer">
             <button class="btn btn-danger deleteConfirmButton" id="submit" type="button" style="margin-bottom: 0">confirm</button>
@@ -221,7 +221,7 @@ $(document).ready(function(){
   
   
   $(document).ready(function(){
-      $("#register_submit").click(function(){
+      $("#ajaxRegisterForm").submit(function(){
           var email = $("#register_email").val();
           var password = $("#register_password").val();
           var password_again = $("#register_password_again").val();
@@ -236,30 +236,10 @@ $(document).ready(function(){
       
           if( email != "" && password != "" ){
               $.ajax({
-                    url:'foreregister',
-                    type:'get',
+                    url:'foreregisterAjax',
+                    type:'post',
                     async: false,
-                    data:{email:email,password:password},
-                    error: function (jqXHR, exception) {
-                        console.log("register error!!!")
-                      var msg = '';
-                        if (jqXHR.status === 0) {
-                            msg = 'Not connect.\n Verify Network.';
-                        } else if (jqXHR.status == 404) {
-                            msg = 'Requested page not found. [404]';
-                        } else if (jqXHR.status == 500) {
-                            msg = 'Internal Server Error [500].';
-                        } else if (exception === 'parsererror') {
-                            msg = 'Requested JSON parse failed.';
-                        } else if (exception === 'timeout') {
-                            msg = 'Time out error.';
-                        } else if (exception === 'abort') {
-                            msg = 'Ajax request aborted.';
-                        } else {
-                            msg = 'Uncaught Error.\n' + jqXHR.responseText;
-                        }
-                        $('#post').html(msg);
-                    },
+                    data:{email: email, password: password, repeatPassword: password_again},
                     success:function(result){
                        /* if(res == 'General customer'||res == 'VIP customer'){
                           alert("register successful!");
@@ -268,14 +248,15 @@ $(document).ready(function(){
                           location.href = './BackEndIndex.jsp';
                         
                         */
-                      console.log("register success: " + result)
+                        
                         if("success" == result){
-                                
+                        	
                           location.reload();
-                         
+                          
                         }else{
                           $('.errorMessage').html(result);
-                          $(".errorMessage").css("color", "red");
+                          $(".errorMessage").css("color", "#ed2553");
+                          $(".registerErrorMessageDiv").css("display","block");   
                         }
                      }
                 })
