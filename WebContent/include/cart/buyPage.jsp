@@ -1,180 +1,223 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" isELIgnored="false"%>
 
+<div class="container">
+	<div class="row justify-content-center">
+	
+	<div class="login-form">
+		<div>
+			<form action="forecreateOrder" method="post" style="width: 600px; margin: 0 auto;">
+				<div style="width: 600px; margin: 0 auto;">
+					<div class="panel" style="margin-top: 50px">
+				   		<h4>Enter the shipping information</h4>   
+				   	</div>
+				   
+			        <div class="form-group">
+			            <input type="text" name="address" class="form-control" placeholder="Address">
+			        </div>
+			        
+			        <div class="form-group">
+			            <input type="text"  name="phone" class="form-control" placeholder="Phone">
+			        </div>
+			        
+			        
+			        <div class="panel" style="margin-top: 50px">
+				   		<h4>Payment options</h4>   
+				   	</div>
+				   
+			        <div class="form-check">
+					  <input class="form-check-input" type="radio" name="paymentOption" id="exampleRadios1" value="CreditCard" checked>
+					  <label class="form-check-label" for="exampleRadios1">
+					    CreditCard
+					  </label>
+					</div>
+					
+					<div class="form-check">
+					  <input class="form-check-input" type="radio" name="paymentOption" id="exampleRadios2" value="LinePay">
+					  <label class="form-check-label" for="exampleRadios2">
+					    LinePay
+					  </label>
+					</div>
+					
+					<div class="form-check">
+					  <input class="form-check-input" type="radio" name="paymentOption" id="exampleRadios3" value="WeChatPay">
+					  <label class="form-check-label" for="exampleRadios3">
+					    WeChatPay
+					  </label>
+					</div>
+					
+					
+					<div class="panel" style="margin-top: 50px">
+				   		<h4>Do you need a tax ID number on your receipt?</h4>   
+				   	</div>
+				   	
+				   	<p>
+					  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" style="margin: 0;">
+					    Click here to enter your tax ID number (Optional)
+					  </button>
+					</p>
+					<div class="collapse" id="collapseExample">
+					  <div class="card card-body">
+					    <div class="form-group">
+				            <input type="text" name="taxIdNumber" class="form-control" placeholder="Tax ID Number">
+				        </div>
+					  </div>
+					</div>
+					   
+				
+				</div>
+			    
+				<div>
+					<div class="panel" style="margin-top: 50px">
+				   		<h4>Confirm Order Information</h4>   
+				   	</div>
+				
+					<table class="table table-striped table-bordered table-sm">
+	
+					    <thead>
+					      <tr align="center">
+					
+					        <th></th>
+					        <th>Product</th>
+					        <th>Price</th>
+					        <th>Quantity</th>
+					        <th>Subtotal</th>
+					
+					      </tr>
+					    </thead>
+					
+					    <tbody>
+					      <c:forEach items="${ ois }" var="oi">
+					        <tr oiid="${oi.id}" class="cartProductItemTR">
+					
+					
+					            <td align="center">
+					              <div style="position:relative; width: 80px; height: 80px;">
+					                <img 
+					                  class="cartProductImg"  
+					                  src="img/productSingle_middle/${oi.product.firstProductImage.id}.jpg" 
+					                  style="position:absolute; max-width: 100%; max-height: 100%; top:0; bottom: 0; left: 0; right: 0; margin: auto; ">
+					              </div>
+					            </td>
+					
+					            <td align="center">
+					              <div class="cartProductLinkOutDiv">
+					                <a 
+					                  href="foreproduct?pid=${oi.product.id}" 
+					                  class="cartProductLink">${oi.product.name}</a>
+					              </div>
+					            </td>
+					
+					            <td align="right">
+					              <span class="orderItemProductPrice">
+					              	$ <fmt:formatNumber 
+					              		type="number" 
+					              		value="${oi.product.price}" 
+					              		minFractionDigits="2"/>
+					              </span>
+					            </td>
+					
+					            <td align="center">
+					            	${oi.quantity}
+					            </td>
+					
+								<td>
+									<span class="orderItemUnitSum">
+		                        		$ <fmt:formatNumber 
+		                        			type="number" 
+		                        			value="${oi.quantity * oi.product.price}" 
+		                        			minFractionDigits="2"/>
+		                        	</span>
+								</td>
+					
+					        </tr>
+					      </c:forEach>
+					    </tbody>
+					
+					  </table>
+				</div>		
+			    
+			    <div style="float: right; width: 50%">
+			    	<p>
+						<span>
+							 Sum: $
+							<fmt:formatNumber type="number" value="${ totalWithoutDiscount }" minFractionDigits="2"/>
+						</span>
+			    	</p>
+			    	
+			    	<p>
+			    		<span style="color: red;" id="discountMessage">${ discountMsg }</span><br>
+			    	</p>
+			    	
+			    	<p>
+			    		<span>Payment :</span>
+		            	<span style="color: #C40000; font-size: 22px; font-weight: bold; border-bottom: 1px dotted #F2F6FF;">
+		            		$<fmt:formatNumber type="number" value="${ total }" minFractionDigits="2"/>
+		            	</span>
+			    	</p>
+			    	
+			    	<p>
+			    		<input type="hidden" name="total" value="${ total }">
+			    		<button type="submit" class="btn btn-lg" style="font-weight: bold; background-color: #C40000; color: white;">Submit Order</button>
+			    	</p>
+			    	
+			    	
+			    	<table class="table table-borderless">
+					  <tbody id="discountMsg">
+					    <tr>
+					      <td>Payment : </td>
+					      <td>
+					      </td>
+					    </tr>
+					  </tbody>
+					</table>
+			    </div>
+		    </form>
+		    
+		    <form action="foreclearOrder" method="post">
 
-    <!-- ##### Breadcumb Area Start ##### -->
-    <div class="breadcumb_area bg-img" style="background-image: url(img/bg-img/breadcumb.jpg);">
-        <div class="container h-100">
-            <div class="row h-100 align-items-center">
-                <div class="col-12">
-                    <div class="page-title text-center">
-                        <h2>Checkout</h2>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- ##### Breadcumb Area End ##### -->
+		    	<button type="submit" class="btn btn-lg">Clear Order</button>
+		    </form>
+	    </div>
+	</div>
+	
+	</div>
+</div>
 
-    <!-- ##### Checkout Area Start ##### -->
-    <div class="checkout_area section-padding-80">
-        <div class="container">
-            <div class="row">
 
-                <div class="col-12 col-md-6">
-                    <div class="checkout_details_area mt-50 clearfix">
-
-                        <div class="cart-page-heading mb-30">
-                            <h5>Billing Address</h5>
-                        </div>
-
-                        <form action="#" method="post">
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="first_name">First Name <span>*</span></label>
-                                    <input type="text" class="form-control" id="first_name" value="" required>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="last_name">Last Name <span>*</span></label>
-                                    <input type="text" class="form-control" id="last_name" value="" required>
-                                </div>
-                                <div class="col-12 mb-3">
-                                    <label for="company">Company Name</label>
-                                    <input type="text" class="form-control" id="company" value="">
-                                </div>
-                                <div class="col-12 mb-3">
-                                    <label for="country">Country <span>*</span></label>
-                                    <select class="w-100" id="country">
-                                        <option value="usa">United States</option>
-                                        <option value="uk">United Kingdom</option>
-                                        <option value="ger">Germany</option>
-                                        <option value="fra">France</option>
-                                        <option value="ind">India</option>
-                                        <option value="aus">Australia</option>
-                                        <option value="bra">Brazil</option>
-                                        <option value="cana">Canada</option>
-                                    </select>
-                                </div>
-                                <div class="col-12 mb-3">
-                                    <label for="street_address">Address <span>*</span></label>
-                                    <input type="text" class="form-control mb-3" id="street_address" value="">
-                                    <input type="text" class="form-control" id="street_address2" value="">
-                                </div>
-                                <div class="col-12 mb-3">
-                                    <label for="postcode">Postcode <span>*</span></label>
-                                    <input type="text" class="form-control" id="postcode" value="">
-                                </div>
-                                <div class="col-12 mb-3">
-                                    <label for="city">Town/City <span>*</span></label>
-                                    <input type="text" class="form-control" id="city" value="">
-                                </div>
-                                <div class="col-12 mb-3">
-                                    <label for="state">Province <span>*</span></label>
-                                    <input type="text" class="form-control" id="state" value="">
-                                </div>
-                                <div class="col-12 mb-3">
-                                    <label for="phone_number">Phone No <span>*</span></label>
-                                    <input type="number" class="form-control" id="phone_number" min="0" value="">
-                                </div>
-                                <div class="col-12 mb-4">
-                                    <label for="email_address">Email Address <span>*</span></label>
-                                    <input type="email" class="form-control" id="email_address" value="">
-                                </div>
-
-                                <div class="col-12">
-                                    <div class="custom-control custom-checkbox d-block mb-2">
-                                        <input type="checkbox" class="custom-control-input" id="customCheck1">
-                                        <label class="custom-control-label" for="customCheck1">Terms and conitions</label>
-                                    </div>
-                                    <div class="custom-control custom-checkbox d-block mb-2">
-                                        <input type="checkbox" class="custom-control-input" id="customCheck2">
-                                        <label class="custom-control-label" for="customCheck2">Create an accout</label>
-                                    </div>
-                                    <div class="custom-control custom-checkbox d-block">
-                                        <input type="checkbox" class="custom-control-input" id="customCheck3">
-                                        <label class="custom-control-label" for="customCheck3">Subscribe to our newsletter</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-                <div class="col-12 col-md-6 col-lg-5 ml-lg-auto">
-                    <div class="order-details-confirmation">
-
-                        <div class="cart-page-heading">
-                            <h5>Your Order</h5>
-                            <p>The Details</p>
-                        </div>
-
-                        <ul class="order-details-form mb-4">
-                            <li><span>Product</span> <span>Total</span></li>
-                            <li><span>Cocktail Yellow dress</span> <span>$59.90</span></li>
-                            <li><span>Subtotal</span> <span>$59.90</span></li>
-                            <li><span>Shipping</span> <span>Free</span></li>
-                            <li><span>Total</span> <span>$59.90</span></li>
-                        </ul>
-
-                        <div id="accordion" role="tablist" class="mb-4">
-                            <div class="card">
-                                <div class="card-header" role="tab" id="headingOne">
-                                    <h6 class="mb-0">
-                                        <a data-toggle="collapse" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne"><i class="fa fa-circle-o mr-3"></i>Paypal</a>
-                                    </h6>
-                                </div>
-
-                                <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
-                                    <div class="card-body">
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin pharetra tempor so dales. Phasellus sagittis auctor gravida. Integ er bibendum sodales arcu id te mpus. Ut consectetur lacus.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-header" role="tab" id="headingTwo">
-                                    <h6 class="mb-0">
-                                        <a class="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"><i class="fa fa-circle-o mr-3"></i>cash on delievery</a>
-                                    </h6>
-                                </div>
-                                <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
-                                    <div class="card-body">
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo quis in veritatis officia inventore, tempore provident dignissimos.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-header" role="tab" id="headingThree">
-                                    <h6 class="mb-0">
-                                        <a class="collapsed" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree"><i class="fa fa-circle-o mr-3"></i>credit card</a>
-                                    </h6>
-                                </div>
-                                <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
-                                    <div class="card-body">
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse quo sint repudiandae suscipit ab soluta delectus voluptate, vero vitae</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-header" role="tab" id="headingFour">
-                                    <h6 class="mb-0">
-                                        <a class="collapsed" data-toggle="collapse" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour"><i class="fa fa-circle-o mr-3"></i>direct bank transfer</a>
-                                    </h6>
-                                </div>
-                                <div id="collapseFour" class="collapse show" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
-                                    <div class="card-body">
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est cum autem eveniet saepe fugit, impedit magni.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <a href="#" class="btn essence-btn">Place Order</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- ##### Checkout Area End ##### -->
-
-    
-
+<script>
+$(function() {
+	
+	// display the discount message
+	$("#discountMessage").html(function(){
+		var s = "${ discountMsg }";
+		var arrStr = s.split(/[()]/);
+		
+		var discountResult = ""
+		for (var i = 0; i < arrStr.length; i++) {
+			discountResult += arrStr[i] + "<br>";
+		}
+		return discountResult;
+	})
+	
+	
+	// display the discount message
+	$("#discountMsg").html(function(){
+		var s = "${ discountMsg }";
+		var arrStr = s.split(/[()]/);
+		
+		var discountResult = ""
+		for (var i = 0; i < arrStr.length; i++) {
+			if (arrStr[i] !== "") {
+				var str = arrStr[i].split(":");
+				
+				discountResult += '<tr style="color: red">'
+					discountResult += '<td >' + str[0] + '<td>';
+					discountResult += '<td>' + str[1] + '<td>';
+				discountResult += '</tr>'	
+			}
+		}
+		return discountResult;
+	})
+})
+</script>

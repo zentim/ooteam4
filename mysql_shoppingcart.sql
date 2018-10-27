@@ -18,7 +18,7 @@ USE `mysql_shoppingcart`;
 CREATE TABLE IF NOT EXISTS `user` (
   `userId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `email` varchar(100) NOT NULL,
-  `password` varchar(30) NOT NULL,
+  `password` varchar(15) NOT NULL,
   PRIMARY KEY (`userId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

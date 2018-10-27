@@ -24,11 +24,27 @@
   </div>
 
   <div class="form-label-group mb-3">
-    <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
+    <input 
+    	type="password" 
+    	id="inputPassword" 
+    	name="password" 
+    	class="form-control" 
+    	placeholder="Password"
+    	pattern=".{8,15}"
+    	title="8 to 15 characters" 
+    	required>
   </div>
   
   <div class="form-label-group mb-3">
-    <input type="password" id="repeatPassword" name="repeatPassword" class="form-control" placeholder="Input your password again" required>
+    <input 
+    	type="password" 
+    	id="repeatPassword" 
+    	name="repeatPassword" 
+    	class="form-control" 
+    	placeholder="Input your password again"
+    	pattern=".{8,15}"
+    	title="8 to 15 characters" 
+    	required>
   </div>
 
   
