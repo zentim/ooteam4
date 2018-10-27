@@ -9,9 +9,15 @@
         <!-- Single Product Thumb -->
         <div class="single_product_thumb clearfix">
             <div class="product_thumbnail_slides owl-carousel">
-                <img src="img/productSingle/${p.firstProductImage.id}.jpg" alt="productId ${p.firstProductImage.id}">
-                <img src="img/productSingle/${p.firstProductImage.id}.jpg" alt="productId ${p.firstProductImage.id}">
-                <img src="img/productSingle/${p.firstProductImage.id}.jpg" alt="productId ${p.firstProductImage.id}">
+            	<div style="height: 650px; display: flex; justify-content: center; align-items: center;">
+            		<img src="img/productSingle/${p.firstProductImage.id}.jpg" alt="productId ${p.firstProductImage.id}" style="width: 100%; height: auto; max-width: 100%; max-height: 100%; vertical-align: middle;">
+            	</div>
+            	<div style="height: 650px; display: flex; justify-content: center; align-items: center;">
+            		<img src="img/productSingle/${p.firstProductImage.id}.jpg" alt="productId ${p.firstProductImage.id}" style="width: 100%; height: auto; max-width: 100%; max-height: 100%; vertical-align: middle;">
+            	</div>
+            	<div style="height: 650px; display: flex; justify-content: center; align-items: center;">
+            		<img src="img/productSingle/${p.firstProductImage.id}.jpg" alt="productId ${p.firstProductImage.id}" style="width: 100%; height: auto; max-width: 100%; max-height: 100%; vertical-align: middle;">
+            	</div>
             </div>
         </div>
 
