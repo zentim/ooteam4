@@ -106,8 +106,6 @@
     <!-- ##### Single Product Details Area End ##### -->
     
 
-
-
 <script>
 $(function(){
     var inventory = ${p.inventory};
@@ -153,7 +151,7 @@ $(function(){
                         );                          
                     }
                     else{       
-                        document.getElementById('myModal').style.display = "block";
+                    	  document.getElementById('myModal').style.display = "block";
 	              		  $('.register-div').css("display","none");
 	              		  $('.login-div').css("display","block");
                     }

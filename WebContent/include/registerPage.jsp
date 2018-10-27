@@ -17,6 +17,7 @@
   <div class="text-center mb-4">
     <i class="fas fa-users fa-5x mb-4"></i>
     <h1 class="h3 mb-3 font-weight-normal">Register</h1>
+    <span style="color: #777">Please enter your email and password</span>
   </div>
 
   <div class="form-label-group mb-3">
@@ -70,29 +71,5 @@ $(function(){
 	    $("div.registerErrorMessageDiv").css("display","block");       
     </c:if>
      
-    $(".registerForm").submit(function(){
-        if(0 == $("#inputEmail").val().length){
-            $("span.errorMessage").html("Please input email");
-            $("div.registerErrorMessageDiv").css("display", "block");           
-            return false;
-        }       
-        if(0 == $("#inputPassword").val().length){
-            $("span.errorMessage").html("Please input password");
-            $("div.registerErrorMessageDiv").css("display", "block");           
-            return false;
-        }       
-        if(0 == $("#repeatPassword").val().length){
-            $("span.errorMessage").html("Please input same password again");
-            $("div.registerErrorMessageDiv").css("display", "block");           
-            return false;
-        }       
-        if($("#inputPassword").val() != $("#repeatPassword").val()){
-            $("span.errorMessage").html("Inconsistent password");
-            $("div.registerErrorMessageDiv").css("display", "block");           
-            return false;
-        }       
- 
-        return true;
-    });
 })
 </script>

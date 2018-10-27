@@ -23,7 +23,6 @@
         <th>Price</th>
         <th>Inventory</th>
         <th>ImageManage</th>
-        <th>ProductDetailSetting</th>
         <th>DiscountSetting</th>
         <th>Edit</th>
         <th>Delete</th>
@@ -50,13 +49,6 @@
           <a href="admin_productImage_list?pid=${ p.id }">
             <button type="button" class="btn btn-primary btn-sm">
               <span data-feather="image"></span>
-            </button>
-          </a>
-        </td>
-        <td>
-          <a href="admin_product_editProductDetail?id=${ p.id }">
-            <button type="button" class="btn btn-primary btn-sm">
-              <span data-feather="list"></span>
             </button>
           </a>
         </td>

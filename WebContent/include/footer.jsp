@@ -81,6 +81,13 @@
         </div>
     </footer>
     <!-- ##### Footer Area End ##### -->
+    
+    
+    
+    <%@include file="modal.jsp" %>
+
+
+
 
     <!-- jQuery (Necessary for All JavaScript Plugins) -->
 <!--     

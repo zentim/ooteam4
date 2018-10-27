@@ -17,6 +17,7 @@
   <div class="text-center mb-4">
     <i class="fas fa-user-circle fa-5x mb-4"></i>
     <h1 class="h3 mb-3 font-weight-normal">Login</h1>
+    <span style="color: #777">Please enter your email and password</span>
   </div>
 
   <div class="form-label-group mb-3">
@@ -53,25 +54,10 @@
 <script>
 $(function(){
 	
-     
     <c:if test="${!empty msg}">
 	    $("span.errorMessage").html("${msg}");
 	    $("div.registerErrorMessageDiv").css("display","block");       
     </c:if>
      
-    $(".loginForm").submit(function(){
-        if(0 == $("#inputEmail").val().length){
-            $("span.errorMessage").html("Please input email");
-            $("div.registerErrorMessageDiv").css("display", "block");           
-            return false;
-        }       
-        if(0 == $("#inputPassword").val().length){
-            $("span.errorMessage").html("Please input password");
-            $("div.registerErrorMessageDiv").css("display", "block");           
-            return false;
-        }           
- 
-        return true;
-    });
 })
 </script>

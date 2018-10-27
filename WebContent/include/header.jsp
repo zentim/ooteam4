@@ -43,6 +43,119 @@
  	.hidden {
  		display: none;
  	}
+ 	.modal {
+	  display: none;
+	  position: fixed;
+	  z-index: 1000;
+	  left: 0;
+	  top: 0;
+	  width: 100%;
+	  height: 100%;
+	  overflow: auto;
+	  background-color: rgba(0, 0, 0, 0.1);
+	}
+	
+	.main-div{
+		z-index:3000;
+	}
+	/* Modal Content */
+	.modal-content {
+	  position: relative;
+	  background-color: #fefefe;
+	  margin: auto;
+	  padding: 0;
+	  width: 90%;
+	  max-width: 1200px;
+	}
+	
+	/* The Close Button */
+	.close {
+	  font-size: 35px;
+	  font-weight: bold;
+	}
+	
+	.close:hover,
+	.close:focus {
+	  color: #999;
+	  text-decoration: none;
+	  cursor: pointer;
+	}
+	
+	.cursor {
+	  cursor: pointer;
+	}
+	/* Login Ajax */
+	body#LoginForm{ background-color:#101010;background-repeat:no-repeat; background-position:center; background-size:cover; padding:10px;}
+	//background-image:url("https://hdwallsource.com/img/2014/9/blur-26347-27038-hd-wallpapers.jpg"); 
+	.form-heading { color:#fff; font-size:23px;}
+	
+	.login-form .form-control {
+	  background: #f7f7f7 none repeat scroll 0 0;
+	  border: 1px solid #d4d4d4;
+	  border-radius: 4px;
+	  font-size: 14px;
+	  height: 50px;
+	  line-height: 50px;
+	}
+	.main-div {
+	  background: #ffffff none repeat scroll 0 0;
+	  border-radius: 2px;
+	  margin: 10px auto 30px;
+	  max-width: 38%;
+	  
+	}
+	
+	.login-form .form-group {
+	  margin-bottom:10px;
+	}
+	
+	.register-div{
+		display:none;
+	}
+	.login-form{ text-align:center;}
+	.forgot a {
+	  color: #777777;
+	  font-size: 14px;
+	  text-decoration: underline;
+	}
+	.login-form  .btn.btn-primary {
+	  background: #f0ad4e none repeat scroll 0 0;
+	  border-color: #f0ad4e;
+	  color: #ffffff;
+	  font-size: 14px;
+	  width: 100%;
+	  height: 50px;
+	  line-height: 50px;
+	  padding: 0;
+	}
+	.forgot {
+	  text-align: left; margin-bottom:30px;
+	}
+	.botto-text {
+	  color: #ffffff;
+	  font-size: 14px;
+	  margin: auto;
+	}
+	.login-form .btn.btn-primary.reset {
+	  background: #ff9900 none repeat scroll 0 0;
+	}
+	.back { text-align: left; margin-top:10px;}
+	.back a {color: #444444; font-size: 13px;text-decoration: none;}
+	
+	
+	
+	.card .title {
+	  position: relative;
+	  z-index: 1;
+	  border-left: 5px solid #ed2553;
+	  margin: 0 0 15px;
+	  color: #ed2553;
+	  font-size: 32px;
+	  font-weight: 600;
+	  text-transform: uppercase;
+	}
+
+	 	
  	</style>
  
  
@@ -193,16 +306,20 @@
 	                </div>
                 </c:if>
                 <!-- Cart Area -->
-                <div class="cart-area">
-                    <a href="forecart" id="essenceCartBtn"><i class="fas fa-shopping-cart fa-lg"></i> <span>${cartTotalItemNumber}</span></a>
-                </div>
+                
                 <!-- User Login Info -->
                 <c:if test="${empty user}">
+                	<div class="cart-area">
+	                    <a onclick="openModal()"  class="userLoginLink" style="cursor: pointer" id="essenceCartBtn"><i class="fas fa-shopping-cart fa-lg"></i> <span>${cartTotalItemNumber}</span></a>
+	                </div>
 	                <div class="user-login-info">
-	                    <a href="login.jsp">Login</a>
+	                    <a onclick="openModal()" class="userLoginLink" style="cursor: pointer">Login</a>
 	                </div>
                 </c:if>
                 <c:if test="${!empty user}">
+                	<div class="cart-area">
+	                    <a href="forecart" id="essenceCartBtn"><i class="fas fa-shopping-cart fa-lg"></i> <span>${cartTotalItemNumber}</span></a>
+	                </div>
                 	<div class="user-login-info">
                 		<a href="#" style="width: 200px;">Hi! ${ user.email }</a>
 	                </div>

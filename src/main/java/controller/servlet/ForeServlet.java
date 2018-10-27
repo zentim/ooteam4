@@ -170,7 +170,7 @@ public class ForeServlet extends BaseForeServlet {
 		User user = userDAO.get(email, password);
 
 		if (null == user) {
-			request.setAttribute("msg", "Incorrect account password");
+			request.setAttribute("msg", "Invalid email or password!");
 			return "login.jsp";
 		}
 		request.getSession().setAttribute("user", user);
@@ -185,7 +185,7 @@ public class ForeServlet extends BaseForeServlet {
         User user = userDAO.get(email, password);
 
         if (null == user) {
-        	request.setAttribute("msg", "Incorrect account password");
+        	request.setAttribute("msg", "Invalid email or password!");
             return "%fail";
         }
 
