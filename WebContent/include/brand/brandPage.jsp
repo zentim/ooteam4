@@ -35,10 +35,11 @@
 				                                	<a href="foreproduct?pid=${ product.id }">
 					                                    <!-- Product Image -->
 					                                    <div class="product-img">
-					                                        <img src="img/product-img/product-3.jpg" alt="">
+					                                        <img src="img/productSingle/${product.firstProductImage.id}.jpg" alt="productId ${product.firstProductImage.id}">
 					                                        <!-- Hover Thumb -->
+<!-- 					                                        
 					                                        <img class="hover-img" src="img/product-img/product-4.jpg" alt="">
-					
+-->
 					                                        <!-- Product Badge -->
 					                                        <c:if test="${!empty product.promotionName }">
 						                                        <div class="product-badge new-badge" style="top: 75%; left: 30%; height: auto;">

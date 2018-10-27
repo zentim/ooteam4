@@ -9,9 +9,9 @@
         <!-- Single Product Thumb -->
         <div class="single_product_thumb clearfix">
             <div class="product_thumbnail_slides owl-carousel">
-                <img src="img/product-img/product-big-1.jpg" alt="">
-                <img src="img/product-img/product-big-2.jpg" alt="">
-                <img src="img/product-img/product-big-3.jpg" alt="">
+                <img src="img/productSingle/${p.firstProductImage.id}.jpg" alt="productId ${p.firstProductImage.id}">
+                <img src="img/productSingle/${p.firstProductImage.id}.jpg" alt="productId ${p.firstProductImage.id}">
+                <img src="img/productSingle/${p.firstProductImage.id}.jpg" alt="productId ${p.firstProductImage.id}">
             </div>
         </div>
 

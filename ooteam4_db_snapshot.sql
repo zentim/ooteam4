@@ -120,19 +120,6 @@ REPLACE INTO `product` (`productId`, `name`, `inventory`, `price`, `dateAdded`, 
 	(16, 'Peacock High quality big kettle (1000ml)', 1000, 100, NULL, 8);
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 
--- 傾印  表格 mysql_shoppingcart.product_detail 結構
-CREATE TABLE IF NOT EXISTS `product_detail` (
-  `productDetailId` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `productId` int(10) unsigned NOT NULL,
-  `field` varchar(20) NOT NULL,
-  `content` text,
-  PRIMARY KEY (`productDetailId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- 正在傾印表格  mysql_shoppingcart.product_detail 的資料：~0 rows (大約)
-/*!40000 ALTER TABLE `product_detail` DISABLE KEYS */;
-/*!40000 ALTER TABLE `product_detail` ENABLE KEYS */;
-
 -- 傾印  表格 mysql_shoppingcart.product_image 結構
 CREATE TABLE IF NOT EXISTS `product_image` (
   `productImageId` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -171,15 +158,15 @@ CREATE TABLE IF NOT EXISTS `promotion` (
   `dateTo` datetime DEFAULT NULL,
   `state` tinyint(3) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`promotionId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
--- 正在傾印表格  mysql_shoppingcart.promotion 的資料：~0 rows (大約)
+-- 正在傾印表格  mysql_shoppingcart.promotion 的資料：~4 rows (大約)
 /*!40000 ALTER TABLE `promotion` DISABLE KEYS */;
 REPLACE INTO `promotion` (`promotionId`, `discountType`, `name`, `dateFrom`, `dateTo`, `state`) VALUES
-	(1, 1, 'XYZ Discount', '2018-10-25 11:31:00', NULL, 1),
-	(2, 2, '100 Units Discount', '2018-10-25 11:31:00', NULL, 1),
-	(3, 3, 'Last Year More Than $100K', '2018-10-25 11:32:00', NULL, 1),
-	(4, 4, 'Buy 2 Get 1 Free', '2018-10-25 11:33:00', NULL, 1);
+	(1, 1, 'XYZ Discount', '2018-10-27 13:38:00', NULL, 1),
+	(2, 2, '100 units X', '2018-10-27 13:40:00', NULL, 1),
+	(3, 3, 'Last Year More Than 100K', '2018-10-27 13:40:00', NULL, 1),
+	(4, 4, 'Buy 2 Get 1 Free', '2018-10-27 13:42:00', NULL, 1);
 /*!40000 ALTER TABLE `promotion` ENABLE KEYS */;
 
 -- 傾印  表格 mysql_shoppingcart.promotion_item 結構
@@ -190,9 +177,9 @@ CREATE TABLE IF NOT EXISTS `promotion_item` (
   `minQuantity` int(11) unsigned NOT NULL,
   `discountOf` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`promotionItemId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
--- 正在傾印表格  mysql_shoppingcart.promotion_item 的資料：~0 rows (大約)
+-- 正在傾印表格  mysql_shoppingcart.promotion_item 的資料：~7 rows (大約)
 /*!40000 ALTER TABLE `promotion_item` DISABLE KEYS */;
 REPLACE INTO `promotion_item` (`promotionItemId`, `promotionId`, `productId`, `minQuantity`, `discountOf`) VALUES
 	(1, 1, 1, 1, 5),
@@ -234,7 +221,7 @@ CREATE TABLE IF NOT EXISTS `subscription` (
 CREATE TABLE IF NOT EXISTS `user` (
   `userId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `email` varchar(100) NOT NULL,
-  `password` varchar(30) NOT NULL,
+  `password` varchar(15) NOT NULL,
   PRIMARY KEY (`userId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
