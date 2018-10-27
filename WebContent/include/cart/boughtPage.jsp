@@ -3,21 +3,21 @@
  
 
      
-<div style="max-width: 1013px; margin: 10px auto;">
-	<div class="btn-group" role="group" aria-label="Basic example">
+<div style="max-width: 1013px; margin: 130px auto;">
+	<div class="btn-group mt-4" role="group" aria-label="Basic example">
 	  <a orderState="all" href="#nowhere">
 		  <button type="button" class="btn btn-secondary">
-		  	所有訂單
+		  	All Orders
 		  </button>
 	  </a>
 	  <a orderState="waitPay" href="#nowhere">
 		  <button type="button" class="btn btn-secondary">
-		  	待付款
+		  	Wait Pay
 		  </button>
 	  </a>
 	  <a orderState="waitDelivery" href="#nowhere">
 		  <button type="button" class="btn btn-secondary">
-		  	待發貨
+		  	Wait Delivery
 		  </button>
 	  </a>
 	</div>
@@ -27,11 +27,11 @@
     <div>
         <table style="border: 1px solid #E8E8E8; width: 100%; margin: 20px 0px; background-color: #F5F5F5; text-align: center;">
             <tr>
-                <td>物品</td>
-                <td width="100px">單價</td>
-                <td width="100px">數量</td>
-                <td width="120px">實付款</td>
-                <td width="100px">交易操作</td>
+                <td width="680px">Object</td>
+                <td width="100px">Price</td>
+                <td width="100px">Qty</td>
+                <td width="120px">Payment</td>
+                <td width="100px">Operation</td>
             </tr>
         </table>
      
@@ -63,48 +63,48 @@
                 
                 <c:forEach items="${o.orderItems}" var="oi" varStatus="st">
                     <tr class="orderItemProductInfoPartTR" >
-                        <td>
+                        <td width="80px">
                         	<img 
                         		width="80" 
                         		height="80" 
                         		src="img/productSingle_middle/${ oi.product.firstProductImage.id }.jpg">
                         </td>
-                        <td>
-                            <div>
-                                <a href="foreproduct?pid=${ oi.product.id }">${ oi.product.name }</a>
-                            </div>
+                        <td width="600px">
+                            
+                            <a href="foreproduct?pid=${ oi.product.id }">${ oi.product.name }</a>
+                            
                         </td>
-                        <td width="100px">
+                        <td width="100px" style="text-align: right;">
                             <div style="color: #3C3C3C; font-size: 14px">
-                            	$<fmt:formatNumber type="number" value="${oi.product.price}" minFractionDigits="2"/>
+                            	$<fmt:formatNumber type="number" value="${oi.product.price}" minFractionDigits="1"/>
                             </div>
                         </td>
                         <c:if test="${st.count == 1}">
                           
                             <td 
-                            	valign="top" 
+                            	valign="center" 
                             	rowspan="${fn:length(o.orderItems)}" 
-                            	width="100px">
+                            	width="100px"
+                            	style="text-align: center;">
                                 <span class="orderListItemNumber">${ o.totalQuantity }</span>
                             </td>
                             <td 
-                            	valign="top" 
+                            	valign="center" 
                             	rowspan="${fn:length(o.orderItems)}" 
-                            	width="120px">
+                            	width="120px"
+                            	style="text-align: right;">
                                 <div class="orderListItemProductRealPrice">
-                                	$<fmt:formatNumber  minFractionDigits="2"  maxFractionDigits="2" type="number" value="${o.total}"/>
-                                </div>
-                                <div class="orderListItemPriceWithTransport">
-                                	(含運費 : $0.00)
+                                	$<fmt:formatNumber  minFractionDigits="1"  maxFractionDigits="2" type="number" value="${o.total}"/>
                                 </div>
                             </td>
                             <td 
                             	valign="top" 
                             	rowspan="${fn:length(o.orderItems)}" 
-                            	width="100px">
+                            	width="100px"
+                            	style="text-align: center;">
                                 <c:if test="${o.state == 'waitPay' }">
                                     <a href="pay.jsp?oid=${ o.id }&total=${ o.total }">
-                                        <button class="orderListItemConfirm">付款</button>
+                                        <button class="btn btn-primary orderListItemConfirm">Pay</button>
                                     </a>                              
                                 </c:if>
                                  
