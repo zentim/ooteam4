@@ -65,6 +65,49 @@ public class ForeServlet extends BaseForeServlet {
         return "category.jsp";
     }
     
+    public String product(HttpServletRequest request, HttpServletResponse response, Page page) {
+        int id = Integer.parseInt(request.getParameter("pid"));
+        Product p = productDAO.get(id);
+        List<ProductImage> productSingleImages = productImageDAO.list(p, ProductImageDAO.type_single);
+
+        p.setProductSingleImages(productSingleImages);
+        
+        Promotion promotionByProduct = promotionItemDAO.getByProduct(p.getId()).getPromotion();
+	    if (promotionByProduct != null) {
+	    	String promotionName = promotionByProduct.getName();
+	        String discountTypeName = promotionByProduct.getDiscountTypeDescription();
+	        p.setPromotionName(promotionName);
+	        p.setDiscountTypeName(discountTypeName);
+	    }
+
+        request.setAttribute("p", p);
+        
+        // for head nav
+        List<Segment> segments = segmentDAO.list();
+    	categoryDAO.fill(segments);
+    	request.setAttribute("segments", segments);
+        
+        return "product.jsp";
+    }
+
+    
+    public String brand(HttpServletRequest request, HttpServletResponse response, Page page) {
+        int cid = Integer.parseInt(request.getParameter("cid"));
+        Brand brand = brandDAO.get(cid);
+        productDAO.fill(brand);
+        productDAO.fillPromotion(brand);
+        
+        
+        request.setAttribute("brand", brand);
+        
+        // for head nav
+        List<Segment> segments = segmentDAO.list();
+    	categoryDAO.fill(segments);
+    	request.setAttribute("segments", segments);
+        
+        return "brand.jsp";
+    }
+    
     public String register(HttpServletRequest request, HttpServletResponse response, Page page) {
     	String email = request.getParameter("email");
         String password = request.getParameter("password");
@@ -163,49 +206,7 @@ public class ForeServlet extends BaseForeServlet {
         return "@forehome";
     }
 
-    public String product(HttpServletRequest request, HttpServletResponse response, Page page) {
-        int id = Integer.parseInt(request.getParameter("pid"));
-        Product p = productDAO.get(id);
-        List<ProductImage> productSingleImages = productImageDAO.list(p, ProductImageDAO.type_single);
-
-        p.setProductSingleImages(productSingleImages);
-        
-        Promotion promotionByProduct = promotionItemDAO.getByProduct(p.getId()).getPromotion();
-	    if (promotionByProduct != null) {
-	    	String promotionName = promotionByProduct.getName();
-	        String discountTypeName = promotionByProduct.getDiscountTypeDescription();
-	        p.setPromotionName(promotionName);
-	        p.setDiscountTypeName(discountTypeName);
-	    }
-
-        request.setAttribute("p", p);
-        
-        // for head nav
-        List<Segment> segments = segmentDAO.list();
-    	categoryDAO.fill(segments);
-    	request.setAttribute("segments", segments);
-        
-        return "product.jsp";
-    }
-
     
-    public String brand(HttpServletRequest request, HttpServletResponse response, Page page) {
-        int cid = Integer.parseInt(request.getParameter("cid"));
-        Brand brand = brandDAO.get(cid);
-        
-        productDAO.fill(brand);
-
-        
-        
-        request.setAttribute("brand", brand);
-        
-        // for head nav
-        List<Segment> segments = segmentDAO.list();
-    	categoryDAO.fill(segments);
-    	request.setAttribute("segments", segments);
-        
-        return "brand.jsp";
-    }
 
     /*
     public String search(HttpServletRequest request, HttpServletResponse response, Page page) {

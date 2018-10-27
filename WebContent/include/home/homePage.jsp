@@ -103,7 +103,8 @@
 							<c:if test="${ stc.count <= brandcount }">
 							
 								<c:forEach items="${ brand.products }" var="product" varStatus="st">
-									<c:if test="${ st.count <= brandcount }">		
+									<c:if test="${ st.count <= brandcount }">	
+										
 				                        <!-- Single Product -->
 				                        <div class="single-product-wrapper">
 				                        
@@ -125,7 +126,7 @@
 					                         </a>
 				                            <!-- Product Description -->
 				                            <div class="product-description">
-				                                <span>topshop</span>
+				                                <span style="color: red;">${ product.promotionName }</span>
 				                                <a href="foreproduct?pid=${ product.id }">
 		                                            <h6>${ product.name }</h6>
 		                                        </a>

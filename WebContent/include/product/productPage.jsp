@@ -23,9 +23,11 @@
 
         <!-- Single Product Description -->
         <div class="single_product_desc clearfix">
-<!--         
-            <span>mango</span>
--->            
+               
+			<c:if test="${!empty p.promotionName }">
+            	<span style="color: red;">${ p.promotionName }</span>
+            </c:if>
+            
             <a href="cart.html">
                 <h2>${ p.name }</h2>
             </a>
@@ -36,9 +38,7 @@
             	$${ p.price }
             </p>
             
-            <c:if test="${!empty p.promotionName }">
-            	<p class="product-desc">Discount Type : ${ p.discountTypeName } (${ p.promotionName })</p>
-            </c:if>
+            
 
             <!-- Form -->
             <form class="cart-form clearfix" method="post">

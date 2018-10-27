@@ -259,6 +259,25 @@ public class ProductDAO {
             p.setFirstProductImage(pis.get(0));
     }
     
+    public void fillPromotion(Brand brand) {
+    	PromotionItemDAO promotionItemDAO = new PromotionItemDAO();
+    	
+        for (Product p : brand.getProducts()) {
+          PromotionItem promotionItem = promotionItemDAO.getByProduct(p.getId()); 
+          Promotion promotionByProduct = promotionItem.getPromotion();
+          if (promotionByProduct != null && !(promotionItem.getDiscountOf() == 100 && promotionByProduct.getDiscountType() == PromotionDAO.buyXGetYFree)) {
+            String promotionName = "";
+            if (promotionByProduct.getState() == 1) {
+              promotionName = promotionByProduct.getName();
+            }
+              String discountTypeName = promotionByProduct.getDiscountTypeDescription();
+              p.setPromotionName(promotionName);
+              p.setDiscountTypeName(discountTypeName);
+          }
+        }
+          
+    }
+    
     public void fillPromotion(List<Brand> brands) {
     	PromotionItemDAO promotionItemDAO = new PromotionItemDAO();
     	for (Brand c : brands) {

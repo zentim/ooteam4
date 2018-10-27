@@ -231,24 +231,26 @@
 -->					                                        
 					
 					                                        <!-- Product Badge -->
+<!-- 					                                        
 					                                        <c:if test="${!empty product.promotionName }">
-						                                        <div class="product-badge new-badge" style="top: 75%; left: 30%; height: auto;">
+						                                        <div class="product-badge new-badge" style="top: 75%; left: 0%; height: auto;">
 						                                            <span>${ product.promotionName } - ${ product.discountTypeName }</span>
 						                                        </div>
 					                                        </c:if>
+-->					                                        
 					
 					                                        <!-- Favourite -->
-	<!-- 				                                        
+<!-- 				                                        
 					                                        <div class="product-favourite">
 					                                            <a href="#" class="favme fa fa-heart"></a>
 					                                        </div>
-	-->				                                        
+-->				                                        
 					                                    </div>
 													</a>
 				
 				                                    <!-- Product Description -->
 				                                    <div class="product-description">
-				                                        <span>topshop</span>
+				                                        <span style="color: red;">${ product.promotionName }</span>
 				                                        <a href="foreproduct?pid=${ product.id }">
 				                                            <h6>${ product.name }</h6>
 				                                        </a>

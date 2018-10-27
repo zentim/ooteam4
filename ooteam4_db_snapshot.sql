@@ -69,6 +69,11 @@ CREATE TABLE IF NOT EXISTS `order_` (
 
 -- 正在傾印表格  mysql_shoppingcart.order_ 的資料：~0 rows (大約)
 /*!40000 ALTER TABLE `order_` DISABLE KEYS */;
+REPLACE INTO `order_` (`orderId`, `userId`, `dateOrdered`, `datePaid`, `state`, `total`, `deliverMethod`, `address`) VALUES
+	(2, 1, '2018-10-27 14:10:03', '2018-10-27 14:10:05', 'waitDelivery', 17100, 0, ''),
+	(3, 1, '2018-10-27 14:45:49', '2018-10-27 14:45:52', 'waitDelivery', 100, 0, ''),
+	(4, 1, '2018-10-27 14:46:04', '2018-10-27 14:46:07', 'waitDelivery', 100, 0, '13'),
+	(5, 1, '2018-10-27 14:46:58', NULL, 'waitPay', 67830, 0, '');
 /*!40000 ALTER TABLE `order_` ENABLE KEYS */;
 
 -- 傾印  表格 mysql_shoppingcart.order_item 結構
@@ -86,6 +91,11 @@ CREATE TABLE IF NOT EXISTS `order_item` (
 
 -- 正在傾印表格  mysql_shoppingcart.order_item 的資料：~0 rows (大約)
 /*!40000 ALTER TABLE `order_item` DISABLE KEYS */;
+REPLACE INTO `order_item` (`orderItemId`, `orderId`, `userId`, `productId`, `quantity`, `state`, `originalPrice`, `promotionalPrice`) VALUES
+	(1, 2, 1, 1, 1, 1, 100, 0),
+	(2, 2, 1, 4, 200, 1, 100, 0),
+	(3, 4, 1, 4, 1, 1, 100, 0),
+	(4, 5, 1, 4, 798, 1, 100, 0);
 /*!40000 ALTER TABLE `order_item` ENABLE KEYS */;
 
 -- 傾印  表格 mysql_shoppingcart.product 結構
@@ -102,10 +112,10 @@ CREATE TABLE IF NOT EXISTS `product` (
 -- 正在傾印表格  mysql_shoppingcart.product 的資料：~16 rows (大約)
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
 REPLACE INTO `product` (`productId`, `name`, `inventory`, `price`, `dateAdded`, `brandId`) VALUES
-	(1, 'Elephant High quality small kettle (500ml)', 1000, 100, NULL, 1),
+	(1, 'Elephant High quality small kettle (500ml)', 999, 100, NULL, 1),
 	(2, 'Elephant High quality big kettle (1000ml)', 1000, 100, NULL, 1),
 	(3, 'Kitten High quality small kettle (500ml)', 1000, 100, NULL, 2),
-	(4, 'Kitten High quality big kettle (1000ml)', 1000, 100, NULL, 2),
+	(4, 'Kitten High quality big kettle (1000ml)', 0, 100, NULL, 2),
 	(5, 'Doggy High quality small kettle (500ml)', 1000, 100, NULL, 3),
 	(6, 'Doggy High quality big kettle (1000ml)', 1000, 100, NULL, 3),
 	(7, 'Bird High quality small kettle (500ml)', 1000, 100, NULL, 4),
@@ -163,9 +173,9 @@ CREATE TABLE IF NOT EXISTS `promotion` (
 -- 正在傾印表格  mysql_shoppingcart.promotion 的資料：~4 rows (大約)
 /*!40000 ALTER TABLE `promotion` DISABLE KEYS */;
 REPLACE INTO `promotion` (`promotionId`, `discountType`, `name`, `dateFrom`, `dateTo`, `state`) VALUES
-	(1, 1, 'XYZ Discount', '2018-10-27 13:38:00', NULL, 1),
-	(2, 2, '100 units X', '2018-10-27 13:40:00', NULL, 1),
-	(3, 3, 'Last Year More Than 100K', '2018-10-27 13:40:00', NULL, 1),
+	(1, 1, 'XYZ Discount (5% off)', '2018-10-27 13:38:00', NULL, 1),
+	(2, 2, '100 units X (15% off)', '2018-10-27 13:40:00', NULL, 1),
+	(3, 3, 'Last Year More Than 100K (20% off)', '2018-10-27 13:40:00', NULL, 1),
 	(4, 4, 'Buy 2 Get 1 Free', '2018-10-27 13:42:00', NULL, 1);
 /*!40000 ALTER TABLE `promotion` ENABLE KEYS */;
 
@@ -215,6 +225,8 @@ CREATE TABLE IF NOT EXISTS `subscription` (
 
 -- 正在傾印表格  mysql_shoppingcart.subscription 的資料：~0 rows (大約)
 /*!40000 ALTER TABLE `subscription` DISABLE KEYS */;
+REPLACE INTO `subscription` (`subscriptionId`, `userId`, `productId`) VALUES
+	(1, 1, 4);
 /*!40000 ALTER TABLE `subscription` ENABLE KEYS */;
 
 -- 傾印  表格 mysql_shoppingcart.user 結構
@@ -227,6 +239,8 @@ CREATE TABLE IF NOT EXISTS `user` (
 
 -- 正在傾印表格  mysql_shoppingcart.user 的資料：~0 rows (大約)
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
+REPLACE INTO `user` (`userId`, `email`, `password`) VALUES
+	(1, 'test@test.com', 'tttttttt');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
