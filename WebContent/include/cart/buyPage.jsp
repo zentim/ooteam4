@@ -198,8 +198,8 @@ $(function() {
 				var str = arrStr[i].split(":");
 				
 				discountResult += '<tr style="color: red">'
-					discountResult += '<td style="text-align: left">' + str[0] + '<td>';
-					discountResult += '<td style="text-align: right">' + str[1] + '<td>';
+					discountResult += '<td style="text-align: left">' + str[0] + '</td>';
+					discountResult += '<td style="text-align: right">' + str[1] + '</td>';
 				discountResult += '</tr>'	
 			}
 		}

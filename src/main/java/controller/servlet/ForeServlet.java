@@ -33,33 +33,35 @@ import main.java.pattern.chainOfResponsibility.BroughtMoreThanInLastYearPolicy;
 public class ForeServlet extends BaseForeServlet {
 
     public String home(HttpServletRequest request, HttpServletResponse response, Page page) {
-    	List<Segment> segments = segmentDAO.list();
-    	categoryDAO.fill(segments);
-    	
         List<Brand> brands = brandDAO.list();
         productDAO.fill(brands);
         productDAO.fillPromotion(brands);
-        
-        request.setAttribute("segments", segments);
         request.setAttribute("brands", brands);
+        
+        // for head nav
+        List<Segment> segments = segmentDAO.list();
+    	categoryDAO.fill(segments);
+    	request.setAttribute("segments", segments);
+    	
         return "home.jsp";
     }
     
     public String category(HttpServletRequest request, HttpServletResponse response, Page page) {
     	int cid = Integer.parseInt(request.getParameter("cid"));
     	
-    	Category category = categoryDAO.get(cid);
-    	
-    	List<Segment> segments = segmentDAO.list();
-    	categoryDAO.fill(segments);
-    	
-        List<Brand> brands = brandDAO.list(cid);
+    	List<Brand> brands = brandDAO.list(cid);
         productDAO.fill(brands);
         productDAO.fillPromotion(brands);
-        
-        request.setAttribute("category", category);
-        request.setAttribute("segments", segments);
         request.setAttribute("brands", brands);
+        
+    	Category category = categoryDAO.get(cid);
+    	request.setAttribute("category", category);
+        
+        // for head nav
+        List<Segment> segments = segmentDAO.list();
+    	categoryDAO.fill(segments);
+    	request.setAttribute("segments", segments);
+    	
         return "category.jsp";
     }
     
@@ -177,6 +179,12 @@ public class ForeServlet extends BaseForeServlet {
 	    }
 
         request.setAttribute("p", p);
+        
+        // for head nav
+        List<Segment> segments = segmentDAO.list();
+    	categoryDAO.fill(segments);
+    	request.setAttribute("segments", segments);
+        
         return "product.jsp";
     }
 
@@ -187,7 +195,15 @@ public class ForeServlet extends BaseForeServlet {
         
         productDAO.fill(brand);
 
+        
+        
         request.setAttribute("brand", brand);
+        
+        // for head nav
+        List<Segment> segments = segmentDAO.list();
+    	categoryDAO.fill(segments);
+    	request.setAttribute("segments", segments);
+        
         return "brand.jsp";
     }
 
@@ -342,6 +358,12 @@ public class ForeServlet extends BaseForeServlet {
         request.getSession().setAttribute("shoppingCart", shoppingCart);
         request.getSession().setAttribute("caretaker", caretaker);
         request.setAttribute("ois", ois);
+        
+        // for head nav
+        List<Segment> segments = segmentDAO.list();
+    	categoryDAO.fill(segments);
+    	request.setAttribute("segments", segments);
+        
         return "cart.jsp";
     }
     

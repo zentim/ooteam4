@@ -2,9 +2,6 @@
 	pageEncoding="UTF-8" isELIgnored="false"%>
 <%@include file="./include/header.jsp" %>
 
-<!-- Left Side Navigator -->
-<%@include file="./include/nav.jsp" %>
-
 <!-- Middle Content Area -->
 <%@include file="./include/product/productPage.jsp" %>
 
