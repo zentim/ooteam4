@@ -223,7 +223,7 @@
 				                                <div class="single-product-wrapper">
 				                                	<a href="foreproduct?pid=${ product.id }">
 					                                    <!-- Product Image -->
-					                                    <div class="product-img">
+					                                    <div class="product-img" style="height: 350px; display: flex; justify-content: center; align-items: center;">
 					                                        <img src="img/productSingle/${product.firstProductImage.id}.jpg" alt="productId ${product.firstProductImage.id}">
 					                                        <!-- Hover Thumb -->
 <!-- 					                                        
