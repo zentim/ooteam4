@@ -506,7 +506,7 @@ public class ForeServlet extends BaseForeServlet {
         int oid = Integer.parseInt(request.getParameter("oid"));
         Order order = orderDAO.get(oid);
 
-        order.setState(orderDAO.waitDelivery);
+        order.setState(OrderDAO.waitDelivery);
         order.setDatePaid(new Date());
         orderDAO.update(order);
 
@@ -516,7 +516,7 @@ public class ForeServlet extends BaseForeServlet {
 
     public String bought(HttpServletRequest request, HttpServletResponse response, Page page) {
         User user = (User) request.getSession().getAttribute("user");
-        List<Order> os = orderDAO.list(user.getId(), orderDAO.delete);
+        List<Order> os = orderDAO.list(user.getId(), OrderDAO.delete);
         orderItemDAO.fill(os);
 
         request.setAttribute("os", os);
@@ -536,44 +536,40 @@ public class ForeServlet extends BaseForeServlet {
     public String subscribe(HttpServletRequest request, HttpServletResponse response, Page page) {
     	
      	int uid=((User) request.getSession().getAttribute("user")).getId();
-     	List<Subscription> subscriptions= subscriptionDAO.list(uid);
-     	Product product=null;
-     	List<Product> products= new ArrayList<Product>();
+     	List<Subscription> subscriptions = subscriptionDAO.list(uid);
+     	Product product = null;
+     	List<Product> products = new ArrayList<Product>();
      	for(Subscription subscription:subscriptions) {
-     		product=productDAO.get(subscription.getProduct().getId());
+     		product = productDAO.get(subscription.getProduct().getId());
      		products.add(product);
      	}
      	request.setAttribute("products", products);
+     	
      	return "subscribe.jsp";
-    	
-    	
     }
     
     public String createsubscribe(HttpServletRequest request, HttpServletResponse response, Page page) {
     	int pid=Integer.parseInt(request.getParameter("pid"));
-    	String returnURL=request.getParameter("returnpage");
-    	System.out.println(pid);
-    	System.out.println(returnURL);
-    	if(request.getSession().getAttribute("user")!=null) {
+    	String returnURL = request.getParameter("returnpage");
+    	
+    	if(request.getSession().getAttribute("user")!= null) {
     		int uid=((User) request.getSession().getAttribute("user")).getId();
-    		if(subscriptionDAO.check(pid,uid)) {
+    		if(subscriptionDAO.check(pid, uid)) {
     			return "%success";
     		}else{
-    			subscriptionDAO.add(pid,uid);
+    			subscriptionDAO.add(pid, uid);
     			return "%success";
     		}
-    		
-    		
     	}else{
     		return "%failed";
     	}
-    
     }
     
     public String deleteSubscription(HttpServletRequest request, HttpServletResponse response, Page page) {
         int uid =((User) request.getSession().getAttribute("user")).getId();
     	int pid = Integer.parseInt(request.getParameter("pid"));
-        subscriptionDAO.delete(uid,pid);
+        subscriptionDAO.delete(uid, pid);
+        
         return "%success";
     }
 

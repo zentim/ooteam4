@@ -106,20 +106,23 @@
 									<c:if test="${ st.count <= brandcount }">		
 				                        <!-- Single Product -->
 				                        <div class="single-product-wrapper">
-				                            <!-- Product Image -->
-				                            <div class="product-img" style="height: 350px; display: flex; justify-content: center; align-items: center;">
-				                                <img src="img/productSingle/${product.firstProductImage.id}.jpg" alt="productId ${product.firstProductImage.id}">
-				                                <!-- Hover Thumb -->		                                
-<!-- 		                                
-				                                <img class="hover-img" src="img/product-img/product-2.jpg" alt="">
--->		                                
-				                                <!-- Favourite -->
-<!--		                                
-				                                <div class="product-favourite">
-				                                    <a href="#" class="favme fa fa-heart"></a>
-				                                </div>
--->		                                
-				                            </div>
+				                        
+					                        <a href="foreproduct?pid=${ product.id }">
+					                            <!-- Product Image -->
+					                            <div class="product-img" style="height: 350px; display: flex; justify-content: center; align-items: center;">
+					                                <img src="img/productSingle/${product.firstProductImage.id}.jpg" alt="productId ${product.firstProductImage.id}">
+					                                <!-- Hover Thumb -->		                                
+	<!-- 		                                
+					                                <img class="hover-img" src="img/product-img/product-2.jpg" alt="">
+	-->		                                
+					                                <!-- Favourite -->
+	<!--		                                
+					                                <div class="product-favourite">
+					                                    <a href="#" class="favme fa fa-heart"></a>
+					                                </div>
+	-->		                                
+					                            </div>
+					                         </a>
 				                            <!-- Product Description -->
 				                            <div class="product-description">
 				                                <span>topshop</span>

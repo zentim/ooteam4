@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<div style="width: 80%; margin: 0 auto;">
+<div style="width: 80%; margin: 130px auto;">
 
 <h2 style="padding-top: 20px;">Shopping Cart</h2>
 

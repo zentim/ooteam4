@@ -46,7 +46,7 @@
 
 <script>
 function deleteSubscription(i, pid){
-	  console.log(i);
+	 
 	  var page = "foredeleteSubscription";
 	  $.get(
              page,

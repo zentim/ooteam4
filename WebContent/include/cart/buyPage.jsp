@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" isELIgnored="false"%>
 
-<div class="container">
+<div class="container" style="margin: 130px auto;">
 	<div class="row justify-content-center">
 	
 	<div class="login-form">
