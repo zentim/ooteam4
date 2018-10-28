@@ -53,9 +53,9 @@
                         </a>
                          
                     </td>
-                    <td class="orderItemDeleteTD">
+                    <td class="orderItemDeleteTD" style="text-align: center;">
                         <a class="deleteOrderLink" oid="${o.id}" href="#nowhere">
-                            <span  class="orderListItemDelete glyphicon glyphicon-trash"></span>
+                            <i class="fas fa-trash-alt fa-lg orderListItemDelete"></i>
                         </a>
                          
                     </td>
@@ -67,7 +67,7 @@
                         	<img 
                         		width="80" 
                         		height="80" 
-                        		src="img/productSingle_middle/${ oi.product.firstProductImage.id }.jpg">
+                        		src="img/productSingle/${ oi.product.firstProductImage.id }.jpg">
                         </td>
                         <td width="600px">
                             

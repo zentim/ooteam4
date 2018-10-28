@@ -95,7 +95,7 @@
 					              <div style="position:relative; width: 80px; height: 80px;">
 					                <img 
 					                  class="cartProductImg"  
-					                  src="img/productSingle_middle/${oi.product.firstProductImage.id}.jpg" 
+					                  src="img/productSingle/${oi.product.firstProductImage.id}.jpg" 
 					                  style="position:absolute; max-width: 100%; max-height: 100%; top:0; bottom: 0; left: 0; right: 0; margin: auto; ">
 					              </div>
 					            </td>
