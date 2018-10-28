@@ -20,7 +20,7 @@ public class PromotionDAOTest {
 
     // create promotion
     promotion = new Promotion();
-    promotion.setDiscountType(PromotionDAO.buyXGetYFree);
+    promotion.setDiscountType(PromotionDAO.BUY_X_GET_Y_FREE);
     promotion.setName("National Holiday");
     promotion.setDateFrom(new Date());
     promotion.setDateTo(new Date());

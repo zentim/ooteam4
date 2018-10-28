@@ -34,10 +34,10 @@ public class BackServletFilter implements Filter {
 
 		uri = StringUtils.remove(uri, contextPath);
 		if (uri.startsWith("/admin_")) {
-			String ServletPath = StringUtils.substringBetween(uri, "_", "_") + "Servlet"; // categoryServlet
+			String servletPath = StringUtils.substringBetween(uri, "_", "_") + "Servlet"; // categoryServlet
 			String method = StringUtils.substringAfterLast(uri, "_");
 			req.setAttribute("method", method); // categoryServlet.list()
-			request.getRequestDispatcher("/" + ServletPath).forward(req, res);
+			request.getRequestDispatcher("/" + servletPath).forward(req, res);
 
 			return;
 		}

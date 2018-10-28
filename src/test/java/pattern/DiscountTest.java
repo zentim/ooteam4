@@ -12,16 +12,20 @@ import main.java.pattern.chainOfResponsibility.DiscountPolicy;
 import main.java.pattern.chainOfResponsibility.DiscountRequest;
 import main.java.pattern.chainOfResponsibility.BroughtMoreThanInLastYearPolicy;
 import main.java.model.bean.Brand;
+import main.java.model.bean.Category;
 import main.java.model.bean.OrderItem;
 import main.java.model.bean.Product;
 import main.java.model.bean.Promotion;
 import main.java.model.bean.PromotionItem;
+import main.java.model.bean.Segment;
 import main.java.model.bean.User;
 import main.java.model.dao.BrandDAO;
+import main.java.model.dao.CategoryDAO;
 import main.java.model.dao.OrderItemDAO;
 import main.java.model.dao.ProductDAO;
 import main.java.model.dao.PromotionDAO;
 import main.java.model.dao.PromotionItemDAO;
+import main.java.model.dao.SegmentDAO;
 import main.java.model.dao.UserDAO;
 import main.java.pattern.chainOfResponsibility.BuyXGetYFreePolicy;
 import main.java.pattern.chainOfResponsibility.NoDiscountPolicy;
@@ -35,9 +39,18 @@ import main.java.pattern.chainOfResponsibility.ProductSetPolicy;
  */
 public class DiscountTest {
 	// Init Test Data
-	public static BrandDAO branddao = new BrandDAO();
-	public static Brand brand;
-	public static int brandId;
+    
+    public static SegmentDAO segmentdao = new SegmentDAO();
+    public static Segment segment;
+    public static int segmentId;
+    
+    public static CategoryDAO categorydao = new CategoryDAO();
+    public static Category category;
+    public static int categoryId;
+    
+    public static BrandDAO branddao = new BrandDAO();
+    public static Brand brand;
+    public static int brandId;
 
 	public static ProductDAO productdao = new ProductDAO();
 	public static Product product;
@@ -65,10 +78,22 @@ public class DiscountTest {
 
 	@BeforeClass
 	public static void testStart() {
-		// create brand
-		brand = new Brand();
-		brand.setName("Book");
-		brandId = branddao.add(brand);
+	    // create segment
+        segment = new Segment();
+        segment.setName("SegmentTest");
+        segmentId = segmentdao.add(segment);
+
+        // create category
+        category = new Category();
+        category.setName("CategoryTest");
+        category.setSegment(segmentdao.get(segmentId));
+        categoryId = categorydao.add(category);
+
+        // create brand
+        brand = new Brand();
+        brand.setName("Book");
+        brand.setCategory(categorydao.get(categoryId));
+        brandId = branddao.add(brand);
 
 		// create user
 		user = new User();
@@ -102,7 +127,7 @@ public class DiscountTest {
 		
 		// create promotion
 	    promotion = new Promotion();
-	    promotion.setDiscountType(PromotionDAO.buyXGetYFree);
+	    promotion.setDiscountType(PromotionDAO.BUY_X_GET_Y_FREE);
 	    promotion.setName("Nation Holiday Discount");
 	    promotion.setDateFrom(new Date());
 	    promotion.setDateTo(new Date());
@@ -183,7 +208,7 @@ public class DiscountTest {
 		
 		// create promotion
 	    promotion = new Promotion();
-	    promotion.setDiscountType(PromotionDAO.broughtMoreThanInLastYear);
+	    promotion.setDiscountType(PromotionDAO.BROUGHT_MORE_THAN_IN_LAST_YEAR);
 	    promotion.setName("Brought More Than $100K In Last Year");
 	    promotion.setDateFrom(new Date());
 	    promotion.setDateTo(new Date());
@@ -255,7 +280,7 @@ public class DiscountTest {
 		
 		// create promotion
 	    promotion = new Promotion();
-	    promotion.setDiscountType(PromotionDAO.eachGroupOfN);
+	    promotion.setDiscountType(PromotionDAO.EACH_GROUP_OF_N);
 	    promotion.setName("Each Group Of 100 Discount");
 	    promotion.setDateFrom(new Date());
 	    promotion.setDateTo(new Date());
@@ -329,7 +354,7 @@ public class DiscountTest {
 		
 		// create promotion
 	    promotion = new Promotion();
-	    promotion.setDiscountType(PromotionDAO.productSet);
+	    promotion.setDiscountType(PromotionDAO.PRODUCT_SET);
 	    promotion.setName("XYZ Discount");
 	    promotion.setDateFrom(new Date());
 	    promotion.setDateTo(new Date());
@@ -416,7 +441,13 @@ public class DiscountTest {
 		userdao.delete(userId);
 
 		// delete brand
-		branddao.delete(brandId);
+        branddao.delete(brandId);
+        
+        // delete category
+        categorydao.delete(categoryId);
+        
+        // delete segment
+        segmentdao.delete(segmentId);
 	}
 
 }

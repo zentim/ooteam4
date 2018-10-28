@@ -1,5 +1,6 @@
 package main.java.pattern.memento;
 
+import java.io.Serializable;
 import java.util.List;
 
 import main.java.model.bean.OrderItem;
@@ -9,7 +10,7 @@ import main.java.model.bean.OrderItem;
  * Memento Pattern - Memento
  *
  */
-public class Memento {
+public class Memento implements Serializable {
 	private List<OrderItem> orderItems;
 
 	public List<OrderItem> getOrderItems() {

@@ -204,7 +204,7 @@ public class ForeServlet extends BaseForeServlet {
      
     public String buy(HttpServletRequest request, HttpServletResponse response, Page page) {
         String[] oiids = request.getParameterValues("oiid");
-        List<OrderItem> ois = new ArrayList<OrderItem>();
+        List<OrderItem> ois = new ArrayList<>();
         
         double total = 0;
         for (String oiidString : oiids) {
@@ -287,7 +287,7 @@ public class ForeServlet extends BaseForeServlet {
 
     public String cart(HttpServletRequest request, HttpServletResponse response, Page page) {
         User user = (User) request.getSession().getAttribute("user");
-        List<OrderItem> ois = new ArrayList<>();
+        List<OrderItem> ois;
 
         ois = orderItemDAO.listCartByUser(user.getId());
 
@@ -433,7 +433,7 @@ public class ForeServlet extends BaseForeServlet {
 
         order.setUser(user);
         order.setDateOrdered(new Date());
-        order.setState(OrderDAO.waitPay);
+        order.setState(OrderDAO.WAIT_PAY);
         order.setAddress(address);
         order.setTotal(total);
 
@@ -461,7 +461,7 @@ public class ForeServlet extends BaseForeServlet {
         int oid = Integer.parseInt(request.getParameter("oid"));
         Order order = orderDAO.get(oid);
 
-        order.setState(OrderDAO.waitDelivery);
+        order.setState(OrderDAO.WAIT_DELIVERY);
         order.setDatePaid(new Date());
         orderDAO.update(order);
 
@@ -471,7 +471,7 @@ public class ForeServlet extends BaseForeServlet {
 
     public String bought(HttpServletRequest request, HttpServletResponse response, Page page) {
         User user = (User) request.getSession().getAttribute("user");
-        List<Order> os = orderDAO.list(user.getId(), OrderDAO.delete);
+        List<Order> os = orderDAO.list(user.getId(), OrderDAO.DELETE);
         orderItemDAO.fill(os);
 
         request.setAttribute("os", os);
@@ -482,7 +482,7 @@ public class ForeServlet extends BaseForeServlet {
         int oid = Integer.parseInt(request.getParameter("oid"));
         Order o = orderDAO.get(oid);
 
-        o.setState(OrderDAO.delete);
+        o.setState(OrderDAO.DELETE);
         orderDAO.update(o);
 
         return "%success";
@@ -492,7 +492,7 @@ public class ForeServlet extends BaseForeServlet {
      	int uid = ((User) request.getSession().getAttribute("user")).getId();
      	List<Subscription> subscriptions = subscriptionDAO.list(uid);
      	Product product = null;
-     	List<Product> products = new ArrayList<Product>();
+     	List<Product> products = new ArrayList<>();
      	
      	for(Subscription subscription:subscriptions) {
      		product = productDAO.get(subscription.getProduct().getId());
@@ -506,7 +506,6 @@ public class ForeServlet extends BaseForeServlet {
     
     public String createsubscribe(HttpServletRequest request, HttpServletResponse response, Page page) {
     	int pid=Integer.parseInt(request.getParameter("pid"));
-    	String returnURL = request.getParameter("returnpage");
     	
     	if(request.getSession().getAttribute("user") != null) {
     		int uid = ((User) request.getSession().getAttribute("user")).getId();

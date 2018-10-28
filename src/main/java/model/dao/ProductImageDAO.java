@@ -23,10 +23,12 @@ public class ProductImageDAO {
 
             String sql = "select count(*) from product_image";
 
-            ResultSet rs = s.executeQuery(sql);
-            while (rs.next()) {
-                total = rs.getInt(1);
+            try (ResultSet rs = s.executeQuery(sql);) {
+                while (rs.next()) {
+                    total = rs.getInt(1);
+                }
             }
+            
         } catch (SQLException e) {
 
             e.printStackTrace();
@@ -44,13 +46,15 @@ public class ProductImageDAO {
             ps.setString(2, bean.getType());
             ps.execute();
 
-            ResultSet rs = ps.getGeneratedKeys();
-            if (rs.next()) {
-                int id = rs.getInt(1);
-                bean.setId(id);
+            try (ResultSet rs = ps.getGeneratedKeys();) {
+                if (rs.next()) {
+                    int id = rs.getInt(1);
+                    bean.setId(id);
 
-                return id;
+                    return id;
+                }
             }
+            
         } catch (SQLException e) {
 
             e.printStackTrace();
@@ -59,17 +63,14 @@ public class ProductImageDAO {
         return 0;
     }
 
-    public void update(ProductImage bean) {
-
-    }
-
     public void delete(int id) {
+        String sql = "delete from product_image where productImageId = ?";
+        
+        try (Connection c = DBUtil.getConnection(); 
+                PreparedStatement ps = c.prepareStatement(sql);) {
 
-        try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
-
-            String sql = "delete from product_image where productImageId = " + id;
-
-            s.execute(sql);
+            ps.setInt(1, id);
+            ps.execute(sql);
 
         } catch (SQLException e) {
 
@@ -79,20 +80,22 @@ public class ProductImageDAO {
 
     public ProductImage get(int id) {
         ProductImage bean = new ProductImage();
+        String sql = "select * from product_image where productImageId = ?";
+        
+        try (Connection c = DBUtil.getConnection(); 
+                PreparedStatement ps = c.prepareStatement(sql);) {
 
-        try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
+            ps.setInt(1, id);
 
-            String sql = "select * from product_image where productImageId = " + id;
-
-            ResultSet rs = s.executeQuery(sql);
-
-            if (rs.next()) {
-                int productId = rs.getInt("productId");
-                String type = rs.getString("type");
-                Product product = new ProductDAO().get(productId);
-                bean.setProduct(product);
-                bean.setType(type);
-                bean.setId(id);
+            try (ResultSet rs = ps.executeQuery();) {
+                if (rs.next()) {
+                    int productId = rs.getInt("productId");
+                    String type = rs.getString("type");
+                    Product product = new ProductDAO().get(productId);
+                    bean.setProduct(product);
+                    bean.setType(type);
+                    bean.setId(id);
+                }
             }
 
         } catch (SQLException e) {
@@ -108,13 +111,14 @@ public class ProductImageDAO {
     }
 
     public List<ProductImage> list(Product p, String type, int start, int count) {
-        List<ProductImage> beans = new ArrayList<ProductImage>();
+        List<ProductImage> beans = new ArrayList<>();
 
         String sql = "select * from product_image "
                 + "where productId =? and type =? "
                 + "order by productImageId desc limit ?,? ";
 
-        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+        try (Connection c = DBUtil.getConnection(); 
+                PreparedStatement ps = c.prepareStatement(sql);) {
 
             ps.setInt(1, p.getId());
             ps.setString(2, type);
@@ -122,19 +126,20 @@ public class ProductImageDAO {
             ps.setInt(3, start);
             ps.setInt(4, count);
 
-            ResultSet rs = ps.executeQuery();
+            try (ResultSet rs = ps.executeQuery();) {
+                while (rs.next()) {
 
-            while (rs.next()) {
+                    ProductImage bean = new ProductImage();
+                    int id = rs.getInt(1);
 
-                ProductImage bean = new ProductImage();
-                int id = rs.getInt(1);
+                    bean.setProduct(p);
+                    bean.setType(type);
+                    bean.setId(id);
 
-                bean.setProduct(p);
-                bean.setType(type);
-                bean.setId(id);
-
-                beans.add(bean);
+                    beans.add(bean);
+                }
             }
+
         } catch (SQLException e) {
 
             e.printStackTrace();

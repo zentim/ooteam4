@@ -21,16 +21,20 @@ public class ProductDAO {
 
     public int getTotal(int brandId) {
         int total = 0;
-        try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
+        String sql = "select count(*) from product where brandId = ?";
+        
+        try (Connection c = DBUtil.getConnection(); 
+                PreparedStatement ps = c.prepareStatement(sql);) {
 
-            String sql = "select count(*) from product where brandId = " + brandId;
+            ps.setInt(1, brandId);
 
-            ResultSet rs = s.executeQuery(sql);
-            while (rs.next()) {
-                total = rs.getInt(1);
+            try (ResultSet rs = ps.executeQuery();) {
+                while (rs.next()) {
+                    total = rs.getInt(1);
+                }
             }
+            
         } catch (SQLException e) {
-
             e.printStackTrace();
         }
         
@@ -39,17 +43,21 @@ public class ProductDAO {
 
     public int getTotalBySeller(int sellerId, int brandId) {
         int total = 0;
-        try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
+        String sql = "select count(*) from product where brandId = ? and sellerId = ?";
+        
+        try (Connection c = DBUtil.getConnection(); 
+                PreparedStatement ps = c.prepareStatement(sql);) {
+            
+            ps.setInt(1, brandId);
+            ps.setInt(2, sellerId);
 
-            String sql = "select count(*) from product "
-                    + "where brandId = " + brandId + " and sellerId = " + sellerId;
-
-            ResultSet rs = s.executeQuery(sql);
-            while (rs.next()) {
-                total = rs.getInt(1);
+            try (ResultSet rs = ps.executeQuery();) {
+                while (rs.next()) {
+                    total = rs.getInt(1);
+                }
             }
-        } catch (SQLException e) {
 
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         
@@ -67,13 +75,15 @@ public class ProductDAO {
             ps.setInt(5, bean.getBrand().getId());
             ps.execute();
 
-            ResultSet rs = ps.getGeneratedKeys();
-            if (rs.next()) {
-                int id = rs.getInt(1);
-                bean.setId(id);
+            try (ResultSet rs = ps.getGeneratedKeys();) {
+                if (rs.next()) {
+                    int id = rs.getInt(1);
+                    bean.setId(id);
 
-                return id;
+                    return id;
+                }
             }
+            
         } catch (SQLException e) {
 
             e.printStackTrace();
@@ -88,7 +98,8 @@ public class ProductDAO {
         String sql = "update product set "
                 + "name= ?, inventory=?, price=?, dateAdded=?, brandId = ? "
                 + "where productId = ?";
-        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+        try (Connection c = DBUtil.getConnection(); 
+                PreparedStatement ps = c.prepareStatement(sql);) {
 
             ps.setString(1, bean.getName());
             ps.setInt(2, bean.getInventory());
@@ -107,12 +118,13 @@ public class ProductDAO {
     }
 
     public void delete(int id) {
-
-        try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
-
-            String sql = "delete from product where productId = " + id;
-
-            s.execute(sql);
+        String sql = "delete from product where productId = ?";
+        
+        try (Connection c = DBUtil.getConnection(); 
+                PreparedStatement ps = c.prepareStatement(sql);) {
+            
+            ps.setInt(1, id);
+            ps.execute(sql);
 
         } catch (SQLException e) {
 
@@ -123,30 +135,32 @@ public class ProductDAO {
     public Product get(int id) {
         Product bean = new Product();
 
-        try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
+        String sql = "select * from product where productId = ?";
+        try (Connection c = DBUtil.getConnection(); 
+                PreparedStatement ps = c.prepareStatement(sql);) {
+            
+            ps.setInt(1, id);
 
-            String sql = "select * from product where productId = " + id;
+            try (ResultSet rs = ps.executeQuery();) {
+                if (rs.next()) {
 
-            ResultSet rs = s.executeQuery(sql);
+                    String name = rs.getString("name");
+                    int inventory = rs.getInt("inventory");
+                    float price = rs.getFloat("price");
+                    Date dateAdded = DateUtil.t2d(rs.getTimestamp("dateAdded"));
+                    int brandId = rs.getInt("brandId");
 
-            if (rs.next()) {
+                    Brand brand = new BrandDAO().get(brandId);
 
-                String name = rs.getString("name");
-                int inventory = rs.getInt("inventory");
-                float price = rs.getFloat("price");
-                Date dateAdded = DateUtil.t2d(rs.getTimestamp("dateAdded"));
-                int brandId = rs.getInt("brandId");
+                    bean.setName(name);
+                    bean.setInventory(inventory);
+                    bean.setPrice(price);
+                    bean.setDateAdded(dateAdded);
+                    bean.setBrand(brand);
 
-                Brand brand = new BrandDAO().get(brandId);
-
-                bean.setName(name);
-                bean.setInventory(inventory);
-                bean.setPrice(price);
-                bean.setDateAdded(dateAdded);
-                bean.setBrand(brand);
-
-                bean.setId(id);
-                setFirstProductImage(bean);
+                    bean.setId(id);
+                    setFirstProductImage(bean);
+                }
             }
 
         } catch (SQLException e) {
@@ -161,38 +175,42 @@ public class ProductDAO {
     }
 
     public List<Product> list(int brandId, int start, int count) {
-        List<Product> beans = new ArrayList<Product>();
+        List<Product> beans = new ArrayList<>();
 
-        String sql = "select * from product where brandId = ? order by productId desc limit ?,? ";
+        String sql = "select * from product "
+                + "where brandId = ? "
+                + "order by productId desc limit ?,? ";
 
-        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+        try (Connection c = DBUtil.getConnection(); 
+                PreparedStatement ps = c.prepareStatement(sql);) {
             ps.setInt(1, brandId);
             ps.setInt(2, start);
             ps.setInt(3, count);
 
-            ResultSet rs = ps.executeQuery();
+            try (ResultSet rs = ps.executeQuery();) {
+                while (rs.next()) {
+                    Product bean = new Product();
+                    int id = rs.getInt(1);
+                    String name = rs.getString("name");
+                    int inventory = rs.getInt("inventory");
+                    float price = rs.getFloat("price");
+                    Date dateAdded = DateUtil.t2d(rs.getTimestamp("dateAdded"));
+                    Brand brand = new BrandDAO().get(brandId);
 
-            while (rs.next()) {
-                Product bean = new Product();
-                int id = rs.getInt(1);
-                String name = rs.getString("name");
-                int inventory = rs.getInt("inventory");
-                float price = rs.getFloat("price");
-                Date dateAdded = DateUtil.t2d(rs.getTimestamp("dateAdded"));
-                Brand brand = new BrandDAO().get(brandId);
+                    bean.setName(name);
+                    bean.setInventory(inventory);
+                    bean.setPrice(price);
+                    bean.setDateAdded(dateAdded);
+                    bean.setBrand(brand);
 
-                bean.setName(name);
-                bean.setInventory(inventory);
-                bean.setPrice(price);
-                bean.setDateAdded(dateAdded);
-                bean.setBrand(brand);
+                    bean.setId(id);
+                    bean.setBrand(brand);
+                    setFirstProductImage(bean);
 
-                bean.setId(id);
-                bean.setBrand(brand);
-                setFirstProductImage(bean);
-
-                beans.add(bean);
+                    beans.add(bean);
+                }
             }
+
         } catch (SQLException e) {
 
             e.printStackTrace();
@@ -206,39 +224,41 @@ public class ProductDAO {
     }
 
     public List<Product> list(int start, int count) {
-        List<Product> beans = new ArrayList<Product>();
+        List<Product> beans = new ArrayList<>();
 
         String sql = "select * from product limit ?,? ";
 
-        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+        try (Connection c = DBUtil.getConnection(); 
+                PreparedStatement ps = c.prepareStatement(sql);) {
 
             ps.setInt(1, start);
             ps.setInt(2, count);
 
-            ResultSet rs = ps.executeQuery();
+            try (ResultSet rs = ps.executeQuery();) {
+                while (rs.next()) {
+                    Product bean = new Product();
+                    int id = rs.getInt(1);
+                    int brandId = rs.getInt("brandId");
+                    String name = rs.getString("name");
+                    int inventory = rs.getInt("inventory");
+                    float price = rs.getFloat("price");
+                    Date dateAdded = DateUtil.t2d(rs.getTimestamp("dateAdded"));
+                    Brand brand = new BrandDAO().get(brandId);
 
-            while (rs.next()) {
-                Product bean = new Product();
-                int id = rs.getInt(1);
-                int brandId = rs.getInt("brandId");
-                String name = rs.getString("name");
-                int inventory = rs.getInt("inventory");
-                float price = rs.getFloat("price");
-                Date dateAdded = DateUtil.t2d(rs.getTimestamp("dateAdded"));
-                Brand brand = new BrandDAO().get(brandId);
+                    bean.setName(name);
+                    bean.setInventory(inventory);
+                    bean.setPrice(price);
+                    bean.setDateAdded(dateAdded);
+                    bean.setBrand(brand);
 
-                bean.setName(name);
-                bean.setInventory(inventory);
-                bean.setPrice(price);
-                bean.setDateAdded(dateAdded);
-                bean.setBrand(brand);
+                    bean.setId(id);
+                    bean.setBrand(brand);
+                    setFirstProductImage(bean);
 
-                bean.setId(id);
-                bean.setBrand(brand);
-                setFirstProductImage(bean);
-
-                beans.add(bean);
+                    beans.add(bean);
+                }
             }
+
         } catch (SQLException e) {
 
             e.printStackTrace();
@@ -272,7 +292,7 @@ public class ProductDAO {
           
           if (promotionByProduct != null 
                   && !(promotionItem.getDiscountOf() == 100 
-                  && promotionByProduct.getDiscountType() == PromotionDAO.buyXGetYFree)) {
+                  && promotionByProduct.getDiscountType() == PromotionDAO.BUY_X_GET_Y_FREE)) {
               
                 String promotionName = "";
                 if (promotionByProduct.getState() == 1) {
@@ -297,7 +317,7 @@ public class ProductDAO {
     	        
     	        if (promotionByProduct != null 
     	                && !(promotionItem.getDiscountOf() == 100 
-    	                && promotionByProduct.getDiscountType() == PromotionDAO.buyXGetYFree)) {
+    	                && promotionByProduct.getDiscountType() == PromotionDAO.BUY_X_GET_Y_FREE)) {
                   
     	            String promotionName = "";
     	            if (promotionByProduct.getState() == 1) {

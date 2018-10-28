@@ -35,7 +35,7 @@ public class OrderDAOTest {
 		order.setUser(userdao.get(userId));
 		order.setDateOrdered(new Date());
 		order.setDatePaid(new Date());
-		order.setState(OrderDAO.waitPay);
+		order.setState(OrderDAO.WAIT_PAY);
 		order.setTotal(1000);
 		order.setDeliverMethod(0);
 		order.setAddress("Yuntech");

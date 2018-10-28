@@ -20,24 +20,24 @@ public class Order implements Serializable{
 	private int totalQuantity;
 
 	public String getStatusDesc() {
-		String desc = "unknown";
+		String desc;
 		switch (state) {
-		case OrderDAO.waitPay:
+		case OrderDAO.WAIT_PAY:
 			desc = "wait pay";
 			break;
-		case OrderDAO.waitDelivery:
+		case OrderDAO.WAIT_DELIVERY:
 			desc = "wait delivery";
 			break;
-		case OrderDAO.waitConfirm:
+		case OrderDAO.WAIT_CONFIRM:
 		    desc = "waitConfirm";
 		    break;
-		case OrderDAO.waitReview:
+		case OrderDAO.WAIT_REVIEW:
 		    desc = "waitReview";
 		    break;
-		case OrderDAO.finish:
+		case OrderDAO.FINISH:
 			desc = "finish";
 			break;
-		case OrderDAO.delete:
+		case OrderDAO.DELETE:
 			desc = "delete";
 			break;
 		default:

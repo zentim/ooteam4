@@ -1,8 +1,5 @@
 package main.java.model.bean;
 
-import main.java.model.bean.Promotion;
-import main.java.model.bean.Product;
-
 public class PromotionItem {
     
 	private int id;

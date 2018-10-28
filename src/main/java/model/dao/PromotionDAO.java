@@ -14,11 +14,11 @@ import main.java.model.util.DBUtil;
 import main.java.model.util.DateUtil;
 
 public class PromotionDAO {
-	public static final int noDiscount = 0;
-	public static final int productSet = 1;
-    public static final int eachGroupOfN = 2;
-    public static final int broughtMoreThanInLastYear = 3;
-    public static final int buyXGetYFree = 4;
+	public static final int NO_DISCOUNT = 0;
+	public static final int PRODUCT_SET = 1;
+    public static final int EACH_GROUP_OF_N = 2;
+    public static final int BROUGHT_MORE_THAN_IN_LAST_YEAR = 3;
+    public static final int BUY_X_GET_Y_FREE = 4;
 
 	public int getTotal() {
 		int total = 0;
@@ -26,10 +26,12 @@ public class PromotionDAO {
 
 			String sql = "select count(*) from promotion";
 
-			ResultSet rs = s.executeQuery(sql);
-			while (rs.next()) {
-				total = rs.getInt(1);
+			try (ResultSet rs = s.executeQuery(sql);) {
+			    while (rs.next()) {
+	                total = rs.getInt(1);
+	            }
 			}
+			
 		} catch (SQLException e) {
 
 			e.printStackTrace();
@@ -40,8 +42,10 @@ public class PromotionDAO {
 
 	public int add(Promotion bean) {
 		String sql = "insert into promotion values(DEFAULT,?, ?, ?, ?, ?)";
+		
 		try (Connection c = DBUtil.getConnection();
 				PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
+		    
 			ps.setInt(1, bean.getDiscountType());
 			ps.setString(2, bean.getName());
 			ps.setTimestamp(3, DateUtil.d2t(bean.getDateFrom()));
@@ -64,6 +68,7 @@ public class PromotionDAO {
 					throw new SQLException("Createing failed, no ID obtained.");
 				}
 			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -76,7 +81,8 @@ public class PromotionDAO {
 		        + "set discountType=?, name=?, dateFrom=?, dateTo=?, state=? "
 		        + "where promotionId = ?";
 		
-		try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+		try (Connection c = DBUtil.getConnection(); 
+		        PreparedStatement ps = c.prepareStatement(sql);) {
 
 			ps.setInt(1, bean.getDiscountType());
 			ps.setString(2, bean.getName());
@@ -95,11 +101,13 @@ public class PromotionDAO {
 	}
 
 	public void delete(int id) {
-		try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
-
-			String sql = "delete from promotion where promotionId = " + id;
-
-			s.execute(sql);
+	    String sql = "delete from promotion where promotionId = ?";
+	    
+	    try (Connection c = DBUtil.getConnection(); 
+                PreparedStatement ps = c.prepareStatement(sql);) {
+	        
+			ps.setInt(1, id);
+			ps.execute(sql);
 
 		} catch (SQLException e) {
 
@@ -109,30 +117,32 @@ public class PromotionDAO {
 
 	public Promotion get(int id) {
 		Promotion bean = null;
+		String sql = "select * from promotion where promotionId = ?";
+		
+		try (Connection c = DBUtil.getConnection(); 
+                PreparedStatement ps = c.prepareStatement(sql);) {
+			
+			ps.setInt(1, id);
 
-		try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
+			try (ResultSet rs = ps.executeQuery();) {
+			    if (rs.next()) {
+	                bean = new Promotion();
+	                
+	                String name = rs.getString("name");
+	                Date dateFrom = DateUtil.t2d(rs.getTimestamp("dateFrom"));
+	                Date dateTo = DateUtil.t2d(rs.getTimestamp("dateTo"));
+	                int state = rs.getInt("state");
+	                int discountType = rs.getInt("discountType");
 
-			String sql = "select * from promotion where promotionId = " + id;
+	                bean.setDiscountType(discountType);
+	                bean.setName(name);
+	                bean.setDateFrom(dateFrom);
+	                bean.setDateTo(dateTo);
+	                bean.setState(state);
+	                bean.setDiscountTypeDesc(bean.getDiscountTypeDescription());
 
-			ResultSet rs = s.executeQuery(sql);
-
-			if (rs.next()) {
-				bean = new Promotion();
-				
-				String name = rs.getString("name");
-				Date dateFrom = DateUtil.t2d(rs.getTimestamp("dateFrom"));
-				Date dateTo = DateUtil.t2d(rs.getTimestamp("dateTo"));
-				int state = rs.getInt("state");
-				int discountType = rs.getInt("discountType");
-
-				bean.setDiscountType(discountType);
-				bean.setName(name);
-				bean.setDateFrom(dateFrom);
-				bean.setDateTo(dateTo);
-				bean.setState(state);
-				bean.setDiscountTypeDesc(bean.getDiscountTypeDescription());
-
-				bean.setId(id);
+	                bean.setId(id);
+	            }
 			}
 
 		} catch (SQLException e) {
@@ -148,7 +158,7 @@ public class PromotionDAO {
 	}
 
 	public List<Promotion> list(int start, int count) {
-		List<Promotion> beans = new ArrayList<Promotion>();
+		List<Promotion> beans = new ArrayList<>();
 
 		String sql = "select * from promotion order by promotionId desc limit ?,? ";
 
@@ -157,28 +167,29 @@ public class PromotionDAO {
 			ps.setInt(1, start);
 			ps.setInt(2, count);
 
-			ResultSet rs = ps.executeQuery();
+			try (ResultSet rs = ps.executeQuery();) {
+			    while (rs.next()) {
+	                Promotion bean = new Promotion();
+	                
+	                int promotionId = rs.getInt("promotionId");
+	                String name = rs.getString("name");
+	                Date dateFrom = DateUtil.t2d(rs.getTimestamp("dateFrom"));
+	                Date dateTo = DateUtil.t2d(rs.getTimestamp("dateTo"));
+	                int state = rs.getInt("state");
+	                int discountType = rs.getInt("discountType");
 
-			while (rs.next()) {
-				Promotion bean = new Promotion();
-				
-				int promotionId = rs.getInt("promotionId");
-				String name = rs.getString("name");
-				Date dateFrom = DateUtil.t2d(rs.getTimestamp("dateFrom"));
-				Date dateTo = DateUtil.t2d(rs.getTimestamp("dateTo"));
-				int state = rs.getInt("state");
-				int discountType = rs.getInt("discountType");
+	                bean.setDiscountType(discountType);
+	                bean.setName(name);
+	                bean.setDateFrom(dateFrom);
+	                bean.setDateTo(dateTo);
+	                bean.setState(state);
+	                bean.setDiscountTypeDesc(bean.getDiscountTypeDescription());
 
-				bean.setDiscountType(discountType);
-				bean.setName(name);
-				bean.setDateFrom(dateFrom);
-				bean.setDateTo(dateTo);
-				bean.setState(state);
-				bean.setDiscountTypeDesc(bean.getDiscountTypeDescription());
-
-				bean.setId(promotionId);
-				beans.add(bean);
+	                bean.setId(promotionId);
+	                beans.add(bean);
+	            }
 			}
+
 		} catch (SQLException e) {
 
 			e.printStackTrace();

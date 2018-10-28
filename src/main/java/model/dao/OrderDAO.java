@@ -15,12 +15,12 @@ import main.java.model.util.DBUtil;
 import main.java.model.util.DateUtil;
 
 public class OrderDAO {
-    public static final String waitPay = "waitPay";
-    public static final String waitDelivery = "waitDelivery";
-    public static final String waitConfirm = "waitConfirm";
-    public static final String waitReview = "waitReview";
-    public static final String finish = "finish";
-    public static final String delete = "delete";
+    public static final String WAIT_PAY = "waitPay";
+    public static final String WAIT_DELIVERY = "waitDelivery";
+    public static final String WAIT_CONFIRM = "waitConfirm";
+    public static final String WAIT_REVIEW = "waitReview";
+    public static final String FINISH = "finish";
+    public static final String DELETE = "delete";
 
     public int getTotal() {
         int total = 0;
@@ -28,10 +28,12 @@ public class OrderDAO {
 
             String sql = "select count(*) from order_";
 
-            ResultSet rs = s.executeQuery(sql);
-            while (rs.next()) {
-                total = rs.getInt(1);
+            try (ResultSet rs = s.executeQuery(sql);) {
+                while (rs.next()) {
+                    total = rs.getInt(1);
+                }
             }
+            
         } catch (SQLException e) {
 
             e.printStackTrace();
@@ -54,12 +56,14 @@ public class OrderDAO {
 
             ps.execute();
 
-            ResultSet rs = ps.getGeneratedKeys();
-            if (rs.next()) {
-                int id = rs.getInt(1);
-                bean.setId(id);
-                return id;
+            try (ResultSet rs = ps.getGeneratedKeys();) {
+                if (rs.next()) {
+                    int id = rs.getInt(1);
+                    bean.setId(id);
+                    return id;
+                }
             }
+            
         } catch (SQLException e) {
 
             e.printStackTrace();
@@ -111,33 +115,35 @@ public class OrderDAO {
 
     public Order get(int id) {
         Order bean = new Order();
+        String sql = "select * from order_ where orderId = ?";
+        
+        try (Connection c = DBUtil.getConnection(); 
+                PreparedStatement ps = c.prepareStatement(sql);) {
 
-        try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
+            ps.setInt(1, id);
 
-            String sql = "select * from order_ where orderId = " + id;
+            try (ResultSet rs = ps.executeQuery();) {
+                if (rs.next()) {
+                    int userId = rs.getInt("userId");
+                    Date dateOrdered = DateUtil.t2d(rs.getTimestamp("dateOrdered"));
+                    Date datePaid = DateUtil.t2d(rs.getTimestamp("datePaid"));
+                    String state = rs.getString("state");
+                    float total = rs.getFloat("total");
+                    int deliverMethod = rs.getInt("deliverMethod");
+                    String address = rs.getString("address");
 
-            ResultSet rs = s.executeQuery(sql);
+                    User user = new UserDAO().get(userId);
 
-            if (rs.next()) {
-                int userId = rs.getInt("userId");
-                Date dateOrdered = DateUtil.t2d(rs.getTimestamp("dateOrdered"));
-                Date datePaid = DateUtil.t2d(rs.getTimestamp("datePaid"));
-                String state = rs.getString("state");
-                float total = rs.getFloat("total");
-                int deliverMethod = rs.getInt("deliverMethod");
-                String address = rs.getString("address");
+                    bean.setUser(user);
+                    bean.setDateOrdered(dateOrdered);
+                    bean.setDatePaid(datePaid);
+                    bean.setState(state);
+                    bean.setTotal(total);
+                    bean.setDeliverMethod(deliverMethod);
+                    bean.setAddress(address);
 
-                User user = new UserDAO().get(userId);
-
-                bean.setUser(user);
-                bean.setDateOrdered(dateOrdered);
-                bean.setDatePaid(datePaid);
-                bean.setState(state);
-                bean.setTotal(total);
-                bean.setDeliverMethod(deliverMethod);
-                bean.setAddress(address);
-
-                bean.setId(id);
+                    bean.setId(id);
+                }
             }
 
         } catch (SQLException e) {
@@ -152,7 +158,7 @@ public class OrderDAO {
     }
 
     public List<Order> list(int start, int count) {
-        List<Order> beans = new ArrayList<Order>();
+        List<Order> beans = new ArrayList<>();
 
         String sql = "select * from order_ order by orderId desc limit ?,? ";
 
@@ -161,34 +167,35 @@ public class OrderDAO {
             ps.setInt(1, start);
             ps.setInt(2, count);
 
-            ResultSet rs = ps.executeQuery();
+            try (ResultSet rs = ps.executeQuery();) {
+                while (rs.next()) {
+                    Order bean = new Order();
 
-            while (rs.next()) {
-                Order bean = new Order();
+                    int orderId = rs.getInt("orderId");
+                    int userId = rs.getInt("userId");
+                    Date dateOrdered = DateUtil.t2d(rs.getTimestamp("dateOrdered"));
+                    Date datePaid = DateUtil.t2d(rs.getTimestamp("datePaid"));
+                    String state = rs.getString("state");
+                    float total = rs.getFloat("total");
+                    int deliverMethod = rs.getInt("deliverMethod");
+                    String address = rs.getString("address");
 
-                int orderId = rs.getInt("orderId");
-                int userId = rs.getInt("userId");
-                Date dateOrdered = DateUtil.t2d(rs.getTimestamp("dateOrdered"));
-                Date datePaid = DateUtil.t2d(rs.getTimestamp("datePaid"));
-                String state = rs.getString("state");
-                float total = rs.getFloat("total");
-                int deliverMethod = rs.getInt("deliverMethod");
-                String address = rs.getString("address");
+                    User user = new UserDAO().get(userId);
 
-                User user = new UserDAO().get(userId);
+                    bean.setUser(user);
+                    bean.setDateOrdered(dateOrdered);
+                    bean.setDatePaid(datePaid);
+                    bean.setState(state);
+                    bean.setTotal(total);
+                    bean.setDeliverMethod(deliverMethod);
+                    bean.setAddress(address);
 
-                bean.setUser(user);
-                bean.setDateOrdered(dateOrdered);
-                bean.setDatePaid(datePaid);
-                bean.setState(state);
-                bean.setTotal(total);
-                bean.setDeliverMethod(deliverMethod);
-                bean.setAddress(address);
+                    bean.setId(orderId);
 
-                bean.setId(orderId);
-
-                beans.add(bean);
+                    beans.add(bean);
+                }
             }
+            
         } catch (SQLException e) {
 
             e.printStackTrace();
@@ -201,7 +208,7 @@ public class OrderDAO {
     }
 
     public List<Order> list(int userId, String excludedStatus, int start, int count) {
-        List<Order> beans = new ArrayList<Order>();
+        List<Order> beans = new ArrayList<>();
 
         String sql = "select * from order_ where userId = ? and state != ? order by orderId desc limit ?,? ";
 
@@ -212,33 +219,34 @@ public class OrderDAO {
             ps.setInt(3, start);
             ps.setInt(4, count);
 
-            ResultSet rs = ps.executeQuery();
+            try (ResultSet rs = ps.executeQuery();) {
+                while (rs.next()) {
+                    Order bean = new Order();
 
-            while (rs.next()) {
-                Order bean = new Order();
+                    int orderId = rs.getInt("orderId");
+                    Date dateOrdered = DateUtil.t2d(rs.getTimestamp("dateOrdered"));
+                    Date datePaid = DateUtil.t2d(rs.getTimestamp("datePaid"));
+                    String state = rs.getString("state");
+                    float total = rs.getFloat("total");
+                    int deliverMethod = rs.getInt("deliverMethod");
+                    String address = rs.getString("address");
 
-                int orderId = rs.getInt("orderId");
-                Date dateOrdered = DateUtil.t2d(rs.getTimestamp("dateOrdered"));
-                Date datePaid = DateUtil.t2d(rs.getTimestamp("datePaid"));
-                String state = rs.getString("state");
-                float total = rs.getFloat("total");
-                int deliverMethod = rs.getInt("deliverMethod");
-                String address = rs.getString("address");
+                    User user = new UserDAO().get(userId);
 
-                User user = new UserDAO().get(userId);
+                    bean.setUser(user);
+                    bean.setDateOrdered(dateOrdered);
+                    bean.setDatePaid(datePaid);
+                    bean.setState(state);
+                    bean.setTotal(total);
+                    bean.setDeliverMethod(deliverMethod);
+                    bean.setAddress(address);
 
-                bean.setUser(user);
-                bean.setDateOrdered(dateOrdered);
-                bean.setDatePaid(datePaid);
-                bean.setState(state);
-                bean.setTotal(total);
-                bean.setDeliverMethod(deliverMethod);
-                bean.setAddress(address);
+                    bean.setId(orderId);
 
-                bean.setId(orderId);
-
-                beans.add(bean);
+                    beans.add(bean);
+                }
             }
+            
         } catch (SQLException e) {
 
             e.printStackTrace();

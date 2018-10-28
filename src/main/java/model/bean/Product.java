@@ -29,7 +29,7 @@ public class Product extends Component implements Subject, Serializable {
 	private int discountType = -1;
 	private String discountTypeName;
 	private String promotionName;
-	private ArrayList<Observer> observers = new ArrayList<Observer>();
+	private ArrayList<Observer> observers = new ArrayList<>();
 	
 	/* Observer Methods */
 	@Override

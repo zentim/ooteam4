@@ -18,21 +18,21 @@ public class Promotion {
 	
 	
 	public String getDiscountTypeDescription() {
-		String desc = "Unknow";
+		String desc;
 		switch (discountType) {
-		case PromotionDAO.noDiscount:
+		case PromotionDAO.NO_DISCOUNT:
 			desc = "No Discount";
 			break;
-		case PromotionDAO.productSet:
+		case PromotionDAO.PRODUCT_SET:
 			desc = "Product Set";
 			break;
-		case PromotionDAO.eachGroupOfN:
+		case PromotionDAO.EACH_GROUP_OF_N:
 			desc = "Each Group Of N";
 			break;
-		case PromotionDAO.broughtMoreThanInLastYear:
+		case PromotionDAO.BROUGHT_MORE_THAN_IN_LAST_YEAR:
 			desc = "Brought More Than In Last Year";
 			break;
-		case PromotionDAO.buyXGetYFree:
+		case PromotionDAO.BUY_X_GET_Y_FREE:
 			desc = "Buy X Get Y Free";
 			break;
 		default:

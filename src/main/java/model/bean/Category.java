@@ -18,7 +18,7 @@ public class Category extends Component implements Serializable {
 	private int id;
 	private Segment segment;
 	private List<Brand> brands;
-	private List<Component> components = new LinkedList<Component>();
+	private List<Component> components = new LinkedList<>();
 	
 	
 	@Override

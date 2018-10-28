@@ -17,13 +17,19 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class ImageUtil {
+    
+    private ImageUtil() {
+        throw new IllegalStateException("Utility class");
+    }
+
 
     public static BufferedImage change2jpg(File f) {
         try {
             java.awt.Image i = Toolkit.getDefaultToolkit().createImage(f.getAbsolutePath());
             PixelGrabber pg = new PixelGrabber(i, 0, 0, -1, -1, true);
             pg.grabPixels();
-            int width = pg.getWidth(), height = pg.getHeight();
+            int width = pg.getWidth();
+            int height = pg.getHeight();
             final int[] RGB_MASKS = { 0xFF0000, 0xFF00, 0xFF };
             final ColorModel RGB_OPAQUE = new DirectColorModel(32, RGB_MASKS[0], RGB_MASKS[1], RGB_MASKS[2]);
             DataBuffer buffer = new DataBufferInt((int[]) pg.getPixels(), pg.getWidth() * pg.getHeight());
@@ -34,7 +40,8 @@ public class ImageUtil {
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-            
+            Thread.currentThread().interrupt();
+
             return null;
         }
     }

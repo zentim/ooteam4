@@ -19,7 +19,7 @@ public class Brand extends Component implements Serializable {
     private int id;
     private Category category;
     private List<Product> products;
-    private Hashtable<Integer, Component> components = new Hashtable<Integer, Component>();
+    private Hashtable<Integer, Component> components = new Hashtable<>();
     
     
     @Override
@@ -44,7 +44,7 @@ public class Brand extends Component implements Serializable {
 		Set<Integer> keys = components.keySet();
 		Iterator iterator = keys.iterator();
 		while(iterator.hasNext()) {
-			((Component)components.get(iterator.next())).operation();
+			(components.get(iterator.next())).operation();
 		}
 	}
 

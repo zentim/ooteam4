@@ -21,10 +21,12 @@ public class PromotionItemDAO {
 
             String sql = "select count(*) from promotion_item";
 
-            ResultSet rs = s.executeQuery(sql);
-            while (rs.next()) {
-                total = rs.getInt(1);
+            try (ResultSet rs = s.executeQuery(sql);) {
+                while (rs.next()) {
+                    total = rs.getInt(1);
+                }
             }
+            
         } catch (SQLException e) {
 
             e.printStackTrace();
@@ -51,13 +53,15 @@ public class PromotionItemDAO {
 
             ps.execute();
 
-            ResultSet rs = ps.getGeneratedKeys();
-            if (rs.next()) {
-                int id = rs.getInt(1);
-                bean.setId(id);
+            try (ResultSet rs = ps.getGeneratedKeys();) {
+                if (rs.next()) {
+                    int id = rs.getInt(1);
+                    bean.setId(id);
 
-                return id;
+                    return id;
+                }
             }
+            
         } catch (SQLException e) {
 
             e.printStackTrace();
@@ -71,7 +75,8 @@ public class PromotionItemDAO {
         String sql = "update promotion_item "
                 + "set promotionId=?, productId=?, minQuantity=?, discountOf=?  "
                 + "where promotionItemId = ?";
-        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+        try (Connection c = DBUtil.getConnection(); 
+                PreparedStatement ps = c.prepareStatement(sql);) {
         	
         	if (bean.getPromotion() == null) {
         		ps.setInt(1, -1);
@@ -95,11 +100,13 @@ public class PromotionItemDAO {
 
     public void delete(int id) {
 
-        try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
+        String sql = "delete from promotion_item where promotionItemId = ?";
+        try (Connection c = DBUtil.getConnection(); 
+                PreparedStatement ps = c.prepareStatement(sql);) {
+            
+            ps.setInt(1, id);
 
-            String sql = "delete from promotion_item where promotionItemId = " + id;
-
-            s.execute(sql);
+            ps.execute(sql);
 
         } catch (SQLException e) {
 
@@ -109,28 +116,30 @@ public class PromotionItemDAO {
 
     public PromotionItem get(int id) {
         PromotionItem bean = new PromotionItem();
+        String sql = "select * from promotion_item where promotionId = ?";
+        
+        try (Connection c = DBUtil.getConnection(); 
+                PreparedStatement ps = c.prepareStatement(sql);) {
 
-        try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
+            ps.setInt(1, id);
 
-            String sql = "select * from promotion_item where promotionId = " + id;
+            try (ResultSet rs = ps.executeQuery();) {
+                if (rs.next()) {
+                    int promotionId = rs.getInt("promotionId");
+                    int productId = rs.getInt("productId");
+                    int minQuantity = rs.getInt("minQuantity");
+                    int discountOf = rs.getInt("discountOf");
 
-            ResultSet rs = s.executeQuery(sql);
+                    Promotion promotion = new PromotionDAO().get(promotionId);
+                    Product product = new ProductDAO().get(productId);
 
-            if (rs.next()) {
-                int promotionId = rs.getInt("promotionId");
-                int productId = rs.getInt("productId");
-                int minQuantity = rs.getInt("minQuantity");
-                int discountOf = rs.getInt("discountOf");
+                    bean.setPromotion(promotion);
+                    bean.setProduct(product);
+                    bean.setMinQuantity(minQuantity);
+                    bean.setDiscountOf(discountOf);
 
-                Promotion promotion = new PromotionDAO().get(promotionId);
-                Product product = new ProductDAO().get(productId);
-
-                bean.setPromotion(promotion);
-                bean.setProduct(product);
-                bean.setMinQuantity(minQuantity);
-                bean.setDiscountOf(discountOf);
-
-                bean.setId(id);
+                    bean.setId(id);
+                }
             }
 
         } catch (SQLException e) {
@@ -142,28 +151,30 @@ public class PromotionItemDAO {
     
     public PromotionItem getByProduct(int productId) {
         PromotionItem bean = new PromotionItem();
+        String sql = "select * from promotion_item where productId = ?";
 
-        try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
+        try (Connection c = DBUtil.getConnection(); 
+                PreparedStatement ps = c.prepareStatement(sql);) {
 
-            String sql = "select * from promotion_item where productId = " + productId;
+            ps.setInt(1, productId);
 
-            ResultSet rs = s.executeQuery(sql);
+            try (ResultSet rs = ps.executeQuery();) {
+                if (rs.next()) {
+                    int promotionItemId = rs.getInt("promotionItemId");
+                    int promotionId = rs.getInt("promotionId");
+                    int minQuantity = rs.getInt("minQuantity");
+                    int discountOf = rs.getInt("discountOf");
 
-            if (rs.next()) {
-            	int promotionItemId = rs.getInt("promotionItemId");
-                int promotionId = rs.getInt("promotionId");
-                int minQuantity = rs.getInt("minQuantity");
-                int discountOf = rs.getInt("discountOf");
+                    Promotion promotion = new PromotionDAO().get(promotionId);
+                    Product product = new ProductDAO().get(productId);
 
-                Promotion promotion = new PromotionDAO().get(promotionId);
-                Product product = new ProductDAO().get(productId);
+                    bean.setPromotion(promotion);
+                    bean.setProduct(product);
+                    bean.setMinQuantity(minQuantity);
+                    bean.setDiscountOf(discountOf);
 
-                bean.setPromotion(promotion);
-                bean.setProduct(product);
-                bean.setMinQuantity(minQuantity);
-                bean.setDiscountOf(discountOf);
-
-                bean.setId(promotionItemId);
+                    bean.setId(promotionItemId);
+                }
             }
 
         } catch (SQLException e) {
@@ -178,40 +189,42 @@ public class PromotionItemDAO {
     }
 
     public List<PromotionItem> listByUser(int userId, int start, int count) {
-        List<PromotionItem> beans = new ArrayList<PromotionItem>();
+        List<PromotionItem> beans = new ArrayList<>();
 
         String sql = "select * from promotion_item "
                 + "where userId = ? and promotionId = -1 "
                 + "order by promotionItemId desc limit ?,? ";
 
-        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+        try (Connection c = DBUtil.getConnection(); 
+                PreparedStatement ps = c.prepareStatement(sql);) {
 
             ps.setInt(1, userId);
             ps.setInt(2, start);
             ps.setInt(3, count);
 
-            ResultSet rs = ps.executeQuery();
+            try (ResultSet rs = ps.executeQuery();) {
+                while (rs.next()) {
+                    PromotionItem bean = new PromotionItem();
+                    int id = rs.getInt(1);
 
-            while (rs.next()) {
-                PromotionItem bean = new PromotionItem();
-                int id = rs.getInt(1);
+                    int promotionId = rs.getInt("promotionId");
+                    int productId = rs.getInt("productId");
+                    int minQuantity = rs.getInt("minQuantity");
+                    int discountOf = rs.getInt("discountOf");
 
-                int promotionId = rs.getInt("promotionId");
-                int productId = rs.getInt("productId");
-                int minQuantity = rs.getInt("minQuantity");
-                int discountOf = rs.getInt("discountOf");
+                    Promotion promotion = new PromotionDAO().get(promotionId);
+                    Product product = new ProductDAO().get(productId);
 
-                Promotion promotion = new PromotionDAO().get(promotionId);
-                Product product = new ProductDAO().get(productId);
+                    bean.setPromotion(promotion);
+                    bean.setProduct(product);
+                    bean.setMinQuantity(minQuantity);
+                    bean.setDiscountOf(discountOf);
 
-                bean.setPromotion(promotion);
-                bean.setProduct(product);
-                bean.setMinQuantity(minQuantity);
-                bean.setDiscountOf(discountOf);
-
-                bean.setId(id);
-                beans.add(bean);
+                    bean.setId(id);
+                    beans.add(bean);
+                }
             }
+
         } catch (SQLException e) {
 
             e.printStackTrace();
@@ -225,39 +238,41 @@ public class PromotionItemDAO {
     }
 
     public List<PromotionItem> listByPromotion(int promotionId, int start, int count) {
-        List<PromotionItem> beans = new ArrayList<PromotionItem>();
+        List<PromotionItem> beans = new ArrayList<>();
 
         String sql = "select * from promotion_item "
                 + "where promotionId = ? "
                 + "order by promotionItemId desc limit ?,? ";
 
-        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+        try (Connection c = DBUtil.getConnection(); 
+                PreparedStatement ps = c.prepareStatement(sql);) {
 
             ps.setInt(1, promotionId);
             ps.setInt(2, start);
             ps.setInt(3, count);
 
-            ResultSet rs = ps.executeQuery();
+            try (ResultSet rs = ps.executeQuery();) {
+                while (rs.next()) {
+                    PromotionItem bean = new PromotionItem();
+                    int id = rs.getInt(1);
 
-            while (rs.next()) {
-                PromotionItem bean = new PromotionItem();
-                int id = rs.getInt(1);
+                    int productId = rs.getInt("productId");
+                    int minQuantity = rs.getInt("minQuantity");
+                    int discountOf = rs.getInt("discountOf");
 
-                int productId = rs.getInt("productId");
-                int minQuantity = rs.getInt("minQuantity");
-                int discountOf = rs.getInt("discountOf");
+                    Promotion promotion = new PromotionDAO().get(promotionId);
+                    Product product = new ProductDAO().get(productId);
 
-                Promotion promotion = new PromotionDAO().get(promotionId);
-                Product product = new ProductDAO().get(productId);
+                    bean.setPromotion(promotion);
+                    bean.setProduct(product);
+                    bean.setMinQuantity(minQuantity);
+                    bean.setDiscountOf(discountOf);
 
-                bean.setPromotion(promotion);
-                bean.setProduct(product);
-                bean.setMinQuantity(minQuantity);
-                bean.setDiscountOf(discountOf);
-
-                bean.setId(id);
-                beans.add(bean);
+                    bean.setId(id);
+                    beans.add(bean);
+                }
             }
+
         } catch (SQLException e) {
 
             e.printStackTrace();
@@ -271,40 +286,41 @@ public class PromotionItemDAO {
     }
 
     public List<PromotionItem> listByProduct(int productId, int start, int count) {
-        List<PromotionItem> beans = new ArrayList<PromotionItem>();
+        List<PromotionItem> beans = new ArrayList<>();
 
         String sql = "select * from promotion_item "
                 + "where productId = ? "
                 + "order by promotionItemId desc limit ?,? ";
 
-        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+        try (Connection c = DBUtil.getConnection(); 
+                PreparedStatement ps = c.prepareStatement(sql);) {
 
             ps.setInt(1, productId);
             ps.setInt(2, start);
             ps.setInt(3, count);
 
-            ResultSet rs = ps.executeQuery();
+            try (ResultSet rs = ps.executeQuery();) {
+                while (rs.next()) {
+                    PromotionItem bean = new PromotionItem();
+                    int id = rs.getInt(1);
 
-            while (rs.next()) {
-                PromotionItem bean = new PromotionItem();
-                int id = rs.getInt(1);
+                    int promotionId = rs.getInt("promotionId");
+                    int minQuantity = rs.getInt("minQuantity");
+                    int discountOf = rs.getInt("discountOf");
 
-                int promotionId = rs.getInt("promotionId");
-                int minQuantity = rs.getInt("minQuantity");
-                int discountOf = rs.getInt("discountOf");
+                    Promotion promotion = new PromotionDAO().get(promotionId);
+                    Product product = new ProductDAO().get(productId);
 
-                Promotion promotion = new PromotionDAO().get(promotionId);
-                Product product = new ProductDAO().get(productId);
+                    bean.setPromotion(promotion);
+                    bean.setProduct(product);
+                    bean.setMinQuantity(minQuantity);
+                    bean.setDiscountOf(discountOf);
 
-                bean.setPromotion(promotion);
-                bean.setProduct(product);
-                bean.setMinQuantity(minQuantity);
-                bean.setDiscountOf(discountOf);
-
-                bean.setId(id);
-                beans.add(bean);
-
+                    bean.setId(id);
+                    beans.add(bean);
+                }
             }
+            
         } catch (SQLException e) {
 
             e.printStackTrace();

@@ -49,17 +49,11 @@ public class Page {
 	}
 
 	public boolean isHasPrevious() {
-		if (start == 0) {
-			return false;
-		}
-		return true;
+		return start == 0;
 	}
 
 	public boolean isHasNext() {
-		if (start == getLast()) {
-			return false;
-		}
-		return true;
+		return start == getLast();
 	}
 
 	public int getStart() {

@@ -2,10 +2,6 @@ package main.java.model.bean;
 
 import java.io.Serializable;
 
-import main.java.model.bean.Order;
-import main.java.model.bean.Product;
-import main.java.model.bean.User;
-
 public class OrderItem implements Serializable {
     
 	private int id;

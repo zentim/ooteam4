@@ -19,10 +19,12 @@ public class SegmentDAO {
 
 			String sql = "select count(*) from segment";
 
-			ResultSet rs = s.executeQuery(sql);
-			while (rs.next()) {
-				total = rs.getInt(1);
+			try (ResultSet rs = s.executeQuery(sql);) {
+			    while (rs.next()) {
+	                total = rs.getInt(1);
+	            }
 			}
+			
 		} catch (SQLException e) {
 
 			e.printStackTrace();
@@ -63,7 +65,8 @@ public class SegmentDAO {
 	public void update(Segment bean) {
 
 		String sql = "update segment set name= ? where segmentId = ?";
-		try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+		try (Connection c = DBUtil.getConnection(); 
+		        PreparedStatement ps = c.prepareStatement(sql);) {
 
 			ps.setString(1, bean.getName());
 			ps.setInt(2, bean.getId());
@@ -78,12 +81,13 @@ public class SegmentDAO {
 	}
 
 	public void delete(int id) {
+	    String sql = "delete from segment where segmentId = ?";
+	    
+	    try (Connection c = DBUtil.getConnection(); 
+                PreparedStatement ps = c.prepareStatement(sql);) {
 
-		try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
-
-			String sql = "delete from segment where segmentId = " + id;
-
-			s.execute(sql);
+			ps.setInt(1, id);
+			ps.execute(sql);
 
 		} catch (SQLException e) {
 
@@ -93,18 +97,20 @@ public class SegmentDAO {
 
 	public Segment get(int id) {
 		Segment bean = null;
+		String sql = "SELECT * FROM segment WHERE segmentId = ?";
 
-		try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
+		try (Connection c = DBUtil.getConnection(); 
+                PreparedStatement ps = c.prepareStatement(sql);) {
 
-			String sql = "select * from segment where segmentId = " + id;
+			ps.setInt(1, id);
 
-			ResultSet rs = s.executeQuery(sql);
-
-			if (rs.next()) {
-				bean = new Segment();
-				String name = rs.getString(2);
-				bean.setName(name);
-				bean.setId(id);
+			try (ResultSet rs = ps.executeQuery();) {
+			    if (rs.next()) {
+	                bean = new Segment();
+	                String name = rs.getString(2);
+	                bean.setName(name);
+	                bean.setId(id);
+	            }
 			}
 
 		} catch (SQLException e) {
@@ -120,25 +126,27 @@ public class SegmentDAO {
 	}
 
 	public List<Segment> list(int start, int count) {
-		List<Segment> beans = new ArrayList<Segment>();
+		List<Segment> beans = new ArrayList<>();
 
 		String sql = "select * from segment order by segmentId desc limit ?,? ";
 
-		try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+		try (Connection c = DBUtil.getConnection(); 
+		        PreparedStatement ps = c.prepareStatement(sql);) {
 
 			ps.setInt(1, start);
 			ps.setInt(2, count);
 
-			ResultSet rs = ps.executeQuery();
-
-			while (rs.next()) {
-				Segment bean = new Segment();
-				int id = rs.getInt(1);
-				String name = rs.getString(2);
-				bean.setId(id);
-				bean.setName(name);
-				beans.add(bean);
+			try (ResultSet rs = ps.executeQuery();) {
+			    while (rs.next()) {
+	                Segment bean = new Segment();
+	                int id = rs.getInt(1);
+	                String name = rs.getString(2);
+	                bean.setId(id);
+	                bean.setName(name);
+	                beans.add(bean);
+	            }
 			}
+			
 		} catch (SQLException e) {
 
 			e.printStackTrace();

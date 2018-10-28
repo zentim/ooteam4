@@ -1,15 +1,4 @@
 package main.java.model.util;
-import javax.mail.*;
-import javax.mail.internet.*;
-
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-
-import javax.activation.*;
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 
 /**
  * 
@@ -24,16 +13,16 @@ public class MailUtil {
      * Step 2: go to "https://myaccount.google.com/lesssecureapps" set
      *          low security application access
      */
-    final private String mailFrom = "xxxxxx@gmail.com"; // your gmail
-    final private String password = "xxxxxx"; // your gmail password
+    private static final String SENDER_EMAIL_ADDRESS = "xxxxxx@gmail.com"; // your gmail
+    private static final String PASSWORD = "xxxxxx"; // your gmail password
     
     
 	DES d = new DES();
 	
-	final private String code = new String(d.Decryptor(password));
+	private final String code = new String(d.decryptor(PASSWORD));
        
 	public String getMail() {
-	    return mailFrom;
+	    return SENDER_EMAIL_ADDRESS;
 	}
 	
 	public String getCode() {

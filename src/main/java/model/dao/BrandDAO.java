@@ -100,18 +100,18 @@ public class BrandDAO {
 
 			String sql = "select * from brand where brandId = " + id;
 
-			ResultSet rs = s.executeQuery(sql);
-
-			if (rs.next()) {
-				bean = new Brand();
-				String name = rs.getString("name");
-				int categoryId = rs.getInt("categoryId");
-				
-				Category category = new CategoryDAO().get(categoryId);
-				
-				bean.setName(name);
-				bean.setCategory(category);
-				bean.setId(id);
+			try (ResultSet rs = s.executeQuery(sql);) {
+			    if (rs.next()) {
+	                bean = new Brand();
+	                String name = rs.getString("name");
+	                int categoryId = rs.getInt("categoryId");
+	                
+	                Category category = new CategoryDAO().get(categoryId);
+	                
+	                bean.setName(name);
+	                bean.setCategory(category);
+	                bean.setId(id);
+	            }
 			}
 
 		} catch (SQLException e) {
@@ -126,7 +126,7 @@ public class BrandDAO {
 	}
 
 	public List<Brand> list(int start, int count) {
-		List<Brand> beans = new ArrayList<Brand>();
+		List<Brand> beans = new ArrayList<>();
 
 		String sql = "select * from brand order by brandId desc limit ?,? ";
 
@@ -135,21 +135,22 @@ public class BrandDAO {
 			ps.setInt(1, start);
 			ps.setInt(2, count);
 
-			ResultSet rs = ps.executeQuery();
-
-			while (rs.next()) {
-				Brand bean = new Brand();
-				int id = rs.getInt(1);
-				String name = rs.getString("name");
-				int categoryId = rs.getInt("categoryId");
-				
-				Category category = new CategoryDAO().get(categoryId);
-				
-				bean.setName(name);
-				bean.setCategory(category);
-				bean.setId(id);
-				beans.add(bean);
+			try (ResultSet rs = ps.executeQuery();){
+			    while (rs.next()) {
+	                Brand bean = new Brand();
+	                int id = rs.getInt(1);
+	                String name = rs.getString("name");
+	                int categoryId = rs.getInt("categoryId");
+	                
+	                Category category = new CategoryDAO().get(categoryId);
+	                
+	                bean.setName(name);
+	                bean.setCategory(category);
+	                bean.setId(id);
+	                beans.add(bean);
+	            }
 			}
+			
 		} catch (SQLException e) {
 
 			e.printStackTrace();
@@ -162,7 +163,7 @@ public class BrandDAO {
     }
 
     public List<Brand> list(int categoryId, int start, int count) {
-        List<Brand> beans = new ArrayList<Brand>();
+        List<Brand> beans = new ArrayList<>();
 
         String sql = "select * from brand where categoryId = ? order by brandId desc limit ?,? ";
 
@@ -171,19 +172,19 @@ public class BrandDAO {
             ps.setInt(2, start);
             ps.setInt(3, count);
 
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-            	Brand bean = new Brand();
-				int id = rs.getInt(1);
-				String name = rs.getString("name");
-				
-				Category category = new CategoryDAO().get(categoryId);
-				
-				bean.setName(name);
-				bean.setCategory(category);
-				bean.setId(id);
-				beans.add(bean);
+            try (ResultSet rs = ps.executeQuery();){
+                while (rs.next()) {
+                    Brand bean = new Brand();
+                    int id = rs.getInt(1);
+                    String name = rs.getString("name");
+                    
+                    Category category = new CategoryDAO().get(categoryId);
+                    
+                    bean.setName(name);
+                    bean.setCategory(category);
+                    bean.setId(id);
+                    beans.add(bean);
+                }
             }
         } catch (SQLException e) {
 

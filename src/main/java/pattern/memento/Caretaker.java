@@ -1,5 +1,6 @@
 package main.java.pattern.memento;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,9 +9,9 @@ import java.util.List;
  * Memento Pattern - Caretaker
  *
  */
-public class Caretaker {
+public class Caretaker implements Serializable {
 
-	private List<Memento> mementos = new ArrayList<Memento>();
+	private List<Memento> mementos = new ArrayList<>();
 
 	public Memento getMemento() {
 		int index = mementos.size() - 1;

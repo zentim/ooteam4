@@ -22,10 +22,12 @@ public class OrderItemDAO {
 
             String sql = "select count(*) from order_item";
 
-            ResultSet rs = s.executeQuery(sql);
-            while (rs.next()) {
-                total = rs.getInt(1);
+            try (ResultSet rs = s.executeQuery(sql);) {
+                while (rs.next()) {
+                    total = rs.getInt(1);
+                }
             }
+            
         } catch (SQLException e) {
 
             e.printStackTrace();
@@ -55,13 +57,15 @@ public class OrderItemDAO {
 
             ps.execute();
 
-            ResultSet rs = ps.getGeneratedKeys();
-            if (rs.next()) {
-                int id = rs.getInt(1);
-                bean.setId(id);
+            try (ResultSet rs = ps.getGeneratedKeys();) {
+                if (rs.next()) {
+                    int id = rs.getInt(1);
+                    bean.setId(id);
 
-                return id;
+                    return id;
+                }
             }
+            
         } catch (SQLException e) {
 
             e.printStackTrace();
@@ -76,7 +80,8 @@ public class OrderItemDAO {
                 + "orderId= ?, userId=?, productId=?, quantity=?, state=?, "
                 + "originalPrice=?, promotionalPrice=?  "
                 + "where orderItemId = ?";
-        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+        try (Connection c = DBUtil.getConnection(); 
+                PreparedStatement ps = c.prepareStatement(sql);) {
             // When an order_item created, it has not order info (orderId)
             if (null == bean.getOrder()) {
                 ps.setInt(1, -1);
@@ -102,11 +107,12 @@ public class OrderItemDAO {
 
     public void delete(int id) {
 
-        try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
+        String sql = "delete from order_item where orderItemId = ?";
+        try (Connection c = DBUtil.getConnection(); 
+                PreparedStatement ps = c.prepareStatement(sql);) {
 
-            String sql = "delete from order_item where orderItemId = " + id;
-
-            s.execute(sql);
+            ps.setInt(1, id);
+            ps.execute(sql);
 
         } catch (SQLException e) {
 
@@ -117,35 +123,37 @@ public class OrderItemDAO {
     public OrderItem get(int id) {
         OrderItem bean = new OrderItem();
 
-        try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
+        String sql = "select * from order_item where orderItemId = ?";
+        try (Connection c = DBUtil.getConnection(); 
+                PreparedStatement ps = c.prepareStatement(sql);) {
 
-            String sql = "select * from order_item where orderItemId = " + id;
+            ps.setInt(1, id);
 
-            ResultSet rs = s.executeQuery(sql);
+            try (ResultSet rs = ps.executeQuery();) {
+                if (rs.next()) {
+                    int orderId = rs.getInt("orderId");
+                    int userId = rs.getInt("userId");
+                    int productId = rs.getInt("productId");
+                    int quantity = rs.getInt("quantity");
+                    int state = rs.getInt("state");
+                    float originalPrice = rs.getFloat("originalPrice");
+                    float promotionalPrice = rs.getFloat("promotionalPrice");
+                    Product product = new ProductDAO().get(productId);
+                    User user = new UserDAO().get(userId);
 
-            if (rs.next()) {
-                int orderId = rs.getInt("orderId");
-                int userId = rs.getInt("userId");
-                int productId = rs.getInt("productId");
-                int quantity = rs.getInt("quantity");
-                int state = rs.getInt("state");
-                float originalPrice = rs.getFloat("originalPrice");
-                float promotionalPrice = rs.getFloat("promotionalPrice");
-                Product product = new ProductDAO().get(productId);
-                User user = new UserDAO().get(userId);
+                    if (-1 != orderId) {
+                        Order order = new OrderDAO().get(orderId);
+                        bean.setOrder(order);
+                    }
+                    bean.setProduct(product);
+                    bean.setUser(user);
+                    bean.setQuantity(quantity);
+                    bean.setState(state);
+                    bean.setOriginalPrice(originalPrice);
+                    bean.setPromotionalPrice(promotionalPrice);
 
-                if (-1 != orderId) {
-                    Order order = new OrderDAO().get(orderId);
-                    bean.setOrder(order);
+                    bean.setId(id);
                 }
-                bean.setProduct(product);
-                bean.setUser(user);
-                bean.setQuantity(quantity);
-                bean.setState(state);
-                bean.setOriginalPrice(originalPrice);
-                bean.setPromotionalPrice(promotionalPrice);
-
-                bean.setId(id);
             }
 
         } catch (SQLException e) {
@@ -160,58 +168,60 @@ public class OrderItemDAO {
     }
 
     public List<OrderItem> listCartByUser(int userId, int start, int count) {
-        List<OrderItem> beans = new ArrayList<OrderItem>();
+        List<OrderItem> beans = new ArrayList<>();
 
         String sql = "select * from order_item "
                 + "where state = 1 and userId = ? and orderId = -1 "
                 + "order by orderItemId desc limit ?,? ";
 
-        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+        try (Connection c = DBUtil.getConnection(); 
+                PreparedStatement ps = c.prepareStatement(sql);) {
 
             ps.setInt(1, userId);
             ps.setInt(2, start);
             ps.setInt(3, count);
 
-            ResultSet rs = ps.executeQuery();
+            try (ResultSet rs = ps.executeQuery();) {
+                while (rs.next()) {
+                    OrderItem bean = new OrderItem();
+                    int id = rs.getInt(1);
 
-            while (rs.next()) {
-                OrderItem bean = new OrderItem();
-                int id = rs.getInt(1);
+                    int productId = rs.getInt("productId");
+                    int quantity = rs.getInt("quantity");
+                    int state = rs.getInt("state");
+                    float originalPrice = rs.getInt("originalPrice");
+                    float promotionalPrice = rs.getInt("promotionalPrice");
 
-                int productId = rs.getInt("productId");
-                int quantity = rs.getInt("quantity");
-                int state = rs.getInt("state");
-                float originalPrice = rs.getInt("originalPrice");
-                float promotionalPrice = rs.getInt("promotionalPrice");
+                    Product product = new ProductDAO().get(productId);
+                    User user = new UserDAO().get(userId);
+                    
+                    if (product.getInventory() < quantity) {
+                        quantity = product.getInventory();
+                        
+                        bean.setProduct(product);
+                        bean.setUser(user);
+                        bean.setQuantity(quantity);
+                        bean.setState(state);
+                        bean.setOriginalPrice(originalPrice);
+                        bean.setPromotionalPrice(promotionalPrice);
 
-                Product product = new ProductDAO().get(productId);
-                User user = new UserDAO().get(userId);
-                
-                if (product.getInventory() < quantity) {
-                	quantity = product.getInventory();
-                	
-                    bean.setProduct(product);
-                    bean.setUser(user);
-                    bean.setQuantity(quantity);
-                    bean.setState(state);
-                    bean.setOriginalPrice(originalPrice);
-                    bean.setPromotionalPrice(promotionalPrice);
+                        bean.setId(id);
+                        new OrderItemDAO().update(bean);
+                    } else {
+                        bean.setProduct(product);
+                        bean.setUser(user);
+                        bean.setQuantity(quantity);
+                        bean.setState(state);
+                        bean.setOriginalPrice(originalPrice);
+                        bean.setPromotionalPrice(promotionalPrice);
 
-                    bean.setId(id);
-                    new OrderItemDAO().update(bean);
-                } else {
-                    bean.setProduct(product);
-                    bean.setUser(user);
-                    bean.setQuantity(quantity);
-                    bean.setState(state);
-                    bean.setOriginalPrice(originalPrice);
-                    bean.setPromotionalPrice(promotionalPrice);
+                        bean.setId(id);
+                    }
 
-                    bean.setId(id);
+                    beans.add(bean);
                 }
-
-                beans.add(bean);
             }
+
         } catch (SQLException e) {
 
             e.printStackTrace();
@@ -225,46 +235,50 @@ public class OrderItemDAO {
     }
 
     public List<OrderItem> listByOrder(int orderId, int start, int count) {
-        List<OrderItem> beans = new ArrayList<OrderItem>();
+        List<OrderItem> beans = new ArrayList<>();
 
-        String sql = "select * from order_item where orderId = ? order by orderItemId desc limit ?,? ";
+        String sql = "select * from order_item "
+                + "where orderId = ? "
+                + "order by orderItemId desc limit ?,? ";
 
-        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+        try (Connection c = DBUtil.getConnection(); 
+                PreparedStatement ps = c.prepareStatement(sql);) {
 
             ps.setInt(1, orderId);
             ps.setInt(2, start);
             ps.setInt(3, count);
 
-            ResultSet rs = ps.executeQuery();
+            try (ResultSet rs = ps.executeQuery();) {
+                while (rs.next()) {
+                    OrderItem bean = new OrderItem();
+                    int id = rs.getInt(1);
 
-            while (rs.next()) {
-                OrderItem bean = new OrderItem();
-                int id = rs.getInt(1);
+                    int userId = rs.getInt("userId");
+                    int productId = rs.getInt("productId");
+                    int quantity = rs.getInt("quantity");
+                    int state = rs.getInt("state");
+                    float originalPrice = rs.getInt("originalPrice");
+                    float promotionalPrice = rs.getInt("promotionalPrice");
 
-                int userId = rs.getInt("userId");
-                int productId = rs.getInt("productId");
-                int quantity = rs.getInt("quantity");
-                int state = rs.getInt("state");
-                float originalPrice = rs.getInt("originalPrice");
-                float promotionalPrice = rs.getInt("promotionalPrice");
+                    Product product = new ProductDAO().get(productId);
+                    User user = new UserDAO().get(userId);
 
-                Product product = new ProductDAO().get(productId);
-                User user = new UserDAO().get(userId);
+                    if (-1 != orderId) {
+                        Order order = new OrderDAO().get(orderId);
+                        bean.setOrder(order);
+                    }
+                    bean.setProduct(product);
+                    bean.setUser(user);
+                    bean.setQuantity(quantity);
+                    bean.setState(state);
+                    bean.setOriginalPrice(originalPrice);
+                    bean.setPromotionalPrice(promotionalPrice);
 
-                if (-1 != orderId) {
-                    Order order = new OrderDAO().get(orderId);
-                    bean.setOrder(order);
+                    bean.setId(id);
+                    beans.add(bean);
                 }
-                bean.setProduct(product);
-                bean.setUser(user);
-                bean.setQuantity(quantity);
-                bean.setState(state);
-                bean.setOriginalPrice(originalPrice);
-                bean.setPromotionalPrice(promotionalPrice);
-
-                bean.setId(id);
-                beans.add(bean);
             }
+
         } catch (SQLException e) {
 
             e.printStackTrace();
@@ -304,46 +318,50 @@ public class OrderItemDAO {
     }
 
     public List<OrderItem> listByProduct(int productId, int start, int count) {
-        List<OrderItem> beans = new ArrayList<OrderItem>();
+        List<OrderItem> beans = new ArrayList<>();
 
-        String sql = "select * from order_item where productId = ? order by orderItemId desc limit ?,? ";
+        String sql = "select * from order_item "
+                + "where productId = ? "
+                + "order by orderItemId desc limit ?,? ";
 
-        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+        try (Connection c = DBUtil.getConnection(); 
+                PreparedStatement ps = c.prepareStatement(sql);) {
 
             ps.setInt(1, productId);
             ps.setInt(2, start);
             ps.setInt(3, count);
 
-            ResultSet rs = ps.executeQuery();
+            try (ResultSet rs = ps.executeQuery();) {
+                while (rs.next()) {
+                    OrderItem bean = new OrderItem();
+                    int id = rs.getInt(1);
 
-            while (rs.next()) {
-                OrderItem bean = new OrderItem();
-                int id = rs.getInt(1);
+                    int userId = rs.getInt("userId");
+                    int orderId = rs.getInt("orderId");
+                    int quantity = rs.getInt("quantity");
+                    int state = rs.getInt("state");
+                    float originalPrice = rs.getInt("originalPrice");
+                    float promotionalPrice = rs.getInt("promotionalPrice");
 
-                int userId = rs.getInt("userId");
-                int orderId = rs.getInt("orderId");
-                int quantity = rs.getInt("quantity");
-                int state = rs.getInt("state");
-                float originalPrice = rs.getInt("originalPrice");
-                float promotionalPrice = rs.getInt("promotionalPrice");
+                    Product product = new ProductDAO().get(productId);
+                    User user = new UserDAO().get(userId);
 
-                Product product = new ProductDAO().get(productId);
-                User user = new UserDAO().get(userId);
+                    if (-1 != orderId) {
+                        Order order = new OrderDAO().get(orderId);
+                        bean.setOrder(order);
+                    }
+                    bean.setProduct(product);
+                    bean.setUser(user);
+                    bean.setQuantity(quantity);
+                    bean.setState(state);
+                    bean.setOriginalPrice(originalPrice);
+                    bean.setPromotionalPrice(promotionalPrice);
 
-                if (-1 != orderId) {
-                    Order order = new OrderDAO().get(orderId);
-                    bean.setOrder(order);
+                    bean.setId(id);
+                    beans.add(bean);
                 }
-                bean.setProduct(product);
-                bean.setUser(user);
-                bean.setQuantity(quantity);
-                bean.setState(state);
-                bean.setOriginalPrice(originalPrice);
-                bean.setPromotionalPrice(promotionalPrice);
-
-                bean.setId(id);
-                beans.add(bean);
             }
+
         } catch (SQLException e) {
 
             e.printStackTrace();
@@ -353,15 +371,20 @@ public class OrderItemDAO {
     }
 
     public int getSaleCount(int productId) {
+        
         int total = 0;
-        try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
+        String sql = "select sum(quantity) from order_item where productId = ?";
+        try (Connection c = DBUtil.getConnection(); 
+                PreparedStatement ps = c.prepareStatement(sql);) {
 
-            String sql = "select sum(quantity) from order_item where productId = " + productId;
+            ps.setInt(1, productId);
 
-            ResultSet rs = s.executeQuery(sql);
-            while (rs.next()) {
-                total = rs.getInt(1);
+            try (ResultSet rs = ps.executeQuery();) {
+                while (rs.next()) {
+                    total = rs.getInt(1);
+                }
             }
+            
         } catch (SQLException e) {
 
             e.printStackTrace();

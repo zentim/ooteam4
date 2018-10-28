@@ -1,6 +1,7 @@
 package main.java.pattern.memento;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 
 import main.java.model.bean.OrderItem;
@@ -12,7 +13,7 @@ import main.java.model.util.DeepCloneUtil;
  * Memento Pattern - Originator
  *
  */
-public class ShoppingCart {
+public class ShoppingCart implements Serializable {
 
 	private List<OrderItem> orderItems;
 	

@@ -1,11 +1,13 @@
 package main.java.pattern.composite;
 
+import java.io.Serializable;
+
 /**
  * 
  * Composite Pattern (Transparency)
  *
  */
-public abstract class Component {
+public abstract class Component implements Serializable {
 	
 	public void add(Component c) {
 		throw new UnsupportedOperationException();

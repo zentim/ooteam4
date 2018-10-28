@@ -1,6 +1,5 @@
 package main.java.model.util;
 
-import java.net.Authenticator;
 import java.util.Properties;
 
 import javax.mail.Address;
@@ -44,12 +43,12 @@ public class Mailer   {
     		props.put("mail.smtp.host", "smtp.gmail.com");
     		props.put("mail.smtp.port", "587");
 
-    		Session session = Session.getInstance(props,
-    		  new javax.mail.Authenticator() {
-    			protected PasswordAuthentication getPasswordAuthentication() {
-    				return new PasswordAuthentication(mailFrom, code);
-    			}
-    		  });
+    		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+    		    @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                	return new PasswordAuthentication(mailFrom, code);
+                }
+    		});
    		
     		Message emailMessage = new MimeMessage(session);
     		Address recipientA = new InternetAddress(recipient);

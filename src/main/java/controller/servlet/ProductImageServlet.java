@@ -50,14 +50,14 @@ public class ProductImageServlet extends BaseBackServlet {
         // Generate file
         String fileName = pi.getId() + ".jpg";
         String imageFolder;
-        String imageFolder_small = null;
-        String imageFolder_middle = null;
+        String imageFolderSmall = null;
+        String imageFolderMiddle = null;
         if (ProductImageDAO.type_single.equals(pi.getType())) {
             imageFolder = request.getSession().getServletContext()
                     .getRealPath("img/productSingle");
-            imageFolder_small = request.getSession().getServletContext()
+            imageFolderSmall = request.getSession().getServletContext()
                     .getRealPath("img/productSingle_small");
-            imageFolder_middle = request.getSession().getServletContext()
+            imageFolderMiddle = request.getSession().getServletContext()
                     .getRealPath("img/productSingle_middle");
         } else {
             imageFolder = request.getSession().getServletContext()
@@ -82,13 +82,13 @@ public class ProductImageServlet extends BaseBackServlet {
                     ImageIO.write(img, "jpg", f);
 
                     if (ProductImageDAO.type_single.equals(pi.getType())) {
-                        File f_small = new File(imageFolder_small, fileName);
-                        f_small.getParentFile().mkdirs();
-                        File f_middle = new File(imageFolder_middle, fileName);
-                        f_middle.getParentFile().mkdirs();
+                        File fSmall = new File(imageFolderSmall, fileName);
+                        fSmall.getParentFile().mkdirs();
+                        File fMiddle = new File(imageFolderMiddle, fileName);
+                        fMiddle.getParentFile().mkdirs();
 
-                        ImageUtil.resizeImage(f, 56, 56, f_small);
-                        ImageUtil.resizeImage(f, 217, 190, f_middle);
+                        ImageUtil.resizeImage(f, 56, 56, fSmall);
+                        ImageUtil.resizeImage(f, 217, 190, fMiddle);
                     }
 
                 } catch (Exception e) {
@@ -110,24 +110,24 @@ public class ProductImageServlet extends BaseBackServlet {
         productImageDAO.delete(id);
 
         if (ProductImageDAO.type_single.equals(pi.getType())) {
-            String imageFolder_single = request.getSession().getServletContext()
+            String imageFolderSingle = request.getSession().getServletContext()
                     .getRealPath("img/productSingle");
-            String imageFolder_small = request.getSession().getServletContext()
+            String imageFolderSmall = request.getSession().getServletContext()
                     .getRealPath("img/productSingle_small");
-            String imageFolder_middle = request.getSession().getServletContext()
+            String imageFolderMiddle = request.getSession().getServletContext()
                     .getRealPath("img/productSingle_middle");
 
-            File f_single = new File(imageFolder_single, pi.getId() + ".jpg");
-            f_single.delete();
-            File f_small = new File(imageFolder_small, pi.getId() + ".jpg");
-            f_small.delete();
-            File f_middle = new File(imageFolder_middle, pi.getId() + ".jpg");
-            f_middle.delete();
+            File fSingle = new File(imageFolderSingle, pi.getId() + ".jpg");
+            fSingle.delete();
+            File fSmall = new File(imageFolderSmall, pi.getId() + ".jpg");
+            fSmall.delete();
+            File fMiddle = new File(imageFolderMiddle, pi.getId() + ".jpg");
+            fMiddle.delete();
         } else {
-            String imageFolder_detail = request.getSession().getServletContext()
+            String imageFolderDetail = request.getSession().getServletContext()
                     .getRealPath("img/productDetail");
-            File f_detail = new File(imageFolder_detail, pi.getId() + ".jpg");
-            f_detail.delete();
+            File fDetail = new File(imageFolderDetail, pi.getId() + ".jpg");
+            fDetail.delete();
         }
 
         return "@admin_productImage_list?pid=" + pi.getProduct().getId();

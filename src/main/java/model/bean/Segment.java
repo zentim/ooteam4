@@ -19,7 +19,7 @@ public class Segment extends Component implements Serializable {
 	private String name;
 	private int id;
 	private List<Category> categorys;
-	private Map<Integer, Component> components = new TreeMap<Integer, Component>();
+	private Map<Integer, Component> components = new TreeMap<>();
 	
 	
 	@Override
@@ -44,7 +44,7 @@ public class Segment extends Component implements Serializable {
 		Set<Integer> keys = components.keySet();
 		Iterator iterator = keys.iterator();
 		while(iterator.hasNext()) {
-			((Component)components.get(iterator.next())).operation();
+			components.get(iterator.next()).operation();
 		}
 	}
 

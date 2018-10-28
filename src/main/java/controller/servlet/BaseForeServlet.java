@@ -23,6 +23,7 @@ public class BaseForeServlet extends HttpServlet {
     protected SubscriptionDAO subscriptionDAO = new SubscriptionDAO();
     protected UserDAO userDAO = new UserDAO();
 
+    @Override
     public void service(HttpServletRequest request, HttpServletResponse response) {
         try {
             int start = 0;

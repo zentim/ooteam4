@@ -49,10 +49,7 @@ public class DES {
         // Generate a Cipher object and specify its supported DES algorithm
         try {
             c = Cipher.getInstance("DES");
-        } catch (NoSuchAlgorithmException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -67,7 +64,7 @@ public class DES {
      * @throws IllegalBlockSizeException 
      * @throws BadPaddingException 
      */
-    public byte[] Encrytor(String str) throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+    public byte[] encrytor(String str) throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
         // The Cipher object is initialized according to the key, 
         // and ENCRYPT_MODE indicates the encryption mode.
         c.init(Cipher.ENCRYPT_MODE, deskey);
@@ -88,22 +85,17 @@ public class DES {
      * @throws IllegalBlockSizeException 
      * @throws BadPaddingException 
      */
-    public byte[] Decryptor(String password)
+    public byte[] decryptor(String password)
 
     {
         byte[] en = null;
 
         try {
-            en = Encrytor(password);
-        } catch (InvalidKeyException e) {
+            en = encrytor(password);
+        } catch (InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (BadPaddingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        
         }
         
 
@@ -117,10 +109,7 @@ public class DES {
         }
         try {
             cipherByte = c.doFinal(en);
-        } catch (IllegalBlockSizeException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (BadPaddingException e) {
+        } catch (IllegalBlockSizeException | BadPaddingException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
