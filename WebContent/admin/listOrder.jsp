@@ -14,7 +14,7 @@
         <th>#</th>
         <th>State</th>
         <th>Price</th>
-        <th>User Name</th>
+        <th>User</th>
         <th>Date Created</th>
         <th>Date Paid</th>
         <th>Operation</th>
