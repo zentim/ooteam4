@@ -59,7 +59,7 @@
               <div style="position:relative; width: 80px; height: 80px;">
                 <img 
                   class="cartProductImg"  
-                  src="img/productSingle_middle/${oi.product.firstProductImage.id}.jpg" 
+                  src="img/productSingle/${oi.product.firstProductImage.id}.jpg" 
                   style="position:absolute; max-width: 100%; max-height: 100%; top:0; bottom: 0; left: 0; right: 0; margin: auto; ">
               </div>
             </td>
@@ -151,7 +151,7 @@
     <div class="pull-right" style="font-size: 20px;">
         <span>Selected <span class="cartSumNumber" style="color: red;">0</span> Item, </span>
         <span>Total : </span>
-        <span class="cartSumPrice" style="color: red; padding: 0 10px;">$ 0.00</span>
+        <span class="cartSumPrice" style="color: red; padding: 0 10px;">$0.00</span>
         <button 
         	type="submit" 
         	class="btn btn-lg createOrderButton" 
@@ -308,8 +308,10 @@ $(function(){
      	num = parseInt(num);
         
         --num;
-        if(num<=0)
-            num=1;
+        if(num <= 0) {
+        	num = 0;
+        }
+            
         syncPrice(pid, num, price, oiid);
     });
 
