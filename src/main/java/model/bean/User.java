@@ -19,6 +19,18 @@ public class User implements Observer, Serializable {
 	@Override
 	public void update(Subject subject) {
 		Product product = (Product) subject;
+		
+		/**
+		 * If you want to send an email to observer, you need to uncomment the 
+		 * following code. 
+		 * 
+		 * Then setting the sender's gmail address and password   
+		 * in "main.java.model.util.MailUtil" java file.
+		 */
+//        Mailer b = new Mailer("");
+//        String mail = email;
+//        b.sendMail(mail, product.getId(), product.getName());
+//		
 		System.out.println("UserId " + id + " get a notify "
 		        + "from ProductId " + product.getId() + ": ");
 		System.out.println("Product is available now you can buy it. ");
