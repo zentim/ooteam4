@@ -11,7 +11,7 @@
 
 <div class="table-responsive">
 
-  <table class="table table-striped table-bordered table-sm">
+  <table class="table table-bordered table-sm">
 
     <thead>
       <tr>
@@ -40,18 +40,27 @@
         <tr oiid="${oi.id}" class="cartProductItemTR">
 
             <td align="left" style="width: 100px;">
-                <img 
-                  selectit="false" 
-                  oiid="${oi.id}" 
-                  class="cartProductItemIfSelected" 
-                  src="img/site/cartNotSelected.png" 
-                  style="cursor: pointer">
-                <a 
-                  style="display: none" 
-                  href="#nowhere">
-                  <img 
-                    src="img/site/cartSelected.png" 
-                    style="cursor: pointer">
+            
+                <c:if test="${ oi.quantity > 0 }">
+	                <img 
+	                  selectit="false" 
+	                  oiid="${oi.id}" 
+	                  class="cartProductItemIfSelected" 
+	                  src="img/site/cartNotSelected.png" 
+	                  style="cursor: pointer; display: block;">
+                </c:if>
+                
+                <c:if test="${ oi.quantity <= 0 }">
+                    <img 
+                      selectit="false" 
+                      oiid="${oi.id}" 
+                      class="cartProductItemIfSelected" 
+                      src="img/site/cartNotSelected.png" 
+                      style="cursor: pointer; display: none;">
+                </c:if>
+                  
+                <a style="display: none" href="#nowhere">
+                  <img src="img/site/cartSelected.png" style="cursor: pointer">
                 </a>
             </td>
 
@@ -155,7 +164,7 @@
         <button 
         	type="submit" 
         	class="btn btn-lg createOrderButton" 
-        	style="font-weight: bold; background-color: #C40000; color: white;"
+        	style="font-weight: bold; background-color: rgb(170, 170, 170); color: white;"
         	disabled="disabled">Check Out</button>
     </div>
 
@@ -186,7 +195,7 @@ $(function(){
 
     $("a.deleteOrderItem").click(function(){
         deleteOrderItem = false;
-        var oiid = $(this).attr("oiid")
+        var oiid = $(this).attr("oiid");
         deleteOrderItemid = oiid;
         $("#deleteConfirmModal").modal('show');
     });
@@ -251,35 +260,40 @@ $(function(){
                 $(this).parents("tr.cartProductItemTR").css("background-color","#FFF8E1");
             });
         }
+        
         syncCreateOrderButton();
         calcCartSumPriceAndNumber();
     });
 
     $(".orderItemNumberSetting").keyup(function(){
-        var pid = $(this).attr("pid");
-        var oiid = $(this).attr("oiid");
-        var inventory = $("span.orderItemStock[pid="+pid+"]").text();
-        var price = $("span.orderItemPromotePrice[pid="+pid+"]").text();
-
-        var num = $(".orderItemNumberSetting[pid=" + pid + "]").val();
+        var pid = parseInt($(this).attr("pid"));
+        var oiid = parseInt($(this).attr("oiid"));
+        var inventory = parseInt($("span.orderItemStock[pid="+pid+"]").text());
+        var price = parseFloat($("span.orderItemPromotePrice[pid="+pid+"]").text());
+        var num = parseInt($(".orderItemNumberSetting[pid=" + pid + "]").val());
         
         num = parseInt(num);
-        if(isNaN(num))
-            num = 1;
-        if(num <= 0)
-            num = 1;
-        if(num > inventory)
-            num = inventory;
+        if(isNaN(num)){
+        	num = 1;
+        }
+            
+        if(num <= 0){
+        	num = 1;
+        }
+            
+        if(num > inventory){
+        	num = inventory;
+        }
     
         syncPrice(pid, num, price, oiid);
     });
 
     $(".numberPlus").click(function(){
-        var pid = $(this).attr("pid");
-        var oiid = $(this).attr("oiid");
-        var inventory = $("span.orderItemStock[pid="+pid+"]").text();
-        var price = $("span.orderItemPromotePrice[pid="+pid+"]").text();
-        var num = $(".orderItemNumberSetting[pid="+pid+"]").val();
+        var pid = parseInt($(this).attr("pid"));
+        var oiid = parseInt($(this).attr("oiid"));
+        var inventory = parseInt($("span.orderItemStock[pid="+pid+"]").text());
+        var price = parseFloat($("span.orderItemPromotePrice[pid="+pid+"]").text());
+        var num = parseInt($(".orderItemNumberSetting[pid="+pid+"]").val());
         
         pid = parseInt(pid);
         oiid = parseInt(oiid);
@@ -295,11 +309,11 @@ $(function(){
         syncPrice(pid, num, price, oiid);
     });
     $(".numberMinus").click(function(){
-        var pid=$(this).attr("pid");
-        var inventory= $("span.orderItemStock[pid="+pid+"]").text();
-        var price= $("span.orderItemPromotePrice[pid="+pid+"]").text();
-        var oiid=$(this).attr("oiid");
-        var num= $(".orderItemNumberSetting[pid="+pid+"]").val();
+        var pid = parseInt($(this).attr("pid"));
+        var inventory = parseInt($("span.orderItemStock[pid="+pid+"]").text());
+        var price= parseFloat($("span.orderItemPromotePrice[pid="+pid+"]").text());
+        var oiid = parseInt($(this).attr("oiid"));
+        var num = parseInt($(".orderItemNumberSetting[pid="+pid+"]").val());
         
         pid = parseInt(pid);
         oiid = parseInt(oiid);
@@ -365,19 +379,33 @@ function syncSelect(){
 function calcCartSumPriceAndNumber(){
     var sum = 0;
     var totalNumber = 0;
+    
+	    $("img.cartProductItemIfSelected[selectit='selectit']").each(
+		      function (){
+		        var oiid = $(this).attr("oiid");
+		        var num = $(".orderItemNumberSetting[oiid=" + oiid + "]").val();
+		        
+		        if (parseInt(num) === 0) {
+		            var pid = $(".orderItemNumberSetting[oiid=" + oiid + "]").attr("pid")
+		            verifySelected(pid);
+		        }
+		      }
+	      );
+	    
+	    
 	
-    $("img.cartProductItemIfSelected[selectit='selectit']").each(
-      function (){
-        var oiid = $(this).attr("oiid");
-        var price = $(".cartProductItemSmallSumPrice[oiid=" + oiid + "]").text();
-        price = price.replace(/,/g, "");    
-        price = price.replace(/\\$/g, "");
-        sum += new Number(price);
-        
-        var num = $(".orderItemNumberSetting[oiid=" + oiid + "]").val();
-        totalNumber += new Number(num);
-      }
-    );
+	    $("img.cartProductItemIfSelected[selectit='selectit']").each(
+   	      function (){
+   	        var oiid = $(this).attr("oiid");
+   	        var price = $(".cartProductItemSmallSumPrice[oiid=" + oiid + "]").text();
+   	        price = price.replace(/,/g, "");    
+   	        price = price.replace(/\\$/g, "");
+   	        sum += new Number(price);
+   	        
+   	        var num = $(".orderItemNumberSetting[oiid=" + oiid + "]").val();
+   	        totalNumber += new Number(num);
+   	      }
+   	    );
 
     $("span.cartSumPrice").html("$" + formatMoney(sum));
     $("span.cartSumNumber").html(totalNumber);
@@ -388,7 +416,9 @@ function syncPrice(pid, num, price, oiid){
     var cartProductItemSmallSumPrice = formatMoney(num * price);
     $(".cartProductItemSmallSumPrice[pid=" + pid + "]").html("$" + cartProductItemSmallSumPrice);
     calcCartSumPriceAndNumber();
-
+    
+    verifySelected(pid);
+    
     var page = "forechangeOrderItem";
  	pid = parseInt(pid);
  	num = parseInt(num);
@@ -403,6 +433,34 @@ function syncPrice(pid, num, price, oiid){
           }
         }
       );
+}
+
+function verifySelected(pid) {
+	
+	var num = parseInt($(".orderItemNumberSetting[pid="+pid+"]").val());
+	
+	if (num === 0) {
+		$(".orderItemNumberSetting[pid="+pid+"]")
+	       .parents("tr.cartProductItemTR")
+	       .find(".cartProductItemIfSelected")
+	       .css("display", "none");
+	} else {
+		$(".orderItemNumberSetting[pid="+pid+"]")
+        .parents("tr.cartProductItemTR")
+        .find(".cartProductItemIfSelected")
+        .css("display", "block");
+	}
+	
+	$(".cartProductItemIfSelected").each(function(){
+        if (parseInt($(this).parents("tr.cartProductItemTR").find(".orderItemNumberSetting").val()) === 0) {
+            $(this).css("display", "none");
+            $(this).attr("src","img/site/cartNotSelected.png");
+            $(this).attr("selectit","false");
+            $(this).parents("tr.cartProductItemTR").css("background-color","#fff");
+        }
+    });
+	
+	syncCreateOrderButton();
 }
 
 </script>

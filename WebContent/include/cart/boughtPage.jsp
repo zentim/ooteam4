@@ -29,7 +29,7 @@
             <tr>
                 <td width="680px">Object</td>
                 <td width="100px">Price</td>
-                <td width="100px">Qty</td>
+                <td width="100px">All Qty</td>
                 <td width="120px">Payment</td>
                 <td width="100px">Operation</td>
             </tr>
