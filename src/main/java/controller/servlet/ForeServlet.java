@@ -139,12 +139,12 @@ public class ForeServlet extends BaseForeServlet {
         
         if (!password.equals(repeatPassword)) {
         	request.setAttribute("msg", "Inconsistent password!!!");
-			return "%fail";
+			return "%Inconsistent password";
         }
 
         if (exist) {
             request.setAttribute("msg", "Email has been used!!!");
-            return "%fail";
+            return "%Email has been used";
         }
 
         User user = new User();

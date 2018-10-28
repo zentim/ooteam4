@@ -90,8 +90,8 @@
                   </div>
               
                 <div class="text-center mb-4">
-                  <i class="fas fa-user-circle fa-5x mb-4"></i>
-                  <h1 class="h3 mb-3 font-weight-normal">Login</h1>
+                  <i class="fas fa-users fa-5x mb-4"></i>
+                  <h1 class="h3 mb-3 font-weight-normal">Register</h1>
                   <span style="color: #777">Please enter your email and password</span>
                 </div>
               
