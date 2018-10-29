@@ -156,7 +156,7 @@ public class DiscountTest {
 		orderitem.setProduct(productdao.get(productId));
 		orderitem.setQuantity(40);
 		orderitem.setOrder(null);
-		orderitem.setState(0);
+		orderitem.setState(1);
 		orderitem.setOriginalPrice(productdao.get(productId).getPrice());
 		orderitem.setPromotionalPrice(productdao.get(productId).getPrice());
 		int orderItemId = orderitemdao.add(orderitem);
@@ -229,7 +229,7 @@ public class DiscountTest {
 		orderitem.setProduct(productdao.get(productId));
 		orderitem.setQuantity(100);
 		orderitem.setOrder(null);
-		orderitem.setState(0);
+		orderitem.setState(1);
 		orderitem.setOriginalPrice(productdao.get(productId).getPrice());
 		orderitem.setPromotionalPrice(productdao.get(productId).getPrice());
 		int orderItemId = orderitemdao.add(orderitem);
@@ -301,7 +301,7 @@ public class DiscountTest {
 		orderitem.setProduct(productdao.get(productId));
 		orderitem.setQuantity(100);
 		orderitem.setOrder(null);
-		orderitem.setState(0);
+		orderitem.setState(1);
 		orderitem.setOriginalPrice(productdao.get(productId).getPrice());
 		orderitem.setPromotionalPrice(productdao.get(productId).getPrice());
 		int orderItemId = orderitemdao.add(orderitem);
@@ -378,7 +378,7 @@ public class DiscountTest {
 		orderitem.setUser(userdao.get(userId));
 		orderitem.setQuantity(1);
 		orderitem.setOrder(null);
-		orderitem.setState(0);
+		orderitem.setState(1);
 		
 		orderitem.setOriginalPrice(productdao.get(productIdX).getPrice());
 		orderitem.setPromotionalPrice(productdao.get(productIdX).getPrice());

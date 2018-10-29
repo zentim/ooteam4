@@ -57,7 +57,7 @@ public class ProductSetStrategy implements Strategy {
 					discountAmount += oi.getQuantity() * oi.getProduct().getPrice() * ((float)promotionItem.getDiscountOf() / 100);
 					discountAmount = Math.round(discountAmount);
 					
-					System.out.println("discount amount = " + discountAmount);
+					
 				}
 			}
 		}
