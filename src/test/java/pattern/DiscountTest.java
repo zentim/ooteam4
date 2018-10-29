@@ -168,7 +168,7 @@ public class DiscountTest {
 		
 		DiscountRequest dr = new DiscountRequest();
 		dr.setOrderItems(ois);
-		dr.setNationHoliday(true); // on national holidays
+		dr.setNationalHoliday(true); // on national holidays
 		dr.setLastYearAmount(100);
 		dr = nationHolidayDiscount.handleDiscount(dr);
 		System.out.println("Msg: " + dr.getDiscountMsg());
@@ -241,7 +241,7 @@ public class DiscountTest {
 		
 		DiscountRequest dr = new DiscountRequest();
 		dr.setOrderItems(ois);
-		dr.setNationHoliday(false);
+		dr.setNationalHoliday(false);
 		dr.setLastYearAmount(200000);
 		dr = nationHolidayDiscount.handleDiscount(dr);
 		System.out.println("Msg: " + dr.getDiscountMsg());
@@ -313,7 +313,7 @@ public class DiscountTest {
 		
 		DiscountRequest dr = new DiscountRequest();
 		dr.setOrderItems(ois);
-		dr.setNationHoliday(false);
+		dr.setNationalHoliday(false);
 		dr.setLastYearAmount(100);
 		dr = nationHolidayDiscount.handleDiscount(dr);
 		System.out.println("Msg: " + dr.getDiscountMsg());
@@ -403,7 +403,7 @@ public class DiscountTest {
 		
 		DiscountRequest dr = new DiscountRequest();
 		dr.setOrderItems(ois);
-		dr.setNationHoliday(false);
+		dr.setNationalHoliday(false);
 		dr.setLastYearAmount(100);
 		dr = nationHolidayDiscount.handleDiscount(dr);
 		System.out.println("Msg: " + dr.getDiscountMsg());

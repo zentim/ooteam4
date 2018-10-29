@@ -11,7 +11,7 @@ public class DiscountRequest {
 
 	private List<OrderItem> orderItems = new ArrayList<OrderItem>();
 	private int lastYearAmount;
-	private boolean isNationHoliday = false;
+	private boolean isNationalHoliday = false;
 	private String discountMsg = ""; // (e.g. "eachGroupOfN: -100")
 	private float totalDiscount = 0; // (e.g. 100.0)
 	
@@ -28,11 +28,11 @@ public class DiscountRequest {
 	public void setLastYearAmount(int lastYearAmount) {
 		this.lastYearAmount = lastYearAmount;
 	}
-	public boolean isNationHoliday() {
-		return isNationHoliday;
+	public boolean isNationalHoliday() {
+		return isNationalHoliday;
 	}
-	public void setNationHoliday(boolean isNationHoliday) {
-		this.isNationHoliday = isNationHoliday;
+	public void setNationalHoliday(boolean isNationHoliday) {
+		this.isNationalHoliday = isNationHoliday;
 	}
 	public String getDiscountMsg() {
 		return discountMsg;
@@ -49,7 +49,7 @@ public class DiscountRequest {
 	@Override
 	public String toString() {
 		return "DiscountRequest [orderItems=" + orderItems + ", lastYearAmount=" + lastYearAmount + ", isNationHoliday="
-				+ isNationHoliday + ", discountMsg=" + discountMsg + ", totalDiscount=" + totalDiscount + "]";
+				+ isNationalHoliday + ", discountMsg=" + discountMsg + ", totalDiscount=" + totalDiscount + "]";
 	}
 	
 
