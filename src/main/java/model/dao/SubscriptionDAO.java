@@ -90,7 +90,7 @@ public class SubscriptionDAO {
 
 			ps.setInt(1, uid);
 			ps.setInt(2, pid);
-			ps.execute(sql);
+			ps.execute();
 
 		} catch (SQLException e) {
 

@@ -106,7 +106,7 @@ public class PromotionItemDAO {
             
             ps.setInt(1, id);
 
-            ps.execute(sql);
+            ps.execute();
 
         } catch (SQLException e) {
 

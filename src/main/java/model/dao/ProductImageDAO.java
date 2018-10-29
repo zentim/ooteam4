@@ -70,7 +70,7 @@ public class ProductImageDAO {
                 PreparedStatement ps = c.prepareStatement(sql);) {
 
             ps.setInt(1, id);
-            ps.execute(sql);
+            ps.execute();
 
         } catch (SQLException e) {
 
