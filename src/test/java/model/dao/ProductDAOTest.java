@@ -89,6 +89,9 @@ public class ProductDAOTest {
 	
 	@Test
 	public void testCompositePattern() {
+	    /**
+	     * Use Composite Pattern
+	     */
 		System.out.println("=== testCompositePattern");
 		Component productComponent = productdao.get(productId);
 		Component brandComponent = branddao.get(brandId);
