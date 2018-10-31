@@ -35,6 +35,7 @@ import main.java.pattern.chainOfResponsibility.ProductSetPolicy;
 /**
  * 
  * Test Chain Of Responsibility Pattern and Strategy Pattern
+ * (Need to connect mysql)
  *
  */
 public class DiscountTest {
