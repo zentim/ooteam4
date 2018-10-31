@@ -112,23 +112,23 @@ public class ForeServlet extends BaseForeServlet {
         
         if (!password.equals(repeatPassword)) {
         	request.setAttribute("msg", "Inconsistent password!!!");
-			return "register.jsp";
+                return "register.jsp";
         }
 
-		if (exist) {
-			request.setAttribute("msg", "Email has been used!!!");
-			return "register.jsp";
-		}
+        if (exist) {
+                request.setAttribute("msg", "Email has been used!!!");
+                return "register.jsp";
+        }
 
-		User user = new User();
-		user.setEmail(email);
-		user.setPassword(password);
-		userDAO.add(user);
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(password);
+        userDAO.add(user);
         User newUser = userDAO.get(email, password);
 
         request.getSession().setAttribute("user", newUser);
-		return "@forehome";
-	}
+        return "@forehome";
+    }
 
     public String registerAjax(HttpServletRequest request, HttpServletResponse response, Page page) {
         String email = request.getParameter("email");
@@ -138,8 +138,8 @@ public class ForeServlet extends BaseForeServlet {
         boolean exist = userDAO.isExist(email);
         
         if (!password.equals(repeatPassword)) {
-        	request.setAttribute("msg", "Inconsistent password!!!");
-			return "%Inconsistent password";
+                request.setAttribute("msg", "Inconsistent password!!!");
+                return "%Inconsistent password";
         }
 
         if (exist) {
@@ -160,18 +160,18 @@ public class ForeServlet extends BaseForeServlet {
     public String login(HttpServletRequest request, HttpServletResponse response, Page page) {
     	String email = request.getParameter("email");
     	email = HtmlUtils.htmlEscape(email);
-		String password = request.getParameter("password");
+        String password = request.getParameter("password");
 
-		User user = userDAO.get(email, password);
+        User user = userDAO.get(email, password);
 
-		if (null == user) {
-			request.setAttribute("msg", "Invalid email or password!");
-			return "login.jsp";
-		}
+        if (null == user) {
+                request.setAttribute("msg", "Invalid email or password!");
+                return "login.jsp";
+        }
 		
-		request.getSession().setAttribute("user", user);
-		return "@forehome";
-	}
+        request.getSession().setAttribute("user", user);
+        return "@forehome";
+    }
 
     public String loginAjax(HttpServletRequest request, HttpServletResponse response, Page page) {
         String email = request.getParameter("email");
@@ -228,7 +228,7 @@ public class ForeServlet extends BaseForeServlet {
         DiscountPolicy noDiscount = new NoDiscountPolicy();
 		  
         // Set the order of chains
-      	nationHolidayDiscount.setNextDiscountPolicy(lastYear100KDiscount);
+        nationHolidayDiscount.setNextDiscountPolicy(lastYear100KDiscount);
         lastYear100KDiscount.setNextDiscountPolicy(eachGroupOf100Discount);
         eachGroupOf100Discount.setNextDiscountPolicy(xyzDiscount);
         xyzDiscount.setNextDiscountPolicy(noDiscount);
