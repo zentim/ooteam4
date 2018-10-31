@@ -1,3 +1,7 @@
+## Version
+* [oo teamwork 1](https://github.com/zentim/ooteam4/releases/tag/v0.4.4)
+
+
 ## How To Start
 1. use "XAMPP" to start MySQL
 2. use "HeidiSQL" to operate MySQL (password is empty)
