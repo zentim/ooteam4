@@ -62,7 +62,7 @@ public class Product extends Component implements Subject, Serializable {
 	/* Composite Pattern */
 	@Override
 	public void operation() {
-		System.out.println("--- id: " + id + ", name: " + name);
+		System.out.println("--- product id: " + id + ", name: " + name);
 	}
 	
 	@Override

@@ -15,6 +15,7 @@ import java.util.List;
 
 /** 
 * BuyXGetYFreePolicy Tester. 
+* (Need to connect mysql)
 * 
 */ 
 public class BuyXGetYFreePolicyTest extends TestCase {

@@ -44,7 +44,7 @@ public class Category extends Component implements Serializable {
 
 	@Override
 	public void operation() {
-		System.out.println("- id: " + id + ", name: " + id);
+		System.out.println("- category id: " + id + ", name: " + name);
 		
 		Iterator iterator = components.iterator();
 		while(iterator.hasNext()) {

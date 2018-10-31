@@ -18,6 +18,7 @@ import main.java.pattern.composite.*;
 /**
  * 
  * Test Composite Pattern and Iterator Pattern
+ * (Need to connect mysql)
  *
  */
 public class DataCollectionTest {
@@ -41,18 +42,18 @@ public class DataCollectionTest {
 	public static void testAdd() {
 		// create segment
 		segment = new Segment();
-		segment.setName("SegmentTest");
+		segment.setName("XXX Segment");
 		segmentId = segmentdao.add(segment);
 
 		// create category
 		category = new Category();
-		category.setName("CategoryTest");
+		category.setName("OOO Category");
 		category.setSegment(segmentdao.get(segmentId));
 		categoryId = categorydao.add(category);
 
 		// create brand
 		brand = new Brand();
-		brand.setName("Book");
+		brand.setName("OOXX Brand");
 		brand.setCategory(categorydao.get(categoryId));
 		brandId = branddao.add(brand);
 
@@ -60,7 +61,7 @@ public class DataCollectionTest {
 
 		// create product
 		product = new Product();
-		product.setName("Harry Potter");
+		product.setName("OXOX Product");
 		product.setInventory(5);
 		product.setPrice(1000);
 		product.setDateAdded(new Date());

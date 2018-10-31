@@ -39,7 +39,7 @@ public class Brand extends Component implements Serializable {
 
 	@Override
 	public void operation() {
-		System.out.println("-- id: " + id + ", name: " + name);
+		System.out.println("-- brand id: " + id + ", name: " + name);
 		
 		Set<Integer> keys = components.keySet();
 		Iterator iterator = keys.iterator();

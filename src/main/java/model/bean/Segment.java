@@ -39,7 +39,7 @@ public class Segment extends Component implements Serializable {
 
 	@Override
 	public void operation() {
-		System.out.println("Segment id: " + id + ", name: " + name);
+		System.out.println("segment id: " + id + ", name: " + name);
 		
 		Set<Integer> keys = components.keySet();
 		Iterator iterator = keys.iterator();
