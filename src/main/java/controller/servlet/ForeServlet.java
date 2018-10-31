@@ -223,27 +223,27 @@ public class ForeServlet extends BaseForeServlet {
         // Init Chain
         DiscountPolicy nationHolidayDiscount = new BuyXGetYFreePolicy();
         DiscountPolicy lastYear100KDiscount = new BroughtMoreThanInLastYearPolicy();
-		DiscountPolicy eachGroupOf100Discount = new EachGroupOfNPolicy();
-		DiscountPolicy xyzDiscount = new ProductSetPolicy();
-		DiscountPolicy noDiscount = new NoDiscountPolicy();
+        DiscountPolicy eachGroupOf100Discount = new EachGroupOfNPolicy();
+        DiscountPolicy xyzDiscount = new ProductSetPolicy();
+        DiscountPolicy noDiscount = new NoDiscountPolicy();
 		  
-		// Set the order of chains
+        // Set the order of chains
       	nationHolidayDiscount.setNextDiscountPolicy(lastYear100KDiscount);
-		lastYear100KDiscount.setNextDiscountPolicy(eachGroupOf100Discount);
-		eachGroupOf100Discount.setNextDiscountPolicy(xyzDiscount);
-		xyzDiscount.setNextDiscountPolicy(noDiscount);
+        lastYear100KDiscount.setNextDiscountPolicy(eachGroupOf100Discount);
+        eachGroupOf100Discount.setNextDiscountPolicy(xyzDiscount);
+        xyzDiscount.setNextDiscountPolicy(noDiscount);
 		    
-		// Send OrderItem List to the pattern for calc discount.
-	    // Return DiscountRequest, it contains:
-	    // 1. (String) discountMsg (e.g. "eachGroupOfN: -100")
-	    // 2. (float) totalDiscount (e.g. 100.0)
-	    DiscountRequest dr = new DiscountRequest();
-	    dr.setOrderItems(ois);
-		dr.setNationalHoliday(true);
-		dr.setLastYearAmount(200000);
-		dr = nationHolidayDiscount.handleDiscount(dr);
+        // Send OrderItem List to the pattern for calc discount.
+        // Return DiscountRequest, it contains:
+        // 1. (String) discountMsg (e.g. "eachGroupOfN: -100")
+        // 2. (float) totalDiscount (e.g. 100.0)
+        DiscountRequest dr = new DiscountRequest();
+        dr.setOrderItems(ois);
+        dr.setNationalHoliday(true);
+        dr.setLastYearAmount(200000);
+        dr = nationHolidayDiscount.handleDiscount(dr);
 		    
-		double totalWithoutDiscount = total;
+        double totalWithoutDiscount = total;
         // calc actual payment amount
         total = total - dr.getTotalDiscount();
 
@@ -441,8 +441,8 @@ public class ForeServlet extends BaseForeServlet {
         
         
         for (OrderItem oi : ois) {
-        	Product p = oi.getProduct();
-        	int newQuantity = p.getInventory() - oi.getQuantity();
+            Product p = oi.getProduct();
+            int newQuantity = p.getInventory() - oi.getQuantity();
             p.setInventory(newQuantity);
             productDAO.update(p);
         	
