@@ -20,7 +20,6 @@ public class Product extends Component implements Subject, Serializable {
 	private int id;
 	private String name;
 	private float price;
-	private int inventory;
 	private Date dateAdded;
 	private Brand brand;
 	private ProductImage firstProductImage;
@@ -29,9 +28,11 @@ public class Product extends Component implements Subject, Serializable {
 	private int discountType = -1;
 	private String discountTypeName;
 	private String promotionName;
+	
+	private int inventory;
 	private ArrayList<Observer> observers = new ArrayList<>();
 	
-	/* Observer Methods */
+	/* Observer Pattern */
 	@Override
 	public void addObserver(Observer o) {
 		observers.add(o);
@@ -58,7 +59,7 @@ public class Product extends Component implements Subject, Serializable {
 		}
 	}
 	
-	/* Composite Method */
+	/* Composite Pattern */
 	@Override
 	public void operation() {
 		System.out.println("--- id: " + id + ", name: " + name);
