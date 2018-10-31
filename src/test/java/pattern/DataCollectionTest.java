@@ -67,12 +67,6 @@ public class DataCollectionTest {
 		product.setBrand(branddao.get(brandId));
 		productId = productdao.add(product);
 	}
-
-	@Test
-	public void testTotal() {
-		int result = productdao.getTotal(brandId);
-		assertNotNull("should not be null", result);
-	}
 	
 	@Test
 	public void testCompositePattern() {
@@ -86,8 +80,6 @@ public class DataCollectionTest {
 		categoryComponent.add(brandComponent);
 		segmentComponent.add(categoryComponent);
 		segmentComponent.operation();
-		
-		System.out.println();
 	}
 
 	@AfterClass
@@ -95,6 +87,7 @@ public class DataCollectionTest {
 		// delete product
 		productdao.delete(productId);
 
+		System.out.println();
 		System.out.println("Test End...");
 
 		// delete brand
