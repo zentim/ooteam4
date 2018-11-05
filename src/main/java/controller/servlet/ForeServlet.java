@@ -20,7 +20,6 @@ import main.java.pattern.chainOfResponsibility.DiscountRequest;
 import main.java.pattern.chainOfResponsibility.EachGroupOfNPolicy;
 import main.java.pattern.chainOfResponsibility.NoDiscountPolicy;
 import main.java.pattern.chainOfResponsibility.ProductSetPolicy;
-import main.java.pattern.facade.ClearOrderFacade;
 import main.java.pattern.memento.Caretaker;
 import main.java.pattern.memento.Memento;
 import main.java.pattern.memento.ShoppingCart;
@@ -407,11 +406,9 @@ public class ForeServlet extends BaseForeServlet {
     public String clearOrder(HttpServletRequest request, HttpServletResponse response, Page page) {
     	List<OrderItem> ois = (List<OrderItem>) request.getSession().getAttribute("ois");
     	
-    	/**
-    	 * Facade Pattern
-    	 */
-    	ClearOrderFacade clearOrderFacade = new ClearOrderFacade(ois);
-    	clearOrderFacade.operation();
+    	for (OrderItem oi : ois) {
+            orderItemDAO.delete(oi.getId());
+        }
     	
     	return "@forecart";
     }
