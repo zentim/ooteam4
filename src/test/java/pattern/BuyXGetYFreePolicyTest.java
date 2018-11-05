@@ -102,7 +102,7 @@ public void testHandleDiscount() throws Exception {
 
     // create promotion : Buy X Get Y Free discount
     promotion = new Promotion();
-    promotion.setDiscountType(PromotionDAO.BUY_X_GET_Y_FREE);
+    promotion.setDiscountType(DiscountPolicy.BUY_X_GET_Y_FREE);
     promotion.setName("Buy X Get Y Free Discount");
     promotion.setDateFrom(new Date());
     promotion.setDateTo(new Date());

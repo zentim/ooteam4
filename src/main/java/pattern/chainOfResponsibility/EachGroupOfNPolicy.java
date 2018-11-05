@@ -32,7 +32,7 @@ public class EachGroupOfNPolicy extends DiscountPolicy {
 		
 	    // Collect orderItem that discountType equals strategyDiscountType into discountOrderItems. 
 		// Else put into otherOrderItems
-	    int strategyDiscountType = PromotionDAO.EACH_GROUP_OF_N;
+	    int strategyDiscountType = DiscountPolicy.EACH_GROUP_OF_N;
 	    for (OrderItem oi : orderItems) {
 	    	promotionItem = promotionItemDAO.getByProduct(oi.getProduct().getId());
 	    	

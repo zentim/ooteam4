@@ -128,7 +128,7 @@ public class DiscountTest {
 		
 		// create promotion
 	    promotion = new Promotion();
-	    promotion.setDiscountType(PromotionDAO.BUY_X_GET_Y_FREE);
+	    promotion.setDiscountType(DiscountPolicy.BUY_X_GET_Y_FREE);
 	    promotion.setName("Nation Holiday Discount");
 	    promotion.setDateFrom(new Date());
 	    promotion.setDateTo(new Date());
@@ -209,7 +209,7 @@ public class DiscountTest {
 		
 		// create promotion
 	    promotion = new Promotion();
-	    promotion.setDiscountType(PromotionDAO.BROUGHT_MORE_THAN_IN_LAST_YEAR);
+	    promotion.setDiscountType(DiscountPolicy.BROUGHT_MORE_THAN_IN_LAST_YEAR);
 	    promotion.setName("Brought More Than $100K In Last Year");
 	    promotion.setDateFrom(new Date());
 	    promotion.setDateTo(new Date());
@@ -281,7 +281,7 @@ public class DiscountTest {
 		
 		// create promotion
 	    promotion = new Promotion();
-	    promotion.setDiscountType(PromotionDAO.EACH_GROUP_OF_N);
+	    promotion.setDiscountType(DiscountPolicy.EACH_GROUP_OF_N);
 	    promotion.setName("Each Group Of 100 Discount");
 	    promotion.setDateFrom(new Date());
 	    promotion.setDateTo(new Date());
@@ -355,7 +355,7 @@ public class DiscountTest {
 		
 		// create promotion
 	    promotion = new Promotion();
-	    promotion.setDiscountType(PromotionDAO.PRODUCT_SET);
+	    promotion.setDiscountType(DiscountPolicy.PRODUCT_SET);
 	    promotion.setName("XYZ Discount");
 	    promotion.setDateFrom(new Date());
 	    promotion.setDateTo(new Date());

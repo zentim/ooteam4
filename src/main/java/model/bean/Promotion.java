@@ -3,7 +3,7 @@ package main.java.model.bean;
 import java.util.Date;
 import java.util.List;
 
-import main.java.model.dao.PromotionDAO;
+import main.java.pattern.chainOfResponsibility.DiscountPolicy;
 
 public class Promotion {
     
@@ -20,19 +20,19 @@ public class Promotion {
 	public String getDiscountTypeDescription() {
 		String desc;
 		switch (discountType) {
-		case PromotionDAO.NO_DISCOUNT:
+		case DiscountPolicy.NO_DISCOUNT:
 			desc = "No Discount";
 			break;
-		case PromotionDAO.PRODUCT_SET:
+		case DiscountPolicy.PRODUCT_SET:
 			desc = "Product Set";
 			break;
-		case PromotionDAO.EACH_GROUP_OF_N:
+		case DiscountPolicy.EACH_GROUP_OF_N:
 			desc = "Each Group Of N";
 			break;
-		case PromotionDAO.BROUGHT_MORE_THAN_IN_LAST_YEAR:
+		case DiscountPolicy.BROUGHT_MORE_THAN_IN_LAST_YEAR:
 			desc = "Brought More Than In Last Year";
 			break;
-		case PromotionDAO.BUY_X_GET_Y_FREE:
+		case DiscountPolicy.BUY_X_GET_Y_FREE:
 			desc = "Buy X Get Y Free";
 			break;
 		default:

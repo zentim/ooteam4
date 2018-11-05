@@ -14,12 +14,7 @@ import main.java.model.util.DBUtil;
 import main.java.model.util.DateUtil;
 
 public class PromotionDAO {
-	public static final int NO_DISCOUNT = 0;
-	public static final int PRODUCT_SET = 1;
-    public static final int EACH_GROUP_OF_N = 2;
-    public static final int BROUGHT_MORE_THAN_IN_LAST_YEAR = 3;
-    public static final int BUY_X_GET_Y_FREE = 4;
-
+    
 	public int getTotal() {
 		int total = 0;
 		try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {

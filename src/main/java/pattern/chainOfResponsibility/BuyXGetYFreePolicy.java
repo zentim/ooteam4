@@ -32,7 +32,7 @@ public class BuyXGetYFreePolicy extends DiscountPolicy {
 		
 	    // Collect orderItem that discountType equals strategyDiscountType into discountOrderItems. 
 		// Else put into otherOrderItems
-	    int strategyDiscountType = PromotionDAO.BUY_X_GET_Y_FREE;
+	    int strategyDiscountType = DiscountPolicy.BUY_X_GET_Y_FREE;
 	    for (OrderItem oi : orderItems) {
 	    	promotionItem = promotionItemDAO.getByProduct(oi.getProduct().getId());
 	    	

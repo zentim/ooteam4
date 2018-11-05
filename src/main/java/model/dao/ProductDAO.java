@@ -16,6 +16,7 @@ import main.java.model.bean.Promotion;
 import main.java.model.bean.PromotionItem;
 import main.java.model.util.DBUtil;
 import main.java.model.util.DateUtil;
+import main.java.pattern.chainOfResponsibility.DiscountPolicy;
 
 public class ProductDAO {
 
@@ -292,7 +293,7 @@ public class ProductDAO {
           
           if (promotionByProduct != null 
                   && !(promotionItem.getDiscountOf() == 100 
-                  && promotionByProduct.getDiscountType() == PromotionDAO.BUY_X_GET_Y_FREE)) {
+                  && promotionByProduct.getDiscountType() == DiscountPolicy.BUY_X_GET_Y_FREE)) {
               
                 String promotionName = "";
                 if (promotionByProduct.getState() == 1) {
@@ -317,7 +318,7 @@ public class ProductDAO {
     	        
     	        if (promotionByProduct != null 
     	                && !(promotionItem.getDiscountOf() == 100 
-    	                && promotionByProduct.getDiscountType() == PromotionDAO.BUY_X_GET_Y_FREE)) {
+    	                && promotionByProduct.getDiscountType() == DiscountPolicy.BUY_X_GET_Y_FREE)) {
                   
     	            String promotionName = "";
     	            if (promotionByProduct.getState() == 1) {

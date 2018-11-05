@@ -32,7 +32,7 @@ public class BroughtMoreThanInLastYearPolicy extends DiscountPolicy {
 		
 	    // Collect orderItem that discountType equals strategyDiscountType into discountOrderItems. 
 		// Else put into otherOrderItems
-	    int strategyDiscountType = PromotionDAO.BROUGHT_MORE_THAN_IN_LAST_YEAR;
+	    int strategyDiscountType = DiscountPolicy.BROUGHT_MORE_THAN_IN_LAST_YEAR;
 	    for (OrderItem oi : orderItems) {
 	    	promotionItem = promotionItemDAO.getByProduct(oi.getProduct().getId());
 	    	

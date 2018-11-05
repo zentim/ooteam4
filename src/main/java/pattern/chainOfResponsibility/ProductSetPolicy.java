@@ -32,7 +32,7 @@ public class ProductSetPolicy extends DiscountPolicy {
 		
 	    // Collect orderItem that discountType equals strategyDiscountType into discountOrderItems. 
 		// Else put into otherOrderItems
-	    int strategyDiscountType = PromotionDAO.PRODUCT_SET;
+	    int strategyDiscountType = DiscountPolicy.PRODUCT_SET;
 	    for (OrderItem oi : orderItems) {
 	    	promotionItem = promotionItemDAO.getByProduct(oi.getProduct().getId());
 	    	
