@@ -239,7 +239,7 @@ public class ForeServlet extends BaseForeServlet {
         DiscountRequest dr = new DiscountRequest();
         dr.setOrderItems(ois);
         dr.setNationalHoliday(true);
-        dr.setLastYearAmount(200000);
+        dr.setLastYearAmount(100000);
         dr = nationHolidayDiscount.handleDiscount(dr);
 		    
         double totalWithoutDiscount = total;
