@@ -261,6 +261,7 @@
                                     </div>
                                 </div>
                             </li>
+                            <li><a href="help.jsp">Help</a></li>
 <!--                             
                             <li><a href="#">Pages</a>
                                 <ul class="dropdown">
@@ -321,7 +322,7 @@
 	                    <a href="forecart" id="essenceCartBtn"><i class="fas fa-shopping-cart fa-lg"></i> <span>${cartTotalItemNumber}</span></a>
 	                </div>
                 	<div class="user-login-info">
-                		<a href="#" style="width: 200px;">Hi! ${ user.email }</a>
+                		<a href="#" style="width: 200px;">${ user.email }</a>
 	                </div>
 	                <div class="user-login-info">
 	                    <a href="forelogout">Logout</a>
