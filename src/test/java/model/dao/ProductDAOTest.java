@@ -15,7 +15,6 @@ import main.java.model.dao.ProductDAO;
 import main.java.model.dao.SegmentDAO;
 import main.java.model.dao.BrandDAO;
 import main.java.model.dao.CategoryDAO;
-import main.java.pattern.composite.*;
 
 public class ProductDAOTest {
 	public static SegmentDAO segmentdao = new SegmentDAO();
@@ -83,25 +82,6 @@ public class ProductDAOTest {
 				System.out.println("product id: " + p.getId());
 			}
 		}
-		
-		System.out.println();
-	}
-	
-	@Test
-	public void testCompositePattern() {
-	    /**
-	     * Use Composite Pattern
-	     */
-		System.out.println("=== testCompositePattern");
-		Component productComponent = productdao.get(productId);
-		Component brandComponent = branddao.get(brandId);
-		Component categoryComponent = categorydao.get(categoryId);
-		Component segmentComponent = segmentdao.get(segmentId);
-		
-		brandComponent.add(productComponent);
-		categoryComponent.add(brandComponent);
-		segmentComponent.add(categoryComponent);
-		segmentComponent.operation();
 		
 		System.out.println();
 	}

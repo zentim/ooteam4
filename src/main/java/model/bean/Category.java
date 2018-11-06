@@ -1,76 +1,25 @@
 package main.java.model.bean;
 
 import java.io.Serializable;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
-import main.java.pattern.composite.Component;
-
-/**
- * 
- * Composite Pattern - CompositeComponent
- *
- */
-public class Category extends Component implements Serializable {
+public class Category implements Serializable {
 
 	private String name;
 	private int id;
 	private Segment segment;
 	private List<Brand> brands;
-	private List<Component> components = new LinkedList<>();
-	
-	
-	@Override
-	public void add(Component c) {
-		components.add(c);
-	}
-
-	@Override
-	public void remove(Component c) {
-		components.remove(c);
-	}
-
-	@Override
-	public Component getChild(int id) {
-		for(Component c : components) {
-			if (c.getId() == id) {
-				return c;
-			}
-		}
-		
-		return null;
-	}
-
-	@Override
-	public void operation() {
-		System.out.println("- category id: " + id + ", name: " + name);
-		
-		Iterator iterator = components.iterator();
-		while(iterator.hasNext()) {
-			((Component)iterator.next()).operation();
-		}
-	}
-
-	@Override
-	public int getId() {
-		return id;
-	}
-	
-	@Override
-	public String getName() {
-		return name;
-	}
-	
-	
-	
 	
 	/* Getter and Setter */
-	
+	public String getName() {
+        return name;
+    }
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+	public int getId() {
+        return id;
+    }
 	public void setId(int id) {
 		this.id = id;
 	}
