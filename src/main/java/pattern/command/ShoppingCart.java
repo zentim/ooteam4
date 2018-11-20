@@ -2,8 +2,6 @@ package main.java.pattern.command;
 
 import java.util.Stack;
 
-import main.java.pattern.command.*;
-
 /**
  * 
  * Command Pattern - Invoker
