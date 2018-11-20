@@ -14,6 +14,11 @@ import main.java.model.bean.Product;
 import main.java.model.bean.User;
 import main.java.model.util.DBUtil;
 
+/**
+ * 
+ * Command Pattern - Receiver (update() and delete())
+ *
+ */
 public class OrderItemDAO {
 
     public int getTotal() {

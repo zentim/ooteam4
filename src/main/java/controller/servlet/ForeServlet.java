@@ -20,29 +20,38 @@ import main.java.pattern.chainOfResponsibility.DiscountRequest;
 import main.java.pattern.chainOfResponsibility.EachGroupOfNPolicy;
 import main.java.pattern.chainOfResponsibility.NoDiscountPolicy;
 import main.java.pattern.chainOfResponsibility.ProductSetPolicy;
-import main.java.pattern.memento.Caretaker;
-import main.java.pattern.memento.Memento;
-import main.java.pattern.memento.ShoppingCart;
+import main.java.pattern.command.ChangeOrderItem;
+import main.java.pattern.command.DeleteOrderItem;
+import main.java.pattern.command.ShoppingCart;
 import main.java.pattern.chainOfResponsibility.BroughtMoreThanInLastYearPolicy;
 
 @WebServlet("/foreServlet")
 public class ForeServlet extends BaseForeServlet {
 
     public String home(HttpServletRequest request, HttpServletResponse response, Page page) {
+        // for head nav
+        List<Segment> segments = segmentDAO.list();
+        categoryDAO.fill(segments);
+        request.setAttribute("segments", segments);
+        
+        
+        
         List<Brand> brands = brandDAO.list();
         productDAO.fill(brands);
         productDAO.fillPromotion(brands);
         request.setAttribute("brands", brands);
-        
-        // for head nav
-        List<Segment> segments = segmentDAO.list();
-    	categoryDAO.fill(segments);
-    	request.setAttribute("segments", segments);
     	
         return "home.jsp";
     }
     
     public String category(HttpServletRequest request, HttpServletResponse response, Page page) {
+        // for head nav
+        List<Segment> segments = segmentDAO.list();
+        categoryDAO.fill(segments);
+        request.setAttribute("segments", segments);
+        
+        
+        
     	int cid = Integer.parseInt(request.getParameter("cid"));
     	
     	List<Brand> brands = brandDAO.list(cid);
@@ -52,16 +61,18 @@ public class ForeServlet extends BaseForeServlet {
         
     	Category category = categoryDAO.get(cid);
     	request.setAttribute("category", category);
-        
-        // for head nav
-        List<Segment> segments = segmentDAO.list();
-    	categoryDAO.fill(segments);
-    	request.setAttribute("segments", segments);
     	
         return "category.jsp";
     }
     
     public String product(HttpServletRequest request, HttpServletResponse response, Page page) {
+        // for head nav
+        List<Segment> segments = segmentDAO.list();
+        categoryDAO.fill(segments);
+        request.setAttribute("segments", segments);
+        
+        
+        
         int id = Integer.parseInt(request.getParameter("pid"));
         Product p = productDAO.get(id);
         List<ProductImage> productSingleImages = productImageDAO.list(p, ProductImageDAO.type_single);
@@ -78,27 +89,24 @@ public class ForeServlet extends BaseForeServlet {
 
         request.setAttribute("p", p);
         
-        // for head nav
-        List<Segment> segments = segmentDAO.list();
-    	categoryDAO.fill(segments);
-    	request.setAttribute("segments", segments);
-        
         return "product.jsp";
     }
 
     
     public String brand(HttpServletRequest request, HttpServletResponse response, Page page) {
+        // for head nav
+        List<Segment> segments = segmentDAO.list();
+        categoryDAO.fill(segments);
+        request.setAttribute("segments", segments);
+        
+        
+        
         int cid = Integer.parseInt(request.getParameter("cid"));
         Brand brand = brandDAO.get(cid);
         productDAO.fill(brand);
         productDAO.fillPromotion(brand);
         request.setAttribute("brand", brand);
-        
-        // for head nav
-        List<Segment> segments = segmentDAO.list();
-    	categoryDAO.fill(segments);
-    	request.setAttribute("segments", segments);
-        
+                
         return "brand.jsp";
     }
     
@@ -285,30 +293,25 @@ public class ForeServlet extends BaseForeServlet {
     }
 
     public String cart(HttpServletRequest request, HttpServletResponse response, Page page) {
+        // for head nav
+        List<Segment> segments = segmentDAO.list();
+        categoryDAO.fill(segments);
+        request.setAttribute("segments", segments);
+        
+        
+        
         User user = (User) request.getSession().getAttribute("user");
         List<OrderItem> ois;
 
         ois = orderItemDAO.listCartByUser(user.getId());
 
         ShoppingCart shoppingCart = (ShoppingCart) request.getSession().getAttribute("shoppingCart");
-        Caretaker caretaker = (Caretaker) request.getSession().getAttribute("caretaker");
         if (shoppingCart == null) {
         	shoppingCart = new ShoppingCart();
         }
-        if (caretaker == null) {
-        	caretaker = new Caretaker();
-        }
-        
-        shoppingCart.setOrderItems(ois);
         
         request.getSession().setAttribute("shoppingCart", shoppingCart);
-        request.getSession().setAttribute("caretaker", caretaker);
         request.setAttribute("ois", ois);
-        
-        // for head nav
-        List<Segment> segments = segmentDAO.list();
-    	categoryDAO.fill(segments);
-    	request.setAttribute("segments", segments);
         
         return "cart.jsp";
     }
@@ -319,23 +322,16 @@ public class ForeServlet extends BaseForeServlet {
         if (user == null) {
         	return "%fail";
         }
-        
-        List<OrderItem> ois;
 
-        ShoppingCart shoppingCart = (ShoppingCart) request.getSession().getAttribute("shoppingCart");
-        Caretaker caretaker = (Caretaker) request.getSession().getAttribute("caretaker");
         
         /**
-         * Memento Pattern
+         * Command Pattern
          */
-        shoppingCart.restoreFromMemento(caretaker.getMemento());
-        ois = shoppingCart.getOrderItems();
-        for (OrderItem oi : ois) {
-        	orderItemDAO.update(oi);
-        }
+        ShoppingCart shoppingCart = (ShoppingCart) request.getSession().getAttribute("shoppingCart");
+        shoppingCart.undo();
+        
         
         request.getSession().setAttribute("shoppingCart", shoppingCart);
-        request.getSession().setAttribute("caretaker", caretaker);
 
         return "%success";
     }
@@ -351,24 +347,17 @@ public class ForeServlet extends BaseForeServlet {
         int oiid = Integer.parseInt(request.getParameter("oiid"));
         int state = Integer.parseInt(request.getParameter("state"));
         OrderItem oi = orderItemDAO.get(oiid);
+
         
         /**
-         * Memento Pattern
+         * Command Pattern
          */
         ShoppingCart shoppingCart = (ShoppingCart) request.getSession().getAttribute("shoppingCart");
-        Caretaker caretaker = (Caretaker) request.getSession().getAttribute("caretaker");
-        caretaker.saveMemento(shoppingCart.createMemento());
-         
-        oi.setQuantity(num);
-        oi.setState(state);
-        orderItemDAO.update(oi);
+        ChangeOrderItem cmd = new ChangeOrderItem(orderItemDAO, oi, num, state);
+        shoppingCart.storeAndExecute(cmd);        
         
-        List<OrderItem> ois;
-        ois = orderItemDAO.listCartByUser(user.getId());
-        shoppingCart.setOrderItems(ois);
         
         request.getSession().setAttribute("shoppingCart", shoppingCart);
-        request.getSession().setAttribute("caretaker", caretaker);
 
         return "%success";
     }
@@ -383,22 +372,16 @@ public class ForeServlet extends BaseForeServlet {
         int oiid = Integer.parseInt(request.getParameter("oiid"));
         OrderItem oi = orderItemDAO.get(oiid);
         
+        
         /**
-         * Memento Pattern
+         * Command Pattern
          */
         ShoppingCart shoppingCart = (ShoppingCart) request.getSession().getAttribute("shoppingCart");
-        Caretaker caretaker = (Caretaker) request.getSession().getAttribute("caretaker");
-        caretaker.saveMemento(shoppingCart.createMemento());
+        DeleteOrderItem cmd = new DeleteOrderItem(orderItemDAO, oi);
+        shoppingCart.storeAndExecute(cmd);
         
-        oi.setState(0);
-        orderItemDAO.update(oi);
-        
-        List<OrderItem> ois;
-        ois = orderItemDAO.listCartByUser(user.getId());
-        shoppingCart.setOrderItems(ois);
         
         request.getSession().setAttribute("shoppingCart", shoppingCart);
-        request.getSession().setAttribute("caretaker", caretaker);
 
         return "%success";
     }

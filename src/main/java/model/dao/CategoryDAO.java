@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import main.java.model.bean.Category;
+import main.java.model.bean.Product;
 import main.java.model.bean.Segment;
 import main.java.model.util.DBUtil;
 
@@ -204,15 +205,23 @@ public class CategoryDAO {
         return beans;
     }
     
-    public void fill(List<Segment> cs) {
-        for (Segment c : cs) {
-            fill(c);
+    public void fill(List<Segment> ss) {
+        System.out.println("\n=== Show Segment ===");
+        for (Segment s : ss) {
+            fill(s);
         }
     }
 
-    public void fill(Segment c) {
-        List<Category> ps = this.list(c.getId());
-        c.setCategorys(ps);
+    public void fill(Segment s) {
+        List<Category> cs = this.list(s.getId());
+        s.setCategorys(cs);
+        
+        // Use Composite Pattern
+        for (Category c : cs) {
+            s.add(c);
+        }
+
+        s.operation();
     }
 
 }

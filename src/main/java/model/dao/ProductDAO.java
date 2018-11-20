@@ -267,15 +267,23 @@ public class ProductDAO {
         return beans;
     }
 
-    public void fill(List<Brand> cs) {
-        for (Brand c : cs) {
-            fill(c);
+    public void fill(List<Brand> bs) {
+        System.out.println("\n=== Show Brand ===");
+        for (Brand b : bs) {
+            fill(b);
         }
     }
 
-    public void fill(Brand c) {
-        List<Product> ps = this.list(c.getId());
-        c.setProducts(ps);
+    public void fill(Brand b) {
+        List<Product> ps = this.list(b.getId());
+        b.setProducts(ps);
+        
+        // Use Composite Pattern
+        for (Product p : ps) {
+            b.add(p);
+        }
+        
+        b.operation();
     }
 
     public void setFirstProductImage(Product p) {
