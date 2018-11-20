@@ -2,8 +2,11 @@ package main.java.pattern.command;
 
 import main.java.model.bean.OrderItem;
 import main.java.model.dao.OrderItemDAO;
-/*
+
+/**
+ * 
  * Command Pattern - ConcreteCommand
+ *
  */
 public class DeleteOrderItem implements Command {
     OrderItemDAO orderItemDAO;
