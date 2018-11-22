@@ -8,14 +8,16 @@ import main.java.pattern.observer.Subject;
 /**
  * 
  * Observer Pattern - concrete observer
+ * Prototype Pattern
  *
  */
-public class User implements Observer, Serializable {
+public class User implements Observer, Cloneable, Serializable {
     
 	private int id;
 	private String email;
 	private String password;
 	
+	/* Observer Method */
 	@Override
 	public void update(Subject subject) {
 		Product product = (Product) subject;
@@ -35,6 +37,12 @@ public class User implements Observer, Serializable {
 		        + "from ProductId " + product.getId() + ": ");
 		System.out.println("Product is available now you can buy it. ");
 		System.out.println("(Inventory Quantity: " + product.getInventory() + ")");
+	}
+	
+	/* Prototype Method */
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+	    return super.clone();
 	}
 
 	/* Getter and Setter */

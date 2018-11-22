@@ -10,6 +10,7 @@ import java.util.List;
 
 import main.java.model.bean.User;
 import main.java.model.util.DBUtil;
+import main.java.pattern.prototype.PrototypeMgr;
 
 public class UserDAO {
 
@@ -126,11 +127,11 @@ public class UserDAO {
         return bean;
     }
 
-    public List<User> list() {
+    public List<User> list() throws CloneNotSupportedException {
         return list(0, Short.MAX_VALUE);
     }
 
-    public List<User> list(int start, int count) {
+    public List<User> list(int start, int count) throws CloneNotSupportedException {
         List<User> beans = new ArrayList<>();
 
         String sql = "select * from user order by userId desc limit ?,? ";
@@ -143,7 +144,11 @@ public class UserDAO {
 
             try (ResultSet rs = ps.executeQuery();) {
                 while (rs.next()) {
-                    User bean = new User();
+                    /**
+                     * Use Prototype Pattern
+                     */
+                    User bean = PrototypeMgr.getPrototype();
+                    
                     int id = rs.getInt(1);
 
                     String email = rs.getString("email");
