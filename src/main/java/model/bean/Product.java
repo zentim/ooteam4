@@ -61,7 +61,7 @@ public class Product extends Component implements Subject, Serializable {
     /* Composite Method */
     @Override
     public void operation() {
-        System.out.println("--- id: " + id + ", name: " + name);
+        System.out.println("         pid: " + id + ", name: " + name);
     }
     
     @Override

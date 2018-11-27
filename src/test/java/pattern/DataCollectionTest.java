@@ -3,6 +3,7 @@ package test.java.pattern;
 import static org.junit.Assert.*;
 
 import java.util.Date;
+import java.util.List;
 
 import org.junit.*;
 
@@ -77,15 +78,37 @@ public class DataCollectionTest {
     @Test
     public void testCompositePattern() {
         System.out.println("=== testCompositePattern");
-        Component productComponent = productdao.get(productId);
-        Component brandComponent = branddao.get(brandId);
-        Component categoryComponent = categorydao.get(categoryId);
-        Component segmentComponent = segmentdao.get(segmentId);
+//        Component productComponent = productdao.get(productId);
+//        Component brandComponent = branddao.get(brandId);
+//        Component categoryComponent = categorydao.get(categoryId);
+//        Component segmentComponent = segmentdao.get(segmentId);
+//        
+//        brandComponent.add(productComponent);
+//        categoryComponent.add(brandComponent);
+//        segmentComponent.add(categoryComponent);
+//        segmentComponent.operation();
         
-        brandComponent.add(productComponent);
-        categoryComponent.add(brandComponent);
-        segmentComponent.add(categoryComponent);
-        segmentComponent.operation();
+        
+        // show products from the database
+        List<Segment> segments = segmentdao.list();
+        
+        for (Segment s : segments) {
+            List<Category> categorys = categorydao.list(s.getId());
+            for (Category c : categorys) {
+                s.add(c);
+                List<Brand> brands = branddao.list(c.getId());
+                for (Brand b : brands) {
+                    c.add(b);
+                    List<Product> products = productdao.list(b.getId());
+                    for (Product p : products) {
+                        b.add(p);
+                    }
+                }
+            }
+            
+            s.operation();
+        }
+        
         
         System.out.println();
     }
