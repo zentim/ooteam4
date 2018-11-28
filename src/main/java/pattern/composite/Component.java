@@ -4,10 +4,10 @@ import java.io.Serializable;
 
 /**
  * 
- * Composite Pattern (Transparency)
+ * Composite Pattern (Transparency) - Component
  *
  */
-public abstract class Component implements Serializable {
+public abstract class Component {
     
     public void add(Component c) {
         throw new UnsupportedOperationException();

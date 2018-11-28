@@ -14,7 +14,7 @@ import main.java.pattern.composite.Component;
  * Composite Pattern - CompositeComponent
  *
  */
-public class Segment extends Component implements Serializable {
+public class Segment extends Component {
 
 	private String name;
 	private int id;
@@ -41,6 +41,7 @@ public class Segment extends Component implements Serializable {
 	public void operation() {
 		System.out.println("Segment id: " + id + ", name: " + name);
 		
+		/* Use Iterator Pattern */
 		Set<Integer> keys = components.keySet();
 		Iterator iterator = keys.iterator();
 		while(iterator.hasNext()) {

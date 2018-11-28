@@ -11,11 +11,11 @@ import main.java.pattern.observer.Subject;
 
 /**
  * 
- * Observer Pattern - concrete subject
- * Composite Pattern - leaf component
+ * Observer Pattern - ConcreteSubject
+ * Composite Pattern - LeafComponent
  *
  */
-public class Product extends Component implements Subject, Serializable {
+public class Product extends Component implements Subject {
     
     private int id;
     private String name;

@@ -13,7 +13,7 @@ import main.java.pattern.composite.Component;
  * Composite Pattern - CompositeComponent
  *
  */
-public class Brand extends Component implements Serializable {
+public class Brand extends Component {
 
     private String name;
     private int id;
@@ -41,6 +41,7 @@ public class Brand extends Component implements Serializable {
 	public void operation() {
 		System.out.println("     bid: " + id + ", name: " + name);
 		
+		/* Use Iterator Pattern */
 		Set<Integer> keys = components.keySet();
 		Iterator iterator = keys.iterator();
 		while(iterator.hasNext()) {

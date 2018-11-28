@@ -12,7 +12,7 @@ import main.java.pattern.composite.Component;
  * Composite Pattern - CompositeComponent
  *
  */
-public class Category extends Component implements Serializable {
+public class Category extends Component {
 
 	private String name;
 	private int id;
@@ -46,6 +46,7 @@ public class Category extends Component implements Serializable {
 	public void operation() {
 		System.out.println("  cid: " + id + ", name: " + name);
 		
+		/* Use Iterator Pattern */
 		Iterator iterator = components.iterator();
 		while(iterator.hasNext()) {
 			((Component)iterator.next()).operation();

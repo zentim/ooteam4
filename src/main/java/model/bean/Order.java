@@ -6,7 +6,7 @@ import java.util.List;
 
 import main.java.model.dao.OrderDAO;
 
-public class Order implements Serializable{
+public class Order {
     
 	private int id;
 	private Date dateOrdered;

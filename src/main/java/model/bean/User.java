@@ -11,7 +11,7 @@ import main.java.pattern.observer.Subject;
  * Prototype Pattern
  *
  */
-public class User implements Observer, Cloneable, Serializable {
+public class User implements Observer, Cloneable {
     
 	private int id;
 	private String email;

@@ -2,7 +2,7 @@ package main.java.model.bean;
 
 import java.io.Serializable;
 
-public class ProductImage implements Serializable {
+public class ProductImage {
 
     private String type;
     private Product product;
