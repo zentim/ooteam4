@@ -59,7 +59,8 @@
 					<div class="collapse" id="collapseExample">
 					  <div class="card card-body">
 					    <div class="form-group">
-				            <input type="text" name="taxIdNumber" class="form-control" placeholder="Tax ID Number">
+				            <input id="taxIdNumber" type="text" name="taxIdNumber" class="form-control mb-2" placeholder="Tax ID Number">
+				            <button onclick="chknum()" class="btn">check</button>
 				        </div>
 					  </div>
 					</div>
@@ -186,6 +187,7 @@
 
 <script>
 $(function() {
+	$('[data-toggle="popover"]').popover();
 	
 	// display the discount message
 	$("#discountMsg").html(function(){
@@ -206,4 +208,48 @@ $(function() {
 		return discountResult;
 	})
 })
+
+
+var cx = new Array;
+cx[0] = 1;
+cx[1] = 2;
+cx[2] = 1;
+cx[3] = 2;
+cx[4] = 1;
+cx[5] = 2;
+cx[6] = 4;
+cx[7] = 1;
+function chknum(){
+  var NO = $("#taxIdNumber").val();
+  // var NO = document.F.NUM.value;
+  var SUM = 0;
+  if (NO.length != 8) {
+    alert("統編錯誤，要有 8 個數字");
+    window.event.returnValue=false;
+    return;
+  }
+  var cnum = NO.split("");
+  for (i=0; i<=7; i++) {
+    if (NO.charCodeAt() < 48 || NO.charCodeAt() > 57) {
+      alert("統編錯誤，要有 8 個 0-9 數字組合");
+      window.event.returnValue=false;
+      return;
+    }
+    SUM += cc(cnum[i] * cx[i]);
+  }
+  if (SUM % 10 == 0) alert("統一編號："+NO+" 正確!");
+  else if (cnum[6] == 7 && (SUM + 1) % 10 == 0) alert("統一編號："+NO+" 正確!");
+  else alert("統一編號："+NO+" 錯誤!");
+  window.event.returnValue=false;
+}
+
+function cc(n){
+  if (n > 9) {
+    var s = n + "";
+    n1 = s.substring(0,1) * 1;
+    n2 = s.substring(1,2) * 1;
+    n = n1 + n2;
+  }
+  return n;
+}
 </script>

@@ -1,7 +1,5 @@
 package main.java.pattern.composite;
 
-import java.io.Serializable;
-
 /**
  * 
  * Composite Pattern (Transparency) - Component
