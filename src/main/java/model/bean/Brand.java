@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import main.java.pattern.composite.Component;
+import main.java.pattern.decorator.PrintPromotionInfoDecorator;
 
 /**
  * 
@@ -44,7 +45,11 @@ public class Brand extends Component {
 		Set<Integer> keys = components.keySet();
 		Iterator iterator = keys.iterator();
 		while(iterator.hasNext()) {
-			(components.get(iterator.next())).operation();
+		    Product p = ((Product) components.get(iterator.next()));
+		    /**
+		     * Use Decorator Pattern
+		     */
+		    new PrintPromotionInfoDecorator(p).operation();
 		}
 	}
 
