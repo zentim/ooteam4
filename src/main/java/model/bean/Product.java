@@ -12,6 +12,7 @@ import main.java.pattern.observer.Subject;
  * 
  * Observer Pattern - ConcreteSubject
  * Composite Pattern - LeafComponent
+ * Decorator Pattern - ConcreteComponent
  *
  */
 public class Product extends Component implements Subject {
