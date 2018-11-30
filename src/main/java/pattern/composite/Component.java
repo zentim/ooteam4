@@ -3,6 +3,7 @@ package main.java.pattern.composite;
 /**
  * 
  * Composite Pattern (Transparency) - Component
+ * Decorator Pattern - Component
  *
  */
 public abstract class Component {
