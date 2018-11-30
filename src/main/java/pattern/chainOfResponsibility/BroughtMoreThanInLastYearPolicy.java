@@ -18,7 +18,7 @@ import main.java.pattern.strategy.Strategy;
 public class BroughtMoreThanInLastYearPolicy extends DiscountPolicy {
 
 	@Override
-	public DiscountRequest handleDiscount(DiscountRequest discountRequest) {
+	public DiscountRequest handleDiscount(DiscountRequest discountRequest) throws Exception {
 		List<OrderItem> orderItems = discountRequest.getOrderItems();
 		
 		List<OrderItem> discountOrderItems = new ArrayList<OrderItem>();
@@ -39,7 +39,7 @@ public class BroughtMoreThanInLastYearPolicy extends DiscountPolicy {
 	    	if (promotionItem.getId() == 0) {
 	    		otherOrderItems.add(oi);
 	    	} else {
-	    		promotion = promotionDAO.get(promotionItem.getPromotion().getId());
+	    		promotion =  (Promotion)promotionDAO.get(promotionItem.getPromotion().getId());
 		    	
 		    	if (promotion.getDiscountType() == (strategyDiscountType)) {
 			    	discountOrderItems.add(oi);

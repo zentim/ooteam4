@@ -28,7 +28,7 @@ import main.java.model.util.Page;
 public class ProductImageServlet extends BaseBackServlet {
 
     @Override
-    public String add(HttpServletRequest request, HttpServletResponse response, Page page) {
+    public String add(HttpServletRequest request, HttpServletResponse response, Page page) throws Exception {
         // Input stream for uploading files
         InputStream is = null;
         // Additional parameters when submitting the uploaded file
@@ -40,7 +40,7 @@ public class ProductImageServlet extends BaseBackServlet {
         // Generate a productImage object based on the uploaded parameters
         String type = params.get("type");
         int pid = Integer.parseInt(params.get("pid"));
-        Product p = productDAO.get(pid);
+        Product p = (Product)productDAO.get(pid);
 
         ProductImage pi = new ProductImage();
         pi.setType(type);
@@ -104,11 +104,11 @@ public class ProductImageServlet extends BaseBackServlet {
     }
 
     @Override
-    public String delete(HttpServletRequest request, HttpServletResponse response, Page page) {
+    public String delete(HttpServletRequest request, HttpServletResponse response, Page page) throws Exception  {
         int id = Integer.parseInt(request.getParameter("id"));
-        ProductImage pi = productImageDAO.get(id);
-        productImageDAO.delete(id);
-
+        ProductImage pi =  (ProductImage)productImageDAO.get(id);
+      	productImageDAO.delete(id);
+		
         if (ProductImageDAO.type_single.equals(pi.getType())) {
             String imageFolderSingle = request.getSession().getServletContext()
                     .getRealPath("img/productSingle");
@@ -134,31 +134,37 @@ public class ProductImageServlet extends BaseBackServlet {
     }
 
     @Override
-    public String edit(HttpServletRequest request, HttpServletResponse response, Page page) {
+    public String edit(HttpServletRequest request, HttpServletResponse response, Page page) throws Exception {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public String update(HttpServletRequest request, HttpServletResponse response, Page page) {
+    public String update(HttpServletRequest request, HttpServletResponse response, Page page) throws Exception {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public String list(HttpServletRequest request, HttpServletResponse response, Page page) {
+    public String list(HttpServletRequest request, HttpServletResponse response, Page page) throws Exception {
         int pid = Integer.parseInt(request.getParameter("pid"));
-        Product p = productDAO.get(pid);
-        Brand b = brandDAO.get(p.getBrand().getId());
-		Category c = categoryDAO.get(b.getCategory().getId());
-		Segment s = segmentDAO.get(c.getSegment().getId());
+        Product p = (Product)productDAO.get(pid);
+        Brand b = null;
+		try {
+			b = (Brand)brandDAO.get(p.getBrand().getId());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Category c =(Category) categoryDAO.get(b.getCategory().getId());
+		Segment s = (Segment)segmentDAO.get(c.getSegment().getId());
         List<ProductImage> pisSingle = productImageDAO.list(p, ProductImageDAO.type_single);
         List<ProductImage> pisDetail = productImageDAO.list(p, ProductImageDAO.type_detail);
 
         request.setAttribute("p", p);
         request.setAttribute("b", b);
-		request.setAttribute("c", c);
-		request.setAttribute("s", s);
+        request.setAttribute("c", c);
+        request.setAttribute("s", s);
         request.setAttribute("pisSingle", pisSingle);
         request.setAttribute("pisDetail", pisDetail);
 

@@ -9,12 +9,20 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import main.java.model.bean.Category;
 import main.java.model.bean.Order;
 import main.java.model.bean.User;
 import main.java.model.util.DBUtil;
 import main.java.model.util.DateUtil;
+import main.java.pattern.template.DAOTemplate;
 
-public class OrderDAO {
+/**
+ * 
+ * Template Pattern - ConcreteTemplate
+ *
+ */
+public class OrderDAO extends DAOTemplate {
+    String TABLE_NAME = "order_";
     public static final String WAIT_PAY = "waitPay";
     public static final String WAIT_DELIVERY = "waitDelivery";
     public static final String WAIT_CONFIRM = "waitConfirm";
@@ -33,7 +41,7 @@ public class OrderDAO {
                     total = rs.getInt(1);
                 }
             }
-            
+
         } catch (SQLException e) {
 
             e.printStackTrace();
@@ -41,116 +49,101 @@ public class OrderDAO {
         return total;
     }
 
-    public int add(Order bean) {
-
-        String sql = "insert into order_ values(DEFAULT,?,?,?,?,?,?,?)";
-        try (Connection c = DBUtil.getConnection();
-                PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
-            ps.setInt(1, bean.getUser().getId());
-            ps.setTimestamp(2, DateUtil.d2t(bean.getDateOrdered()));
-            ps.setTimestamp(3, DateUtil.d2t(bean.getDatePaid()));
-            ps.setString(4, bean.getState());
-            ps.setFloat(5, bean.getTotal());
-            ps.setInt(6, bean.getDeliverMethod());
-            ps.setString(7, bean.getAddress());
-
-            ps.execute();
-
-            try (ResultSet rs = ps.getGeneratedKeys();) {
-                if (rs.next()) {
-                    int id = rs.getInt(1);
-                    bean.setId(id);
-                    return id;
-                }
-            }
-            
-        } catch (SQLException e) {
-
-            e.printStackTrace();
+    protected String getMainSql(int type) {
+        String sql = "";
+        switch (type) {
+        case 1:
+            sql = "insert into " + TABLE_NAME + " values(DEFAULT,?,?,?,?,?,?,?)";
+            break;
+        case 2:
+            sql = "update " + TABLE_NAME
+                    + " set userId= ?, dateOrdered=?, datePaid=?, state = ? , total =? , deliverMethod =?, address=?  where orderId = ?";
+            break;
+        case 3:
+            sql = "delete from " + TABLE_NAME + " where orderId = ?";
+            break;
+        case 4:
+            sql = "select * from " + TABLE_NAME + " where orderId = ?";
+            break;
+        default:
+            break;
         }
 
-        System.out.println("Add Fail!");
+        return sql;
+    }
+
+    protected ResultSet executeAdd(PreparedStatement ps, Object obj) throws SQLException {
+        Order bean = (Order) obj;
+        ps.setInt(1, bean.getUser().getId());
+        ps.setTimestamp(2, DateUtil.d2t(bean.getDateOrdered()));
+        ps.setTimestamp(3, DateUtil.d2t(bean.getDatePaid()));
+        ps.setString(4, bean.getState());
+        ps.setFloat(5, bean.getTotal());
+        ps.setInt(6, bean.getDeliverMethod());
+        ps.setString(7, bean.getAddress());
+
+        ps.execute();
+        ResultSet rs = ps.getGeneratedKeys();
+        return rs;
+    }
+
+    protected void executeUpdate(PreparedStatement ps, Object obj) throws SQLException {
+        Order bean = (Order) obj;
+
+        ps.setInt(1, bean.getUser().getId());
+        ps.setTimestamp(2, DateUtil.d2t(bean.getDateOrdered()));
+        ps.setTimestamp(3, DateUtil.d2t(bean.getDatePaid()));
+        ps.setString(4, bean.getState());
+        ps.setFloat(5, bean.getTotal());
+        ps.setInt(6, bean.getDeliverMethod());
+        ps.setString(7, bean.getAddress());
+        ps.setInt(8, bean.getId());
+        ps.execute();
+    }
+
+    protected void executeDelete(PreparedStatement ps, int id) throws SQLException {
+        ps.setInt(1, id);
+        ps.execute();
+    }
+
+    protected int setModel(ResultSet rs, Object obj) throws SQLException {
+        Order bean = (Order) obj;
+        if (rs.next()) {
+            int id = rs.getInt(1);
+            bean.setId(id);
+
+            return id;
+        }
         return 0;
     }
 
-    public void update(Order bean) {
-
-        String sql = "update order_ set "
-                + "userId= ?, dateOrdered=?, datePaid=?, state = ? , total =? , "
-                + "deliverMethod =?, address=? "
-                + "where orderId = ?";
-        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
-
-            ps.setInt(1, bean.getUser().getId());
-            ps.setTimestamp(2, DateUtil.d2t(bean.getDateOrdered()));
-            ps.setTimestamp(3, DateUtil.d2t(bean.getDatePaid()));
-            ps.setString(4, bean.getState());
-            ps.setFloat(5, bean.getTotal());
-            ps.setInt(6, bean.getDeliverMethod());
-            ps.setString(7, bean.getAddress());
-
-            ps.setInt(8, bean.getId());
-            ps.execute();
-
-        } catch (SQLException e) {
-
-            e.printStackTrace();
-        }
-
-    }
-
-    public void delete(int id) {
-
-        try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
-
-            String sql = "delete from order_ where orderId = " + id;
-
-            s.execute(sql);
-
-        } catch (SQLException e) {
-
-            e.printStackTrace();
-        }
-    }
-
-    public Order get(int id) {
+    protected Object setModelFromGet(ResultSet rs) throws SQLException {
         Order bean = new Order();
-        String sql = "select * from order_ where orderId = ?";
-        
-        try (Connection c = DBUtil.getConnection(); 
-                PreparedStatement ps = c.prepareStatement(sql);) {
+        if (rs.next()) {
 
-            ps.setInt(1, id);
+            Date dateOrdered = DateUtil.t2d(rs.getTimestamp("dateOrdered"));
+            Date datePaid = DateUtil.t2d(rs.getTimestamp("datePaid"));
 
-            try (ResultSet rs = ps.executeQuery();) {
-                if (rs.next()) {
-                    int userId = rs.getInt("userId");
-                    Date dateOrdered = DateUtil.t2d(rs.getTimestamp("dateOrdered"));
-                    Date datePaid = DateUtil.t2d(rs.getTimestamp("datePaid"));
-                    String state = rs.getString("state");
-                    float total = rs.getFloat("total");
-                    int deliverMethod = rs.getInt("deliverMethod");
-                    String address = rs.getString("address");
-
-                    User user = new UserDAO().get(userId);
-
-                    bean.setUser(user);
-                    bean.setDateOrdered(dateOrdered);
-                    bean.setDatePaid(datePaid);
-                    bean.setState(state);
-                    bean.setTotal(total);
-                    bean.setDeliverMethod(deliverMethod);
-                    bean.setAddress(address);
-
-                    bean.setId(id);
-                }
+            User user = null;
+            try {
+                user = (User) new UserDAO().get(rs.getInt("userId"));
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
 
-        } catch (SQLException e) {
+            bean.setUser(user);
+            bean.setDateOrdered(dateOrdered);
+            bean.setDatePaid(datePaid);
+            bean.setState(rs.getString("state"));
+            bean.setTotal(rs.getFloat("total"));
+            bean.setDeliverMethod(rs.getInt("deliverMethod"));
+            bean.setAddress(rs.getString("address"));
 
-            e.printStackTrace();
+            bean.setId(rs.getInt("orderId"));
+            return bean;
         }
-        return bean;
+        return null;
     }
 
     public List<Order> list() {
@@ -180,7 +173,13 @@ public class OrderDAO {
                     int deliverMethod = rs.getInt("deliverMethod");
                     String address = rs.getString("address");
 
-                    User user = new UserDAO().get(userId);
+                    User user = null;
+                    try {
+                        user = (User) new UserDAO().get(userId);
+                    } catch (Exception e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
 
                     bean.setUser(user);
                     bean.setDateOrdered(dateOrdered);
@@ -195,7 +194,7 @@ public class OrderDAO {
                     beans.add(bean);
                 }
             }
-            
+
         } catch (SQLException e) {
 
             e.printStackTrace();
@@ -231,7 +230,13 @@ public class OrderDAO {
                     int deliverMethod = rs.getInt("deliverMethod");
                     String address = rs.getString("address");
 
-                    User user = new UserDAO().get(userId);
+                    User user = null;
+                    try {
+                        user = (User) new UserDAO().get(userId);
+                    } catch (Exception e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
 
                     bean.setUser(user);
                     bean.setDateOrdered(dateOrdered);
@@ -246,12 +251,12 @@ public class OrderDAO {
                     beans.add(bean);
                 }
             }
-            
+
         } catch (SQLException e) {
 
             e.printStackTrace();
         }
-        
+
         return beans;
     }
 

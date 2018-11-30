@@ -12,185 +12,169 @@ import java.util.List;
 import main.java.model.bean.Promotion;
 import main.java.model.util.DBUtil;
 import main.java.model.util.DateUtil;
+import main.java.pattern.template.DAOTemplate;
 
-public class PromotionDAO {
-    
-	public int getTotal() {
-		int total = 0;
-		try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
+/**
+ * 
+ * Template Pattern - ConcreteTemplate
+ *
+ */
+public class PromotionDAO extends DAOTemplate {
+    String TABLE_NAME = "promotion";
 
-			String sql = "select count(*) from promotion";
+    public int getTotal() {
+        int total = 0;
+        try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
 
-			try (ResultSet rs = s.executeQuery(sql);) {
-			    while (rs.next()) {
-	                total = rs.getInt(1);
-	            }
-			}
-			
-		} catch (SQLException e) {
+            String sql = "select count(*) from promotion";
 
-			e.printStackTrace();
-		}
-		
-		return total;
-	}
+            try (ResultSet rs = s.executeQuery(sql);) {
+                while (rs.next()) {
+                    total = rs.getInt(1);
+                }
+            }
 
-	public int add(Promotion bean) {
-		String sql = "insert into promotion values(DEFAULT,?, ?, ?, ?, ?)";
-		
-		try (Connection c = DBUtil.getConnection();
-				PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
-		    
-			ps.setInt(1, bean.getDiscountType());
-			ps.setString(2, bean.getName());
-			ps.setTimestamp(3, DateUtil.d2t(bean.getDateFrom()));
-			ps.setTimestamp(4, DateUtil.d2t(bean.getDateTo()));
-			ps.setInt(5, bean.getState());
+        } catch (SQLException e) {
 
-			int affectedRows = ps.executeUpdate();
+            e.printStackTrace();
+        }
 
-			if (affectedRows == 0) {
-				throw new SQLException("Creating failed, no rows affected.");
-			}
+        return total;
+    }
 
-			try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
-				if (generatedKeys.next()) {
-					int id = generatedKeys.getInt(1);
-					bean.setId(id);
+    protected String getMainSql(int type) {
+        String sql = "";
+        switch (type) {
+        case 1:
+            sql = "insert into " + TABLE_NAME + " values(DEFAULT,?, ?, ?, ?, ?)";
+            break;
+        case 2:
+            sql = "update " + TABLE_NAME
+                    + " set discountType=?, name=?, dateFrom=?, dateTo=?, state=? where promotionId = ?";
+            break;
+        case 3:
+            sql = "delete from " + TABLE_NAME + " where promotionId = ?";
+            break;
+        case 4:
+            sql = "select * from " + TABLE_NAME + " where promotionId = ?";
+            break;
+        default:
+            break;
+        }
+        return sql;
 
-					return id;
-				} else {
-					throw new SQLException("Createing failed, no ID obtained.");
-				}
-			}
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+    }
 
-		return 0;
-	}
+    protected ResultSet executeAdd(PreparedStatement ps, Object obj) throws SQLException {
+        Promotion bean = (Promotion) obj;
+        ps.setInt(1, bean.getDiscountType());
+        ps.setString(2, bean.getName());
+        ps.setTimestamp(3, DateUtil.d2t(bean.getDateFrom()));
+        ps.setTimestamp(4, DateUtil.d2t(bean.getDateTo()));
+        ps.setInt(5, bean.getState());
 
-	public void update(Promotion bean) {
-		String sql = "update promotion "
-		        + "set discountType=?, name=?, dateFrom=?, dateTo=?, state=? "
-		        + "where promotionId = ?";
-		
-		try (Connection c = DBUtil.getConnection(); 
-		        PreparedStatement ps = c.prepareStatement(sql);) {
+        ps.execute();
+        ResultSet rs = ps.getGeneratedKeys();
+        return rs;
 
-			ps.setInt(1, bean.getDiscountType());
-			ps.setString(2, bean.getName());
-			ps.setTimestamp(3, DateUtil.d2t(bean.getDateFrom()));
-			ps.setTimestamp(4, DateUtil.d2t(bean.getDateTo()));
-			ps.setInt(5, bean.getState());
+    }
 
-			ps.setInt(6, bean.getId());
+    protected void executeUpdate(PreparedStatement ps, Object obj) throws SQLException {
+        Promotion bean = (Promotion) obj;
+        ps.setInt(1, bean.getDiscountType());
+        ps.setString(2, bean.getName());
+        ps.setTimestamp(3, DateUtil.d2t(bean.getDateFrom()));
+        ps.setTimestamp(4, DateUtil.d2t(bean.getDateTo()));
+        ps.setInt(5, bean.getState());
 
-			ps.execute();
+        ps.setInt(6, bean.getId());
+        ps.execute();
 
-		} catch (SQLException e) {
+    }
 
-			e.printStackTrace();
-		}
-	}
+    protected void executeDelete(PreparedStatement ps, int id) throws SQLException {
+        ps.setInt(1, id);
+        ps.execute();
 
-	public void delete(int id) {
-	    String sql = "delete from promotion where promotionId = ?";
-	    
-	    try (Connection c = DBUtil.getConnection(); 
-                PreparedStatement ps = c.prepareStatement(sql);) {
-	        
-			ps.setInt(1, id);
-			ps.execute();
+    }
 
-		} catch (SQLException e) {
+    protected int setModel(ResultSet rs, Object obj) throws SQLException {
+        Promotion bean = (Promotion) obj;
+        if (rs.next()) {
+            int id = rs.getInt(1);
+            bean.setId(id);
 
-			e.printStackTrace();
-		}
-	}
+            return id;
+        }
+        return 0;
+    }
 
-	public Promotion get(int id) {
-		Promotion bean = null;
-		String sql = "select * from promotion where promotionId = ?";
-		
-		try (Connection c = DBUtil.getConnection(); 
-                PreparedStatement ps = c.prepareStatement(sql);) {
-			
-			ps.setInt(1, id);
+    protected Object setModelFromGet(ResultSet rs) throws SQLException {
+        Promotion bean = new Promotion();
+        if (rs.next()) {
 
-			try (ResultSet rs = ps.executeQuery();) {
-			    if (rs.next()) {
-	                bean = new Promotion();
-	                
-	                String name = rs.getString("name");
-	                Date dateFrom = DateUtil.t2d(rs.getTimestamp("dateFrom"));
-	                Date dateTo = DateUtil.t2d(rs.getTimestamp("dateTo"));
-	                int state = rs.getInt("state");
-	                int discountType = rs.getInt("discountType");
+            String name = rs.getString("name");
+            Date dateFrom = DateUtil.t2d(rs.getTimestamp("dateFrom"));
+            Date dateTo = DateUtil.t2d(rs.getTimestamp("dateTo"));
+            int state = rs.getInt("state");
+            int discountType = rs.getInt("discountType");
 
-	                bean.setDiscountType(discountType);
-	                bean.setName(name);
-	                bean.setDateFrom(dateFrom);
-	                bean.setDateTo(dateTo);
-	                bean.setState(state);
-	                bean.setDiscountTypeDesc(bean.getDiscountTypeDescription());
+            bean.setDiscountType(discountType);
+            bean.setName(name);
+            bean.setDateFrom(dateFrom);
+            bean.setDateTo(dateTo);
+            bean.setState(state);
+            bean.setDiscountTypeDesc(bean.getDiscountTypeDescription());
 
-	                bean.setId(id);
-	            }
-			}
+            bean.setId(rs.getInt("PromotionId"));
+            return bean;
+        }
+        return null;
+    }
 
-		} catch (SQLException e) {
+    public List<Promotion> list() {
+        return list(0, Short.MAX_VALUE);
+    }
 
-			e.printStackTrace();
-		}
-		
-		return bean;
-	}
+    public List<Promotion> list(int start, int count) {
+        List<Promotion> beans = new ArrayList<>();
 
-	public List<Promotion> list() {
-		return list(0, Short.MAX_VALUE);
-	}
+        String sql = "select * from promotion order by promotionId desc limit ?,? ";
 
-	public List<Promotion> list(int start, int count) {
-		List<Promotion> beans = new ArrayList<>();
+        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
 
-		String sql = "select * from promotion order by promotionId desc limit ?,? ";
+            ps.setInt(1, start);
+            ps.setInt(2, count);
 
-		try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+            try (ResultSet rs = ps.executeQuery();) {
+                while (rs.next()) {
+                    Promotion bean = new Promotion();
 
-			ps.setInt(1, start);
-			ps.setInt(2, count);
+                    int promotionId = rs.getInt("promotionId");
+                    String name = rs.getString("name");
+                    Date dateFrom = DateUtil.t2d(rs.getTimestamp("dateFrom"));
+                    Date dateTo = DateUtil.t2d(rs.getTimestamp("dateTo"));
+                    int state = rs.getInt("state");
+                    int discountType = rs.getInt("discountType");
 
-			try (ResultSet rs = ps.executeQuery();) {
-			    while (rs.next()) {
-	                Promotion bean = new Promotion();
-	                
-	                int promotionId = rs.getInt("promotionId");
-	                String name = rs.getString("name");
-	                Date dateFrom = DateUtil.t2d(rs.getTimestamp("dateFrom"));
-	                Date dateTo = DateUtil.t2d(rs.getTimestamp("dateTo"));
-	                int state = rs.getInt("state");
-	                int discountType = rs.getInt("discountType");
+                    bean.setDiscountType(discountType);
+                    bean.setName(name);
+                    bean.setDateFrom(dateFrom);
+                    bean.setDateTo(dateTo);
+                    bean.setState(state);
+                    bean.setDiscountTypeDesc(bean.getDiscountTypeDescription());
 
-	                bean.setDiscountType(discountType);
-	                bean.setName(name);
-	                bean.setDateFrom(dateFrom);
-	                bean.setDateTo(dateTo);
-	                bean.setState(state);
-	                bean.setDiscountTypeDesc(bean.getDiscountTypeDescription());
+                    bean.setId(promotionId);
+                    beans.add(bean);
+                }
+            }
 
-	                bean.setId(promotionId);
-	                beans.add(bean);
-	            }
-			}
+        } catch (SQLException e) {
 
-		} catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-			e.printStackTrace();
-		}
-		
-		return beans;
-	}
+        return beans;
+    }
 
 }

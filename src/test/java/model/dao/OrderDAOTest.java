@@ -21,7 +21,7 @@ public class OrderDAOTest {
 	public static int orderId;
 
 	@BeforeClass
-	public static void testAdd() {
+    public static void testAdd() throws Exception {
 		// create user
 		user = new User();
 		user.setEmail("abc@abc.com");
@@ -32,7 +32,7 @@ public class OrderDAOTest {
 
 		// create order
 		order = new Order();
-		order.setUser(userdao.get(userId));
+		order.setUser((User) userdao.get(userId));
 		order.setDateOrdered(new Date());
 		order.setDatePaid(new Date());
 		order.setState(OrderDAO.WAIT_PAY);
@@ -49,7 +49,7 @@ public class OrderDAOTest {
 	}
 
 	@AfterClass
-	public static void testDelete() {
+	public static void testDelete() throws Exception {
 		// delete order
 		orderdao.delete(orderId);
 

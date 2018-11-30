@@ -51,7 +51,13 @@ public class ForeServletFilter implements Filter {
 		User user = (User) request.getSession().getAttribute("user");
 		int cartTotalItemNumber = 0;
 		if (null != user) {
-			List<OrderItem> ois = new OrderItemDAO().listCartByUser(user.getId());
+			List<OrderItem> ois = null;
+			try {
+				ois = new OrderItemDAO().listCartByUser(user.getId());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			for (OrderItem oi : ois) {
 				cartTotalItemNumber += oi.getQuantity();

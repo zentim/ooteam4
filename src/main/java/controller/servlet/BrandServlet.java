@@ -14,69 +14,75 @@ import main.java.model.util.Page;
 @WebServlet("/brandServlet")
 public class BrandServlet extends BaseBackServlet {
 
-	@Override
-	public String add(HttpServletRequest request, HttpServletResponse response, Page page) {
-		int id = Integer.parseInt(request.getParameter("cid"));
-		Category category = categoryDAO.get(id);
-		
-		String name = request.getParameter("name");
-		Brand c = new Brand();
-		c.setName(name);
-		c.setCategory(category);
-		brandDAO.add(c);
+    @Override
+    public String add(HttpServletRequest request, HttpServletResponse response, Page page) throws Exception {
+        int id = Integer.parseInt(request.getParameter("cid"));
+        Category category = (Category) categoryDAO.get(id);
 
-		return "@admin_brand_list?cid=" + id;
-	}
+        String name = request.getParameter("name");
+        Brand c = new Brand();
+        c.setName(name);
+        c.setCategory(category);
+        brandDAO.add(c);
+        return "@admin_brand_list?cid=" + id;
+    }
 
-	@Override
-	public String delete(HttpServletRequest request, HttpServletResponse response, Page page) {
-		int id = Integer.parseInt(request.getParameter("id"));
-		Brand brand = brandDAO.get(id);
-		brandDAO.delete(id);
-		
-		return "@admin_brand_list?cid=" + brand.getCategory().getId();
-	}
+    @Override
+    public String delete(HttpServletRequest request, HttpServletResponse response, Page page) throws Exception {
+        int id = Integer.parseInt(request.getParameter("id"));
+        Brand brand = null;
+        brand = (Brand) brandDAO.get(id);
+        brandDAO.delete(id);
 
-	@Override
-	public String edit(HttpServletRequest request, HttpServletResponse response, Page page) {
-		int id = Integer.parseInt(request.getParameter("id"));
-		Brand b = brandDAO.get(id);
-		Category c = categoryDAO.get(b.getCategory().getId());
-		Segment s = segmentDAO.get(c.getSegment().getId());
-		
-		request.setAttribute("b", b);
-		request.setAttribute("c", c);
-		request.setAttribute("s", s);
-		return "admin/editBrand.jsp";
-	}
+        return "@admin_brand_list?cid=" + brand.getCategory().getId();
+    }
 
-	@Override
-	public String update(HttpServletRequest request, HttpServletResponse response, Page page) {
-		int cid = Integer.parseInt(request.getParameter("cid"));
-		int id = Integer.parseInt(request.getParameter("id"));
-		String name = request.getParameter("name");
-		
-		Brand c = new Brand();
-		c.setId(id);
-		c.setName(name);
-		brandDAO.update(c);
+    @Override
+    public String edit(HttpServletRequest request, HttpServletResponse response, Page page) throws Exception {
+        int id = Integer.parseInt(request.getParameter("id"));
+        Brand b = null;
+        b = (Brand) brandDAO.get(id);
+        Category c = (Category) categoryDAO.get(b.getCategory().getId());
+        Segment s = (Segment) segmentDAO.get(c.getSegment().getId());
 
-		return "@admin_brand_list?cid=" + cid;
-	}
+        request.setAttribute("b", b);
+        request.setAttribute("c", c);
+        request.setAttribute("s", s);
+        return "admin/editBrand.jsp";
+    }
 
-	@Override
-	public String list(HttpServletRequest request, HttpServletResponse response, Page page) {
-		int id = Integer.parseInt(request.getParameter("cid"));
-		Category category = categoryDAO.get(id);
-		List<Brand> cs = brandDAO.list(id, page.getStart(), page.getCount());
-		int total = brandDAO.getTotal();
-		page.setTotal(total);
+    @Override
+    public String update(HttpServletRequest request, HttpServletResponse response, Page page) {
+        int cid = Integer.parseInt(request.getParameter("cid"));
+        int id = Integer.parseInt(request.getParameter("id"));
+        String name = request.getParameter("name");
 
-		request.setAttribute("thecs", cs);
-		request.setAttribute("page", page);
-		request.setAttribute("c", category);
+        Brand c = new Brand();
+        c.setId(id);
+        c.setName(name);
+        try {
+            brandDAO.update(c);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
-		return "admin/listBrand.jsp";
-	}
+        return "@admin_brand_list?cid=" + cid;
+    }
+
+    @Override
+    public String list(HttpServletRequest request, HttpServletResponse response, Page page) throws Exception {
+        int id = Integer.parseInt(request.getParameter("cid"));
+        Category category = (Category) categoryDAO.get(id);
+        List<Brand> cs = brandDAO.list(id, page.getStart(), page.getCount());
+        int total = brandDAO.getTotal();
+        page.setTotal(total);
+
+        request.setAttribute("thecs", cs);
+        request.setAttribute("page", page);
+        request.setAttribute("c", category);
+
+        return "admin/listBrand.jsp";
+    }
 
 }

@@ -31,105 +31,101 @@ import main.java.model.util.Page;
 
 public abstract class BaseBackServlet extends HttpServlet {
 
-	public abstract String add(HttpServletRequest request, HttpServletResponse response, Page page);
+    public abstract String add(HttpServletRequest request, HttpServletResponse response, Page page) throws Exception;
 
-	public abstract String delete(HttpServletRequest request, HttpServletResponse response, Page page);
+    public abstract String delete(HttpServletRequest request, HttpServletResponse response, Page page) throws Exception;
 
-	public abstract String edit(HttpServletRequest request, HttpServletResponse response, Page page);
+    public abstract String edit(HttpServletRequest request, HttpServletResponse response, Page page) throws Exception;
 
-	public abstract String update(HttpServletRequest request, HttpServletResponse response, Page page);
+    public abstract String update(HttpServletRequest request, HttpServletResponse response, Page page) throws Exception;
 
-	public abstract String list(HttpServletRequest request, HttpServletResponse response, Page page);
+    public abstract String list(HttpServletRequest request, HttpServletResponse response, Page page) throws Exception;
 
-	protected SegmentDAO segmentDAO = new SegmentDAO();
-	protected CategoryDAO categoryDAO = new CategoryDAO();
-	protected BrandDAO brandDAO = new BrandDAO();
-	protected OrderDAO orderDAO = new OrderDAO();
-	protected OrderItemDAO orderItemDAO = new OrderItemDAO();
-	protected ProductDAO productDAO = new ProductDAO();
-	protected ProductImageDAO productImageDAO = new ProductImageDAO();
-	protected PromotionDAO promotionDAO = new PromotionDAO();
-	protected PromotionItemDAO promotionItemDAO = new PromotionItemDAO();
-	protected SubscriptionDAO subscriptionDao = new SubscriptionDAO();
-	protected UserDAO userDAO = new UserDAO();
+    protected SegmentDAO segmentDAO = new SegmentDAO();
+    protected CategoryDAO categoryDAO = new CategoryDAO();
+    protected BrandDAO brandDAO = new BrandDAO();
+    protected OrderDAO orderDAO = new OrderDAO();
+    protected OrderItemDAO orderItemDAO = new OrderItemDAO();
+    protected ProductDAO productDAO = new ProductDAO();
+    protected ProductImageDAO productImageDAO = new ProductImageDAO();
+    protected PromotionDAO promotionDAO = new PromotionDAO();
+    protected PromotionItemDAO promotionItemDAO = new PromotionItemDAO();
+    protected SubscriptionDAO subscriptionDao = new SubscriptionDAO();
+    protected UserDAO userDAO = new UserDAO();
 
-	@Override
-	protected void service(HttpServletRequest req, HttpServletResponse resp) 
-			throws ServletException, IOException {
+    @Override
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-		try {
-			// get pagination info
-			int start = 0;
-			int count = 5;
+        try {
+            // get pagination info
+            int start = 0;
+            int count = 5;
 
-			try {
-				start = Integer.parseInt(req.getParameter("page.start"));
-			} catch (Exception e) {
-				// TODO: handle exception
-			}
-			try {
-				count = Integer.parseInt(req.getParameter("page.count"));
-			} catch (Exception e) {
-				// TODO: handle exception
-			}
+            try {
+                start = Integer.parseInt(req.getParameter("page.start"));
+            } catch (Exception e) {
+                // TODO: handle exception
+            }
+            try {
+                count = Integer.parseInt(req.getParameter("page.count"));
+            } catch (Exception e) {
+                // TODO: handle exception
+            }
 
-			Page page = new Page(start, count);
+            Page page = new Page(start, count);
 
-			// Call the corresponding method with reflection
-			String method = (String) req.getAttribute("method");
+            // Call the corresponding method with reflection
+            String method = (String) req.getAttribute("method");
 
-			Method m = this.getClass().getMethod(
-					method, 
-					javax.servlet.http.HttpServletRequest.class,
-					javax.servlet.http.HttpServletResponse.class, 
-					Page.class);
-			
-			String redirect = m.invoke(this, req, resp, page).toString();
+            Method m = this.getClass().getMethod(method, javax.servlet.http.HttpServletRequest.class,
+                    javax.servlet.http.HttpServletResponse.class, Page.class);
 
-			// According to the return value of the method, the corresponding 
-			// client redirect, server redirect, or just the output string.
-			if (redirect.startsWith("@")) {
-				resp.sendRedirect(redirect.substring(1)); // client redirect
-			} else if (redirect.startsWith("%")) {
-				resp.getWriter().print(redirect.substring(1)); // server redirect
-			} else {
-				req.getRequestDispatcher(redirect).forward(req, resp);
-			}
+            String redirect = m.invoke(this, req, resp, page).toString();
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException(e);
-		}
+            // According to the return value of the method, the corresponding
+            // client redirect, server redirect, or just the output string.
+            if (redirect.startsWith("@")) {
+                resp.sendRedirect(redirect.substring(1)); // client redirect
+            } else if (redirect.startsWith("%")) {
+                resp.getWriter().print(redirect.substring(1)); // server redirect
+            } else {
+                req.getRequestDispatcher(redirect).forward(req, resp);
+            }
 
-	}
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
 
-	public InputStream parseUpload(HttpServletRequest request, Map<String, String> params) {
-		InputStream is = null;
-		try {
-			DiskFileItemFactory factory = new DiskFileItemFactory();
-			ServletFileUpload upload = new ServletFileUpload(factory);
-			// Set the size of the uploaded file to 10M
-			factory.setSizeThreshold(1024 * 1024);
+    }
 
-			List items = upload.parseRequest(request);
-			Iterator iter = items.iterator();
-			while (iter.hasNext()) {
-				FileItem item = (FileItem) iter.next();
-				if (!item.isFormField()) {
-					// item.getInputStream() //Get the input stream of the uploaded file
-					is = item.getInputStream();
-				} else {
-					String paramName = item.getFieldName();
-					String paramValue = item.getString();
-					paramValue = new String(paramValue.getBytes("ISO-8859-1"), "UTF-8");
-					params.put(paramName, paramValue);
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+    public InputStream parseUpload(HttpServletRequest request, Map<String, String> params) {
+        InputStream is = null;
+        try {
+            DiskFileItemFactory factory = new DiskFileItemFactory();
+            ServletFileUpload upload = new ServletFileUpload(factory);
+            // Set the size of the uploaded file to 10M
+            factory.setSizeThreshold(1024 * 1024);
 
-		return is;
-	}
+            List items = upload.parseRequest(request);
+            Iterator iter = items.iterator();
+            while (iter.hasNext()) {
+                FileItem item = (FileItem) iter.next();
+                if (!item.isFormField()) {
+                    // item.getInputStream() //Get the input stream of the uploaded file
+                    is = item.getInputStream();
+                } else {
+                    String paramName = item.getFieldName();
+                    String paramValue = item.getString();
+                    paramValue = new String(paramValue.getBytes("ISO-8859-1"), "UTF-8");
+                    params.put(paramName, paramValue);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return is;
+    }
 
 }

@@ -15,7 +15,7 @@ import main.java.pattern.chainOfResponsibility.DiscountRequest;
  */
 public class ProductSetStrategy implements Strategy {
 
-	public DiscountRequest Execute(DiscountRequest discountRequest) {
+	public DiscountRequest Execute(DiscountRequest discountRequest) throws Exception {
 		List<OrderItem> orderItems = discountRequest.getOrderItems();
 
 		PromotionDAO promotionDAO = new PromotionDAO();
@@ -32,7 +32,7 @@ public class ProductSetStrategy implements Strategy {
 		
 		for (OrderItem oi : orderItems) {
 			promotionItem = promotionItemDAO.getByProduct(oi.getProduct().getId());
-			promotion = promotionDAO.get(promotionItem.getPromotion().getId());
+			promotion =  (Promotion)promotionDAO.get(promotionItem.getPromotion().getId());
 			
 			if (promotion.getState() == 1) {
 				

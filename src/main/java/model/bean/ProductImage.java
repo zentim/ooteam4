@@ -1,7 +1,5 @@
 package main.java.model.bean;
 
-import java.io.Serializable;
-
 public class ProductImage {
 
     private String type;

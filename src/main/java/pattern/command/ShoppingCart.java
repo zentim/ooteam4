@@ -8,22 +8,21 @@ import java.util.Stack;
  *
  */
 public class ShoppingCart {
-	private Stack<Command> history = new Stack<Command>();
-	
-	
-	/* Command Pattern Method */
-	public void storeAndExecute(Command cmd) {
-	    history.add(cmd);
-	    cmd.execute();
-	}
+    private Stack<Command> history = new Stack<Command>();
 
-	public void undo() {
-	    if (!history.isEmpty()) {
-	        Command cmd = history.pop();
-	        cmd.unExecute();
-	    } else {
-	        System.out.println("Undo fail, no command record!");
-	    }
-	}
+    /* Command Pattern Method */
+    public void storeAndExecute(Command cmd) throws CloneNotSupportedException {
+        history.add(cmd.clone());
+        cmd.execute();
+    }
+
+    public void undo() {
+        if (!history.isEmpty()) {
+            Command cmd = history.pop();
+            cmd.unExecute();
+        } else {
+            System.out.println("Undo fail, no command record!");
+        }
+    }
 
 }

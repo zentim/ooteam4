@@ -11,158 +11,148 @@ import java.util.List;
 import main.java.model.bean.Brand;
 import main.java.model.bean.Category;
 import main.java.model.util.DBUtil;
+import main.java.pattern.template.DAOTemplate;
 
-public class BrandDAO {
+/**
+ * 
+ * Template Pattern - ConcreteTemplate
+ *
+ */
+public class BrandDAO extends DAOTemplate {
+    String TABLE_NAME = "brand";
 
-	public int getTotal() {
-		int total = 0;
-		try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
-		    
-			String sql = "select count(*) from brand";
+    public int getTotal() {
+        int total = 0;
+        try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
 
-			ResultSet rs = s.executeQuery(sql);
-			while (rs.next()) {
-				total = rs.getInt(1);
-			}
-		} catch (SQLException e) {
+            String sql = "select count(*) from brand";
 
-			e.printStackTrace();
-		}
-		
-		return total;
-	}
+            ResultSet rs = s.executeQuery(sql);
+            while (rs.next()) {
+                total = rs.getInt(1);
+            }
+        } catch (SQLException e) {
 
-	public int add(Brand bean) {
-		String sql = "insert into brand values(DEFAULT,?, ?)";
-		try (Connection c = DBUtil.getConnection();
-				PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
-			ps.setString(1, bean.getName());
-			ps.setInt(2, bean.getCategory().getId());
+            e.printStackTrace();
+        }
 
-			int affectedRows = ps.executeUpdate();
+        return total;
+    }
 
-			if (affectedRows == 0) {
-				throw new SQLException("Creating failed, no rows affected.");
-			}
+    protected String getMainSql(int type) {
+        String sql = "";
 
-			try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
-				if (generatedKeys.next()) {
-					int id = generatedKeys.getInt(1);
-					bean.setId(id);
+        switch (type) {
+        case 1:
+            sql = "insert into " + TABLE_NAME + " values(DEFAULT,?, ?)";
+            break;
+        case 2:
+            sql = "update " + TABLE_NAME + " set name = ? where brandId = ?";
+            break;
+        case 3:
+            sql = "delete from " + TABLE_NAME + " where brandId = ?";
+            break;
+        case 4:
+            sql = "select * from " + TABLE_NAME + " where brandId = ?";
+            break;
+        default:
+            break;
+        }
 
-					return id;
-				} else {
-					throw new SQLException("Createing failed, no ID obtained.");
-				}
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+        return sql;
+    }
 
-		return 0;
-	}
+    protected ResultSet executeAdd(PreparedStatement ps, Object obj) throws SQLException {
+        Brand bean = (Brand) obj;
+        ps.setString(1, bean.getName());
+        ps.setInt(2, bean.getCategory().getId());
 
-	public void update(Brand bean) {
+        ps.execute();
+        ResultSet rs = ps.getGeneratedKeys();
+        return rs;
+    }
 
-		String sql = "update brand set name= ? where brandId = ?";
-		try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+    protected void executeUpdate(PreparedStatement ps, Object obj) throws SQLException {
+        Brand bean = (Brand) obj;
 
-			ps.setString(1, bean.getName());
-			ps.setInt(2, bean.getId());
+        ps.setString(1, bean.getName());
+        ps.setInt(2, bean.getId());
 
-			ps.execute();
+        ps.execute();
+    }
 
-		} catch (SQLException e) {
+    protected void executeDelete(PreparedStatement ps, int id) throws SQLException {
+        ps.setInt(1, id);
+        ps.execute();
+    }
 
-			e.printStackTrace();
-		}
+    protected int setModel(ResultSet rs, Object obj) throws SQLException {
+        Brand bean = (Brand) obj;
+        if (rs.next()) {
+            int id = rs.getInt(1);
+            bean.setId(id);
 
-	}
+            return id;
+        }
+        return 0;
+    }
 
-	public void delete(int id) {
+    protected Object setModelFromGet(ResultSet rs) throws Exception {
+        Brand bean = new Brand();
+        while (rs.next()) {
+            String name = rs.getString("name");
+            int categoryId = rs.getInt("categoryId");
+            Category category = (Category) new CategoryDAO().get(categoryId);
+            bean.setName(name);
+            bean.setCategory(category);
+            bean.setId(rs.getInt("brandId"));
+            return bean;
+        }
+        return null;
+    }
 
-		try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
+    public List<Brand> list() throws Exception {
+        return list(0, Short.MAX_VALUE);
+    }
 
-			String sql = "delete from brand where brandId = " + id;
+    public List<Brand> list(int start, int count) throws Exception {
+        List<Brand> beans = new ArrayList<>();
 
-			s.execute(sql);
+        String sql = "select * from brand order by brandId desc limit ?,? ";
 
-		} catch (SQLException e) {
+        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
 
-			e.printStackTrace();
-		}
-	}
+            ps.setInt(1, start);
+            ps.setInt(2, count);
 
-	public Brand get(int id) {
-		Brand bean = null;
+            try (ResultSet rs = ps.executeQuery();) {
+                while (rs.next()) {
+                    Brand bean = new Brand();
+                    int id = rs.getInt(1);
+                    String name = rs.getString("name");
+                    int categoryId = rs.getInt("categoryId");
 
-		try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
+                    Category category = (Category) new CategoryDAO().get(categoryId);
 
-			String sql = "select * from brand where brandId = " + id;
+                    bean.setName(name);
+                    bean.setCategory(category);
+                    bean.setId(id);
+                    beans.add(bean);
+                }
+            }
 
-			try (ResultSet rs = s.executeQuery(sql);) {
-			    if (rs.next()) {
-	                bean = new Brand();
-	                String name = rs.getString("name");
-	                int categoryId = rs.getInt("categoryId");
-	                
-	                Category category = new CategoryDAO().get(categoryId);
-	                
-	                bean.setName(name);
-	                bean.setCategory(category);
-	                bean.setId(id);
-	            }
-			}
+        } catch (SQLException e) {
 
-		} catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return beans;
+    }
 
-			e.printStackTrace();
-		}
-		return bean;
-	}
-
-	public List<Brand> list() {
-		return list(0, Short.MAX_VALUE);
-	}
-
-	public List<Brand> list(int start, int count) {
-		List<Brand> beans = new ArrayList<>();
-
-		String sql = "select * from brand order by brandId desc limit ?,? ";
-
-		try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
-
-			ps.setInt(1, start);
-			ps.setInt(2, count);
-
-			try (ResultSet rs = ps.executeQuery();){
-			    while (rs.next()) {
-	                Brand bean = new Brand();
-	                int id = rs.getInt(1);
-	                String name = rs.getString("name");
-	                int categoryId = rs.getInt("categoryId");
-	                
-	                Category category = new CategoryDAO().get(categoryId);
-	                
-	                bean.setName(name);
-	                bean.setCategory(category);
-	                bean.setId(id);
-	                beans.add(bean);
-	            }
-			}
-			
-		} catch (SQLException e) {
-
-			e.printStackTrace();
-		}
-		return beans;
-	}
-	
-	public List<Brand> list(int categoryId) {
+    public List<Brand> list(int categoryId) throws Exception {
         return list(categoryId, 0, Short.MAX_VALUE);
     }
 
-    public List<Brand> list(int categoryId, int start, int count) {
+    public List<Brand> list(int categoryId, int start, int count) throws Exception {
         List<Brand> beans = new ArrayList<>();
 
         String sql = "select * from brand where categoryId = ? order by brandId desc limit ?,? ";
@@ -172,14 +162,14 @@ public class BrandDAO {
             ps.setInt(2, start);
             ps.setInt(3, count);
 
-            try (ResultSet rs = ps.executeQuery();){
+            try (ResultSet rs = ps.executeQuery();) {
                 while (rs.next()) {
                     Brand bean = new Brand();
                     int id = rs.getInt(1);
                     String name = rs.getString("name");
-                    
-                    Category category = new CategoryDAO().get(categoryId);
-                    
+
+                    Category category = (Category) new CategoryDAO().get(categoryId);
+
                     bean.setName(name);
                     bean.setCategory(category);
                     bean.setId(id);
@@ -193,14 +183,14 @@ public class BrandDAO {
 
         return beans;
     }
-    
-    public void fill(List<Category> cs) {
+
+    public void fill(List<Category> cs) throws Exception {
         for (Category c : cs) {
             fill(c);
         }
     }
 
-    public void fill(Category c) {
+    public void fill(Category c) throws Exception {
         List<Brand> ps = this.list(c.getId());
         c.setBrands(ps);
     }

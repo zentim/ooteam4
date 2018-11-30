@@ -12,11 +12,10 @@ import org.junit.Before;
 import org.junit.Test;
 import java.util.List;
 
-/** 
-* BuyXGetYFreePolicy Tester. 
-* (Need to connect mysql)
-* 
-*/ 
+/**
+ * BuyXGetYFreePolicy Tester. (Need to connect mysql)
+ * 
+ */
 public class Buy1ProductXTest extends TestCase {
     public static BrandDAO branddao = new BrandDAO();
     public static Brand brand;
@@ -57,7 +56,7 @@ public class Buy1ProductXTest extends TestCase {
     public static DiscountPolicy buyXgetYfreeDiscount = new BuyXGetYFreePolicy();
 
     @Before
-    public void setUp(){
+    public void setUp() throws Exception {
         // create brand
         Category category = new Category();
         category.setId(100);
@@ -79,14 +78,14 @@ public class Buy1ProductXTest extends TestCase {
         productX.setName("Harry Potter");
         productX.setInventory(200);
         productX.setPrice(1000);
-        productX.setBrand(branddao.get(brandId));
+        productX.setBrand((Brand) branddao.get(brandId));
         productIdX = productdao.add(productX);
         // create product Y
         productY = new Product();
         productY.setName("Star Wars");
         productY.setInventory(200);
         productY.setPrice(1000);
-        productY.setBrand(branddao.get(brandId));
+        productY.setBrand((Brand) branddao.get(brandId));
         productIdY = productdao.add(productY);
 
         // create promotion : Buy X Get Y Free discount (National Day Discount)
@@ -97,19 +96,19 @@ public class Buy1ProductXTest extends TestCase {
         promotionId = promotiondao.add(promotion);
 
         // create promotionItem with promotion :Buys 2 Product X,get 1 free Product Y
-        //promotionItem X
+        // promotionItem X
         promotionitem = new PromotionItem();
-        promotionitem.setPromotion(promotiondao.get(promotionId));
+        promotionitem.setPromotion((Promotion) promotiondao.get(promotionId));
         promotionitem.setMinQuantity(2);
         promotionitem.setDiscountOf(0);
-        promotionitem.setProduct(productdao.get(productIdX));
+        promotionitem.setProduct((Product) productdao.get(productIdX));
         promotionItemIdX = promotionitemdao.add(promotionitem);
-        //promotionItem Y
+        // promotionItem Y
         promotionitem = new PromotionItem();
-        promotionitem.setPromotion(promotiondao.get(promotionId));
+        promotionitem.setPromotion((Promotion) promotiondao.get(promotionId));
         promotionitem.setMinQuantity(1);
         promotionitem.setDiscountOf(100);
-        promotionitem.setProduct(productdao.get(productIdY));
+        promotionitem.setProduct((Product) productdao.get(productIdY));
         promotionItemIdY = promotionitemdao.add(promotionitem);
 
         // create order
@@ -126,7 +125,7 @@ public class Buy1ProductXTest extends TestCase {
     }
 
     @After
-    public void tearDown(){
+    public void tearDown() throws Exception {
         // delete orderItem
         orderitemdao.delete(orderItemIdX);
 
@@ -149,9 +148,8 @@ public class Buy1ProductXTest extends TestCase {
 
     }
 
-
     @Test
-    public void testBuy1ProductX(){
+    public void testBuy1ProductX() throws Exception {
         System.out.println("Test: Buy 1 Product X");
 
         // user buy 1 productX
@@ -165,10 +163,11 @@ public class Buy1ProductXTest extends TestCase {
         dr = buyXgetYfreeDiscount.handleDiscount(dr);
         dr.setNationalHoliday(true); // on national holidays
 
-        //Assert Equal
-        // If the order doesn't have corresponding discount, discount msg should not have any content
+        // Assert Equal
+        // If the order doesn't have corresponding discount, discount msg should not
+        // have any content
         System.out.println("Excepted Result: (Blank)");
-        System.out.println("Actual Result:"+dr.getDiscountMsg());
-        Assert.assertEquals("",dr.getDiscountMsg());
+        System.out.println("Actual Result:" + dr.getDiscountMsg());
+        Assert.assertEquals("", dr.getDiscountMsg());
     }
-} 
+}

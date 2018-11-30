@@ -12,58 +12,58 @@ import main.java.model.dao.CategoryDAO;
 import main.java.model.dao.SegmentDAO;
 
 public class BrandDAOTest {
-	public static SegmentDAO segmentdao = new SegmentDAO();
-	public static Segment segment;
-	public static int segmentId;
-	
-	public static CategoryDAO categorydao = new CategoryDAO();
-	public static Category category;
-	public static int categoryId;
-	
-	public static BrandDAO branddao = new BrandDAO();
-	public static Brand brand;
-	public static int brandId;
+    public static SegmentDAO segmentdao = new SegmentDAO();
+    public static Segment segment;
+    public static int segmentId;
 
-	@BeforeClass
-	public static void testAdd() {
-		// create segment
-		segment = new Segment();
-		segment.setName("SegmentTest");
-		segmentId = segmentdao.add(segment);
+    public static CategoryDAO categorydao = new CategoryDAO();
+    public static Category category;
+    public static int categoryId;
 
-		// create category
-		category = new Category();
-		category.setName("CategoryTest");
-		category.setSegment(segmentdao.get(segmentId));
-		categoryId = categorydao.add(category);
-		
-		System.out.println("Test Start...");
+    public static BrandDAO branddao = new BrandDAO();
+    public static Brand brand;
+    public static int brandId;
 
-		// create brand
-		brand = new Brand();
-		brand.setName("Book");
-		brand.setCategory(categorydao.get(categoryId));
-		brandId = branddao.add(brand);
-	}
+    @BeforeClass
+    public static void testAdd() throws Exception {
+        // create segment
+        segment = new Segment();
+        segment.setName("SegmentTest");
+        segmentId = segmentdao.add(segment);
 
-	@Test
-	public void testTotal() {
-		int result = branddao.getTotal();
-		assertNotNull("should not be null", result);
-	}
+        // create category
+        category = new Category();
+        category.setName("CategoryTest");
+        category.setSegment((Segment) segmentdao.get(segmentId));
+        categoryId = categorydao.add(category);
 
-	@AfterClass
-	public static void testDelete() {
-		// delete brand
-		branddao.delete(brandId);
+        System.out.println("Test Start...");
 
-		System.out.println("Test End...");
-		
-		// delete category
-		categorydao.delete(categoryId);
-		
-		// delete segment
-		segmentdao.delete(segmentId);
-	}
+        // create brand
+        brand = new Brand();
+        brand.setName("Book");
+        brand.setCategory((Category) categorydao.get(categoryId));
+        brandId = branddao.add(brand);
+    }
+
+    @Test
+    public void testTotal() {
+        int result = branddao.getTotal();
+        assertNotNull("should not be null", result);
+    }
+
+    @AfterClass
+    public static void testDelete() throws Exception {
+        // delete brand
+        branddao.delete(brandId);
+
+        System.out.println("Test End...");
+
+        // delete category
+        categorydao.delete(categoryId);
+
+        // delete segment
+        segmentdao.delete(segmentId);
+    }
 
 }

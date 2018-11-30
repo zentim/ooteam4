@@ -14,7 +14,7 @@ import main.java.pattern.chainOfResponsibility.DiscountRequest;
  */
 public class BuyXGetYFreeStrategy implements Strategy {
 
-	public DiscountRequest Execute(DiscountRequest discountRequest) {
+	public DiscountRequest Execute(DiscountRequest discountRequest) throws Exception {
 		List<OrderItem> orderItems = discountRequest.getOrderItems();
 
 		PromotionDAO promotionDAO = new PromotionDAO();
@@ -29,7 +29,7 @@ public class BuyXGetYFreeStrategy implements Strategy {
 		String freeProducts = "";
 		for (OrderItem oi : orderItems) {
 			promotionItem = promotionItemDAO.getByProduct(oi.getProduct().getId());
-			promotion = promotionDAO.get(promotionItem.getPromotion().getId());
+			promotion =  (Promotion)promotionDAO.get(promotionItem.getPromotion().getId());
 			
 			if (promotion.getState() == 1) {
 				// for verify one promotion's all of promotionItem condition

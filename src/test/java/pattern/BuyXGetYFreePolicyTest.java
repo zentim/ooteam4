@@ -12,11 +12,10 @@ import org.junit.*;
 import java.util.Date;
 import java.util.List;
 
-/** 
-* BuyXGetYFreePolicy Tester. 
-* (Need to connect mysql)
-* 
-*/ 
+/**
+ * BuyXGetYFreePolicy Tester. (Need to connect mysql)
+ * 
+ */
 public class BuyXGetYFreePolicyTest extends TestCase {
     private static BrandDAO branddao = new BrandDAO();
     private static Brand brand;
@@ -57,71 +56,71 @@ public class BuyXGetYFreePolicyTest extends TestCase {
     private static DiscountPolicy buyXgetYfreeDiscount = new BuyXGetYFreePolicy();
 
     @Before
-    public void setUp(){
-    // create Brand and Category
-    Category category = new Category();
-    category.setName("Book");
-    brand = new Brand();
-    brand.setName("BookStore");
-    category.setId(100);
-    brand.setCategory(category);
-    brandId = branddao.add(brand);
+    public void setUp() throws Exception {
+        // create Brand and Category
+        Category category = new Category();
+        category.setName("Book");
+        brand = new Brand();
+        brand.setName("BookStore");
+        category.setId(100);
+        brand.setCategory(category);
+        brandId = branddao.add(brand);
 
-    // create user
-    user = new User();
-    user.setId(100);
-    user.setEmail("test@abc.com");
-    user.setPassword("1234");
-    userId = userdao.add(user);
+        // create user
+        user = new User();
+        user.setId(100);
+        user.setEmail("test@abc.com");
+        user.setPassword("1234");
+        userId = userdao.add(user);
 
-    // create product X
-    productX = new Product();
-    productX.setName("Harry Potter");
-    productX.setInventory(200);
-    productX.setPrice(1000);
-    productX.setBrand(branddao.get(brandId));
-    productIdX = productdao.add(productX);
-    // create product Y
-    productY = new Product();
-    productY.setName("Star Wars");
-    productY.setInventory(200);
-    productY.setPrice(1000);
-    productY.setBrand(branddao.get(brandId));
-    productIdY = productdao.add(productY);
+        // create product X
+        productX = new Product();
+        productX.setName("Harry Potter");
+        productX.setInventory(200);
+        productX.setPrice(1000);
+        productX.setBrand((Brand) branddao.get(brandId));
+        productIdX = productdao.add(productX);
+        // create product Y
+        productY = new Product();
+        productY.setName("Star Wars");
+        productY.setInventory(200);
+        productY.setPrice(1000);
+        productY.setBrand((Brand) branddao.get(brandId));
+        productIdY = productdao.add(productY);
 
-    // create promotion : Buy X Get Y Free discount (National Day Discount)
-    promotion = new Promotion();
-    promotion.setDiscountType(DiscountPolicy.BUY_X_GET_Y_FREE);
-    promotion.setName("Buy X Get Y Free Discount");
-    promotion.setDateFrom(new Date());
-    promotion.setDateTo(new Date());
-    promotion.setState(1);
-    promotionId = promotiondao.add(promotion);
+        // create promotion : Buy X Get Y Free discount (National Day Discount)
+        promotion = new Promotion();
+        promotion.setDiscountType(DiscountPolicy.BUY_X_GET_Y_FREE);
+        promotion.setName("Buy X Get Y Free Discount");
+        promotion.setDateFrom(new Date());
+        promotion.setDateTo(new Date());
+        promotion.setState(1);
+        promotionId = promotiondao.add(promotion);
 
-    // create promotionItem with promotion :Buys 2 Product X,get 1 Product Y  Free
-    //promotionItem X
-    promotionitem = new PromotionItem();
-    promotionitem.setPromotion(promotiondao.get(promotionId));
-    promotionitem.setMinQuantity(2);
-    promotionitem.setDiscountOf(0);
-    promotionitem.setProduct(productdao.get(productIdX));
-    promotionItemIdX = promotionitemdao.add(promotionitem);
-    //promotionItem Y
-    promotionitem = new PromotionItem();
-    promotionitem.setPromotion(promotiondao.get(promotionId));
-    promotionitem.setMinQuantity(1);
-    promotionitem.setDiscountOf(100);
-    promotionitem.setProduct(productdao.get(productIdY));
-    promotionItemIdY = promotionitemdao.add(promotionitem);
+        // create promotionItem with promotion :Buys 2 Product X,get 1 Product Y Free
+        // promotionItem X
+        promotionitem = new PromotionItem();
+        promotionitem.setPromotion((Promotion) promotiondao.get(promotionId));
+        promotionitem.setMinQuantity(2);
+        promotionitem.setDiscountOf(0);
+        promotionitem.setProduct((Product) productdao.get(productIdX));
+        promotionItemIdX = promotionitemdao.add(promotionitem);
+        // promotionItem Y
+        promotionitem = new PromotionItem();
+        promotionitem.setPromotion((Promotion) promotiondao.get(promotionId));
+        promotionitem.setMinQuantity(1);
+        promotionitem.setDiscountOf(100);
+        promotionitem.setProduct((Product) productdao.get(productIdY));
+        promotionItemIdY = promotionitemdao.add(promotionitem);
 
-    // create order
-    order = new Order();
-    order.setId(-1);
-    order.setUser(user);
+        // create order
+        order = new Order();
+        order.setId(-1);
+        order.setUser(user);
     }
 
     @After
-    public void tearDown(){
+    public void tearDown() throws Exception {
         /* Remove Test Data */
         // delete orderItem
         orderitemdao.delete(orderItemIdX);
@@ -145,21 +144,21 @@ public class BuyXGetYFreePolicyTest extends TestCase {
     }
 
     @Test
-    public void testBuy1ProductX(){
-        //TODO: Test goes here...
+    public void testBuy1ProductX() throws Exception {
+        // TODO: Test goes here...
 
-        //Assume user order 1 productX
+        // Assume user order 1 productX
         ExpectedOrderQuantity = 1;
         System.out.println("Buy 1 Product X Test:");
-        //Expected Result : 0 Free Product Y
-        int ExpectedProductId = productY.getId();       // Id of Product Y
-        int ExpectedQuantity = ExpectedOrderQuantity/2; // Quantity of Product Y
+        // Expected Result : 0 Free Product Y
+        int ExpectedProductId = productY.getId(); // Id of Product Y
+        int ExpectedQuantity = ExpectedOrderQuantity / 2; // Quantity of Product Y
 
         // create orderItem with productX
 
         orderitem = new OrderItem();
-        orderitem.setProduct(productdao.get(productIdX));
-        orderitem.setQuantity(ExpectedOrderQuantity);   // Buy 10 product X
+        orderitem.setProduct((Product) productdao.get(productIdX));
+        orderitem.setQuantity(ExpectedOrderQuantity); // Buy 10 product X
         orderitem.setUser(user);
         orderitem.setState(1);
         orderItemIdX = orderitemdao.add(orderitem);
@@ -170,29 +169,30 @@ public class BuyXGetYFreePolicyTest extends TestCase {
         dr = buyXgetYfreeDiscount.handleDiscount(dr);
         dr.setNationalHoliday(true); // on national holidays
 
-        System.out.println("Expected Result:\nDiscount:Buy X Get Y Free(National Day Discount)\nProductID:"+ExpectedProductId+"\nQuantity:"+ExpectedQuantity);
-        System.out.println("Actual Result:"+dr.getDiscountMsg());
+        System.out.println("Expected Result:\nDiscount:Buy X Get Y Free(National Day Discount)\nProductID:"
+                + ExpectedProductId + "\nQuantity:" + ExpectedQuantity);
+        System.out.println("Actual Result:" + dr.getDiscountMsg());
 
-        //Assert Equal
-        Assert.assertEquals("",dr.getDiscountMsg());
+        // Assert Equal
+        Assert.assertEquals("", dr.getDiscountMsg());
     }
 
     @Test
-    public void testBuy10ProductX(){
-        //TODO: Test goes here...
+    public void testBuy10ProductX() throws Exception {
+        // TODO: Test goes here...
 
-        //Assume user order 10 productX
+        // Assume user order 10 productX
         ExpectedOrderQuantity = 10;
         System.out.println("Buy 10 Product X Test:");
 
-        //Expected Result : 5 Free Product Y
-        int ExpectedProductId = productY.getId();       // Id of Product Y
-        int ExpectedQuantity = ExpectedOrderQuantity/2; // Quantity of Product Y
+        // Expected Result : 5 Free Product Y
+        int ExpectedProductId = productY.getId(); // Id of Product Y
+        int ExpectedQuantity = ExpectedOrderQuantity / 2; // Quantity of Product Y
 
         // create orderItem with productX
         orderitem = new OrderItem();
-        orderitem.setProduct(productdao.get(productIdX));
-        orderitem.setQuantity(ExpectedOrderQuantity);   // Buy 10 product X
+        orderitem.setProduct((Product) productdao.get(productIdX));
+        orderitem.setQuantity(ExpectedOrderQuantity); // Buy 10 product X
         orderitem.setUser(user);
         orderitem.setState(1);
         orderItemIdX = orderitemdao.add(orderitem);
@@ -203,11 +203,14 @@ public class BuyXGetYFreePolicyTest extends TestCase {
         dr = buyXgetYfreeDiscount.handleDiscount(dr);
         dr.setNationalHoliday(true); // on national holidays
 
-        System.out.println("Expected Result:\nDiscount:Buy X Get Y Free(National Day Discount)\nProductID:"+ExpectedProductId+"\nQuantity:"+ExpectedQuantity);
-        System.out.println("Actual Result:"+dr.getDiscountMsg());
+        System.out.println("Expected Result:\nDiscount:Buy X Get Y Free(National Day Discount)\nProductID:"
+                + ExpectedProductId + "\nQuantity:" + ExpectedQuantity);
+        System.out.println("Actual Result:" + dr.getDiscountMsg());
 
-        //Assert Equal
-        Assert.assertEquals("(BuyXGetYFree Discount: Get Free [pid="+ExpectedProductId+", num="+ExpectedQuantity+"])",dr.getDiscountMsg());
+        // Assert Equal
+        Assert.assertEquals(
+                "(BuyXGetYFree Discount: Get Free [pid=" + ExpectedProductId + ", num=" + ExpectedQuantity + "])",
+                dr.getDiscountMsg());
     }
 
-} 
+}

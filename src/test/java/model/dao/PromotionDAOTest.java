@@ -16,7 +16,7 @@ public class PromotionDAOTest {
   public static int promotionId;
 
   @BeforeClass
-  public static void testAdd() {
+  public static void testAdd() throws Exception {
     System.out.println("Test Start...");
 
     // create promotion
@@ -36,7 +36,7 @@ public class PromotionDAOTest {
   }
 
   @AfterClass
-  public static void testDelete() {
+  public static void testDelete() throws Exception {
     // delete promotion
     promotiondao.delete(promotionId);
 

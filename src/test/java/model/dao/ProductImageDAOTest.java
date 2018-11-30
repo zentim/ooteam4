@@ -39,7 +39,7 @@ public class ProductImageDAOTest {
 	public static int productImageId;
 
 	@BeforeClass
-	public static void testAdd() {
+    public static void testAdd() throws Exception {
 		// create segment
 		segment = new Segment();
 		segment.setName("SegmentTest");
@@ -48,13 +48,13 @@ public class ProductImageDAOTest {
 		// create category
 		category = new Category();
 		category.setName("CategoryTest");
-		category.setSegment(segmentdao.get(segmentId));
+		category.setSegment((Segment) segmentdao.get(segmentId));
 		categoryId = categorydao.add(category);
 
 		// create brand
 		brand = new Brand();
 		brand.setName("Book");
-		brand.setCategory(categorydao.get(categoryId));
+		brand.setCategory((Category) categorydao.get(categoryId));
 		brandId = branddao.add(brand);
 
 		// create product
@@ -63,14 +63,14 @@ public class ProductImageDAOTest {
 		product.setInventory(5);
 		product.setPrice(1000);
 		product.setDateAdded(new Date());
-		product.setBrand(branddao.get(brandId));
+		product.setBrand((Brand) branddao.get(brandId));
 		productId = productdao.add(product);
 
 		System.out.println("Test Start...");
 
 		// create productimage
 		productimage = new ProductImage();
-		productimage.setProduct(productdao.get(productId));
+		productimage.setProduct((Product) productdao.get(productId));
 		productimage.setType(ProductImageDAO.type_single);
 		productImageId = productimagedao.add(productimage);
 	}
@@ -82,7 +82,7 @@ public class ProductImageDAOTest {
 	}
 
 	@AfterClass
-	public static void testDelete() {
+	public static void testDelete() throws Exception {
 		// delete productimage
 		productimagedao.delete(productImageId);
 

@@ -8,151 +8,141 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import main.java.model.bean.Order;
 import main.java.model.bean.Segment;
 import main.java.model.util.DBUtil;
+import main.java.model.util.DateUtil;
+import main.java.pattern.template.DAOTemplate;
 
-public class SegmentDAO {
+/**
+ * 
+ * Template Pattern - ConcreteTemplate
+ *
+ */
+public class SegmentDAO extends DAOTemplate {
+    String TABLE_NAME = "segment";
 
-	public int getTotal() {
-		int total = 0;
-		try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
+    public int getTotal() {
+        int total = 0;
+        try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
 
-			String sql = "select count(*) from segment";
+            String sql = "select count(*) from segment";
 
-			try (ResultSet rs = s.executeQuery(sql);) {
-			    while (rs.next()) {
-	                total = rs.getInt(1);
-	            }
-			}
-			
-		} catch (SQLException e) {
+            try (ResultSet rs = s.executeQuery(sql);) {
+                while (rs.next()) {
+                    total = rs.getInt(1);
+                }
+            }
 
-			e.printStackTrace();
-		}
-		
-		return total;
-	}
+        } catch (SQLException e) {
 
-	public int add(Segment bean) {
-		String sql = "insert into segment values(DEFAULT,?)";
-		try (Connection c = DBUtil.getConnection();
-				PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
-			ps.setString(1, bean.getName());
+            e.printStackTrace();
+        }
 
-			int affectedRows = ps.executeUpdate();
+        return total;
+    }
 
-			if (affectedRows == 0) {
-				throw new SQLException("Creating failed, no rows affected.");
-			}
+    protected String getMainSql(int type) {
+        String sql = "";
+        switch (type) {
+        case 1:
+            sql = "insert into " + TABLE_NAME + " values(DEFAULT,?)";
+            break;
+        case 2:
+            sql = "update " + TABLE_NAME + " set name= ? where segmentId = ?";
+            break;
+        case 3:
+            sql = "delete from " + TABLE_NAME + " where segmentId = ?";
+            break;
+        case 4:
+            sql = "select * from " + TABLE_NAME + " where segmentId = ?";
+            break;
+        default:
+            break;
+        }
+        return sql;
 
-			try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
-				if (generatedKeys.next()) {
-					int id = generatedKeys.getInt(1);
-					bean.setId(id);
+    }
 
-					return id;
-				} else {
-					throw new SQLException("Createing failed, no ID obtained.");
-				}
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+    protected ResultSet executeAdd(PreparedStatement ps, Object obj) throws SQLException {
+        Segment bean = (Segment) obj;
+        ps.setString(1, bean.getName());
+        ps.execute();
+        ResultSet rs = ps.getGeneratedKeys();
+        return rs;
 
-		return 0;
-	}
+    }
 
-	public void update(Segment bean) {
+    protected void executeUpdate(PreparedStatement ps, Object obj) throws SQLException {
+        Segment bean = (Segment) obj;
 
-		String sql = "update segment set name= ? where segmentId = ?";
-		try (Connection c = DBUtil.getConnection(); 
-		        PreparedStatement ps = c.prepareStatement(sql);) {
+        ps.setString(1, bean.getName());
+        ps.setInt(2, bean.getId());
+        ps.execute();
 
-			ps.setString(1, bean.getName());
-			ps.setInt(2, bean.getId());
+    }
 
-			ps.execute();
+    protected void executeDelete(PreparedStatement ps, int id) throws SQLException {
+        ps.setInt(1, id);
+        ps.execute();
 
-		} catch (SQLException e) {
+    }
 
-			e.printStackTrace();
-		}
+    protected int setModel(ResultSet rs, Object obj) throws SQLException {
+        Segment bean = (Segment) obj;
+        if (rs.next()) {
+            int id = rs.getInt(1);
+            bean.setId(id);
 
-	}
+            return id;
+        }
+        return 0;
+    }
 
-	public void delete(int id) {
-	    String sql = "delete from segment where segmentId = ?";
-	    
-	    try (Connection c = DBUtil.getConnection(); 
-                PreparedStatement ps = c.prepareStatement(sql);) {
+    protected Object setModelFromGet(ResultSet rs) throws SQLException {
+        Segment bean = new Segment();
+        if (rs.next()) {
+            bean = new Segment();
+            String name = rs.getString(2);
+            bean.setName(name);
+            bean.setId(rs.getInt("segmentId"));
 
-			ps.setInt(1, id);
-			ps.execute();
+            return bean;
+        }
+        return null;
+    }
 
-		} catch (SQLException e) {
+    public List<Segment> list() {
+        return list(0, Short.MAX_VALUE);
+    }
 
-			e.printStackTrace();
-		}
-	}
+    public List<Segment> list(int start, int count) {
+        List<Segment> beans = new ArrayList<>();
 
-	public Segment get(int id) {
-		Segment bean = null;
-		String sql = "SELECT * FROM segment WHERE segmentId = ?";
+        String sql = "select * from segment order by segmentId desc limit ?,? ";
 
-		try (Connection c = DBUtil.getConnection(); 
-                PreparedStatement ps = c.prepareStatement(sql);) {
+        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
 
-			ps.setInt(1, id);
+            ps.setInt(1, start);
+            ps.setInt(2, count);
 
-			try (ResultSet rs = ps.executeQuery();) {
-			    if (rs.next()) {
-	                bean = new Segment();
-	                String name = rs.getString(2);
-	                bean.setName(name);
-	                bean.setId(id);
-	            }
-			}
+            try (ResultSet rs = ps.executeQuery();) {
+                while (rs.next()) {
+                    Segment bean = new Segment();
+                    int id = rs.getInt(1);
+                    String name = rs.getString(2);
+                    bean.setId(id);
+                    bean.setName(name);
+                    beans.add(bean);
+                }
+            }
 
-		} catch (SQLException e) {
+        } catch (SQLException e) {
 
-			e.printStackTrace();
-		}
-		
-		return bean;
-	}
+            e.printStackTrace();
+        }
 
-	public List<Segment> list() {
-		return list(0, Short.MAX_VALUE);
-	}
-
-	public List<Segment> list(int start, int count) {
-		List<Segment> beans = new ArrayList<>();
-
-		String sql = "select * from segment order by segmentId desc limit ?,? ";
-
-		try (Connection c = DBUtil.getConnection(); 
-		        PreparedStatement ps = c.prepareStatement(sql);) {
-
-			ps.setInt(1, start);
-			ps.setInt(2, count);
-
-			try (ResultSet rs = ps.executeQuery();) {
-			    while (rs.next()) {
-	                Segment bean = new Segment();
-	                int id = rs.getInt(1);
-	                String name = rs.getString(2);
-	                bean.setId(id);
-	                bean.setName(name);
-	                beans.add(bean);
-	            }
-			}
-			
-		} catch (SQLException e) {
-
-			e.printStackTrace();
-		}
-		
-		return beans;
-	}
+        return beans;
+    }
 
 }

@@ -12,7 +12,7 @@ import main.java.pattern.composite.Component;
  * Decorator Pattern - ConcreteDecorator
  *
  */
-public class PrintPromotionInfoDecorator extends Component{
+public class PrintPromotionInfoDecorator extends Component {
     private Product product;
 
     public PrintPromotionInfoDecorator(Product product) {
@@ -22,32 +22,35 @@ public class PrintPromotionInfoDecorator extends Component{
     @Override
     public void operation() {
         product.operation();
-        fillPromotion(product);
-    }
-    
-    public void fillPromotion(Product p) {
-        PromotionItemDAO promotionItemDAO = new PromotionItemDAO();
-        
-        PromotionItem promotionItem = promotionItemDAO.getByProduct(p.getId()); 
-        Promotion promotionByProduct = promotionItem.getPromotion();
-        
-        if (promotionByProduct != null 
-                && !(promotionItem.getDiscountOf() == 100 
-                && promotionByProduct.getDiscountType() == DiscountPolicy.BUY_X_GET_Y_FREE)) {
-            
-              String promotionName = "";
-              if (promotionByProduct.getState() == 1) {
-                  promotionName = promotionByProduct.getName();
-              }
-              
-              String discountTypeName = promotionByProduct.getDiscountTypeDescription();
-              p.setPromotionName(promotionName);
-              p.setDiscountTypeName(discountTypeName);
-              
-              System.out.println("         * promotionName: " + product.getPromotionName());
+        try {
+            fillPromotion(product);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
-          
     }
-    
-    
+
+    public void fillPromotion(Product p) throws Exception {
+        PromotionItemDAO promotionItemDAO = new PromotionItemDAO();
+
+        PromotionItem promotionItem = promotionItemDAO.getByProduct(p.getId());
+        Promotion promotionByProduct = promotionItem.getPromotion();
+
+        if (promotionByProduct != null && !(promotionItem.getDiscountOf() == 100
+                && promotionByProduct.getDiscountType() == DiscountPolicy.BUY_X_GET_Y_FREE)) {
+
+            String promotionName = "";
+            if (promotionByProduct.getState() == 1) {
+                promotionName = promotionByProduct.getName();
+            }
+
+            String discountTypeName = promotionByProduct.getDiscountTypeDescription();
+            p.setPromotionName(promotionName);
+            p.setDiscountTypeName(discountTypeName);
+
+            System.out.println("         * promotionName: " + product.getPromotionName());
+        }
+
+    }
+
 }

@@ -10,7 +10,7 @@ public class StrategyContext {
 		this.strategy = strategy;
 	}
 	
-	public DiscountRequest ExecuteStrategy(DiscountRequest discountRequest)
+	public DiscountRequest ExecuteStrategy(DiscountRequest discountRequest) throws Exception
     {
         return this.strategy.Execute(discountRequest);
     }

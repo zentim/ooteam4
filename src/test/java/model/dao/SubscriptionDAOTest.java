@@ -20,101 +20,101 @@ import main.java.model.dao.SubscriptionDAO;
 import main.java.model.dao.UserDAO;
 
 public class SubscriptionDAOTest {
-	public static SegmentDAO segmentdao = new SegmentDAO();
-	public static Segment segment;
-	public static int segmentId;
-	
-	public static CategoryDAO categorydao = new CategoryDAO();
-	public static Category category;
-	public static int categoryId;
-	
-	public static BrandDAO branddao = new BrandDAO();
-	public static Brand brand;
-	public static int brandId;
+    public static SegmentDAO segmentdao = new SegmentDAO();
+    public static Segment segment;
+    public static int segmentId;
 
-	public static ProductDAO productdao = new ProductDAO();
-	public static Product product;
-	public static int productId;
-	
-	public static UserDAO userdao = new UserDAO();
-	public static User user;
-	public static int userId;
+    public static CategoryDAO categorydao = new CategoryDAO();
+    public static Category category;
+    public static int categoryId;
 
-	public static SubscriptionDAO subscriptiondao = new SubscriptionDAO();
-	public static Subscription subscription;
-	public static int subscriptionId;
+    public static BrandDAO branddao = new BrandDAO();
+    public static Brand brand;
+    public static int brandId;
 
-	@BeforeClass
-	public static void testAdd() {
+    public static ProductDAO productdao = new ProductDAO();
+    public static Product product;
+    public static int productId;
 
-		// create segment
-		segment = new Segment();
-		segment.setName("SegmentTest");
-		segmentId = segmentdao.add(segment);
+    public static UserDAO userdao = new UserDAO();
+    public static User user;
+    public static int userId;
 
-		// create category
-		category = new Category();
-		category.setName("CategoryTest");
-		category.setSegment(segmentdao.get(segmentId));
-		categoryId = categorydao.add(category);
+    public static SubscriptionDAO subscriptiondao = new SubscriptionDAO();
+    public static Subscription subscription;
+    public static int subscriptionId;
 
-		// create brand
-		brand = new Brand();
-		brand.setName("Book");
-		brand.setCategory(categorydao.get(categoryId));
-		brandId = branddao.add(brand);
+    @BeforeClass
+    public static void testAdd() throws Exception {
 
-		// create product
-		product = new Product();
-		product.setName("Harry Potter");
-		product.setInventory(5);
-		product.setPrice(1000);
-		product.setDateAdded(new Date());
-		product.setBrand(branddao.get(brandId));
-		productId = productdao.add(product);
-		
-		// create user
-		user = new User();
-		user.setEmail("abc@abc.com");
-		user.setPassword("1234");
-		userId = userdao.add(user);
+        // create segment
+        segment = new Segment();
+        segment.setName("SegmentTest");
+        segmentId = segmentdao.add(segment);
 
-		System.out.println("Test Start...");
+        // create category
+        category = new Category();
+        category.setName("CategoryTest");
+        category.setSegment((Segment) segmentdao.get(segmentId));
+        categoryId = categorydao.add(category);
 
-		// create subscription
-		subscription = new Subscription();
-		subscription.setUser(userdao.get(userId));
-		subscription.setProduct(productdao.get(productId));
-		subscriptionId = subscriptiondao.add(subscription.getProduct().getId(), subscription.getUser().getId());
-	}
+        // create brand
+        brand = new Brand();
+        brand.setName("Book");
+        brand.setCategory((Category) categorydao.get(categoryId));
+        brandId = branddao.add(brand);
 
-	@Test
-	public void testTotal() {
-		int result = subscriptiondao.getTotal();
-		assertNotNull("should not be null", result);
-	}
+        // create product
+        product = new Product();
+        product.setName("Harry Potter");
+        product.setInventory(5);
+        product.setPrice(1000);
+        product.setDateAdded(new Date());
+        product.setBrand((Brand) branddao.get(brandId));
+        productId = productdao.add(product);
 
-	@AfterClass
-	public static void testDelete() {
-		// delete subscription
-		subscriptiondao.delete(subscription.getProduct().getId(), subscription.getUser().getId());
+        // create user
+        user = new User();
+        user.setEmail("abc@abc.com");
+        user.setPassword("1234");
+        userId = userdao.add(user);
 
-		System.out.println("Test End...");
+        System.out.println("Test Start...");
 
-		// delete user
-		userdao.delete(userId);
-		
-		// delete product
-		productdao.delete(productId);
+        // create subscription
+        subscription = new Subscription();
+        subscription.setUser((User) userdao.get(userId));
+        subscription.setProduct((Product) productdao.get(productId));
+        subscriptionId = subscriptiondao.add(subscription);
+    }
 
-		// delete brand
-		branddao.delete(brandId);
-		
-		// delete category
-		categorydao.delete(categoryId);
-		
-		// delete segment
-		segmentdao.delete(segmentId);
-	}
+    @Test
+    public void testTotal() {
+        int result = subscriptiondao.getTotal();
+        assertNotNull("should not be null", result);
+    }
+
+    @AfterClass
+    public static void testDelete() throws Exception {
+        // delete subscription
+        subscriptiondao.delete(subscription.getProduct().getId(), subscription.getUser().getId());
+
+        System.out.println("Test End...");
+
+        // delete user
+        userdao.delete(userId);
+
+        // delete product
+        productdao.delete(productId);
+
+        // delete brand
+        branddao.delete(brandId);
+
+        // delete category
+        categorydao.delete(categoryId);
+
+        // delete segment
+        segmentdao.delete(segmentId);
+    }
 
 }

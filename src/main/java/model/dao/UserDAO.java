@@ -10,9 +10,15 @@ import java.util.List;
 
 import main.java.model.bean.User;
 import main.java.model.util.DBUtil;
-import main.java.pattern.prototype.PrototypeMgr;
+import main.java.pattern.template.DAOTemplate;
 
-public class UserDAO {
+/**
+ * 
+ * Template Pattern - ConcreteTemplate
+ *
+ */
+public class UserDAO extends DAOTemplate {
+    String TABLE_NAME = "user";
 
     public int getTotal() {
         int total = 0;
@@ -25,106 +31,85 @@ public class UserDAO {
                     total = rs.getInt(1);
                 }
             }
-            
+
         } catch (SQLException e) {
 
             e.printStackTrace();
         }
-        
+
         return total;
     }
 
-    public int add(User bean) {
-
-        String sql = "insert into user values(DEFAULT ,? ,?)";
-        try (Connection c = DBUtil.getConnection();
-                PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
-
-            ps.setString(1, bean.getEmail());
-            ps.setString(2, bean.getPassword());
-
-            ps.execute();
-
-            try (ResultSet rs = ps.getGeneratedKeys();) {
-                if (rs.next()) {
-                    int id = rs.getInt(1);
-                    bean.setId(id);
-
-                    return id;
-                }
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
+    protected String getMainSql(int type) {
+        String sql = "";
+        switch (type) {
+        case 1:
+            sql = "insert into " + TABLE_NAME + " values(DEFAULT ,? ,?)";
+            break;
+        case 2:
+            sql = "update user set email = ?, password = ? where userId = ? ";
+            break;
+        case 3:
+            sql = "delete from " + TABLE_NAME + "  where userId = ?";
+            break;
+        case 4:
+            sql = "select * from " + TABLE_NAME + " where userId = ?";
+            break;
+        default:
+            break;
         }
+        return sql;
 
+    }
+
+    protected ResultSet executeAdd(PreparedStatement ps, Object obj) throws SQLException {
+        User bean = (User) obj;
+        ps.setString(1, bean.getEmail());
+        ps.setString(2, bean.getPassword());
+
+        ps.execute();
+        ResultSet rs = ps.getGeneratedKeys();
+        return rs;
+
+    }
+
+    protected void executeUpdate(PreparedStatement ps, Object obj) throws SQLException {
+        User bean = (User) obj;
+
+        ps.setString(1, bean.getEmail());
+        ps.setString(2, bean.getPassword());
+        ps.setInt(3, bean.getId());
+
+        ps.execute();
+
+    }
+
+    protected void executeDelete(PreparedStatement ps, int id) throws SQLException {
+        ps.setInt(1, id);
+        ps.execute();
+
+    }
+
+    protected int setModel(ResultSet rs, Object obj) throws SQLException {
+        User bean = (User) obj;
+        if (rs.next()) {
+            int id = rs.getInt(1);
+            bean.setId(id);
+
+            return id;
+        }
         return 0;
     }
 
-    public void update(User bean) {
-
-        String sql = "update user set email = ?, password = ? where userId = ? ";
-        try (Connection c = DBUtil.getConnection(); 
-                PreparedStatement ps = c.prepareStatement(sql);) {
-
-            ps.setString(1, bean.getEmail());
-            ps.setString(2, bean.getPassword());
-
-            ps.setInt(3, bean.getId());
-
-            ps.execute();
-
-        } catch (SQLException e) {
-
-            e.printStackTrace();
+    protected Object setModelFromGet(ResultSet rs) throws Exception {
+        User bean = new User();
+        while (rs.next()) {
+            bean.setEmail(rs.getString("email"));
+            bean.setPassword(rs.getString("password"));
+            bean.setId(rs.getInt("userId"));
+            return bean;
         }
-
-    }
-
-    public void delete(int id) {
-        String sql = "delete from user where userId = ?";
-        
-        try (Connection c = DBUtil.getConnection(); 
-                PreparedStatement ps = c.prepareStatement(sql);) {
-
-            ps.setInt(1, id);
-
-            ps.execute();
-
-        } catch (SQLException e) {
-
-            e.printStackTrace();
-        }
-    }
-
-    public User get(int id) {
-        User bean = null;
-        String sql = "select * from user where userId = ?";
-
-        try (Connection c = DBUtil.getConnection(); 
-                PreparedStatement ps = c.prepareStatement(sql);) {
-            
-            ps.setInt(1, id);
-
-            try (ResultSet rs = ps.executeQuery();) {
-                if (rs.next()) {
-                    bean = new User();
-
-                    String email = rs.getString("email");
-                    String password = rs.getString("password");
-
-                    bean.setEmail(email);
-                    bean.setPassword(password);
-
-                    bean.setId(id);
-                }
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return bean;
+        return null;
     }
 
     public List<User> list() throws CloneNotSupportedException {
@@ -136,19 +121,15 @@ public class UserDAO {
 
         String sql = "select * from user order by userId desc limit ?,? ";
 
-        try (Connection c = DBUtil.getConnection(); 
-                PreparedStatement ps = c.prepareStatement(sql);) {
+        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
 
             ps.setInt(1, start);
             ps.setInt(2, count);
 
             try (ResultSet rs = ps.executeQuery();) {
                 while (rs.next()) {
-                    /**
-                     * Use Prototype Pattern
-                     */
-                    User bean = PrototypeMgr.getPrototype();
-                    
+                    User bean = new User();
+
                     int id = rs.getInt(1);
 
                     String email = rs.getString("email");
@@ -166,7 +147,7 @@ public class UserDAO {
 
             e.printStackTrace();
         }
-        
+
         return beans;
     }
 
@@ -178,12 +159,11 @@ public class UserDAO {
     public User get(String email) {
         User bean = null;
         String sql = "select * from user where email = ?";
-        
-        try (Connection c = DBUtil.getConnection(); 
-                PreparedStatement ps = c.prepareStatement(sql)) {
-            
+
+        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
+
             ps.setString(1, email);
-            
+
             try (ResultSet rs = ps.executeQuery();) {
                 if (rs.next()) {
                     bean = new User();
@@ -199,20 +179,19 @@ public class UserDAO {
 
             e.printStackTrace();
         }
-        
+
         return bean;
     }
 
     public User get(String email, String password) {
         User bean = null;
         String sql = "select * from user where email = ? and password = ?";
-        
-        try (Connection c = DBUtil.getConnection(); 
-                PreparedStatement ps = c.prepareStatement(sql)) {
-            
+
+        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
+
             ps.setString(1, email);
             ps.setString(2, password);
-            
+
             try (ResultSet rs = ps.executeQuery();) {
                 if (rs.next()) {
                     bean = new User();
@@ -222,7 +201,6 @@ public class UserDAO {
                     bean.setId(id);
                 }
             }
-            
 
         } catch (SQLException e) {
             e.printStackTrace();

@@ -1,59 +1,57 @@
 package main.java.model.bean;
 
 public class PromotionItem {
-    
-	private int id;
-	private int minQuantity;
-	private int discountOf;
-	private Promotion promotion = null;
-	private Product product;
 
-	public int getId() {
-		return id;
-	}
+    private int id;
+    private int minQuantity;
+    private int discountOf;
+    private Promotion promotion = null;
+    private Product product;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public int getMinQuantity() {
-		return minQuantity;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public void setMinQuantity(int minQuantity) {
-		this.minQuantity = minQuantity;
-	}
+    public int getMinQuantity() {
+        return minQuantity;
+    }
 
-	public int getDiscountOf() {
-		return discountOf;
-	}
+    public void setMinQuantity(int minQuantity) {
+        this.minQuantity = minQuantity;
+    }
 
-	public void setDiscountOf(int discountOf) {
-		this.discountOf = discountOf;
-	}
+    public int getDiscountOf() {
+        return discountOf;
+    }
 
-	public Promotion getPromotion() {
-		return promotion;
-	}
+    public void setDiscountOf(int discountOf) {
+        this.discountOf = discountOf;
+    }
 
-	public void setPromotion(Promotion promotion) {
-		this.promotion = promotion;
-	}
+    public Promotion getPromotion() {
+        return promotion;
+    }
 
-	public Product getProduct() {
-		return product;
-	}
+    public void setPromotion(Promotion promotion) {
+        this.promotion = promotion;
+    }
 
-	public void setProduct(Product product) {
-		this.product = product;
-	}
+    public Product getProduct() {
+        return product;
+    }
 
-	@Override
-	public String toString() {
-		return "PromotionItem [id=" + id + ", minQuantity=" + minQuantity + ", discountOf=" + discountOf
-				+ ", promotion=" + promotion + ", product=" + product + "]";
-	}
-	
-	
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    @Override
+    public String toString() {
+        return "PromotionItem [id=" + id + ", minQuantity=" + minQuantity + ", discountOf=" + discountOf
+                + ", promotion=" + promotion + ", product=" + product + "]";
+    }
 
 }

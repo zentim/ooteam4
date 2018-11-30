@@ -14,7 +14,7 @@ import main.java.pattern.chainOfResponsibility.DiscountRequest;
  */
 public class EachGroupOfNStrategy implements Strategy {
 
-	public DiscountRequest Execute(DiscountRequest discountRequest) {
+	public DiscountRequest Execute(DiscountRequest discountRequest) throws Exception {
 		List<OrderItem> orderItems = discountRequest.getOrderItems();
 
 		PromotionDAO promotionDAO = new PromotionDAO();
@@ -28,7 +28,7 @@ public class EachGroupOfNStrategy implements Strategy {
 		float discountAmount = 0;
 		for (OrderItem oi : orderItems) {
 			promotionItem = promotionItemDAO.getByProduct(oi.getProduct().getId());
-			promotion = promotionDAO.get(promotionItem.getPromotion().getId());
+			promotion =  (Promotion)promotionDAO.get(promotionItem.getPromotion().getId());
 			
 			boolean isDiscountConditionPass = oi.getQuantity() >= promotionItem.getMinQuantity();
 			if (promotion.getState() == 1 && isDiscountConditionPass) {

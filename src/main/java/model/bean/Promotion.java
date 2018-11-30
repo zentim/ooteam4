@@ -6,107 +6,103 @@ import java.util.List;
 import main.java.pattern.chainOfResponsibility.DiscountPolicy;
 
 public class Promotion {
-    
-	private int id;
-	private String name;
-	private Date dateFrom;
-	private Date dateTo;
-	private int state;
-	private int discountType;
-	private String discountTypeDesc;
-	private List<PromotionItem> promotionItems;
-	
-	
-	public String getDiscountTypeDescription() {
-		String desc;
-		switch (discountType) {
-		case DiscountPolicy.NO_DISCOUNT:
-			desc = "No Discount";
-			break;
-		case DiscountPolicy.PRODUCT_SET:
-			desc = "Product Set";
-			break;
-		case DiscountPolicy.EACH_GROUP_OF_N:
-			desc = "Each Group Of N";
-			break;
-		case DiscountPolicy.BROUGHT_MORE_THAN_IN_LAST_YEAR:
-			desc = "Brought More Than In Last Year";
-			break;
-		case DiscountPolicy.BUY_X_GET_Y_FREE:
-			desc = "Buy X Get Y Free";
-			break;
-		default:
-			desc = "Unknow";
-		}
-		
-		return desc;
-	}
-	
-	
 
-	public int getId() {
-		return id;
-	}
+    private int id;
+    private String name;
+    private Date dateFrom;
+    private Date dateTo;
+    private int state;
+    private int discountType;
+    private String discountTypeDesc;
+    private List<PromotionItem> promotionItems;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public String getDiscountTypeDescription() {
+        String desc;
+        switch (discountType) {
+        case DiscountPolicy.NO_DISCOUNT:
+            desc = "No Discount";
+            break;
+        case DiscountPolicy.PRODUCT_SET:
+            desc = "Product Set";
+            break;
+        case DiscountPolicy.EACH_GROUP_OF_N:
+            desc = "Each Group Of N";
+            break;
+        case DiscountPolicy.BROUGHT_MORE_THAN_IN_LAST_YEAR:
+            desc = "Brought More Than In Last Year";
+            break;
+        case DiscountPolicy.BUY_X_GET_Y_FREE:
+            desc = "Buy X Get Y Free";
+            break;
+        default:
+            desc = "Unknow";
+        }
 
-	public String getName() {
-		return name;
-	}
+        return desc;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public Date getDateFrom() {
-		return dateFrom;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public void setDateFrom(Date dateFrom) {
-		this.dateFrom = dateFrom;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public Date getDateTo() {
-		return dateTo;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setDateTo(Date dateTo) {
-		this.dateTo = dateTo;
-	}
+    public Date getDateFrom() {
+        return dateFrom;
+    }
 
-	public int getState() {
-		return state;
-	}
+    public void setDateFrom(Date dateFrom) {
+        this.dateFrom = dateFrom;
+    }
 
-	public void setState(int state) {
-		this.state = state;
-	}
+    public Date getDateTo() {
+        return dateTo;
+    }
 
-	public int getDiscountType() {
-		return discountType;
-	}
+    public void setDateTo(Date dateTo) {
+        this.dateTo = dateTo;
+    }
 
-	public void setDiscountType(int discountType) {
-		this.discountType = discountType;
-	}
+    public int getState() {
+        return state;
+    }
 
-	public List<PromotionItem> getPromotionItems() {
-		return promotionItems;
-	}
+    public void setState(int state) {
+        this.state = state;
+    }
 
-	public void setPromotionItems(List<PromotionItem> promotionItems) {
-		this.promotionItems = promotionItems;
-	}
+    public int getDiscountType() {
+        return discountType;
+    }
 
-	public String getDiscountTypeDesc() {
-		return discountTypeDesc;
-	}
+    public void setDiscountType(int discountType) {
+        this.discountType = discountType;
+    }
 
-	public void setDiscountTypeDesc(String discountTypeDesc) {
-		this.discountTypeDesc = discountTypeDesc;
-	}
+    public List<PromotionItem> getPromotionItems() {
+        return promotionItems;
+    }
 
-	
+    public void setPromotionItems(List<PromotionItem> promotionItems) {
+        this.promotionItems = promotionItems;
+    }
+
+    public String getDiscountTypeDesc() {
+        return discountTypeDesc;
+    }
+
+    public void setDiscountTypeDesc(String discountTypeDesc) {
+        this.discountTypeDesc = discountTypeDesc;
+    }
+
 }

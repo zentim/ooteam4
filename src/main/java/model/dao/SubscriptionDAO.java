@@ -9,249 +9,254 @@ import java.util.ArrayList;
 import java.util.List;
 
 import main.java.model.bean.Product;
+import main.java.model.bean.Segment;
 import main.java.model.bean.Subscription;
 import main.java.model.bean.User;
 import main.java.model.util.DBUtil;
+import main.java.model.util.DateUtil;
+import main.java.pattern.template.DAOTemplate;
 
-public class SubscriptionDAO {
+/**
+ * 
+ * Template Pattern - ConcreteTemplate
+ *
+ */
+public class SubscriptionDAO extends DAOTemplate {
+    final String TABLE_NAME = "subscription";
 
-	public int getTotal() {
-		int total = 0;
-		try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
+    public int getTotal() {
+        int total = 0;
+        try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
 
-			String sql = "select count(*) from subscription";
+            String sql = "select count(*) from subscription";
 
-			try (ResultSet rs = s.executeQuery(sql);) {
-			    while (rs.next()) {
-	                total = rs.getInt(1);
-	            }
-			}
-			
-		} catch (SQLException e) {
+            try (ResultSet rs = s.executeQuery(sql);) {
+                while (rs.next()) {
+                    total = rs.getInt(1);
+                }
+            }
 
-			e.printStackTrace();
-		}
-		
-		return total;
-	}
+        } catch (SQLException e) {
 
-	public int add(int pid,int uid) {
-		String sql = "insert into subscription values(DEFAULT, ?, ?)";
-		try (Connection c = DBUtil.getConnection();
-				PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
-		    
-		    ps.setInt(1, uid);
-		    ps.setInt(2, pid);
-		    
-			int affectedRows = ps.executeUpdate();
+            e.printStackTrace();
+        }
 
-			if (affectedRows == 0) {
-				throw new SQLException("Creating failed, no rows affected.");
-			}
+        return total;
+    }
 
-			try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
-				if (generatedKeys.next()) {
-					return generatedKeys.getInt(1); // id
-				} else {
-					throw new SQLException("Createing failed, no ID obtained.");
-				}
-			}
-		}catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return 0;
-	}
+    protected String getMainSql(int type) {
+        String sql = "";
+        switch (type) {
+        case 1:
+            sql = "insert into " + TABLE_NAME + " values(DEFAULT, ?, ?)";
+            break;
+        case 2:
+            sql = "update subscription set userId= ?, productId=? where subscriptionId = ?";
+            break;
+        case 3:
+            sql = "delete from subscription where userId = ? AND productId = ?";
+            break;
+        case 4:
+            sql = "delete from subscription where userId = ? AND productId = ?";
+            break;
+        default:
+            break;
+        }
+        return sql;
 
-	public void update(Subscription bean) {
+    }
 
-		String sql = "update subscription set userId= ?, productId=? where subscriptionId = ?";
-		try (Connection c = DBUtil.getConnection(); 
-		        PreparedStatement ps = c.prepareStatement(sql);) {
+    protected ResultSet executeAdd(PreparedStatement ps, Object obj) throws SQLException {
+        Subscription bean = (Subscription) obj;
 
-			ps.setInt(1, bean.getUser().getId());
-			ps.setInt(2, bean.getProduct().getId());
-			ps.setInt(3, bean.getId());
+        ps.setInt(1, bean.getUser().getId());
+        ps.setInt(2, bean.getProduct().getId());
 
-			ps.execute();
+        ps.execute();
+        ResultSet rs = ps.getGeneratedKeys();
+        return rs;
 
-		} catch (SQLException e) {
+    }
 
-			e.printStackTrace();
-		}
+    protected void executeUpdate(PreparedStatement ps, Object obj) throws SQLException {
+        Subscription bean = (Subscription) obj;
+        ps.setInt(1, bean.getUser().getId());
+        ps.setInt(2, bean.getProduct().getId());
+        ps.execute();
 
-	}
+    }
 
-	public void delete(int uid,int pid) {
-	    String sql = "delete from subscription where userId = ? AND productId = ?";
+    protected void executeDelete(PreparedStatement ps, int id) throws SQLException {
 
-	    try (Connection c = DBUtil.getConnection(); 
-                PreparedStatement ps = c.prepareStatement(sql);) {
+    }
 
-			ps.setInt(1, uid);
-			ps.setInt(2, pid);
-			ps.execute();
+    protected int setModel(ResultSet rs, Object obj) throws SQLException {
+        Subscription bean = (Subscription) obj;
+        if (rs.next()) {
+            int id = rs.getInt(1);
+            bean.setId(id);
 
-		} catch (SQLException e) {
+            return id;
+        }
+        return 0;
+    }
 
-			e.printStackTrace();
-		}
-	}
+    public void delete(int uid, int pid) {
+        String sql = "delete from subscription where userId = ? AND productId = ?";
 
-	public Subscription get(int id) {
-		Subscription bean = null;
-		String sql = "select * from subscription where productId = ?";
+        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
 
-		try (Connection c = DBUtil.getConnection(); 
-                PreparedStatement ps = c.prepareStatement(sql);) {
-		    
-			ps.setInt(1, id);
+            ps.setInt(1, uid);
+            ps.setInt(2, pid);
+            ps.execute();
 
-			try (ResultSet rs = ps.executeQuery();) {
-			    if (rs.next()) {
-	                bean = new Subscription();
+        } catch (SQLException e) {
 
-	                int userId = rs.getInt("userId");
-	                int productId = rs.getInt("productId");
-	                User user = new UserDAO().get(userId);
-	                Product product = new ProductDAO().get(productId);
+            e.printStackTrace();
+        }
+    }
 
-	                bean.setUser(user);
-	                bean.setProduct(product);
-	                bean.setId(id);
-	            }
-			}
+    protected Object setModelFromGet(ResultSet rs) throws Exception {
+        Subscription bean = new Subscription();
+        if (rs.next()) {
+            int userId = rs.getInt("userId");
+            int productId = rs.getInt("productId");
+            User user = null;
+            user = (User) new UserDAO().get(userId);
+            Product product = (Product) new ProductDAO().get(productId);
 
-		} catch (SQLException e) {
+            bean.setUser(user);
+            bean.setProduct(product);
+            bean.setId(rs.getInt("subscriptionId"));
 
-			e.printStackTrace();
-		}
-		
-		return bean;
-	}
-	
-	public List<Subscription> list(int id) {
-		List<Subscription> beans = new ArrayList<>();
-		Subscription bean = null;
-		String sql = "select * from subscription where userId = ?";
-		
-		try (Connection c = DBUtil.getConnection(); 
-                PreparedStatement ps = c.prepareStatement(sql);) {
-		    
-			ps.setInt(1, id);
+            return bean;
+        }
+        return null;
+    }
 
-			try (ResultSet rs = ps.executeQuery();) {
-			    while (rs.next()) {
-	                bean = new Subscription();
+    public List<Subscription> list(int id) throws Exception {
+        List<Subscription> beans = new ArrayList<>();
+        Subscription bean = null;
+        String sql = "select * from subscription where userId = ?";
 
-	                int userId = rs.getInt("userId");
-	                int productId = rs.getInt("productId");
-	                User user = new UserDAO().get(userId);
-	                Product product = new ProductDAO().get(productId);
+        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
 
-	                bean.setUser(user);
-	                bean.setProduct(product);
-	                bean.setId(id);
-	                beans.add(bean);
-	            }
-			}
+            ps.setInt(1, id);
 
-		} catch (SQLException e) {
+            try (ResultSet rs = ps.executeQuery();) {
+                while (rs.next()) {
+                    bean = new Subscription();
 
-			e.printStackTrace();
-		}
-		
-		return beans;
-	}
-	
-	public List<User> getUsers(int pid) {
-		List<User> beans = new ArrayList<>();
-		User bean = null;
-		String sql = "select * from subscription S, user U "
-                + "where S.userId = U.userId AND productId = ?";
+                    int userId = rs.getInt("userId");
+                    int productId = rs.getInt("productId");
+                    User user = null;
+                    try {
+                        user = (User) new UserDAO().get(userId);
+                    } catch (Exception e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    Product product = (Product) new ProductDAO().get(productId);
 
-		try (Connection c = DBUtil.getConnection(); 
-                PreparedStatement ps = c.prepareStatement(sql);) {
+                    bean.setUser(user);
+                    bean.setProduct(product);
+                    bean.setId(id);
+                    beans.add(bean);
+                }
+            }
 
-			ps.setInt(1, pid);
+        } catch (SQLException e) {
 
-			try (ResultSet rs = ps.executeQuery();) {
-			    while (rs.next()) {
-	                bean = new User();
+            e.printStackTrace();
+        }
 
-	                int userId = rs.getInt("userId");
-	                String email = rs.getString("email");
-	                
-	                bean.setId(userId);
-	                bean.setEmail(email);
-	                beans.add(bean);
-	            }
-			}
+        return beans;
+    }
 
-		} catch (SQLException e) {
+    public List<User> getUsers(int pid) {
+        List<User> beans = new ArrayList<>();
+        User bean = null;
+        String sql = "select * from subscription S, user U " + "where S.userId = U.userId AND productId = ?";
 
-			e.printStackTrace();
-		}
-		
-		return beans;
-	}
-	
-	
-	
-	public boolean check(int pid,int uid) {
-	    String sql = "select * from subscription where productId = ? AND userId = ?";
-	    
-	    try (Connection c = DBUtil.getConnection(); 
-                PreparedStatement ps = c.prepareStatement(sql);) {
+        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
 
-			ps.setInt(1, pid);
-			ps.setInt(2, uid);
-			
-			try (ResultSet rs = ps.executeQuery();) {
-			    return rs.next();
-			}
+            ps.setInt(1, pid);
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
+            try (ResultSet rs = ps.executeQuery();) {
+                while (rs.next()) {
+                    bean = new User();
 
-	public List<Subscription> list() {
-		return list(0, Short.MAX_VALUE);
-	}
+                    int userId = rs.getInt("userId");
+                    String email = rs.getString("email");
 
-	public List<Subscription> list(int start, int count) {
-		List<Subscription> beans = new ArrayList<>();
+                    bean.setId(userId);
+                    bean.setEmail(email);
+                    beans.add(bean);
+                }
+            }
 
-		String sql = "select * from subscription order by subscriptionId desc limit ?,? ";
+        } catch (SQLException e) {
 
-		try (Connection c = DBUtil.getConnection(); 
-		        PreparedStatement ps = c.prepareStatement(sql);) {
+            e.printStackTrace();
+        }
 
-			ps.setInt(1, start);
-			ps.setInt(2, count);
+        return beans;
+    }
 
-			try (ResultSet rs = ps.executeQuery();) {
-			    while (rs.next()) {
-	                Subscription bean = new Subscription();
-	                int userId = rs.getInt("userId");
-	                int productId = rs.getInt("productId");
-	                User user = new UserDAO().get(userId);
-	                Product product = new ProductDAO().get(productId);
+    public boolean check(int pid, int uid) {
+        String sql = "select * from subscription where productId = ? AND userId = ?";
 
-	                bean.setUser(user);
-	                bean.setProduct(product);
-	                beans.add(bean);
-	            }
-			}
+        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
 
-		} catch (SQLException e) {
+            ps.setInt(1, pid);
+            ps.setInt(2, uid);
 
-			e.printStackTrace();
-		}
-		
-		return beans;
-	}
+            try (ResultSet rs = ps.executeQuery();) {
+                return rs.next();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public List<Subscription> list() throws Exception {
+        return list(0, Short.MAX_VALUE);
+    }
+
+    public List<Subscription> list(int start, int count) throws Exception {
+        List<Subscription> beans = new ArrayList<>();
+
+        String sql = "select * from subscription order by subscriptionId desc limit ?,? ";
+
+        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+
+            ps.setInt(1, start);
+            ps.setInt(2, count);
+
+            try (ResultSet rs = ps.executeQuery();) {
+                while (rs.next()) {
+                    Subscription bean = new Subscription();
+                    int userId = rs.getInt("userId");
+                    int productId = rs.getInt("productId");
+                    User user = null;
+                    user = (User) new UserDAO().get(userId);
+
+                    Product product = (Product) new ProductDAO().get(productId);
+
+                    bean.setUser(user);
+                    bean.setProduct(product);
+                    beans.add(bean);
+                }
+            }
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+
+        return beans;
+    }
 
 }

@@ -6,7 +6,7 @@ package main.java.pattern.chainOfResponsibility;
 public class NoDiscountPolicy extends DiscountPolicy {
 
 	@Override
-	public DiscountRequest handleDiscount(DiscountRequest discountRequest) {
+	public DiscountRequest handleDiscount(DiscountRequest discountRequest) throws Exception {
 	    return discountRequest;
 	}
 

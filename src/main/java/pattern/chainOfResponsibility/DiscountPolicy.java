@@ -2,7 +2,7 @@ package main.java.pattern.chainOfResponsibility;
 /**
  * chain of responsibility - handler
  */
-public abstract class DiscountPolicy {
+public abstract class DiscountPolicy  {
     
     public static final int BUY_X_GET_Y_FREE = 4;
     public static final int BROUGHT_MORE_THAN_IN_LAST_YEAR = 3;
@@ -12,7 +12,7 @@ public abstract class DiscountPolicy {
 
 	DiscountPolicy nextDiscountPolicy;
 	
-	abstract public DiscountRequest handleDiscount(DiscountRequest discountRequest);
+	abstract public DiscountRequest handleDiscount(DiscountRequest discountRequest) throws Exception;
 
 	public DiscountPolicy getNextDiscountPolicy() {
 		return nextDiscountPolicy;
