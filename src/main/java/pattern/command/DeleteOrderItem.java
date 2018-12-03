@@ -9,12 +9,10 @@ import main.java.model.dao.OrderItemDAO;
  *
  */
 public class DeleteOrderItem implements Command, Cloneable {
-    OrderItemDAO orderItemDAO;
     OrderItem oi;
     int oldState;
 
-    public DeleteOrderItem(OrderItemDAO orderItemDAO, OrderItem oi) {
-        this.orderItemDAO = orderItemDAO;
+    public DeleteOrderItem(OrderItem oi) {
         this.oi = oi;
         this.oldState = oi.getState();
     }
@@ -23,7 +21,7 @@ public class DeleteOrderItem implements Command, Cloneable {
     public void execute() {
         oi.setState(0);
         try {
-            orderItemDAO.update(oi);
+            new OrderItemDAO().update(oi);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -34,7 +32,7 @@ public class DeleteOrderItem implements Command, Cloneable {
     public void unExecute() {
         oi.setState(oldState);
         try {
-            orderItemDAO.update(oi);
+            new OrderItemDAO().update(oi);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

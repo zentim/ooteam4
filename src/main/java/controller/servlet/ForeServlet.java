@@ -357,7 +357,7 @@ public class ForeServlet extends BaseForeServlet {
          * Command Pattern
          */
         ShoppingCart shoppingCart = (ShoppingCart) request.getSession().getAttribute("shoppingCart");
-        ChangeOrderItem cmd = new ChangeOrderItem(orderItemDAO, oi, num, state);
+        ChangeOrderItem cmd = new ChangeOrderItem(oi, num, state);
         shoppingCart.storeAndExecute(cmd);
 
         request.getSession().setAttribute("shoppingCart", shoppingCart);
@@ -380,7 +380,7 @@ public class ForeServlet extends BaseForeServlet {
          * Command Pattern
          */
         ShoppingCart shoppingCart = (ShoppingCart) request.getSession().getAttribute("shoppingCart");
-        DeleteOrderItem cmd = new DeleteOrderItem(orderItemDAO, oi);
+        DeleteOrderItem cmd = new DeleteOrderItem(oi);
         shoppingCart.storeAndExecute(cmd);
 
         request.getSession().setAttribute("shoppingCart", shoppingCart);

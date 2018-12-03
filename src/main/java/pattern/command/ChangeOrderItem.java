@@ -9,15 +9,13 @@ import main.java.model.dao.OrderItemDAO;
  *
  */
 public class ChangeOrderItem implements Command, Cloneable {
-    OrderItemDAO orderItemDAO;
     OrderItem oi;
     int oldNum;
     int oldState;
     int newNum;
     int newState;
 
-    public ChangeOrderItem(OrderItemDAO orderItemDAO, OrderItem oi, int newNum, int newState) {
-        this.orderItemDAO = orderItemDAO;
+    public ChangeOrderItem(OrderItem oi, int newNum, int newState) {
         this.oi = oi;
         this.oldNum = oi.getQuantity();
         this.oldState = oi.getState();
@@ -30,7 +28,7 @@ public class ChangeOrderItem implements Command, Cloneable {
         oi.setQuantity(newNum);
         oi.setState(newState);
         try {
-            orderItemDAO.update(oi);
+            new OrderItemDAO().update(oi);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -42,7 +40,7 @@ public class ChangeOrderItem implements Command, Cloneable {
         oi.setQuantity(oldNum);
         oi.setState(oldState);
         try {
-            orderItemDAO.update(oi);
+            new OrderItemDAO().update(oi);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
