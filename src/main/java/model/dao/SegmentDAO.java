@@ -42,6 +42,11 @@ public class SegmentDAO extends DAOTemplate {
         return total;
     }
 
+    /**
+     * 
+     * primitive methods
+     * 
+     */
     protected String getMainSql(int type) {
         String sql = "";
         switch (type) {
@@ -63,7 +68,31 @@ public class SegmentDAO extends DAOTemplate {
         return sql;
 
     }
+    
+    /**
+     * 
+     * hook methods
+     * 
+     */
+    @Override
+    protected Object setModelFromGet(ResultSet rs) throws SQLException {
+        Segment bean = new Segment();
+        if (rs.next()) {
+            bean = new Segment();
+            String name = rs.getString(2);
+            bean.setName(name);
+            bean.setId(rs.getInt("segmentId"));
 
+            return bean;
+        }
+        return null;
+    }
+
+    /**
+     * 
+     * primitive methods
+     * 
+     */
     protected ResultSet executeAdd(PreparedStatement ps, Object obj) throws SQLException {
         Segment bean = (Segment) obj;
         ps.setString(1, bean.getName());
@@ -99,18 +128,7 @@ public class SegmentDAO extends DAOTemplate {
         return 0;
     }
 
-    protected Object setModelFromGet(ResultSet rs) throws SQLException {
-        Segment bean = new Segment();
-        if (rs.next()) {
-            bean = new Segment();
-            String name = rs.getString(2);
-            bean.setName(name);
-            bean.setId(rs.getInt("segmentId"));
-
-            return bean;
-        }
-        return null;
-    }
+    
 
     public List<Segment> list() {
         return list(0, Short.MAX_VALUE);

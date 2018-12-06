@@ -40,6 +40,11 @@ public class UserDAO extends DAOTemplate {
         return total;
     }
 
+    /**
+     * 
+     * primitive methods
+     * 
+     */
     protected String getMainSql(int type) {
         String sql = "";
         switch (type) {
@@ -61,7 +66,29 @@ public class UserDAO extends DAOTemplate {
         return sql;
 
     }
+    
+    /**
+     * 
+     * hook methods
+     * 
+     */
+    @Override
+    protected Object setModelFromGet(ResultSet rs) throws Exception {
+        User bean = new User();
+        while (rs.next()) {
+            bean.setEmail(rs.getString("email"));
+            bean.setPassword(rs.getString("password"));
+            bean.setId(rs.getInt("userId"));
+            return bean;
+        }
+        return null;
+    }
 
+    /**
+     * 
+     * primitive methods
+     * 
+     */
     protected ResultSet executeAdd(PreparedStatement ps, Object obj) throws SQLException {
         User bean = (User) obj;
         ps.setString(1, bean.getEmail());
@@ -101,16 +128,7 @@ public class UserDAO extends DAOTemplate {
         return 0;
     }
 
-    protected Object setModelFromGet(ResultSet rs) throws Exception {
-        User bean = new User();
-        while (rs.next()) {
-            bean.setEmail(rs.getString("email"));
-            bean.setPassword(rs.getString("password"));
-            bean.setId(rs.getInt("userId"));
-            return bean;
-        }
-        return null;
-    }
+    
 
     public List<User> list() throws CloneNotSupportedException {
         return list(0, Short.MAX_VALUE);

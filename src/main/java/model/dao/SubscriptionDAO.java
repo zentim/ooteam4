@@ -44,6 +44,11 @@ public class SubscriptionDAO extends DAOTemplate {
         return total;
     }
 
+    /**
+     * 
+     * primitive methods
+     * 
+     */
     protected String getMainSql(int type) {
         String sql = "";
         switch (type) {
@@ -65,7 +70,36 @@ public class SubscriptionDAO extends DAOTemplate {
         return sql;
 
     }
+    
+    /**
+     * 
+     * hook methods
+     * 
+     */
+    @Override
+    protected Object setModelFromGet(ResultSet rs) throws Exception {
+        Subscription bean = new Subscription();
+        if (rs.next()) {
+            int userId = rs.getInt("userId");
+            int productId = rs.getInt("productId");
+            User user = null;
+            user = (User) new UserDAO().get(userId);
+            Product product = (Product) new ProductDAO().get(productId);
 
+            bean.setUser(user);
+            bean.setProduct(product);
+            bean.setId(rs.getInt("subscriptionId"));
+
+            return bean;
+        }
+        return null;
+    }
+
+    /**
+     * 
+     * primitive methods
+     * 
+     */
     protected ResultSet executeAdd(PreparedStatement ps, Object obj) throws SQLException {
         Subscription bean = (Subscription) obj;
 
@@ -116,23 +150,7 @@ public class SubscriptionDAO extends DAOTemplate {
         }
     }
 
-    protected Object setModelFromGet(ResultSet rs) throws Exception {
-        Subscription bean = new Subscription();
-        if (rs.next()) {
-            int userId = rs.getInt("userId");
-            int productId = rs.getInt("productId");
-            User user = null;
-            user = (User) new UserDAO().get(userId);
-            Product product = (Product) new ProductDAO().get(productId);
-
-            bean.setUser(user);
-            bean.setProduct(product);
-            bean.setId(rs.getInt("subscriptionId"));
-
-            return bean;
-        }
-        return null;
-    }
+    
 
     public List<Subscription> list(int id) throws Exception {
         List<Subscription> beans = new ArrayList<>();

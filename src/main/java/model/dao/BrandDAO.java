@@ -39,6 +39,11 @@ public class BrandDAO extends DAOTemplate {
         return total;
     }
 
+    /**
+     * 
+     * primitive methods
+     * 
+     */
     protected String getMainSql(int type) {
         String sql = "";
 
@@ -61,7 +66,32 @@ public class BrandDAO extends DAOTemplate {
 
         return sql;
     }
-
+    
+    /**
+     * 
+     * hook methods
+     * 
+     */
+    @Override
+    protected Object setModelFromGet(ResultSet rs) throws Exception {
+        Brand bean = new Brand();
+        while (rs.next()) {
+            String name = rs.getString("name");
+            int categoryId = rs.getInt("categoryId");
+            Category category = (Category) new CategoryDAO().get(categoryId);
+            bean.setName(name);
+            bean.setCategory(category);
+            bean.setId(rs.getInt("brandId"));
+            return bean;
+        }
+        return null;
+    }
+    
+    /**
+     * 
+     * primitive methods
+     * 
+     */
     protected ResultSet executeAdd(PreparedStatement ps, Object obj) throws SQLException {
         Brand bean = (Brand) obj;
         ps.setString(1, bean.getName());
@@ -97,19 +127,7 @@ public class BrandDAO extends DAOTemplate {
         return 0;
     }
 
-    protected Object setModelFromGet(ResultSet rs) throws Exception {
-        Brand bean = new Brand();
-        while (rs.next()) {
-            String name = rs.getString("name");
-            int categoryId = rs.getInt("categoryId");
-            Category category = (Category) new CategoryDAO().get(categoryId);
-            bean.setName(name);
-            bean.setCategory(category);
-            bean.setId(rs.getInt("brandId"));
-            return bean;
-        }
-        return null;
-    }
+    
 
     public List<Brand> list() throws Exception {
         return list(0, Short.MAX_VALUE);
@@ -193,7 +211,11 @@ public class BrandDAO extends DAOTemplate {
     public void fill(Category c) throws Exception {
         List<Brand> bs = this.list(c.getId());
         
-        // Use Composite Pattern
+        /**
+         * 
+         * Use Composite Pattern
+         *  
+         */
         for (Brand b : bs) {
             c.add(b);
         }

@@ -49,6 +49,11 @@ public class OrderDAO extends DAOTemplate {
         return total;
     }
 
+    /**
+     * 
+     * primitive methods
+     * 
+     */
     protected String getMainSql(int type) {
         String sql = "";
         switch (type) {
@@ -71,7 +76,47 @@ public class OrderDAO extends DAOTemplate {
 
         return sql;
     }
+    
+    /**
+     * 
+     * hook methods
+     * 
+     */
+    @Override
+    protected Object setModelFromGet(ResultSet rs) throws SQLException {
+        Order bean = new Order();
+        if (rs.next()) {
 
+            Date dateOrdered = DateUtil.t2d(rs.getTimestamp("dateOrdered"));
+            Date datePaid = DateUtil.t2d(rs.getTimestamp("datePaid"));
+
+            User user = null;
+            try {
+                user = (User) new UserDAO().get(rs.getInt("userId"));
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            bean.setUser(user);
+            bean.setDateOrdered(dateOrdered);
+            bean.setDatePaid(datePaid);
+            bean.setState(rs.getString("state"));
+            bean.setTotal(rs.getFloat("total"));
+            bean.setDeliverMethod(rs.getInt("deliverMethod"));
+            bean.setAddress(rs.getString("address"));
+
+            bean.setId(rs.getInt("orderId"));
+            return bean;
+        }
+        return null;
+    }
+    
+    /**
+     * 
+     * primitive methods
+     * 
+     */
     protected ResultSet executeAdd(PreparedStatement ps, Object obj) throws SQLException {
         Order bean = (Order) obj;
         ps.setInt(1, bean.getUser().getId());
@@ -117,34 +162,7 @@ public class OrderDAO extends DAOTemplate {
         return 0;
     }
 
-    protected Object setModelFromGet(ResultSet rs) throws SQLException {
-        Order bean = new Order();
-        if (rs.next()) {
-
-            Date dateOrdered = DateUtil.t2d(rs.getTimestamp("dateOrdered"));
-            Date datePaid = DateUtil.t2d(rs.getTimestamp("datePaid"));
-
-            User user = null;
-            try {
-                user = (User) new UserDAO().get(rs.getInt("userId"));
-            } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-
-            bean.setUser(user);
-            bean.setDateOrdered(dateOrdered);
-            bean.setDatePaid(datePaid);
-            bean.setState(rs.getString("state"));
-            bean.setTotal(rs.getFloat("total"));
-            bean.setDeliverMethod(rs.getInt("deliverMethod"));
-            bean.setAddress(rs.getString("address"));
-
-            bean.setId(rs.getInt("orderId"));
-            return bean;
-        }
-        return null;
-    }
+    
 
     public List<Order> list() {
         return list(0, Short.MAX_VALUE);

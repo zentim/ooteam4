@@ -46,6 +46,11 @@ public class ProductImageDAO extends DAOTemplate {
         return total;
     }
 
+    /**
+     * 
+     * primitive methods
+     * 
+     */
     protected String getMainSql(int type) {
         String sql = "";
         switch (type) {
@@ -67,7 +72,30 @@ public class ProductImageDAO extends DAOTemplate {
         return sql;
 
     }
+    
+    /**
+     * 
+     * hook methods
+     * 
+     */
+    protected Object setModelFromGet(ResultSet rs) throws Exception {
+        ProductImage bean = new ProductImage();
+        if (rs.next()) {
+            int productId = rs.getInt("productId");
+            String type = rs.getString("type");
+            Product product = (Product) new ProductDAO().get(productId);
+            bean.setProduct(product);
+            bean.setType(type);
+            bean.setId(rs.getInt("productImageId"));
+        }
+        return null;
+    }
 
+    /**
+     * 
+     * primitive methods
+     * 
+     */
     protected ResultSet executeAdd(PreparedStatement ps, Object obj) throws SQLException {
         ProductImage bean = (ProductImage) obj;
         ps.setInt(1, bean.getProduct().getId());
@@ -106,18 +134,7 @@ public class ProductImageDAO extends DAOTemplate {
         return 0;
     }
 
-    protected Object setModelFromGet(ResultSet rs) throws Exception {
-        ProductImage bean = new ProductImage();
-        if (rs.next()) {
-            int productId = rs.getInt("productId");
-            String type = rs.getString("type");
-            Product product = (Product) new ProductDAO().get(productId);
-            bean.setProduct(product);
-            bean.setType(type);
-            bean.setId(rs.getInt("productImageId"));
-        }
-        return null;
-    }
+    
 
     public List<ProductImage> list(Product p, String type) {
         return list(p, type, 0, Short.MAX_VALUE);

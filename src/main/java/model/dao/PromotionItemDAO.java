@@ -45,6 +45,11 @@ public class PromotionItemDAO extends DAOTemplate {
         return total;
     }
 
+    /**
+     * 
+     * primitive methods
+     * 
+     */
     protected String getMainSql(int type) {
         String sql = "";
         switch (type) {
@@ -67,7 +72,41 @@ public class PromotionItemDAO extends DAOTemplate {
         return sql;
 
     }
+    
+    /**
+     * 
+     * hook methods
+     * 
+     */
+    @Override
+    protected Object setModelFromGet(ResultSet rs) throws Exception {
+        PromotionItem bean = new PromotionItem();
+        if (rs.next()) {
 
+            int promotionId = rs.getInt("promotionId");
+            int productId = rs.getInt("productId");
+            int minQuantity = rs.getInt("minQuantity");
+            int discountOf = rs.getInt("discountOf");
+
+            Promotion promotion = (Promotion) new PromotionDAO().get(promotionId);
+            Product product = (Product) new ProductDAO().get(productId);
+
+            bean.setPromotion(promotion);
+            bean.setProduct(product);
+            bean.setMinQuantity(minQuantity);
+            bean.setDiscountOf(discountOf);
+
+            bean.setId(rs.getInt("promotionItemId"));
+            return bean;
+        }
+        return null;
+    }
+
+    /**
+     * 
+     * primitive methods
+     * 
+     */
     protected ResultSet executeAdd(PreparedStatement ps, Object obj) throws SQLException {
         PromotionItem bean = (PromotionItem) obj;
         if (bean.getPromotion() == null) {
@@ -119,28 +158,7 @@ public class PromotionItemDAO extends DAOTemplate {
         return 0;
     }
 
-    protected Object setModelFromGet(ResultSet rs) throws Exception {
-        PromotionItem bean = new PromotionItem();
-        if (rs.next()) {
-
-            int promotionId = rs.getInt("promotionId");
-            int productId = rs.getInt("productId");
-            int minQuantity = rs.getInt("minQuantity");
-            int discountOf = rs.getInt("discountOf");
-
-            Promotion promotion = (Promotion) new PromotionDAO().get(promotionId);
-            Product product = (Product) new ProductDAO().get(productId);
-
-            bean.setPromotion(promotion);
-            bean.setProduct(product);
-            bean.setMinQuantity(minQuantity);
-            bean.setDiscountOf(discountOf);
-
-            bean.setId(rs.getInt("promotionItemId"));
-            return bean;
-        }
-        return null;
-    }
+    
 
     public PromotionItem getByProduct(int productId) throws Exception {
         PromotionItem bean = new PromotionItem();

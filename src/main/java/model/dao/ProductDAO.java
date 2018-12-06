@@ -50,28 +50,11 @@ public class ProductDAO extends DAOTemplate {
         return total;
     }
 
-    public int getTotalBySeller(int sellerId, int brandId) {
-        int total = 0;
-        String sql = "select count(*) from product where brandId = ? and sellerId = ?";
-
-        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
-
-            ps.setInt(1, brandId);
-            ps.setInt(2, sellerId);
-
-            try (ResultSet rs = ps.executeQuery();) {
-                while (rs.next()) {
-                    total = rs.getInt(1);
-                }
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return total;
-    }
-
+    /**
+     * 
+     * primitive methods
+     * 
+     */
     protected String getMainSql(int type) {
         String sql = "";
         switch (type) {
@@ -94,7 +77,42 @@ public class ProductDAO extends DAOTemplate {
         return sql;
 
     }
+    
+    /**
+     * 
+     * hook methods
+     * 
+     */
+    @Override
+    protected Object setModelFromGet(ResultSet rs) throws Exception {
+        Product bean = new Product();
+        if (rs.next()) {
+            String name = rs.getString("name");
+            int inventory = rs.getInt("inventory");
+            float price = rs.getFloat("price");
+            Date dateAdded = DateUtil.t2d(rs.getTimestamp("dateAdded"));
+            int brandId = rs.getInt("brandId");
 
+            Brand brand = null;
+            brand = (Brand) new BrandDAO().get(brandId);
+            bean.setName(name);
+            bean.setInventory(inventory);
+            bean.setPrice(price);
+            bean.setDateAdded(dateAdded);
+            bean.setBrand(brand);
+
+            bean.setId(rs.getInt("productID"));
+            setFirstProductImage(bean);
+            return bean;
+        }
+        return null;
+    }
+
+    /**
+     * 
+     * primitive methods
+     * 
+     */
     protected ResultSet executeAdd(PreparedStatement ps, Object obj) throws SQLException {
         Product bean = (Product) obj;
         ps.setString(1, bean.getName());
@@ -140,29 +158,7 @@ public class ProductDAO extends DAOTemplate {
         return 0;
     }
 
-    protected Object setModelFromGet(ResultSet rs) throws Exception {
-        Product bean = new Product();
-        if (rs.next()) {
-            String name = rs.getString("name");
-            int inventory = rs.getInt("inventory");
-            float price = rs.getFloat("price");
-            Date dateAdded = DateUtil.t2d(rs.getTimestamp("dateAdded"));
-            int brandId = rs.getInt("brandId");
-
-            Brand brand = null;
-            brand = (Brand) new BrandDAO().get(brandId);
-            bean.setName(name);
-            bean.setInventory(inventory);
-            bean.setPrice(price);
-            bean.setDateAdded(dateAdded);
-            bean.setBrand(brand);
-
-            bean.setId(rs.getInt("productID"));
-            setFirstProductImage(bean);
-            return bean;
-        }
-        return null;
-    }
+    
 
     public List<Product> list(int brandId) {
         return list(brandId, 0, Short.MAX_VALUE);
@@ -278,7 +274,11 @@ public class ProductDAO extends DAOTemplate {
     public void fill(Brand b) {
         List<Product> ps = this.list(b.getId());
 
-        // Use Composite Pattern
+        /**
+         * 
+         * Use Composite Pattern
+         *  
+         */
         for (Product p : ps) {
             b.add(p);
         }
@@ -292,50 +292,4 @@ public class ProductDAO extends DAOTemplate {
             p.setFirstProductImage(pis.get(0));
     }
 
-//    public void fillPromotion(Brand brand) throws Exception {
-//        PromotionItemDAO promotionItemDAO = new PromotionItemDAO();
-//
-//        for (Product p : brand.getProducts()) {
-//            PromotionItem promotionItem = promotionItemDAO.getByProduct(p.getId());
-//            Promotion promotionByProduct = promotionItem.getPromotion();
-//
-//            if (promotionByProduct != null && !(promotionItem.getDiscountOf() == 100
-//                    && promotionByProduct.getDiscountType() == DiscountPolicy.BUY_X_GET_Y_FREE)) {
-//
-//                String promotionName = "";
-//                if (promotionByProduct.getState() == 1) {
-//                    promotionName = promotionByProduct.getName();
-//                }
-//
-//                String discountTypeName = promotionByProduct.getDiscountTypeDescription();
-//                p.setPromotionName(promotionName);
-//                p.setDiscountTypeName(discountTypeName);
-//            }
-//        }
-//
-//    }
-
-//    public void fillPromotion(List<Brand> brands) throws Exception {
-//        PromotionItemDAO promotionItemDAO = new PromotionItemDAO();
-//
-//        for (Brand c : brands) {
-//            for (Product p : c.getProducts()) {
-//                PromotionItem promotionItem = promotionItemDAO.getByProduct(p.getId());
-//                Promotion promotionByProduct = promotionItem.getPromotion();
-//
-//                if (promotionByProduct != null && !(promotionItem.getDiscountOf() == 100
-//                        && promotionByProduct.getDiscountType() == DiscountPolicy.BUY_X_GET_Y_FREE)) {
-//
-//                    String promotionName = "";
-//                    if (promotionByProduct.getState() == 1) {
-//                        promotionName = promotionByProduct.getName();
-//                    }
-//
-//                    String discountTypeName = promotionByProduct.getDiscountTypeDescription();
-//                    p.setPromotionName(promotionName);
-//                    p.setDiscountTypeName(discountTypeName);
-//                }
-//            }
-//        }
-//    }
 }

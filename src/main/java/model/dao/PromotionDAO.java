@@ -42,6 +42,11 @@ public class PromotionDAO extends DAOTemplate {
         return total;
     }
 
+    /**
+     * 
+     * primitive methods
+     * 
+     */
     protected String getMainSql(int type) {
         String sql = "";
         switch (type) {
@@ -64,7 +69,41 @@ public class PromotionDAO extends DAOTemplate {
         return sql;
 
     }
+    
+    /**
+     * 
+     * hook methods
+     * 
+     */
+    @Override
+    protected Object setModelFromGet(ResultSet rs) throws SQLException {
+        Promotion bean = new Promotion();
+        if (rs.next()) {
 
+            String name = rs.getString("name");
+            Date dateFrom = DateUtil.t2d(rs.getTimestamp("dateFrom"));
+            Date dateTo = DateUtil.t2d(rs.getTimestamp("dateTo"));
+            int state = rs.getInt("state");
+            int discountType = rs.getInt("discountType");
+
+            bean.setDiscountType(discountType);
+            bean.setName(name);
+            bean.setDateFrom(dateFrom);
+            bean.setDateTo(dateTo);
+            bean.setState(state);
+            bean.setDiscountTypeDesc(bean.getDiscountTypeDescription());
+
+            bean.setId(rs.getInt("PromotionId"));
+            return bean;
+        }
+        return null;
+    }
+
+    /**
+     * 
+     * primitive methods
+     * 
+     */
     protected ResultSet executeAdd(PreparedStatement ps, Object obj) throws SQLException {
         Promotion bean = (Promotion) obj;
         ps.setInt(1, bean.getDiscountType());
@@ -109,28 +148,7 @@ public class PromotionDAO extends DAOTemplate {
         return 0;
     }
 
-    protected Object setModelFromGet(ResultSet rs) throws SQLException {
-        Promotion bean = new Promotion();
-        if (rs.next()) {
-
-            String name = rs.getString("name");
-            Date dateFrom = DateUtil.t2d(rs.getTimestamp("dateFrom"));
-            Date dateTo = DateUtil.t2d(rs.getTimestamp("dateTo"));
-            int state = rs.getInt("state");
-            int discountType = rs.getInt("discountType");
-
-            bean.setDiscountType(discountType);
-            bean.setName(name);
-            bean.setDateFrom(dateFrom);
-            bean.setDateTo(dateTo);
-            bean.setState(state);
-            bean.setDiscountTypeDesc(bean.getDiscountTypeDescription());
-
-            bean.setId(rs.getInt("PromotionId"));
-            return bean;
-        }
-        return null;
-    }
+    
 
     public List<Promotion> list() {
         return list(0, Short.MAX_VALUE);

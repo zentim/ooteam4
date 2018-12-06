@@ -42,6 +42,11 @@ public class CategoryDAO extends DAOTemplate {
         return total;
     }
 
+    /**
+     * 
+     * primitive methods
+     * 
+     */
     protected String getMainSql(int type) {
         String sql = "";
         switch (type) {
@@ -63,7 +68,34 @@ public class CategoryDAO extends DAOTemplate {
         return sql;
 
     }
+    
+    /**
+     * 
+     * hook methods
+     * 
+     */
+    @Override
+    protected Object setModelFromGet(ResultSet rs) throws Exception {
+        Category bean = new Category();
+        if (rs.next()) {
+            String name = rs.getString("name");
+            int segmentId = rs.getInt("segmentId");
 
+            Segment segment = (Segment) new SegmentDAO().get(segmentId);
+
+            bean.setName(name);
+            bean.setSegment(segment);
+            bean.setId(rs.getInt("categoryId"));
+            return bean;
+        }
+        return null;
+    }
+
+    /**
+     * 
+     * primitive methods
+     * 
+     */
     protected ResultSet executeAdd(PreparedStatement ps, Object obj) throws SQLException {
         Category bean = (Category) obj;
         ps.setString(1, bean.getName());
@@ -101,22 +133,8 @@ public class CategoryDAO extends DAOTemplate {
         }
         return 0;
     }
-
-    protected Object setModelFromGet(ResultSet rs) throws Exception {
-        Category bean = new Category();
-        if (rs.next()) {
-            String name = rs.getString("name");
-            int segmentId = rs.getInt("segmentId");
-
-            Segment segment = (Segment) new SegmentDAO().get(segmentId);
-
-            bean.setName(name);
-            bean.setSegment(segment);
-            bean.setId(rs.getInt("categoryId"));
-            return bean;
-        }
-        return null;
-    }
+    
+    
 
     public List<Category> list() throws Exception {
         return list(0, Short.MAX_VALUE);
@@ -202,7 +220,11 @@ public class CategoryDAO extends DAOTemplate {
     public void fill(Segment s) throws Exception {
         List<Category> cs = this.list(s.getId());
 
-        // Use Composite Pattern
+        /**
+         * 
+         * Use Composite Pattern
+         *  
+         */
         for (Category c : cs) {
             s.add(c);
         }

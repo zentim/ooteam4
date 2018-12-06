@@ -46,6 +46,11 @@ public class OrderItemDAO extends DAOTemplate {
         return total;
     }
 
+    /**
+     * 
+     * primitive methods
+     * 
+     */
     protected String getMainSql(int type) {
         String sql = "";
         switch (type) {
@@ -69,7 +74,49 @@ public class OrderItemDAO extends DAOTemplate {
         return sql;
 
     }
+    
+    /**
+     * 
+     * hook methods
+     * 
+     */
+    @Override
+    protected Object setModelFromGet(ResultSet rs) throws Exception {
+        OrderItem bean = new OrderItem();
+        if (rs.next()) {
+            int orderId = rs.getInt("orderId");
+            int userId = rs.getInt("userId");
+            int productId = rs.getInt("productId");
+            int quantity = rs.getInt("quantity");
+            int state = rs.getInt("state");
+            float originalPrice = rs.getFloat("originalPrice");
+            float promotionalPrice = rs.getFloat("promotionalPrice");
+            Product product = (Product) new ProductDAO().get(productId);
+            User user = (User) new UserDAO().get(userId);
 
+            if (-1 != orderId) {
+                Order order = (Order) new OrderDAO().get(orderId);
+                bean.setOrder(order);
+            }
+            bean.setProduct(product);
+            bean.setUser(user);
+            bean.setQuantity(quantity);
+            bean.setState(state);
+            bean.setOriginalPrice(originalPrice);
+            bean.setPromotionalPrice(promotionalPrice);
+            bean.setId(rs.getInt("orderItemId"));
+
+            return bean;
+        }
+
+        return null;
+    }
+
+    /**
+     * 
+     * primitive methods
+     * 
+     */
     protected ResultSet executeAdd(PreparedStatement ps, Object obj) throws SQLException {
         OrderItem bean = (OrderItem) obj;
         if (null == bean.getOrder()) {
@@ -125,36 +172,7 @@ public class OrderItemDAO extends DAOTemplate {
         return 0;
     }
 
-    protected Object setModelFromGet(ResultSet rs) throws Exception {
-        OrderItem bean = new OrderItem();
-        if (rs.next()) {
-            int orderId = rs.getInt("orderId");
-            int userId = rs.getInt("userId");
-            int productId = rs.getInt("productId");
-            int quantity = rs.getInt("quantity");
-            int state = rs.getInt("state");
-            float originalPrice = rs.getFloat("originalPrice");
-            float promotionalPrice = rs.getFloat("promotionalPrice");
-            Product product = (Product) new ProductDAO().get(productId);
-            User user = (User) new UserDAO().get(userId);
-
-            if (-1 != orderId) {
-                Order order = (Order) new OrderDAO().get(orderId);
-                bean.setOrder(order);
-            }
-            bean.setProduct(product);
-            bean.setUser(user);
-            bean.setQuantity(quantity);
-            bean.setState(state);
-            bean.setOriginalPrice(originalPrice);
-            bean.setPromotionalPrice(promotionalPrice);
-            bean.setId(rs.getInt("orderItemId"));
-
-            return bean;
-        }
-
-        return null;
-    }
+    
 
     public List<OrderItem> listCartByUser(int userId) throws Exception {
         return listCartByUser(userId, 0, Short.MAX_VALUE);
