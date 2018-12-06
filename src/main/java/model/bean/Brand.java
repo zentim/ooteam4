@@ -2,7 +2,6 @@ package main.java.model.bean;
 
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 import main.java.pattern.composite.Component;
@@ -10,7 +9,8 @@ import main.java.pattern.decorator.PrintPromotionInfoDecorator;
 
 /**
  * 
- * Composite Pattern - CompositeComponent
+ * Composite Pattern - Composite
+ * Iterator Pattern - Client
  *
  */
 public class Brand extends Component {
@@ -18,7 +18,6 @@ public class Brand extends Component {
     private String name;
     private int id;
     private Category category;
-    private List<Product> products;
     private Hashtable<Integer, Component> components = new Hashtable<>();
     
     
@@ -41,7 +40,9 @@ public class Brand extends Component {
 	public void operation() {
 		System.out.println("     bid: " + id + ", name: " + name);
 		
-		/* Use Iterator Pattern */
+		/**
+		 * Use Iterator Pattern
+		 */
 		Set<Integer> keys = components.keySet();
 		Iterator iterator = keys.iterator();
 		while(iterator.hasNext()) {
@@ -80,12 +81,13 @@ public class Brand extends Component {
 	public void setCategory(Category category) {
 		this.category = category;
 	}
-	public List<Product> getProducts() {
-		return products;
-	}
-	public void setProducts(List<Product> products) {
-		this.products = products;
-	}
-    
+
+    public Hashtable<Integer, Component> getComponents() {
+        return components;
+    }
+
+    public void setComponents(Hashtable<Integer, Component> components) {
+        this.components = components;
+    }
 
 }

@@ -1,7 +1,6 @@
 package main.java.model.bean;
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -10,14 +9,14 @@ import main.java.pattern.composite.Component;
 
 /**
  * 
- * Composite Pattern - CompositeComponent
+ * Composite Pattern - Composite
+ * Iterator Pattern - Client
  *
  */
 public class Segment extends Component {
 
     private String name;
     private int id;
-    private List<Category> categorys;
     private Map<Integer, Component> components = new TreeMap<>();
 
     @Override
@@ -39,7 +38,9 @@ public class Segment extends Component {
     public void operation() {
         System.out.println("Segment id: " + id + ", name: " + name);
 
-        /* Use Iterator Pattern */
+        /**
+         * Use Iterator Pattern
+         */
         Set<Integer> keys = components.keySet();
         Iterator iterator = keys.iterator();
         while (iterator.hasNext()) {
@@ -57,6 +58,8 @@ public class Segment extends Component {
         return name;
     }
 
+    
+    
     /* Getter and Setter */
 
     public void setName(String name) {
@@ -67,12 +70,12 @@ public class Segment extends Component {
         this.id = id;
     }
 
-    public List<Category> getCategorys() {
-        return categorys;
+    public Map<Integer, Component> getComponents() {
+        return components;
     }
 
-    public void setCategorys(List<Category> categorys) {
-        this.categorys = categorys;
+    public void setComponents(Map<Integer, Component> components) {
+        this.components = components;
     }
 
 }

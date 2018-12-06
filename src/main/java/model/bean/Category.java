@@ -8,7 +8,8 @@ import main.java.pattern.composite.Component;
 
 /**
  * 
- * Composite Pattern - CompositeComponent
+ * Composite Pattern - Composite
+ * Iterator Pattern - Client
  *
  */
 public class Category extends Component {
@@ -16,7 +17,6 @@ public class Category extends Component {
     private String name;
     private int id;
     private Segment segment;
-    private List<Brand> brands;
     private List<Component> components = new LinkedList<>();
 
     @Override
@@ -44,7 +44,9 @@ public class Category extends Component {
     public void operation() {
         System.out.println("  cid: " + id + ", name: " + name);
 
-        /* Use Iterator Pattern */
+        /**
+         * Use Iterator Pattern
+         */
         Iterator iterator = components.iterator();
         while (iterator.hasNext()) {
             ((Component) iterator.next()).operation();
@@ -60,6 +62,8 @@ public class Category extends Component {
     public String getName() {
         return name;
     }
+    
+    
 
     /* Getter and Setter */
 
@@ -79,12 +83,14 @@ public class Category extends Component {
         this.segment = segment;
     }
 
-    public List<Brand> getBrands() {
-        return brands;
+    public List<Component> getComponents() {
+        return components;
     }
 
-    public void setBrands(List<Brand> brands) {
-        this.brands = brands;
+    public void setComponents(List<Component> components) {
+        this.components = components;
     }
+    
+    
 
 }

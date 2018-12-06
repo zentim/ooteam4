@@ -277,7 +277,6 @@ public class ProductDAO extends DAOTemplate {
 
     public void fill(Brand b) {
         List<Product> ps = this.list(b.getId());
-        b.setProducts(ps);
 
         // Use Composite Pattern
         for (Product p : ps) {
@@ -293,50 +292,50 @@ public class ProductDAO extends DAOTemplate {
             p.setFirstProductImage(pis.get(0));
     }
 
-    public void fillPromotion(Brand brand) throws Exception {
-        PromotionItemDAO promotionItemDAO = new PromotionItemDAO();
+//    public void fillPromotion(Brand brand) throws Exception {
+//        PromotionItemDAO promotionItemDAO = new PromotionItemDAO();
+//
+//        for (Product p : brand.getProducts()) {
+//            PromotionItem promotionItem = promotionItemDAO.getByProduct(p.getId());
+//            Promotion promotionByProduct = promotionItem.getPromotion();
+//
+//            if (promotionByProduct != null && !(promotionItem.getDiscountOf() == 100
+//                    && promotionByProduct.getDiscountType() == DiscountPolicy.BUY_X_GET_Y_FREE)) {
+//
+//                String promotionName = "";
+//                if (promotionByProduct.getState() == 1) {
+//                    promotionName = promotionByProduct.getName();
+//                }
+//
+//                String discountTypeName = promotionByProduct.getDiscountTypeDescription();
+//                p.setPromotionName(promotionName);
+//                p.setDiscountTypeName(discountTypeName);
+//            }
+//        }
+//
+//    }
 
-        for (Product p : brand.getProducts()) {
-            PromotionItem promotionItem = promotionItemDAO.getByProduct(p.getId());
-            Promotion promotionByProduct = promotionItem.getPromotion();
-
-            if (promotionByProduct != null && !(promotionItem.getDiscountOf() == 100
-                    && promotionByProduct.getDiscountType() == DiscountPolicy.BUY_X_GET_Y_FREE)) {
-
-                String promotionName = "";
-                if (promotionByProduct.getState() == 1) {
-                    promotionName = promotionByProduct.getName();
-                }
-
-                String discountTypeName = promotionByProduct.getDiscountTypeDescription();
-                p.setPromotionName(promotionName);
-                p.setDiscountTypeName(discountTypeName);
-            }
-        }
-
-    }
-
-    public void fillPromotion(List<Brand> brands) throws Exception {
-        PromotionItemDAO promotionItemDAO = new PromotionItemDAO();
-
-        for (Brand c : brands) {
-            for (Product p : c.getProducts()) {
-                PromotionItem promotionItem = promotionItemDAO.getByProduct(p.getId());
-                Promotion promotionByProduct = promotionItem.getPromotion();
-
-                if (promotionByProduct != null && !(promotionItem.getDiscountOf() == 100
-                        && promotionByProduct.getDiscountType() == DiscountPolicy.BUY_X_GET_Y_FREE)) {
-
-                    String promotionName = "";
-                    if (promotionByProduct.getState() == 1) {
-                        promotionName = promotionByProduct.getName();
-                    }
-
-                    String discountTypeName = promotionByProduct.getDiscountTypeDescription();
-                    p.setPromotionName(promotionName);
-                    p.setDiscountTypeName(discountTypeName);
-                }
-            }
-        }
-    }
+//    public void fillPromotion(List<Brand> brands) throws Exception {
+//        PromotionItemDAO promotionItemDAO = new PromotionItemDAO();
+//
+//        for (Brand c : brands) {
+//            for (Product p : c.getProducts()) {
+//                PromotionItem promotionItem = promotionItemDAO.getByProduct(p.getId());
+//                Promotion promotionByProduct = promotionItem.getPromotion();
+//
+//                if (promotionByProduct != null && !(promotionItem.getDiscountOf() == 100
+//                        && promotionByProduct.getDiscountType() == DiscountPolicy.BUY_X_GET_Y_FREE)) {
+//
+//                    String promotionName = "";
+//                    if (promotionByProduct.getState() == 1) {
+//                        promotionName = promotionByProduct.getName();
+//                    }
+//
+//                    String discountTypeName = promotionByProduct.getDiscountTypeDescription();
+//                    p.setPromotionName(promotionName);
+//                    p.setDiscountTypeName(discountTypeName);
+//                }
+//            }
+//        }
+//    }
 }

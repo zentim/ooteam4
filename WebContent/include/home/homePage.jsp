@@ -102,16 +102,16 @@
 						<c:forEach items="${ brands }" var="brand" varStatus="stc">
 							<c:if test="${ stc.count <= brandcount }">
 							
-								<c:forEach items="${ brand.products }" var="product" varStatus="st">
+								<c:forEach items="${ brand.components }" var="product" varStatus="st">
 									<c:if test="${ st.count <= brandcount }">	
 										
 				                        <!-- Single Product -->
 				                        <div class="single-product-wrapper">
 				                        
-					                        <a href="foreproduct?pid=${ product.id }">
+					                        <a href="foreproduct?pid=${ product.value.id }">
 					                            <!-- Product Image -->
 					                            <div class="product-img" style="height: 350px; display: flex; justify-content: center; align-items: center;">
-					                                <img src="img/productSingle/${product.firstProductImage.id}.jpg" alt="productId ${product.firstProductImage.id}">
+					                                <img src="img/productSingle/${product.value.firstProductImage.id}.jpg" alt="productId ${product.value.firstProductImage.id}">
 					                                <!-- Hover Thumb -->		                                
 	<!-- 		                                
 					                                <img class="hover-img" src="img/product-img/product-2.jpg" alt="">
@@ -126,11 +126,11 @@
 					                         </a>
 				                            <!-- Product Description -->
 				                            <div class="product-description">
-				                                <span style="color: red;">${ product.promotionName }</span>
-				                                <a href="foreproduct?pid=${ product.id }">
-		                                            <h6>${ product.name }</h6>
+				                                <span style="color: red;">${ product.value.promotionName }</span>
+				                                <a href="foreproduct?pid=${ product.value.id }">
+		                                            <h6>${ product.value.name }</h6>
 		                                        </a>
-				                                <p class="product-price">$${ product.price }</p>
+				                                <p class="product-price">$${ product.value.price }</p>
 				
 				                                <!-- Hover Content -->
 <!-- 		                                

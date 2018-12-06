@@ -191,8 +191,12 @@ public class BrandDAO extends DAOTemplate {
     }
 
     public void fill(Category c) throws Exception {
-        List<Brand> ps = this.list(c.getId());
-        c.setBrands(ps);
+        List<Brand> bs = this.list(c.getId());
+        
+        // Use Composite Pattern
+        for (Brand b : bs) {
+            c.add(b);
+        }
     }
 
 }

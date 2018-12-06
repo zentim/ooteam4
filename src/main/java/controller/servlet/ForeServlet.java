@@ -1,6 +1,5 @@
 package main.java.controller.servlet;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,7 +35,6 @@ public class ForeServlet extends BaseForeServlet {
 
         List<Brand> brands = brandDAO.list();
         productDAO.fill(brands);
-        productDAO.fillPromotion(brands);
         request.setAttribute("brands", brands);
 
         return "home.jsp";
@@ -52,7 +50,6 @@ public class ForeServlet extends BaseForeServlet {
 
         List<Brand> brands = brandDAO.list(cid);
         productDAO.fill(brands);
-        productDAO.fillPromotion(brands);
         request.setAttribute("brands", brands);
 
         Category category = (Category) categoryDAO.get(cid);
@@ -101,7 +98,6 @@ public class ForeServlet extends BaseForeServlet {
             e.printStackTrace();
         }
         productDAO.fill(brand);
-        productDAO.fillPromotion(brand);
         request.setAttribute("brand", brand);
 
         return "brand.jsp";

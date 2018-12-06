@@ -247,8 +247,8 @@
                                 	<c:forEach items="${ segments }" var="segment" varStatus="stSegment">
 	                                    <ul class="single-mega cn-col-4">
 	                                        <li class="title">${ segment.name }</li>
-	                                        <c:forEach items="${ segment.categorys }" var="c" varStatus="st">
-	                                        	<li><a href="forecategory?cid=${ c.id }">${ c.name }</a></li>
+	                                        <c:forEach items="${ segment.components }" var="c" varStatus="st">
+	                                        	<li><a href="forecategory?cid=${ c.value.id }">${ c.value.name }</a></li>
 	                                        </c:forEach>
 	                                    </ul>
 									</c:forEach>

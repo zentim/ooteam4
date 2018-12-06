@@ -11,7 +11,8 @@ import main.java.pattern.observer.Subject;
 /**
  * 
  * Observer Pattern - ConcreteSubject
- * Composite Pattern - LeafComponent
+ * Composite Pattern - Leaf
+ * Iterator Pattern - Client
  * Decorator Pattern - ConcreteComponent
  *
  */
@@ -58,7 +59,9 @@ public class Product extends Component implements Subject {
         }
     }
     
-    /* Composite Method */
+    
+    
+    /* Composite Pattern Methods */
     @Override
     public void operation() {
         System.out.println("         pid: " + id + ", name: " + name);

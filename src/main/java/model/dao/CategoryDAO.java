@@ -201,7 +201,6 @@ public class CategoryDAO extends DAOTemplate {
 
     public void fill(Segment s) throws Exception {
         List<Category> cs = this.list(s.getId());
-        s.setCategorys(cs);
 
         // Use Composite Pattern
         for (Category c : cs) {
