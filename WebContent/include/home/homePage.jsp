@@ -127,9 +127,9 @@
 				                            <!-- Product Description -->
 				                            <div class="product-description">
 				                                <span style="color: red;">${ product.value.promotionName }</span>
-				                                <a href="foreproduct?pid=${ product.value.id }">
-		                                            <h6>${ product.value.name }</h6>
-		                                        </a>
+                                                <a href="foreproduct?pid=${ product.value.id }">
+                                                    <h6>${ product.value.name }</h6>
+                                                </a>
 				                                <p class="product-price">$${ product.value.price }</p>
 				
 				                                <!-- Hover Content -->
