@@ -5,6 +5,7 @@ import java.util.Stack;
 /**
  * 
  * Command Pattern - Invoker
+ * Prototype Pattern - Client
  *
  */
 public class ShoppingCart {
@@ -12,6 +13,9 @@ public class ShoppingCart {
 
     /* Command Pattern Method */
     public void storeAndExecute(Command cmd) throws CloneNotSupportedException {
+        /**
+         * Use Prototype Pattern
+         */
         history.add(cmd.clone());
         cmd.execute();
     }
