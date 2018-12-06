@@ -9,28 +9,30 @@ import main.java.pattern.composite.Component;
 
 /**
  * 
- * Decorator Pattern - ConcreteDecorator
+ * Decorator Pattern - Decorator
  *
  */
 public class PrintPromotionInfoDecorator extends Component {
-    private Product product;
+    private Component component;
 
-    public PrintPromotionInfoDecorator(Product product) {
-        this.product = product;
+    public PrintPromotionInfoDecorator(Component c) {
+        this.component = c;
     }
 
     @Override
     public void operation() {
-        product.operation();
+        component.operation();
         try {
-            fillPromotion(product);
+            fillPromotion(component);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
 
-    public void fillPromotion(Product p) throws Exception {
+    /* added function */
+    public void fillPromotion(Component c) throws Exception {
+        Product p = (Product) c;
         PromotionItemDAO promotionItemDAO = new PromotionItemDAO();
 
         PromotionItem promotionItem = promotionItemDAO.getByProduct(p.getId());
@@ -48,7 +50,7 @@ public class PrintPromotionInfoDecorator extends Component {
             p.setPromotionName(promotionName);
             p.setDiscountTypeName(discountTypeName);
 
-            System.out.println("         * promotionName: " + product.getPromotionName());
+            System.out.println("         * promotionName: " + p.getPromotionName());
         }
 
     }

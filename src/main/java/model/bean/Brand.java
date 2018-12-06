@@ -46,11 +46,11 @@ public class Brand extends Component {
 		Set<Integer> keys = components.keySet();
 		Iterator iterator = keys.iterator();
 		while(iterator.hasNext()) {
-		    Product p = ((Product) components.get(iterator.next()));
+		    Component c = components.get(iterator.next());
 		    /**
 		     * Use Decorator Pattern
 		     */
-		    new PrintPromotionInfoDecorator(p).operation();
+		    new PrintPromotionInfoDecorator(c).operation();
 		}
 	}
 

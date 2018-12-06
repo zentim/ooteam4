@@ -5,6 +5,7 @@ import java.io.Serializable;
 /**
  * 
  * Composite Pattern (Transparency)
+ * Decorator Pattern - Component
  *
  */
 public abstract class Component implements Serializable {
