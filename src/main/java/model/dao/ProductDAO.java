@@ -23,7 +23,7 @@ import main.java.pattern.template.DAOTemplate;
 
 /**
  * 
- * Template Pattern - ConcreteTemplate
+ * Template Method Pattern - ConcreteTemplate
  *
  */
 public class ProductDAO extends DAOTemplate {

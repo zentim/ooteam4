@@ -9,7 +9,7 @@ import main.java.model.util.DBUtil;
 
 /**
  * 
- * Template Pattern - template
+ * Template Method Pattern - template
  *
  */
 public abstract class DAOTemplate {

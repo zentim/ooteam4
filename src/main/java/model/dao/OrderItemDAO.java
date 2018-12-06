@@ -20,7 +20,7 @@ import main.java.pattern.template.DAOTemplate;
 /**
  * 
  * Command Pattern - Receiver (update method and delete method)
- * Template Pattern - ConcreteTemplate
+ * Template Method Pattern - ConcreteTemplate
  * 
  */
 public class OrderItemDAO extends DAOTemplate {
