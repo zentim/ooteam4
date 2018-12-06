@@ -251,7 +251,7 @@
 	                                        	<li><a href="forecategory?cid=${ c.value.id }">${ c.value.name }</a></li>
 	                                        </c:forEach>
 	                                    </ul>
-									</c:forEach>
+                                    </c:forEach>
                                     
                                     
                                     
