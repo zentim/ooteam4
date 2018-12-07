@@ -1,5 +1,10 @@
 package main.java.model.bean;
 
+/**
+ * 
+ * Factory Method Pattern - ConcreteProduct
+ *
+ */
 public class ProductImage {
 
     private String type;

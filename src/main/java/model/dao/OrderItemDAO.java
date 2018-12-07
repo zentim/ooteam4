@@ -21,6 +21,7 @@ import main.java.pattern.template.DAOTemplate;
  * 
  * Command Pattern - Receiver (update method and delete method)
  * Template Method Pattern - ConcreteTemplate
+ * Factory Method Pattern - ConcreteCreator
  * 
  */
 public class OrderItemDAO extends DAOTemplate {
@@ -77,7 +78,7 @@ public class OrderItemDAO extends DAOTemplate {
     
     /**
      * 
-     * hook methods
+     * factory method
      * 
      */
     @Override

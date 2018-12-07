@@ -19,6 +19,7 @@ import main.java.pattern.template.DAOTemplate;
 /**
  * 
  * Template Method Pattern - ConcreteTemplate
+ * Factory Method Pattern - ConcreteCreator
  *
  */
 public class OrderDAO extends DAOTemplate {
@@ -79,7 +80,7 @@ public class OrderDAO extends DAOTemplate {
     
     /**
      * 
-     * hook methods
+     * factory method
      * 
      */
     @Override

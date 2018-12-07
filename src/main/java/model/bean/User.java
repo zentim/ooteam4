@@ -6,6 +6,7 @@ import main.java.pattern.observer.Subject;
 /**
  * 
  * Observer Pattern - concrete observer
+ * Factory Method Pattern - ConcreteProduct
  *
  */
 public class User implements Observer {

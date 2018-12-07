@@ -19,6 +19,7 @@ import main.java.pattern.template.DAOTemplate;
 /**
  * 
  * Template Method Pattern - ConcreteTemplate
+ * Factory Method Pattern - ConcreteCreator
  *
  */
 public class ProductImageDAO extends DAOTemplate {
@@ -75,7 +76,7 @@ public class ProductImageDAO extends DAOTemplate {
     
     /**
      * 
-     * hook methods
+     * factory method
      * 
      */
     protected Object setModelFromGet(ResultSet rs) throws Exception {

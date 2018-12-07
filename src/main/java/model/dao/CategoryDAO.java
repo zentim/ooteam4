@@ -18,6 +18,7 @@ import main.java.pattern.template.DAOTemplate;
 /**
  * 
  * Template Method Pattern - ConcreteTemplate
+ * Factory Method Pattern - ConcreteCreator
  *
  */
 public class CategoryDAO extends DAOTemplate {
@@ -71,7 +72,7 @@ public class CategoryDAO extends DAOTemplate {
     
     /**
      * 
-     * hook methods
+     * factory method
      * 
      */
     @Override

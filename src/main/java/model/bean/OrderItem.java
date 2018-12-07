@@ -1,5 +1,10 @@
 package main.java.model.bean;
 
+/**
+ * 
+ * Factory Method Pattern - ConcreteProduct
+ *
+ */
 public class OrderItem implements Cloneable {
 
     private int id;

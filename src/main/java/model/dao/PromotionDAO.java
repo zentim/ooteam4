@@ -17,6 +17,7 @@ import main.java.pattern.template.DAOTemplate;
 /**
  * 
  * Template Method Pattern - ConcreteTemplate
+ * Factory Method Pattern - ConcreteCreator
  *
  */
 public class PromotionDAO extends DAOTemplate {
@@ -72,7 +73,7 @@ public class PromotionDAO extends DAOTemplate {
     
     /**
      * 
-     * hook methods
+     * factory method
      * 
      */
     @Override

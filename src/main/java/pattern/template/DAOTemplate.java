@@ -9,7 +9,8 @@ import main.java.model.util.DBUtil;
 
 /**
  * 
- * Template Method Pattern - template
+ * Template Method Pattern - Template
+ * Factory Method Pattern - Creator
  *
  */
 public abstract class DAOTemplate {
@@ -74,6 +75,11 @@ public abstract class DAOTemplate {
         /* hook method */
         PreparedStatement ps = this.getPreparedStatement(c, sql);
         ResultSet rs = this.executeGetById(ps, id);
+        
+        /**
+         * Use Factroy Method Pattern
+         */
+        /* factory method */
         Object result = setModelFromGet(rs);
         
         /* primitive method */
@@ -113,9 +119,14 @@ public abstract class DAOTemplate {
         return rs;
     };
     
-    protected Object setModelFromGet(ResultSet rs) throws Exception {
-        return null;
-    }
+    
+    
+    /**
+     * 
+     * factory method
+     * 
+     */
+    protected abstract Object setModelFromGet(ResultSet rs) throws Exception;
     
     
     

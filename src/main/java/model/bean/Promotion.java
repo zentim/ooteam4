@@ -5,6 +5,11 @@ import java.util.List;
 
 import main.java.pattern.chainOfResponsibility.DiscountPolicy;
 
+/**
+ * 
+ * Factory Method Pattern - ConcreteProduct
+ *
+ */
 public class Promotion {
 
     private int id;

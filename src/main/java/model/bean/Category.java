@@ -10,6 +10,7 @@ import main.java.pattern.composite.Component;
  * 
  * Composite Pattern - Composite
  * Iterator Pattern - Client
+ * Factory Method Pattern - ConcreteProduct
  *
  */
 public class Category extends Component {

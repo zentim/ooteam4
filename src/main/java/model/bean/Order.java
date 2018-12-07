@@ -5,6 +5,11 @@ import java.util.List;
 
 import main.java.model.dao.OrderDAO;
 
+/**
+ * 
+ * Factory Method Pattern - ConcreteProduct
+ *
+ */
 public class Order {
     
 	private int id;
