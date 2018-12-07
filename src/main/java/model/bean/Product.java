@@ -14,7 +14,7 @@ import main.java.pattern.observer.Subject;
  * Composite Pattern - Leaf
  * Iterator Pattern - Client
  * Decorator Pattern - ConcreteComponent
- * Factory Method Pattern - ConcreteProduct
+ * Factory Method Pattern - ConcreteObject
  *
  */
 public class Product extends Component implements Subject {

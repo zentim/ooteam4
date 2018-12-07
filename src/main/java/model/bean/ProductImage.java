@@ -2,7 +2,7 @@ package main.java.model.bean;
 
 /**
  * 
- * Factory Method Pattern - ConcreteProduct
+ * Factory Method Pattern - ConcreteObject
  *
  */
 public class ProductImage {

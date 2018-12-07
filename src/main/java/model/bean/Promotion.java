@@ -7,7 +7,7 @@ import main.java.pattern.chainOfResponsibility.DiscountPolicy;
 
 /**
  * 
- * Factory Method Pattern - ConcreteProduct
+ * Factory Method Pattern - ConcreteObject
  *
  */
 public class Promotion {

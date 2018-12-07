@@ -7,7 +7,7 @@ import main.java.model.dao.OrderDAO;
 
 /**
  * 
- * Factory Method Pattern - ConcreteProduct
+ * Factory Method Pattern - ConcreteObject
  *
  */
 public class Order {

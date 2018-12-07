@@ -11,7 +11,7 @@ import main.java.pattern.decorator.PrintPromotionInfoDecorator;
  * 
  * Composite Pattern - Composite
  * Iterator Pattern - Client
- * Factory Method Pattern - ConcreteProduct
+ * Factory Method Pattern - ConcreteObject
  *
  */
 public class Brand extends Component {
