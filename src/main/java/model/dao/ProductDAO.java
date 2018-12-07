@@ -266,7 +266,7 @@ public class ProductDAO extends DAOTemplate {
     }
 
     public void fill(List<Brand> bs) {
-        System.out.println("\n=== Show Brand ===");
+//        System.out.println("\n=== Show Brand ===");
         for (Brand b : bs) {
             fill(b);
         }
@@ -284,7 +284,7 @@ public class ProductDAO extends DAOTemplate {
             b.add(p);
         }
 
-        b.operation();
+//        b.operation();
     }
 
     public void setFirstProductImage(Product p) {

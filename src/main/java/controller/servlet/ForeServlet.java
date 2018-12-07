@@ -32,6 +32,7 @@ public class ForeServlet extends BaseForeServlet {
         List<Segment> segments = segmentDAO.list();
         categoryDAO.fill(segments);
         request.setAttribute("segments", segments);
+        request.getSession().setAttribute("segments", segments);
 
         List<Brand> brands = brandDAO.list();
         productDAO.fill(brands);
@@ -41,11 +42,6 @@ public class ForeServlet extends BaseForeServlet {
     }
 
     public String category(HttpServletRequest request, HttpServletResponse response, Page page) throws Exception {
-        // for head nav
-        List<Segment> segments = segmentDAO.list();
-        categoryDAO.fill(segments);
-        request.setAttribute("segments", segments);
-
         int cid = Integer.parseInt(request.getParameter("cid"));
 
         List<Brand> brands = brandDAO.list(cid);
@@ -59,11 +55,6 @@ public class ForeServlet extends BaseForeServlet {
     }
 
     public String product(HttpServletRequest request, HttpServletResponse response, Page page) throws Exception {
-        // for head nav
-        List<Segment> segments = segmentDAO.list();
-        categoryDAO.fill(segments);
-        request.setAttribute("segments", segments);
-
         int id = Integer.parseInt(request.getParameter("pid"));
         Product p = (Product) productDAO.get(id);
         List<ProductImage> productSingleImages = productImageDAO.list(p, ProductImageDAO.type_single);
@@ -84,11 +75,6 @@ public class ForeServlet extends BaseForeServlet {
     }
 
     public String brand(HttpServletRequest request, HttpServletResponse response, Page page) throws Exception {
-        // for head nav
-        List<Segment> segments = segmentDAO.list();
-        categoryDAO.fill(segments);
-        request.setAttribute("segments", segments);
-
         int cid = Integer.parseInt(request.getParameter("cid"));
         Brand brand = null;
         try {
@@ -292,11 +278,6 @@ public class ForeServlet extends BaseForeServlet {
     }
 
     public String cart(HttpServletRequest request, HttpServletResponse response, Page page) throws Exception {
-        // for head nav
-        List<Segment> segments = segmentDAO.list();
-        categoryDAO.fill(segments);
-        request.setAttribute("segments", segments);
-
         User user = (User) request.getSession().getAttribute("user");
         List<OrderItem> ois = null;
 
