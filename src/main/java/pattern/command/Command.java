@@ -5,7 +5,7 @@ package main.java.pattern.command;
  * Command Pattern - Command
  *
  */
-public interface Command extends Cloneable {
+public interface Command {
     public void execute();
 
     public void unExecute();

@@ -212,7 +212,7 @@ public class CategoryDAO extends DAOTemplate {
     }
 
     public void fill(List<Segment> ss) throws Exception {
-//        System.out.println("\n=== Show Segment ===");
+        System.out.println("\n=== Show Segment ===");
         for (Segment s : ss) {
             fill(s);
         }
@@ -230,7 +230,7 @@ public class CategoryDAO extends DAOTemplate {
             s.add(c);
         }
 
-//        s.operation();
+        s.operation();
     }
 
 }

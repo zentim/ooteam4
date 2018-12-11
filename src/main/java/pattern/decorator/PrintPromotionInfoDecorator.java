@@ -12,7 +12,7 @@ import main.java.pattern.composite.Component;
  * Decorator Pattern - Decorator
  *
  */
-public class PrintPromotionInfoDecorator extends Component {
+public class PrintPromotionInfoDecorator extends Decorator {
     private Component component;
 
     public PrintPromotionInfoDecorator(Component c) {
