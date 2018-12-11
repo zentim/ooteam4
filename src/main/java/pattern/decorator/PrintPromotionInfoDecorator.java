@@ -9,7 +9,7 @@ import main.java.pattern.composite.Component;
 
 /**
  * 
- * Decorator Pattern - Decorator
+ * Decorator Pattern - ConcreteDecorator
  *
  */
 public class PrintPromotionInfoDecorator extends Decorator {
