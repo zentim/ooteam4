@@ -1,5 +1,6 @@
 ## Version
 * [oo teamwork 1](https://github.com/zentim/ooteam4/releases/tag/v0.4.5)
+* [oo teamwork 2](https://github.com/zentim/ooteam4/releases/tag/v0.4.7)
 
 
 ## How To Start
